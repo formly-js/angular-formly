@@ -1,0 +1,11 @@
+{
+	"name": "angular-formly",
+	"version": "0.0.1",
+	"build": 0,
+	"dependencies": {
+		"bower": "1.2.7",
+		"grunt": "~0.4.1",
+		"grunt-bower-task": "~0.3.4",
+		"grunt-cli": "~0.1.11"
+	}
+}
