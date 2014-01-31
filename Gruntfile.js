@@ -4,22 +4,21 @@ module.exports = function(grunt) {
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
-		nodemon: {
+		connect: {
 			dev: {
 				options: {
-					file: 'server.js',
-					env: {
-						PORT: 4000
-					}
-				}
+					port: 4000,
+					base: 'src',
+					keepalive: true
+				},
 			}
 		}
 	});
 
 	// Load the plugin that provides the "uglify" task.
-	grunt.loadNpmTasks('grunt-nodemon');
+	grunt.loadNpmTasks('grunt-contrib-connect');
 
-	grunt.registerTask('default', [
-		'nodemon'
+	grunt.registerTask('dev', [
+		'connect:dev'
 	]);
 };
