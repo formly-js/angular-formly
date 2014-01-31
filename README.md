@@ -19,7 +19,6 @@ See `bower.json` and `index.html` in the `gh-pages` branch for a full list / mor
 		1. add `"angular-formly": "latest"` to your `bower.json` file then run `bower install` OR run `bower install angular-formly`
 2. include the files in your app
 	1. `formly.min.js`
-	2. `formly.less` OR `formly.min.css` OR `formly.css`
 3. include the module in angular (i.e. in `app.js`) - `Nimbly.angular-formly`
 
 See the `gh-pages` branch, files `bower.json` and `index.html` for a full example.
