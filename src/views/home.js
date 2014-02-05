@@ -4,6 +4,7 @@ app.controller('home', function($scope) {
 
 	};
 	$scope.formData = {};
+	$scope.submittedData = null;
 
 	$scope.onSubmit = function onSubmit() {
 		$scope.submittedData = $scope.formData;
