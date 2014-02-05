@@ -1,5 +1,5 @@
 'use strict';
-angular.module('formly.form', [])
+angular.module('formly.render')
 .directive('formlyForm', function formlyForm() {
 	return {
 		restrict: 'AE',
