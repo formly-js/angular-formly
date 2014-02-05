@@ -1,3 +1,4 @@
-h1 {
+.jumbotron h1 {
+	font-size: 45px;
 	text-align: center;
 }

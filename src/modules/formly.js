@@ -1,1 +1,1 @@
-angular.module('formly', []);
+angular.module('formly', ['formly.form']);

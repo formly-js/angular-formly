@@ -3,3 +3,24 @@
 		<h1>Formly for Angular</h1>
 	</div>
 </div>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-4 col-md-4 col-lg-4">
+			<h3>Format</h3>
+			{{formFormat}}
+		</div>
+		<div class="col-sm-4 col-md-4 col-lg-4">
+			<h3>Form</h3>
+			<formly-form format="formFormat" ng-model="formData" ng-submit="onSubmit()"></formly-form>
+		</div>
+		<div class="col-sm-4 col-md-4 col-lg-4">
+			<h3>Model</h3>
+			{{formData}}
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<h3>Submitted Data</h3>
+		{{submittedData}}
+	</div>
+</div>

@@ -1,3 +1,11 @@
+'use strict';
 app.controller('home', function($scope) {
-	$scope.test = true;
-})
+	$scope.formFormat = {
+
+	};
+	$scope.formData = {};
+
+	$scope.onSubmit = function onSubmit() {
+		$scope.submittedData = $scope.formData;
+	};
+});
