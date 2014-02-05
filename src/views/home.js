@@ -1,7 +1,10 @@
 'use strict';
 app.controller('home', function($scope) {
 	// Public Vars
-	$scope.formFormat = {};
+	$scope.formFields = {};
+	$scope.formOptions = {
+		submitCopy: 'Save'
+	};
 	$scope.formData = {};
 	$scope.submittedData = null;
 

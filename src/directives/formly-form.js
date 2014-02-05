@@ -6,7 +6,8 @@ angular.module('formly.form', [])
 		templateUrl: 'directives/formly-form.html',
 		replace: true,
 		scope: {
-			format: '=format'
+			fields: '=fields',
+			options: '=options'
 		}
 	};
 });
