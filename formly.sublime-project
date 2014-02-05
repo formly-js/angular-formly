@@ -2,8 +2,21 @@
 	"folders":
 	[
 		{
+			"name":"Formly",
 			"follow_symlinks": true,
-			"path": "."
+			"path": "./src/",
+			"folder_exclude_patterns": [
+				"bower_components"
+			]
+		},
+		{
+			"name": "Settings",
+			"follow_symlinks": true,
+			"path": ".",
+			"folder_exclude_patterns": [
+				"node_modules",
+				"src"
+			]
 		}
 	]
 }
