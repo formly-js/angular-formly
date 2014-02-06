@@ -12,6 +12,10 @@ app.controller('home', function($scope) {
 		{
 			type: 'text',
 			label: 'Last Name'
+		},
+		{
+			type: 'hidden',
+			default: 'secret_code'
 		}
 	];
 	$scope.formOptions = {
