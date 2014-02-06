@@ -1,12 +1,17 @@
 'use strict';
 app.controller('home', function($scope) {
 	// Public Vars
-	$scope.formFields = {};
+	$scope.formFields = [
+		{
+			type: 'email'
+		}
+	];
 	$scope.formOptions = {
+		uniqueFormId: '1234',
 		submitCopy: 'Save'
 	};
-	$scope.formData = {};
 	$scope.submittedData = null;
+	$scope.formData = {};
 
 	// Public Methods
 	$scope.onSubmit = function onSubmit() {

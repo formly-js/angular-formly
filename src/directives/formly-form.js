@@ -6,8 +6,20 @@ angular.module('formly.render')
 		templateUrl: 'directives/formly-form.html',
 		replace: true,
 		scope: {
-			fields: '=fields',
-			options: '=options'
+			formId: '@formId',
+			fieldsData: '&fields',
+			optionsData: '&options',
+			result: '=result'
+		},
+		controller: function formController($scope) {
+			$scope.fields = $scope.fieldsData();
+			$scope.options = $scope.optionsData();
+
+			$scope.populateResult = function() {
+				angular.forEach($scope.fields, function(field, index){
+					$scope.result[index] = field.value;
+				});
+			};
 		}
 	};
 });
