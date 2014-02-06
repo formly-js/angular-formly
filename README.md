@@ -35,5 +35,5 @@ See `bower.json` and `index.html` in the `master` branch for a full list / more 
 	1. git commit changes
 
 ## Grunt targets
-`grunt dev`: Creates a server for testing at `http://localhost:400`
-`grunt publish`: Copies the src folder and bower_components to gh-pages
+* `grunt dev`: Creates a server for testing at `http://localhost:400`
+* `grunt publish`: Copies the src folder and bower_components to gh-pages
