@@ -1,0 +1,12 @@
+<form class="formly" role="form">
+	<formly-field ng-repeat="field in fields"
+				  options="field"
+				  form-value="value"
+				  form-id="{{options.uniqueFormId}}"
+				  index="{{$index}}">
+	</formly-field>
+	<button type="submit"
+			ng-click="populateResult()">
+		{{options.submitCopy || "Submit"}}
+	</button>
+</form>

@@ -1,0 +1,27 @@
+<div class="jumbotron">
+	<div class="container">
+		<h1>Formly for Angular</h1>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-4 col-md-4 col-lg-4">
+			<h3>Fields</h3>
+			{{formFields}}
+			<h3>Options</h3>
+			{{formOptions}}
+		</div>
+		<div class="col-sm-4 col-md-4 col-lg-4">
+			<h3>Form</h3>
+			<formly-form result="formData"
+						 fields="formFields"
+						 options="formOptions"
+						 ng-submit="onSubmit()">
+			</formly-form>
+		</div>
+		<div class="col-sm-4 col-md-4 col-lg-4">
+			<h3>Submitted Data</h3>
+			{{submittedData}}
+		</div>
+	</div>
+</div>
