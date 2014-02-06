@@ -47,7 +47,7 @@ app.controller('home', function($scope, $parse, $rootScope) {
 			$scope.formFieldsError = false;
 		} catch (e) {
 			// eat $parse error
-			console.log('error parsing data');
+			// console.log('Formly Demo App Error: error parsing data, changes not applied');
 			$scope.formFieldsError = true;
 		}
 	});
@@ -57,7 +57,7 @@ app.controller('home', function($scope, $parse, $rootScope) {
 			$scope.formOptionsError = false;
 		} catch (e) {
 			// eat $parse error
-			console.log('error parsing data');
+			// console.log('Formly Demo App Error: error parsing data, changes not applied');
 			$scope.formOptionsError = true;
 		}
 	});
