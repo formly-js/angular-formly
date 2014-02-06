@@ -2,8 +2,8 @@
 // Angular Init
 var app = angular.module('app', ['ng',
 	'ui.router',
-	'formly',
-
+	'hljs',
+	'formly'
 ]);
 
 app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
