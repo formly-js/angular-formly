@@ -6,6 +6,9 @@ angular.module('formly.render')
 		var templateUrl = '';
 
 		switch(type) {
+			case 'checkbox':
+				templateUrl = 'directives/formly-field-checkbox.html';
+				break;
 			case 'password' :
 				templateUrl = 'directives/formly-field-password.html';
 				break;
@@ -19,7 +22,7 @@ angular.module('formly.render')
 				templateUrl = 'directives/formly-field-text.html';
 				break;
 			default :
-				templateUrl = '<div>Template "{{options.type}}" not found</div>';
+				templateUrl = null;
 				break;
 		}
 
@@ -37,11 +40,15 @@ angular.module('formly.render')
 		},
 		link: function fieldLink($scope, $element, $attr) {
 			var templateUrl = getTemplateUrl($scope.options.type);
-			$http.get(templateUrl).success(function(data) {
-				//template data returned
-				$element.html(data);
-				$compile($element.contents())($scope);
-			});
+			if (templateUrl) {
+				$http.get(templateUrl).success(function(data) {
+					//template data returned
+					$element.html(data);
+					$compile($element.contents())($scope);
+				});
+			} else {
+				console.log('Formly Error: template type \'' + $scope.options.type + '\' not supported.');
+			}
 		},
 		controller: function fieldController($scope) {
 			$scope.options = $scope.optionsData();

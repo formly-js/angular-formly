@@ -6,13 +6,55 @@
 </div>
 <div class="container">
 	<div class="row">
-		<div class="col-sm-4 col-md-4 col-lg-4">
+		<div class="col-sm-4 col-md-4 col-lg-4"
+			 ng-hide="editJSON">
+
+			<!-- Formatted JSON -->
+			<button class="btn btn-success"
+					ng-click="editJSON = true">
+				Edit JSON
+			</button>
+
 			<h3>Fields</h3>
-			<div hljs source="toPrettyJSON(formFields, 4)"></div>
+			<div source="toPrettyJSON(formFields, 4)"
+				 hljs>
+			 </div>
+
 			<h3>Options</h3>
-			<div hljs source="toPrettyJSON(formOptions, 4)"></div>
+			<div source="toPrettyJSON(formOptions, 4)"
+				 hljs>
+			</div>
+		</div>
+
+		<div class="col-sm-4 col-md-4 col-lg-4"
+			 ng-show="editJSON">
+
+			<!-- Edit JSON -->
+			<button class="btn btn-success"
+					ng-click="editJSON = false">
+				Pretty JSON
+			</button>
+
+			<h3>Fields</h3>
+			<div class="form-group"
+				 ng-class="{'has-error': formFieldsError}">
+				<textarea class="form-control"
+						  ng-model="formFieldsStr"
+						  rows="5">
+				</textarea>
+			</div>
+
+			<h3>Options</h3>
+			<div class="form-group"
+				 ng-class="{'has-error': formOptionsError}">
+				<textarea class="form-control"
+						  ng-model="formOptionsStr"
+						  rows="5">
+				</textarea>
+			</div>
 		</div>
 		<div class="col-sm-4 col-md-4 col-lg-4">
+
 			<h3>Form</h3>
 			<formly-form result="formData"
 						 fields="formFields"
@@ -21,6 +63,7 @@
 			</formly-form>
 		</div>
 		<div class="col-sm-4 col-md-4 col-lg-4">
+
 			<h3>Submitted Data</h3>
 			<div hljs source="toPrettyJSON(submittedData, 4)"></div>
 		</div>
