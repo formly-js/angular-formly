@@ -13,6 +13,9 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		type: 'password',
 		label: 'Password'
 	}, {
+		type: 'checkbox',
+		label: 'Check this here'
+	}, {
 		type: 'hidden',
 		default: 'secret_code'
 	}];
