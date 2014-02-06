@@ -4,6 +4,14 @@ app.controller('home', function($scope) {
 	$scope.formFields = [
 		{
 			type: 'email'
+		},
+		{
+			type: 'text',
+			label: 'First Name'
+		},
+		{
+			type: 'text',
+			label: 'Last Name'
 		}
 	];
 	$scope.formOptions = {

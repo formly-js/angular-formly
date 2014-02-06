@@ -9,6 +9,9 @@ angular.module('formly.render')
 			case 'email':
 				templateUrl = 'directives/formly-field-email.html';
 				break;
+			case 'text':
+				templateUrl = 'directives/formly-field-text.html';
+				break;
 			default :
 				templateUrl = '<div>Template "{{options.type}}" not found</div>';
 				break;
@@ -24,7 +27,8 @@ angular.module('formly.render')
 		scope: {
 			optionsData: '&options',
 			formId: '@formId',
-			index: '@index'
+			index: '@index',
+			value: '=formValue'
 		},
 		link: function fieldLink($scope, $element, $attr) {
 			var templateUrl = getTemplateUrl($scope.options.type);
@@ -36,9 +40,6 @@ angular.module('formly.render')
 		},
 		controller: function fieldController($scope) {
 			$scope.options = $scope.optionsData();
-			if (!$scope.options.value) {
-				$scope.options.value = 1;
-			};
 
 			//set field id to link labels and fields
 			$scope.id = $scope.formId + $scope.options.type + $scope.index;

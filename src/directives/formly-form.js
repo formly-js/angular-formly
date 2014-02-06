@@ -11,13 +11,17 @@ angular.module('formly.render')
 			optionsData: '&options',
 			result: '=result'
 		},
-		controller: function formController($scope) {
+		controller: function formController($scope, $element) {
 			$scope.fields = $scope.fieldsData();
 			$scope.options = $scope.optionsData();
 
 			$scope.populateResult = function() {
-				angular.forEach($scope.fields, function(field, index){
-					$scope.result[index] = field.value;
+				var formChildren = $element.children();
+				var fieldScope;
+				angular.forEach(formChildren, function(field, key){
+					// grab fields isolate scope
+					fieldScope = angular.element(field).scope();
+					$scope.result[fieldScope.$index] = fieldScope.value;
 				});
 			};
 		}
