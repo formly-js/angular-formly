@@ -6,6 +6,9 @@ angular.module('formly.render')
 		var templateUrl = '';
 
 		switch(type) {
+			case 'password' :
+				templateUrl = 'directives/formly-field-password.html';
+				break;
 			case 'hidden' :
 				templateUrl = 'directives/formly-field-hidden.html';
 				break;
@@ -45,7 +48,7 @@ angular.module('formly.render')
 			if ($scope.options.default) {
 				$scope.value = $scope.options.default;
 			}
-			
+
 			// set field id to link labels and fields
 			$scope.id = $scope.formId + $scope.options.type + $scope.index;
 		}

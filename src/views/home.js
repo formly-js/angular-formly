@@ -14,6 +14,10 @@ app.controller('home', function($scope) {
 			label: 'Last Name'
 		},
 		{
+			type: 'password',
+			label: 'Password'
+		},
+		{
 			type: 'hidden',
 			default: 'secret_code'
 		}
