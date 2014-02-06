@@ -8,9 +8,9 @@
 	<div class="row">
 		<div class="col-sm-4 col-md-4 col-lg-4">
 			<h3>Fields</h3>
-			{{formFields}}
+			<div hljs source="toPrettyJSON(formFields, 4)"></div>
 			<h3>Options</h3>
-			{{formOptions}}
+			<div hljs source="toPrettyJSON(formOptions, 4)"></div>
 		</div>
 		<div class="col-sm-4 col-md-4 col-lg-4">
 			<h3>Form</h3>
@@ -22,7 +22,7 @@
 		</div>
 		<div class="col-sm-4 col-md-4 col-lg-4">
 			<h3>Submitted Data</h3>
-			{{submittedData}}
+			<div hljs source="toPrettyJSON(submittedData, 4)"></div>
 		</div>
 	</div>
 </div>

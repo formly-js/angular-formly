@@ -15,8 +15,14 @@
 			"path": ".",
 			"folder_exclude_patterns": [
 				"node_modules",
-				"src"
+				"src",
+				".grunt"
 			]
+		},
+		{
+			"name": "Bower",
+			"follow_symlinks": true,
+			"path": "src/bower_components",
 		}
 	]
 }

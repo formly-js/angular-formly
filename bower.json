@@ -23,7 +23,9 @@
   "dependencies": {
     "angular": "~1.2.10",
     "angular-ui-router": "#0.2.8-bowratic-tedium",
-    "bootstrap": "~3.1.0"
+    "bootstrap": "~3.1.0",
+    "angular-highlightjs": "~0.2.1",
+    "highlightjs": "~8.0.0"
   },
   "devDependencies": {}
 }
