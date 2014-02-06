@@ -7,13 +7,11 @@ angular.module('formly.render')
 		replace: true,
 		scope: {
 			formId: '@formId',
-			fieldsData: '&fields',
-			optionsData: '&options',
+			fields: '=fields',
+			options: '=options',
 			result: '=result'
 		},
 		controller: function formController($scope, $element) {
-			$scope.fields = $scope.fieldsData();
-			$scope.options = $scope.optionsData();
 
 			$scope.populateResult = function() {
 				var formChildren = $element.children();
