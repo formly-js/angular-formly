@@ -26,7 +26,6 @@ angular.module('formly.render')
 	return {
 		restrict: 'AE',
 		transclude: true,
-		replace: true,
 		scope: {
 			optionsData: '&options',
 			formId: '@formId',
@@ -45,9 +44,9 @@ angular.module('formly.render')
 			$scope.options = $scope.optionsData();
 			if ($scope.options.default) {
 				$scope.value = $scope.options.default;
-			};
-
-			//set field id to link labels and fields
+			}
+			
+			// set field id to link labels and fields
 			$scope.id = $scope.formId + $scope.options.type + $scope.index;
 		}
 	};
