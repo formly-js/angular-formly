@@ -1,7 +1,13 @@
 <div class="form-group">
-	<label for="{{id}}">{{options.label || 'Email'}}</label>
+	<label for="{{id}}">
+		{{options.label || 'Email'}}
+		{{options.required ? '*' : ''}}
+	</label>
 	<input type="email"
 		   class="form-control"
 		   id="{{id}}"
+		   placeholder="{{options.placeholder}}"
+		   ng-required="options.required"
+		   ng-disabled="options.disabled"
 		   ng-model="value">
 </div>
