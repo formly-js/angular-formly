@@ -23,8 +23,8 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		type: 'number',
 		label: 'How much love?',
 		default: 2,
-		minlength: 1,
-		maxlength: 2,
+		min: 0,
+		max: 100,
 		required: true
 	}, {
 		type: 'password',
