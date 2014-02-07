@@ -2,13 +2,16 @@
 app.controller('home', function($scope, $parse, $rootScope) {
 	// Public Vars
 	$scope.formFields = [{
-		type: 'email'
+		type: 'email',
+		placeholder: 'janedoe@gmail.com'
 	}, {
 		type: 'text',
-		label: 'First Name'
+		label: 'First Name',
+		placeholder: 'Jane'
 	}, {
 		type: 'text',
 		label: 'Last Name',
+		placeholder: 'Doe',
 		required: true
 	}, {
 		type: 'password',
