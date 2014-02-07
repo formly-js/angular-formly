@@ -2,6 +2,7 @@
 	<label>
 		<input type="checkbox"
 			   ng-required="options.required"
+			   ng-disabled="options.disabled"
 			   ng-model="value">
 		{{options.label || 'Checkbox'}}
 		{{options.required ? '*' : ''}}

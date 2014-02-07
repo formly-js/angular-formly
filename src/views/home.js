@@ -14,6 +14,12 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		placeholder: 'Doe',
 		required: true
 	}, {
+		type: 'text',
+		label: 'Angular Fan?',
+		disabled: true,
+		default: 'yes',
+		required: true
+	}, {
 		type: 'password',
 		label: 'Password',
 		required: true
