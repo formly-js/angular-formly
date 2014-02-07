@@ -23,8 +23,8 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		type: 'number',
 		label: 'How much love?',
 		default: 2,
-		min: 0,
-		max: 10,
+		minlength: 1,
+		maxlength: 2,
 		required: true
 	}, {
 		type: 'password',
@@ -38,7 +38,7 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		default: 'secret_code'
 	}];
 	$scope.formOptions = {
-		uniqueFormId: '1234',
+		uniqueFormId: 'simpleform',
 		submitCopy: 'Save'
 	};
 	$scope.submittedData = null;
