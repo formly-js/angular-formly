@@ -8,13 +8,16 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		label: 'First Name'
 	}, {
 		type: 'text',
-		label: 'Last Name'
+		label: 'Last Name',
+		required: true
 	}, {
 		type: 'password',
-		label: 'Password'
+		label: 'Password',
+		required: true
 	}, {
 		type: 'checkbox',
-		label: 'Check this here'
+		label: 'Check this here',
+		required: true
 	}, {
 		type: 'hidden',
 		default: 'secret_code'
