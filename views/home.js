@@ -11,8 +11,12 @@ app.controller('home', function($scope, $parse, $rootScope) {
 	}, {
 		type: 'text',
 		label: 'Last Name',
-		placeholder: 'Doe',
-		required: true
+		placeholder: 'Doe'
+	}, {
+		type: 'textarea',
+		label: 'Tell me about yourself',
+		placeholder: 'I like puppies',
+		lines: 4
 	}, {
 		type: 'radio',
 		label: 'Have you tried EmberJs yet?',
@@ -83,8 +87,7 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		label: 'Password'
 	}, {
 		type: 'checkbox',
-		label: 'Check this here',
-		required: true
+		label: 'Check this here'
 	}, {
 		type: 'hidden',
 		default: 'secret_code'

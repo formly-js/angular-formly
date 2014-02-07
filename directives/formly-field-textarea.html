@@ -1,0 +1,15 @@
+<div class="form-group">
+	<label for="{{id}}">
+		{{options.label || 'Text'}}
+		{{options.required ? '*' : ''}}
+	</label>
+	<textarea type="text"
+			  class="form-control"
+			  id="{{id}}"
+			  rows="{{options.lines}}"
+			  placeholder="{{options.placeholder}}"
+			  ng-required="options.required"
+			  ng-disabled="options.disabled"
+			  ng-model="value">
+	</textarea>
+</div>
