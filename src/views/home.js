@@ -14,6 +14,21 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		placeholder: 'Doe',
 		required: true
 	}, {
+		type: 'radio',
+		label: 'Have you tried EmberJs yet?',
+		options: [
+			{
+				name: 'Yes, and I love it!',
+				value: 'yesyes'
+			}, {
+				name: 'Yes, but I\'m not a fan...',
+				value: 'yesno'
+			}, {
+				name: 'Nope',
+				value: 'no'
+			}
+		]
+	}, {
 		type: 'text',
 		label: 'Angular Fan?',
 		disabled: true,

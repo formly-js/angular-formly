@@ -1,0 +1,17 @@
+<div class="radio-group">
+	<label class="control-label">
+		{{options.label}}
+		{{options.required ? '*' : ''}}
+	</label>
+	<div class="radio"
+		 ng-repeat="(key, option) in options.options">
+		<label>
+			<input type="radio"
+				   name="{{id}}"
+				   id="{{id + '_'+ $index}}"
+				   ng-value="option.value">
+			{{option.name}}
+		</label>
+	</div>
+
+</div>
