@@ -5,3 +5,8 @@
 .jumbotron h1 {
 	font-size: 45px;
 }
+
+.footer {
+	text-align: center;
+	padding: 25px;
+}
