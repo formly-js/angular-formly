@@ -6,6 +6,9 @@ angular.module('formly.render')
 		var templateUrl = '';
 
 		switch(type) {
+			case 'number':
+				templateUrl = 'directives/formly-field-number.html';
+				break;
 			case 'checkbox':
 				templateUrl = 'directives/formly-field-checkbox.html';
 				break;

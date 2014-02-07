@@ -20,9 +20,15 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		default: 'yes',
 		required: true
 	}, {
-		type: 'password',
-		label: 'Password',
+		type: 'number',
+		label: 'How much love?',
+		default: 2,
+		min: 0,
+		max: 10,
 		required: true
+	}, {
+		type: 'password',
+		label: 'Password'
 	}, {
 		type: 'checkbox',
 		label: 'Check this here',
