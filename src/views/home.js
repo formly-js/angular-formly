@@ -1,5 +1,40 @@
 'use strict';
 app.controller('home', function($scope, $parse, $rootScope) {
+	// Public Methods
+	$scope.onSubmit = function onSubmit() {
+		$scope.submittedData = $scope.formData;
+	};
+
+	$scope.toPrettyJSON = function(obj, tabWidth) {
+		var strippedObj = angular.copy(obj);
+		var result = JSON.stringify(strippedObj, null, Number(tabWidth));
+		return result;
+	};
+
+	// Private Methods
+
+	// Events
+	$scope.$watch('formFieldsStr', function onOptionsUpdated(newValue, OldValue) {
+		try {
+			$scope.formFields = $parse(newValue)({});
+			$scope.formFieldsError = false;
+		} catch (e) {
+			// eat $parse error
+			// console.log('Formly Demo App Error: error parsing data, changes not applied');
+			$scope.formFieldsError = true;
+		}
+	});
+	$scope.$watch('formOptionsStr', function onOptionsUpdated(newValue, OldValue) {
+		try {
+			$scope.formOptions = $parse(newValue)({});
+			$scope.formOptionsError = false;
+		} catch (e) {
+			// eat $parse error
+			// console.log('Formly Demo App Error: error parsing data, changes not applied');
+			$scope.formOptionsError = true;
+		}
+	});
+	
 	// Public Vars
 	$scope.formFields = [{
 		type: 'email',
@@ -98,43 +133,8 @@ app.controller('home', function($scope, $parse, $rootScope) {
 	};
 	$scope.submittedData = null;
 	$scope.formData = {};
-	$scope.formFieldsStr = JSON.stringify($scope.formFields);
-	$scope.formOptionsStr = JSON.stringify($scope.formOptions);
+	$scope.formFieldsStr = $scope.toPrettyJSON($scope.formFields, 4);
+	$scope.formOptionsStr = $scope.toPrettyJSON($scope.formOptions, 4);
 	$scope.formFieldsError = false;
 	$scope.formOptionsError = false;
-
-	// Public Methods
-	$scope.onSubmit = function onSubmit() {
-		$scope.submittedData = $scope.formData;
-	};
-
-	$scope.toPrettyJSON = function(obj, tabWidth) {
-		var strippedObj = angular.copy(obj);
-		var result = JSON.stringify(strippedObj, null, Number(tabWidth));
-		return result;
-	};
-
-	// Private Methods
-
-	// Events
-	$scope.$watch('formFieldsStr', function onOptionsUpdated(newValue, OldValue) {
-		try {
-			$scope.formFields = $parse(newValue)({});
-			$scope.formFieldsError = false;
-		} catch (e) {
-			// eat $parse error
-			// console.log('Formly Demo App Error: error parsing data, changes not applied');
-			$scope.formFieldsError = true;
-		}
-	});
-	$scope.$watch('formOptionsStr', function onOptionsUpdated(newValue, OldValue) {
-		try {
-			$scope.formOptions = $parse(newValue)({});
-			$scope.formOptionsError = false;
-		} catch (e) {
-			// eat $parse error
-			// console.log('Formly Demo App Error: error parsing data, changes not applied');
-			$scope.formOptionsError = true;
-		}
-	});
 });
