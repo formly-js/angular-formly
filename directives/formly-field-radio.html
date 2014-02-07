@@ -9,7 +9,8 @@
 			<input type="radio"
 				   name="{{id}}"
 				   id="{{id + '_'+ $index}}"
-				   ng-value="option.value">
+				   ng-value="option.value"
+				   ng-model="$parent.value">
 			{{option.name}}
 		</label>
 	</div>

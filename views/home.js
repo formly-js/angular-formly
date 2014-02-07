@@ -16,6 +16,7 @@ app.controller('home', function($scope, $parse, $rootScope) {
 	}, {
 		type: 'radio',
 		label: 'Have you tried EmberJs yet?',
+		default: 'no',
 		options: [
 			{
 				name: 'Yes, and I love it!',
