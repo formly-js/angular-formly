@@ -27,6 +27,42 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		max: 100,
 		required: true
 	}, {
+		type: 'select',
+		label: 'How do you get around in the city',
+		options: [
+			{
+				name: 'Car',
+				group: 'inefficiently'
+			}, {
+				name: 'Helicopter',
+				group: 'inefficiently'
+			}, {
+				name: 'Sport Utility Vehicle',
+				group: 'inefficiently'
+			}, {
+				name: 'Bicycle',
+				group: 'efficiently'
+			}, {
+				name: 'Skateboard',
+				group: 'efficiently'
+			}, {
+				name: 'Walk',
+				group: 'efficiently'
+			}, {
+				name: 'Bus',
+				group: 'efficiently'
+			}, {
+				name: 'Scooter',
+				group: 'efficiently'
+			}, {
+				name: 'Train',
+				group: 'efficiently'
+			}, {
+				name: 'Hot Air Baloon',
+				group: 'efficiently'
+			}
+		]
+	}, {
 		type: 'password',
 		label: 'Password'
 	}, {
