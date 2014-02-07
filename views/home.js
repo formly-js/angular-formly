@@ -14,15 +14,72 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		placeholder: 'Doe',
 		required: true
 	}, {
+		type: 'radio',
+		label: 'Have you tried EmberJs yet?',
+		options: [
+			{
+				name: 'Yes, and I love it!',
+				value: 'yesyes'
+			}, {
+				name: 'Yes, but I\'m not a fan...',
+				value: 'yesno'
+			}, {
+				name: 'Nope',
+				value: 'no'
+			}
+		]
+	}, {
 		type: 'text',
 		label: 'Angular Fan?',
 		disabled: true,
 		default: 'yes',
 		required: true
 	}, {
-		type: 'password',
-		label: 'Password',
+		type: 'number',
+		label: 'How much love?',
+		default: 2,
+		min: 0,
+		max: 100,
 		required: true
+	}, {
+		type: 'select',
+		label: 'How do you get around in the city',
+		options: [
+			{
+				name: 'Car',
+				group: 'inefficiently'
+			}, {
+				name: 'Helicopter',
+				group: 'inefficiently'
+			}, {
+				name: 'Sport Utility Vehicle',
+				group: 'inefficiently'
+			}, {
+				name: 'Bicycle',
+				group: 'efficiently'
+			}, {
+				name: 'Skateboard',
+				group: 'efficiently'
+			}, {
+				name: 'Walk',
+				group: 'efficiently'
+			}, {
+				name: 'Bus',
+				group: 'efficiently'
+			}, {
+				name: 'Scooter',
+				group: 'efficiently'
+			}, {
+				name: 'Train',
+				group: 'efficiently'
+			}, {
+				name: 'Hot Air Baloon',
+				group: 'efficiently'
+			}
+		]
+	}, {
+		type: 'password',
+		label: 'Password'
 	}, {
 		type: 'checkbox',
 		label: 'Check this here',
@@ -32,7 +89,7 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		default: 'secret_code'
 	}];
 	$scope.formOptions = {
-		uniqueFormId: '1234',
+		uniqueFormId: 'simpleform',
 		submitCopy: 'Save'
 	};
 	$scope.submittedData = null;

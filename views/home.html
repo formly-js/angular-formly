@@ -15,15 +15,15 @@
 				Edit JSON
 			</button>
 
-			<h3>Fields</h3>
-			<div source="toPrettyJSON(formFields, 4)"
-				 hljs>
-			 </div>
-
 			<h3>Options</h3>
 			<div source="toPrettyJSON(formOptions, 4)"
 				 hljs>
 			</div>
+
+			<h3>Fields</h3>
+			<div source="toPrettyJSON(formFields, 4)"
+				 hljs>
+			 </div>
 		</div>
 
 		<div class="col-sm-4 col-md-4 col-lg-4"
@@ -35,20 +35,20 @@
 				Pretty JSON
 			</button>
 
-			<h3>Fields</h3>
-			<div class="form-group"
-				 ng-class="{'has-error': formFieldsError}">
-				<textarea class="form-control"
-						  ng-model="formFieldsStr"
-						  rows="5">
-				</textarea>
-			</div>
-
 			<h3>Options</h3>
 			<div class="form-group"
 				 ng-class="{'has-error': formOptionsError}">
 				<textarea class="form-control"
 						  ng-model="formOptionsStr"
+						  rows="5">
+				</textarea>
+			</div>
+
+			<h3>Fields</h3>
+			<div class="form-group"
+				 ng-class="{'has-error': formFieldsError}">
+				<textarea class="form-control"
+						  ng-model="formFieldsStr"
 						  rows="5">
 				</textarea>
 			</div>
