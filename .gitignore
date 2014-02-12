@@ -18,3 +18,4 @@ bower_components
 *.sublime-workspace
 # build folder
 .grunt
+.tmp
