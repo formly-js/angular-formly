@@ -4,6 +4,10 @@
   "authors": [
     "Grant Helton <ghelton@gmail.com>"
   ],
+  "main": [
+    "dist/formly.min.js",
+    "dist/formly.min.map"
+  ]
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
   "keywords": [
     "AngularJs",
