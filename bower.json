@@ -1,13 +1,13 @@
 {
   "name": "angular-formly",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "authors": [
     "Grant Helton <ghelton@gmail.com>"
   ],
   "main": [
     "dist/formly.min.js",
     "dist/formly.min.map"
-  ]
+  ],
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
   "keywords": [
     "AngularJs",
