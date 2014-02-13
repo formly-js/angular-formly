@@ -1,6 +1,8 @@
-# AngularJS directive which takes JSON representing a form and renders to HTML
+## Formly
+Formly for Angular is an AngularJS module which has directives to help customize and render JSON based forms. The directive originated from a need to allow our users to create surveys and distribute them easily. Currently we've can render the form data from JSON and assign a model to form so we can receive the submitted data.
 
-[TODO - brief summary]
+	<formly-form result="formData" fields="formFields" options="formOptions" ng-submit="onSubmit()">
+	</formly-form>
 
 ## Demo
 http://Nimbly.github.io/angular-formly/
@@ -24,6 +26,10 @@ See `bower.json` and `index.html` in the `master` branch for a full list / more 
 
 ## Documentation
 [TODO]
+
+## Roadmap
+
+## Release Notes
 
 ## Development
 
