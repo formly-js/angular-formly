@@ -1,6 +1,6 @@
 'use strict';
 angular.module('formly.render')
-.directive('formlyField', function formlyField($http, $compile) {
+.directive('formlyField', function formlyField($http, $compile, $templateCache) {
 
 	var getTemplateUrl = function(type) {
 		var templateUrl = '';
@@ -53,7 +53,9 @@ angular.module('formly.render')
 		link: function fieldLink($scope, $element, $attr) {
 			var templateUrl = getTemplateUrl($scope.options.type);
 			if (templateUrl) {
-				$http.get(templateUrl).success(function(data) {
+				$http.get(templateUrl, {
+					cache: $templateCache
+				}).success(function(data) {
 					//template data returned
 					$element.html(data);
 					$compile($element.contents())($scope);

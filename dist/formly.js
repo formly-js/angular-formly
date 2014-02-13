@@ -6,7 +6,8 @@ angular.module('formly', ['formly.render']);
 angular.module('formly.render').directive('formlyField', [
   '$http',
   '$compile',
-  function formlyField($http, $compile) {
+  '$templateCache',
+  function formlyField($http, $compile, $templateCache) {
     var getTemplateUrl = function (type) {
       var templateUrl = '';
       switch (type) {
@@ -55,7 +56,7 @@ angular.module('formly.render').directive('formlyField', [
       link: function fieldLink($scope, $element, $attr) {
         var templateUrl = getTemplateUrl($scope.options.type);
         if (templateUrl) {
-          $http.get(templateUrl).success(function (data) {
+          $http.get(templateUrl, { cache: $templateCache }).success(function (data) {
             //template data returned
             $element.html(data);
             $compile($element.contents())($scope);
