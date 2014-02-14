@@ -38,7 +38,8 @@ app.controller('home', function($scope, $parse, $rootScope) {
 	// Public Vars
 	$scope.formFields = [{
 		type: 'email',
-		placeholder: 'janedoe@gmail.com'
+		placeholder: 'janedoe@gmail.com',
+		key: 'email'
 	}, {
 		type: 'text',
 		label: 'First Name',
