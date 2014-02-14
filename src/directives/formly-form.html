@@ -6,6 +6,7 @@
 				  index="{{$index}}">
 	</formly-field>
 	<button type="submit"
+			ng-hide="options.hideSubmit"
 			ng-click="populateResult()">
 		{{options.submitCopy || "Submit"}}
 	</button>
