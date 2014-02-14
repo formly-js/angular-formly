@@ -122,6 +122,6 @@ angular.module('formly.render').run([
     $templateCache.put('directives/formly-field-text.html', '<div class=form-group><label for={{id}}>{{options.label || \'Text\'}} {{options.required ? \'*\' : \'\'}}</label><input class=form-control id={{id}} placeholder={{options.placeholder}} ng-required=options.required ng-disabled=options.disabled ng-model=value></div>');
     $templateCache.put('directives/formly-field-textarea.html', '<div class=form-group><label for={{id}}>{{options.label || \'Text\'}} {{options.required ? \'*\' : \'\'}}</label><textarea type=text class=form-control id={{id}} rows={{options.lines}} placeholder={{options.placeholder}} ng-required=options.required ng-disabled=options.disabled ng-model=value>\n' + '\t</textarea></div>');
     $templateCache.put('directives/formly-field.html', '');
-    $templateCache.put('directives/formly-form.html', '<form class=formly role=form name={{options.uniqueFormId}}><formly-field ng-repeat="field in fields" options=field form-value=value form-id={{options.uniqueFormId}} index={{$index}}></formly-field><button type=submit ng-click=populateResult()>{{options.submitCopy || "Submit"}}</button></form>');
+    $templateCache.put('directives/formly-form.html', '<form class=formly role=form name={{options.uniqueFormId}}><formly-field ng-repeat="field in fields" options=field form-value=value form-id={{options.uniqueFormId}} index={{$index}}></formly-field><button type=submit ng-hide=options.hideSubmit ng-click=populateResult()>{{options.submitCopy || "Submit"}}</button></form>');
   }
 ]);
