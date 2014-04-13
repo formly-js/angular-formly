@@ -4,8 +4,7 @@ Formly for Angular is an AngularJS module which has directives to help customize
 	<formly-form result="formData" fields="formFields" options="formOptions" ng-submit="onSubmit()">
 	</formly-form>
 
-## Demo
-http://Nimbly.github.io/angular-formly/
+### Demo : http://Nimbly.github.io/angular-formly/
 
 ## Dependencies
 - required:
