@@ -89,35 +89,24 @@ angular.module('formly.render').directive('formlyForm', function formlyForm() {
       formId: '@formId',
       fields: '=fields',
       options: '=options',
-      result: '=result'
+      result: '=result',
+      formOnParentScope: '=name'
     },
     controller: [
       '$scope',
       '$element',
       function formController($scope, $element) {
-        $scope.populateResult = function () {
-          var formChildren = $element.children();
-          var fieldScope;
-          angular.forEach(formChildren, function (fieldElement, key) {
-            // grab fields isolate scope
-            fieldScope = angular.element(fieldElement).scope();
-            // check if its a form field, otherwise ignore, ie its the button
-            if (fieldScope.field) {
-              // if a key is set, then save the data with that key in the result object
-              // otherwise use the field's index from the fields array
-              var dataKey;
-              if ('key' in fieldScope.field) {
-                dataKey = fieldScope.field.key;
-              } else {
-                dataKey = fieldScope.$index;
-              }
-              // set value in result
-              $scope.result[dataKey] = fieldScope.value;
-            }
-          });
-        };
       }
-    ]
+    ],
+    compile: function (scope, iElement, iAttrs, controller, transcludeFn) {
+      return {
+        post: function (scope, ele, attr, controller) {
+          //Post gets called after angular has created the FormController
+          //Now pass the FormController back up to the parent scope
+          scope.formOnParentScope = scope[attr.name];
+        }
+      };
+    }
   };
 });
 angular.module('formly.render').run([
@@ -134,6 +123,6 @@ angular.module('formly.render').run([
     $templateCache.put('directives/formly-field-text.html', '<div class=form-group><label for={{id}}>{{options.label || \'Text\'}} {{options.required ? \'*\' : \'\'}}</label><input class=form-control id={{id}} placeholder={{options.placeholder}} ng-required=options.required ng-disabled=options.disabled ng-model=value></div>');
     $templateCache.put('directives/formly-field-textarea.html', '<div class=form-group><label for={{id}}>{{options.label || \'Text\'}} {{options.required ? \'*\' : \'\'}}</label><textarea type=text class=form-control id={{id}} rows={{options.lines}} placeholder={{options.placeholder}} ng-required=options.required ng-disabled=options.disabled ng-model=value>\n' + '\t</textarea></div>');
     $templateCache.put('directives/formly-field.html', '');
-    $templateCache.put('directives/formly-form.html', '<form class=formly role=form name={{options.uniqueFormId}}><formly-field ng-repeat="field in fields" options=field form-value=value class=formly-field form-id={{options.uniqueFormId}} index={{$index}}></formly-field><button type=submit ng-hide=options.hideSubmit ng-click=populateResult()>{{options.submitCopy || "Submit"}}</button></form>');
+    $templateCache.put('directives/formly-form.html', '<form class=formly role=form><formly-field ng-repeat="field in fields" options=field form-value=result[field.key||$index] class=formly-field form-id={{options.uniqueFormId}} index={{$index}}></formly-field><button type=submit ng-hide=options.hideSubmit>{{options.submitCopy || "Submit"}}</button></form>');
   }
 ]);

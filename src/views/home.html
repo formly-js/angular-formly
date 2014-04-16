@@ -54,9 +54,10 @@
 			</div>
 		</div>
 		<div class="col-sm-4 col-md-4 col-lg-4">
-
+            <button ng-click="myWill()">Do It!</button>
 			<h3>Form</h3>
-			<formly-form result="formData"
+			<formly-form name="myFormName"
+                    	 result="formData"
 						 fields="formFields"
 						 options="formOptions"
 						 ng-submit="onSubmit()">
@@ -65,7 +66,40 @@
 		<div class="col-sm-4 col-md-4 col-lg-4">
 
 			<h3>Submitted Data</h3>
-			<div hljs source="toPrettyJSON(submittedData, 4)"></div>
+			<div hljs source="formData|json"></div>
+
+            <h3>Form State</h3>
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>State</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>$pristine</td>
+                    <td>{{myFormName.$pristine}}</td>
+                </tr>
+                <tr>
+                    <td>$dirty</td>
+                    <td>{{myFormName.$dirty}}</td>
+                </tr>
+                <tr>
+                    <td>$valid</td>
+                    <td>{{myFormName.$valid}}</td>
+                </tr>
+                <tr>
+                    <td>$invalid</td>
+                    <td>{{myFormName.$invalid}}</td>
+                </tr>
+                <tr>
+                    <td>$error</td>
+                    <td>{{myFormName.$error}}</td>
+                </tr>
+                </tbody>
+
+            </table>
 		</div>
 	</div>
 </div>
