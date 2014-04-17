@@ -9,33 +9,19 @@ angular.module('formly.render')
 			formId: '@formId',
 			fields: '=fields',
 			options: '=options',
-			result: '=result'
+			result: '=result',
+      formOnParentScope: '=name'
 		},
 		controller: function formController($scope, $element) {
-
-			$scope.populateResult = function() {
-				var formChildren = $element.children();
-				var fieldScope;
-				angular.forEach(formChildren, function(fieldElement, key){
-					// grab fields isolate scope
-					fieldScope = angular.element(fieldElement).scope();
-
-					// check if its a form field, otherwise ignore, ie its the button
-					if (fieldScope.field) {
-						// if a key is set, then save the data with that key in the result object
-						// otherwise use the field's index from the fields array
-						var dataKey;
-						if('key' in fieldScope.field) {
-							dataKey = fieldScope.field.key;
-						} else {
-							dataKey = fieldScope.$index;
-						}
-
-						// set value in result
-						$scope.result[dataKey] = fieldScope.value;
-					}
-				});
-			};
-		}
+		},
+    compile: function (scope, iElement, iAttrs, controller, transcludeFn) {
+      return {
+        post: function (scope, ele, attr, controller) {
+          //Post gets called after angular has created the FormController
+          //Now pass the FormController back up to the parent scope
+          scope.formOnParentScope = scope[attr.name];
+        }
+      }
+    }
 	};
 });
