@@ -5,10 +5,10 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		formlyConfig: {
-      hostname: '*',
+			hostname: 'localhost', // change to 0.0.0.0 to listen on all connections
 			base: 'src',
-      port: 4000,
-      livereloadport: 35701,
+			port: 4000,
+			livereloadport: 35701
 		},
 		connect: {
 			dev: {
@@ -16,8 +16,8 @@ module.exports = function(grunt) {
 					hostname: '<%= formlyConfig.hostname %>',
 					port: '<%= formlyConfig.port %>',
 					base: '<%= formlyConfig.base %>',
-          livereload: '<%= formlyConfig.livereloadport %>',
-				},
+					livereload: '<%= formlyConfig.livereloadport %>'
+				}
 			}
 		},
 		'gh-pages': {
@@ -95,12 +95,12 @@ module.exports = function(grunt) {
 			}
 		},
 		watch: {
-      livereload: {
-        files: ['<%= formlyConfig.base %>/**/*.{js,html}'],
-        options: {
-          livereload: '<%= formlyConfig.livereloadport %>'
-        },
-      }
+			livereload: {
+				files: ['<%= formlyConfig.base %>/**/*.{js,html}'],
+				options: {
+					livereload: '<%= formlyConfig.livereloadport %>'
+				}
+			}
 		}
 
 	});
@@ -114,7 +114,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-gh-pages');
 	grunt.loadNpmTasks('grunt-angular-templates');
 	grunt.loadNpmTasks('grunt-ngmin');
-  grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	grunt.registerTask('publish', [
 		'gh-pages'
