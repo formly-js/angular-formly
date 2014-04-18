@@ -8,11 +8,11 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-sm-4 col-md-4 col-lg-4"
-			 ng-hide="editJSON">
+		     ng-hide="editJSON">
 
 			<!-- Formatted JSON -->
 			<button class="btn btn-success"
-					ng-click="editJSON = true">
+			        ng-click="editJSON = true">
 				Edit JSON
 			</button>
 
@@ -40,8 +40,8 @@
 			<div class="form-group"
 				 ng-class="{'has-error': formOptionsError}">
 				<textarea class="form-control"
-						  ng-model="formOptionsStr"
-						  rows="5">
+				          ng-model="formOptionsStr"
+				          rows="5">
 				</textarea>
 			</div>
 
@@ -49,8 +49,8 @@
 			<div class="form-group"
 				 ng-class="{'has-error': formFieldsError}">
 				<textarea class="form-control"
-						  ng-model="formFieldsStr"
-						  rows="15">
+				          ng-model="formFieldsStr"
+				          rows="15">
 				</textarea>
 			</div>
 		</div>
@@ -58,10 +58,10 @@
 
 			<h3>Form</h3>
 			<formly-form name="myFormName"
-						 result="formData"
-						 fields="formFields"
-						 options="formOptions"
-						 ng-submit="onSubmit()">
+			             result="formData"
+			             fields="formFields"
+			             options="formOptions"
+			             ng-submit="onSubmit()">
 			</formly-form>
 		</div>
 		<div class="col-sm-4 col-md-4 col-lg-4">
