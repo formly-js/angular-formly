@@ -9,19 +9,19 @@ angular.module('formly.render')
 			formId: '@formId',
 			fields: '=fields',
 			options: '=options',
-			result: '=result'
+			result: '=result',
+			formOnParentScope: '=name'
 		},
 		controller: function formController($scope, $element) {
-
-			$scope.populateResult = function() {
-				var formChildren = $element.children();
-				var fieldScope;
-				angular.forEach(formChildren, function(field, key){
-					// grab fields isolate scope
-					fieldScope = angular.element(field).scope();
-					$scope.result[fieldScope.$index] = fieldScope.value;
-				});
-			};
+		},
+		compile: function (scope, iElement, iAttrs, controller, transcludeFn) {
+			return {
+				post: function (scope, ele, attr, controller) {
+					//Post gets called after angular has created the FormController
+					//Now pass the FormController back up to the parent scope
+					scope.formOnParentScope = scope[attr.name];
+				}
+			}
 		}
 	};
 });
