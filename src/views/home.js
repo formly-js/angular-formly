@@ -34,26 +34,30 @@ app.controller('home', function($scope, $parse, $rootScope) {
 			$scope.formOptionsError = true;
 		}
 	});
-	
+
 	// Public Vars
 	$scope.formFields = [{
-		type: 'email',
-		placeholder: 'janedoe@gmail.com',
-		key: 'email'
-	}, {
+		key: 'firstName',
 		type: 'text',
 		label: 'First Name',
 		placeholder: 'Jane'
 	}, {
+		key: 'lastName',
 		type: 'text',
 		label: 'Last Name',
 		placeholder: 'Doe'
 	}, {
+		key: 'email',
+		type: 'email',
+		placeholder: 'janedoe@gmail.com'
+	}, {
+		key: 'about',
 		type: 'textarea',
 		label: 'Tell me about yourself',
 		placeholder: 'I like puppies',
 		lines: 4
 	}, {
+		key: 'triedEmber',
 		type: 'radio',
 		label: 'Have you tried EmberJs yet?',
 		default: 'no',
@@ -70,12 +74,14 @@ app.controller('home', function($scope, $parse, $rootScope) {
 			}
 		]
 	}, {
+		key: 'angularFan',
 		type: 'text',
 		label: 'Angular Fan?',
 		disabled: true,
 		default: 'yes',
 		required: true
 	}, {
+		key: 'love',
 		type: 'number',
 		label: 'How much love?',
 		default: 2,
@@ -83,6 +89,7 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		max: 100,
 		required: true
 	}, {
+		key: 'transportation',
 		type: 'select',
 		label: 'How do you get around in the city',
 		options: [
@@ -119,17 +126,20 @@ app.controller('home', function($scope, $parse, $rootScope) {
 			}
 		]
 	}, {
+		key: 'password',
 		type: 'password',
 		label: 'Password'
 	}, {
+		key: 'checkThis',
 		type: 'checkbox',
 		label: 'Check this here'
 	}, {
+		key:'secretCode',
 		type: 'hidden',
 		default: 'secret_code'
 	}];
+
 	$scope.formOptions = {
-		uniqueFormId: 'simpleform',
 		submitCopy: 'Save'
 	};
 	$scope.submittedData = null;
