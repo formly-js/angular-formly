@@ -51,7 +51,7 @@ angular.module('formly.render')
 			value: '=formValue'
 		},
 		link: function fieldLink($scope, $element, $attr) {
-			var templateUrl = getTemplateUrl($scope.options.type);
+			var templateUrl = $scope.options.templateUrl || getTemplateUrl($scope.options.type);
 			if (templateUrl) {
 				$http.get(templateUrl, {
 					cache: $templateCache
