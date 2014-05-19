@@ -66,7 +66,7 @@ angular.module('formly.render')
 		},
 		controller: function fieldController($scope) {
 			$scope.options = $scope.optionsData();
-			if ($scope.options.default) {
+			if (typeof $scope.options.default !== 'undefined') {
 				$scope.value = $scope.options.default;
 			}
 
