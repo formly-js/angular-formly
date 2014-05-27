@@ -147,7 +147,8 @@ Below is a detailed description of each form fields and its custom properties.
 
 #### Text form field
 >The text field allows single line input with a input element set to `type='text'`. It doesn't have any custom properties.
-##### default (string)
+
+##### default (string, optional)
 
 _Example text field_
 ```json
@@ -162,7 +163,9 @@ _Example text field_
 ---
 #### Textarea form field
 >The textarea field creates multiline input with a textarea element.
-##### default (string)
+
+##### default (string, optional)
+
 ##### lines (number)
 >`lines` sets the rows attribute for the textarea element.
 
@@ -180,7 +183,8 @@ _Example textarea field_
 ---
 #### Checkbox form field
 >The checkbox field allows checkbox input with a input element set to `type='checkbox'`. It doesn't have any custom properties.
-##### default (boolean)
+
+##### default (boolean, optional)
 
 _Example checkbox field_
 ```json
@@ -194,8 +198,10 @@ _Example checkbox field_
 
 #### Radio form field
 >The radio field allows multiple choice input with a series of linked inputs, with `type='radio'`.
-##### default (string)
->The default should be set to the `value` of one of the `options`.
+
+##### default (string, optional) 
+>The default can be set to the `value` of one of the `options`.
+
 ##### options (array)
 >`options` is an array of options for the radio form field to display. Each option should be an object with a `name`(string) and `value`(string or number).
 
@@ -222,7 +228,64 @@ _Example radio field_
 		]
 	}
 ```
+
 #### Select form field
+>The select field allows selection via dropdown with the select element.
+
+##### default (string)
+>The default can be set to the index of one of the `options`.
+
+##### options (array)
+>`options` is an array of options for the select form field to display. Each option should be an object with a `name`(string). You may optionally add a `group` to some or all of your options.
+
+_Example radio field_
+```json
+	{
+		"key": "transportation",
+		"type": "select",
+		"label": "How do you get around in the city",
+		"options": [
+			{
+				"name": "Car"
+			},
+			{
+				"name": "Helicopter"
+			},
+			{
+				"name": "Sport Utility Vehicle"
+			},
+			{
+				"name": "Bicycle",
+				"group": "low emissions"
+			},
+			{
+				"name": "Skateboard",
+				"group": "low emissions"
+			},
+			{
+				"name": "Walk",
+				"group": "low emissions"
+			},
+			{
+				"name": "Bus",
+				"group": "low emissions"
+			},
+			{
+				"name": "Scooter",
+				"group": "low emissions"
+			},
+			{
+				"name": "Train",
+				"group": "low emissions"
+			},
+			{
+				"name": "Hot Air Baloon",
+				"group": "low emissions"
+			}
+		]
+	}
+```
+
 #### Number form field
 #### Password form field
 #### Hidden form field
