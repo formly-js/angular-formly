@@ -166,8 +166,8 @@ _Example text field_
 
 ##### default (string, optional)
 
-##### lines (number)
->`lines` sets the rows attribute for the textarea element.
+##### lines (number, optional)
+>`lines` sets the rows attribute for the textarea element. If unset, the default is 2 lines.
 
 _Example textarea field_
 ```json
