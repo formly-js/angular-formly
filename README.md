@@ -84,59 +84,67 @@ Example data as it would be set in the controller
 When constructing fields use the options below to customize each field object. You must set at least a `type` or `templateUrl`.
 
 ##### type (string)
-`type` is the type of field to be rendered. Either type or templateUrl must be set.
+>`type` is the type of field to be rendered. Either type or templateUrl must be set.
 
 ###### Default
-`null`
+>`null`
 
 ###### Values
- [`text`](#text-form-field), [`textarea`](#textarea-form-field), `radio`, `select`, `number`, `checkbox`, `password`, `hidden`, `email`, `text`
+> [`text`](#text-form-field),
+> [`textarea`](#textarea-form-field),
+> [`radio`](#radio-form-field)
+> [`select`](#select-form-field)
+> [`number`](#number-form-field)
+> [`checkbox`](#checkbox-form-field),
+> [`password`](#password-form-field),
+> [`hidden`](#hidden-form-field),
+> [`email`](#email-form-field)
 
 ---
 ##### templateUrl (string)
-`templateUrl` can be set instead of `type` to use a custom html template form field. Set a path relative to the root of the application. ie `directives/custom-field.html`
+>`templateUrl` can be set instead of `type` to use a custom html template form field. Set a path relative to the root of the application. ie `directives/custom-field.html`
 
 ###### Default
-`undefined`
+>`undefined`
 
 ---
 ##### key (string)
-By default form results are keyed by location in the form array, you can override this by specifying a `key`. 
+>By default form results are keyed by location in the form array, you can override this by specifying a `key`. 
 
 ###### Default
-`undefined`
+>`undefined`
 
 ---
 ##### label (string)
-`label` is used to add an html label to each field.
+>`label` is used to add an html label to each field.
 
 ###### Default
-A default is set for each field based on its type. ie `Text`, `Checkbox`, `Password`
+>A default is set for each field based on its type. ie `Text`, `Checkbox`, `Password`
 
 ---
 ##### required (boolean)
-`required` is used to add the required attribute to a form field.
+>`required` is used to add the required attribute to a form field.
 
 ###### Default
-`undefined`
+>`undefined`
 
 ---
 ##### disabled (boolean)
-`disabled` is used to add the disabled attribute to a form field.
+>`disabled` is used to add the disabled attribute to a form field.
 
 ###### Default
-`undefined`
+>`undefined`
 
 ---
 ##### placeholder (string)
-`placeholder` is used to add placeholder text to some inputs.
+>`placeholder` is used to add placeholder text to some inputs.
 
 ###### Default
-`undefined`
+>`undefined`
 
 ### Form Fields
 #### Text form field
-The text field allows single line input with a input element set to `type='text'`. It doesn't have any custom properties.
+>The text field allows single line input with a input element set to `type='text'`. It doesn't have any custom properties.
 ##### default (string)
 
 _Example text field_
@@ -154,7 +162,7 @@ _Example text field_
 The textarea field creates multiline input with a textarea element.
 ##### default (string)
 ##### lines (number)
-`lines` sets the rows attribute for the textarea element.
+>`lines` sets the rows attribute for the textarea element.
 
 _Example textarea field_
 ```json
@@ -181,6 +189,14 @@ _Example checkbox field_
     "default": true
   }
 ```
+
+#### Radio form field
+#### Select form field
+#### Number form field
+#### Password form field
+#### Hidden form field
+#### Email form field
+
 
 ## Roadmap
 
