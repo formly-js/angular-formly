@@ -196,6 +196,7 @@ _Example checkbox field_
 	}
 ```
 
+---
 #### Radio form field
 >The radio field allows multiple choice input with a series of linked inputs, with `type='radio'`.
 
@@ -229,6 +230,7 @@ _Example radio field_
 	}
 ```
 
+---
 #### Select form field
 >The select field allows selection via dropdown with the select element.
 
@@ -286,9 +288,16 @@ _Example radio field_
 	}
 ```
 
+---
 #### Number form field
+
+---
 #### Password form field
+
+---
 #### Hidden form field
+
+---
 #### Email form field
 
 
