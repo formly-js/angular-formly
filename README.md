@@ -232,15 +232,15 @@ _Example radio field_
 
 ---
 #### Select form field
->The select field allows selection via dropdown with the select element.
+>The select field allows selection via dropdown using the select element.
 
-##### default (string)
+##### default (number)
 >The default can be set to the index of one of the `options`.
 
 ##### options (array)
 >`options` is an array of options for the select form field to display. Each option should be an object with a `name`(string). You may optionally add a `group` to some or all of your options.
 
-_Example radio field_
+_Example select field_
 ```json
 	{
 		"key": "transportation",
@@ -290,9 +290,47 @@ _Example radio field_
 
 ---
 #### Number form field
+>The number field allows input that is restricted to numbers. Browsers also provide minimal ui to increase and decrease the current value.
+
+##### default (number, optional)
+
+##### min (number, optional)
+>`min` sets minimum acceptable value for the input.
+
+##### max (number, optional)
+>`max` sets maximum acceptable value for the input.
+
+##### minlength (number, optional)
+>`minlength` sets minimum number of characters for the input. If a number less than this value it will not be submitted with the form. eg 1000 is 4 characters long and if `minlength` is set to 5, it would not be sent. Currently there is no error displayed to the user if they do not meet the requirement.
+
+##### maxlength (number, optional)
+>`maxlength` sets maximum number of characters for the input. If a number is greater than this value it will not be submitted with the form. eg 1000 is 4 characters long and if `maxlength` is set to 2, it would not be sent. Currently there is no error displayed to the user if they do not meet the requirement.
+
+_Example number field_
+```json
+	{
+		"key": "love",
+		"type": "number",
+		"label": "How much love?",
+		"default": 2,
+		"min": 0,
+		"max": 100,
+		"required": true
+	}
+```
 
 ---
 #### Password form field
+>The password field allows password input, it uses an input with `type='password'`.
+
+_Example password field_
+```json
+	{
+		"key": "password",
+		"type": "password",
+		"label": "Password"
+	}
+```
 
 ---
 #### Hidden form field
