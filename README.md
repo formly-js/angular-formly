@@ -29,14 +29,16 @@ See `bower.json` and `index.html` in the `master` branch for a full list / more 
 
 ## Documentation
 
+You can add a formly-form in your HTML templates as shown below.
 ```html
   <formly-form result="formData" fields="formFields" options="formOptions" ng-submit="onSubmit()">
   </formly-form>
 ```  
 
-For options specific to input types see their directive html in `src/directives`  
+Example data as it would be set in the controller
 ```javascript
-  var formFields = [
+  $scope.formData = {};
+  $scope.formFields = [
     {
       //the key to be used in the result values {... "username": "johndoe" ... }
       key: 'username',
@@ -59,7 +61,7 @@ For options specific to input types see their directive html in `src/directives`
 
   ];
 
-  var formOptions = {
+  $scope.formOptions = {
 
     //Set the id of the form
     uniqueFormId: 'myFormId',
@@ -72,7 +74,113 @@ For options specific to input types see their directive html in `src/directives`
     //default: Submit
     submitCopy: 'Login'
   };
-```  
+
+  $scope.onSubmit = function() {
+    console.log('form submitted:', $scope.formData);
+  };
+```
+
+### Creating Form Fields
+When constructing fields use the options below to customize each field object. You must set at least a `type` or `templateUrl`.
+
+##### type (string)
+`type` is the type of field to be rendered. Either type or templateUrl must be set.
+
+###### Default
+`null`
+
+###### Values
+ [`text`](#text-form-field), [`textarea`](#textarea-form-field), `radio`, `select`, `number`, `checkbox`, `password`, `hidden`, `email`, `text`
+
+---
+##### templateUrl (string)
+`templateUrl` can be set instead of `type` to use a custom html template form field. Set a path relative to the root of the application. ie `directives/custom-field.html`
+
+###### Default
+`undefined`
+
+---
+##### key (string)
+By default form results are keyed by location in the form array, you can override this by specifying a `key`. 
+
+###### Default
+`undefined`
+
+---
+##### label (string)
+`label` is used to add an html label to each field.
+
+###### Default
+A default is set for each field based on its type. ie `Text`, `Checkbox`, `Password`
+
+---
+##### required (boolean)
+`required` is used to add the required attribute to a form field.
+
+###### Default
+`undefined`
+
+---
+##### disabled (boolean)
+`disabled` is used to add the disabled attribute to a form field.
+
+###### Default
+`undefined`
+
+---
+##### placeholder (string)
+`placeholder` is used to add placeholder text to some inputs.
+
+###### Default
+`undefined`
+
+### Form Fields
+#### Text form field
+The text field allows single line input with a input element set to `type='text'`. It doesn't have any custom properties.
+##### default (string)
+
+_Example text field_
+```json
+  {
+    "type": "text",
+    "key": "firstName",
+    "placeholder": "jane doe",
+    "label": "First name"
+  }
+```
+
+---
+#### Textarea form field
+The textarea field creates multiline input with a textarea element.
+##### default (string)
+##### lines (number)
+`lines` sets the rows attribute for the textarea element.
+
+_Example textarea field_
+```json
+  {
+    "type": "textarea",
+    "key": "about",
+    "placeholder": "I like puppies",
+    "label": "Tell me about yourself",
+    "lines": 4
+  }
+```
+
+---
+#### Checkbox form field
+The checkbox field allows checkbox input with a input element set to `type='checkbox'`. It doesn't have any custom properties.
+##### default (boolean)
+
+_Example checkbox field_
+```json
+  {
+    "type": "checkbox",
+    "key": "checkThis",
+    "label": "Check this box",
+    "default": true
+  }
+```
 
 ## Roadmap
 
