@@ -83,13 +83,13 @@ Example data as it would be set in the controller
 Forms can be customized with the options below.
 
 #### uniqueFormId (string, required)
-This is used to identify the form.
+>`uniqueFormId` is used to identify the form.
 
 #### hideSubmit (boolean, optional)
-Hides the submit button. Defaults to false.
+>`hideSubmit` hides the submit button when set to `true`. Defaults to false.
 
-#### submitCopy (boolean, optional)
-Customize the submit button copy. Defaults to 'Submit'.
+#### submitCopy (string, optional)
+>`submitCopy` customizes the submit button copy. Defaults to 'Submit'.
 
 ### Creating Form Fields
 When constructing fields use the options below to customize each field object. You must set at least a `type` or `templateUrl`.
