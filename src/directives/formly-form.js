@@ -6,7 +6,6 @@ angular.module('formly.render')
 		templateUrl: 'directives/formly-form.html',
 		replace: true,
 		scope: {
-			formId: '@formId',
 			fields: '=fields',
 			options: '=options',
 			result: '=result',
