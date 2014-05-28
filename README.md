@@ -79,6 +79,11 @@ Example data as it would be set in the controller
 		console.log('form submitted:', $scope.formData);
 	};
 ```
+### Creating Forms
+Forms can be customized with the options below.
+
+#### uniqueFormId (string, optional)
+This is used to 
 
 ### Creating Form Fields
 When constructing fields use the options below to customize each field object. You must set at least a `type` or `templateUrl`.

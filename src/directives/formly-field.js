@@ -46,8 +46,8 @@ angular.module('formly.render')
 		transclude: true,
 		scope: {
 			optionsData: '&options',
-			formId: '@formId',
-			index: '@index',
+			formId: '=formId',
+			index: '=index',
 			value: '=formValue'
 		},
 		link: function fieldLink($scope, $element, $attr) {

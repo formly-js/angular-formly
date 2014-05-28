@@ -11,8 +11,6 @@ angular.module('formly.render')
 			result: '=result',
 			formOnParentScope: '=name'
 		},
-		controller: function formController($scope, $element) {
-		},
 		compile: function (scope, iElement, iAttrs, controller, transcludeFn) {
 			return {
 				post: function (scope, ele, attr, controller) {

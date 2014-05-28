@@ -140,6 +140,7 @@ app.controller('home', function($scope, $parse, $rootScope) {
 	}];
 
 	$scope.formOptions = {
+		uniqueFormId: 'formly',
 		submitCopy: 'Save'
 	};
 	$scope.submittedData = null;
