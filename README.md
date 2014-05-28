@@ -203,7 +203,7 @@ _Example checkbox field_
 ##### default (string, optional) 
 >The default can be set to the `value` of one of the `options`.
 
-##### options (array)
+##### options (array, required)
 >`options` is an array of options for the radio form field to display. Each option should be an object with a `name`(string) and `value`(string or number).
 
 _Example radio field_
@@ -234,10 +234,10 @@ _Example radio field_
 #### Select form field
 >The select field allows selection via dropdown using the select element.
 
-##### default (number)
+##### default (number, optional)
 >The default can be set to the index of one of the `options`.
 
-##### options (array)
+##### options (array, required)
 >`options` is an array of options for the select form field to display. Each option should be an object with a `name`(string). You may optionally add a `group` to some or all of your options.
 
 _Example select field_
@@ -322,6 +322,7 @@ _Example number field_
 ---
 #### Password form field
 >The password field allows password input, it uses an input with `type='password'`.
+##### default (string, optional)
 
 _Example password field_
 ```json
@@ -334,10 +335,33 @@ _Example password field_
 
 ---
 #### Hidden form field
+>The hidden field allows hidden input, it uses an input with `type='hidden'`.
+
+##### default (number or string, required)
+
+_Example password field_
+```json
+	{
+		"key": "hiddenCode",
+		"type": "hidden",
+		"default": "hidden_code"
+	}
+```
 
 ---
 #### Email form field
+>The email field allows email input, it uses an input with `type='email'`. Browsers will provide basic email address validation by default.
 
+##### default (string, optional)
+
+_Example password field_
+```json
+	{
+		"key": "email",
+		"type": "email",
+		"placeholder": "janedoe@gmail.com"
+	}
+```
 
 ## Roadmap
 
