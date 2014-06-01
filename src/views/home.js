@@ -132,7 +132,12 @@ app.controller('home', function($scope, $parse, $rootScope) {
 	}, {
 		key: 'checkThis',
 		type: 'checkbox',
-		label: 'Check this here'
+		label: 'Check this here (to reveal something secret...)'
+	}, {
+		key: 'hiddenWhenUnchecked',
+		type: 'text',
+		label: 'Conditional input',
+		hide: true
 	}, {
 		key:'secretCode',
 		type: 'hidden',
@@ -149,4 +154,12 @@ app.controller('home', function($scope, $parse, $rootScope) {
 	$scope.formOptionsStr = $scope.toPrettyJSON($scope.formOptions, 4);
 	$scope.formFieldsError = false;
 	$scope.formOptionsError = false;
+	var hiddenWhenUncheckedIndex = 0;
+	$scope.formFields.some(function(field, index) {
+		hiddenWhenUncheckedIndex = index;
+		return field.key === 'hiddenWhenUnchecked';
+	});
+	$scope.$watch('formData.checkThis', function(isChecked) {
+		$scope.formFields[hiddenWhenUncheckedIndex].hide = !isChecked;
+	});
 });
