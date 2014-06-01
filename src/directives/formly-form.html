@@ -4,7 +4,8 @@
 				  form-value="result[field.key||$index]"
 				  class="formly-field"
 				  form-id="options.uniqueFormId"
-				  index="$index">
+				  index="$index"
+				  ng-hide="field.hide">
 	</formly-field>
 	<button type="submit"
 			ng-hide="options.hideSubmit">
