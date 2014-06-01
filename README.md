@@ -57,6 +57,7 @@ Example data as it would be set in the controller
 			label: 'Password',
 			required: true,
 			disabled: false, //default: false
+			hide: true, // see watch below
 		}
 
 	];
@@ -78,6 +79,10 @@ Example data as it would be set in the controller
 	$scope.onSubmit = function() {
 		console.log('form submitted:', $scope.formData);
 	};
+
+	$scope.$watch('!formData.username', function(isBlank) {
+		$scope.formFields[1].hide = !isBlank;
+	});
 ```
 ### Creating Forms
 Forms can be customized with the options below.
@@ -142,6 +147,13 @@ When constructing fields use the options below to customize each field object. Y
 ---
 ##### required (boolean)
 >`required` is used to add the required attribute to a form field.
+
+###### Default
+>`undefined`
+
+---
+##### hide (boolean)
+>`hide` when true, the input is hidden (meant to be used with a watch). In the example above, the password field would be hidden until username has a value.
 
 ###### Default
 >`undefined`
