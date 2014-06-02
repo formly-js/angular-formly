@@ -17,15 +17,23 @@ angular.module('formly.render')
 					//Post gets called after angular has created the FormController
 					//Now pass the FormController back up to the parent scope
 					scope.formOnParentScope = scope[attr.name];
+
+					var watches = {};
 					angular.forEach(scope.fields, function(field) {
 						if (field.hideExpression) {
-						var getter = $parse(field.hideExpression);
+							watches[field.hideExpression] = watches[field.hideExpression] || [];
+							watches[field.hideExpression].push(field);
+						}
+					});
+					angular.forEach(watches, function(fields, expression) {
+						var getter = $parse(expression);
 						scope.$watch(function() {
 							return getter(scope.result);
 						}, function(hide) {
-							field.hide = hide;
+							angular.forEach(fields, function(field) {
+								field.hide = hide;
+							});
 						});
-						}
 					});
 				}
 			}
