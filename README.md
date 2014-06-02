@@ -57,7 +57,7 @@ Example data as it would be set in the controller
 			label: 'Password',
 			required: true,
 			disabled: false, //default: false
-			hide: true, // see watch below
+			hideExpression: '!username' // hide when username is blank
 		}
 
 	];
@@ -79,10 +79,6 @@ Example data as it would be set in the controller
 	$scope.onSubmit = function() {
 		console.log('form submitted:', $scope.formData);
 	};
-
-	$scope.$watch('!formData.username', function(isBlank) {
-		$scope.formFields[1].hide = !isBlank;
-	});
 ```
 ### Creating Forms
 Forms can be customized with the options below.
@@ -152,8 +148,15 @@ When constructing fields use the options below to customize each field object. Y
 >`undefined`
 
 ---
+##### hideExpression (expression string)
+>`hideExpression` is used to conditionally show the input. Evaluates on the `result` and uses the `hide` property on the field.
+
+###### Default
+>`undefined`
+
+---
 ##### hide (boolean)
->`hide` when true, the input is hidden (meant to be used with a watch). In the example above, the password field would be hidden until username has a value.
+>`hide` is used to conditionally show the input. When true, the input is hidden (meant to be used with a watch).
 
 ###### Default
 >`undefined`
