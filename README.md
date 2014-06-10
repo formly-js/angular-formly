@@ -57,6 +57,7 @@ Example data as it would be set in the controller
 			label: 'Password',
 			required: true,
 			disabled: false, //default: false
+			hideExpression: '!username' // hide when username is blank
 		}
 
 	];
@@ -135,6 +136,20 @@ When constructing fields use the options below to customize each field object. Y
 ---
 ##### required (boolean)
 >`required` is used to add the required attribute to a form field.
+
+###### Default
+>`undefined`
+
+---
+##### hideExpression (expression string)
+>`hideExpression` is used to conditionally show the input. Evaluates on the `result` and uses the `hide` property on the field.
+
+###### Default
+>`undefined`
+
+---
+##### hide (boolean)
+>`hide` is used to conditionally show the input. When true, the input is hidden (meant to be used with a watch).
 
 ###### Default
 >`undefined`

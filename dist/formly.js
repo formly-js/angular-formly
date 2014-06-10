@@ -49,12 +49,12 @@ angular.module('formly.render').directive('formlyField', [
       transclude: true,
       scope: {
         optionsData: '&options',
-        formId: '@formId',
-        index: '@index',
+        formId: '=formId',
+        index: '=index',
         value: '=formValue'
       },
       link: function fieldLink($scope, $element, $attr) {
-        var templateUrl = getTemplateUrl($scope.options.type);
+        var templateUrl = $scope.options.templateUrl || getTemplateUrl($scope.options.type);
         if (templateUrl) {
           $http.get(templateUrl, { cache: $templateCache }).success(function (data) {
             //template data returned
@@ -69,7 +69,7 @@ angular.module('formly.render').directive('formlyField', [
         '$scope',
         function fieldController($scope) {
           $scope.options = $scope.optionsData();
-          if ($scope.options.default) {
+          if (typeof $scope.options.default !== 'undefined') {
             $scope.value = $scope.options.default;
           }
           // set field id to link labels and fields
@@ -86,18 +86,11 @@ angular.module('formly.render').directive('formlyForm', function formlyForm() {
     templateUrl: 'directives/formly-form.html',
     replace: true,
     scope: {
-      formId: '@formId',
       fields: '=fields',
       options: '=options',
       result: '=result',
       formOnParentScope: '=name'
     },
-    controller: [
-      '$scope',
-      '$element',
-      function formController($scope, $element) {
-      }
-    ],
     compile: function (scope, iElement, iAttrs, controller, transcludeFn) {
       return {
         post: function (scope, ele, attr, controller) {
@@ -106,7 +99,22 @@ angular.module('formly.render').directive('formlyForm', function formlyForm() {
           scope.formOnParentScope = scope[attr.name];
         }
       };
-    }
+    },
+    controller: [
+      '$scope',
+      '$element',
+      '$parse',
+      function ($scope, $element, $parse) {
+        $scope.$watch('result', function (newValue) {
+          angular.forEach($scope.fields, function (field, index) {
+            if (field.hideExpression) {
+              var getter = $parse(field.hideExpression);
+              field.hide = getter($scope.result);
+            }
+          });
+        }, true);
+      }
+    ]
   };
 });
 angular.module('formly.render').run([
@@ -123,6 +131,6 @@ angular.module('formly.render').run([
     $templateCache.put('directives/formly-field-text.html', '<div class=form-group><label for={{id}}>{{options.label || \'Text\'}} {{options.required ? \'*\' : \'\'}}</label><input class=form-control id={{id}} placeholder={{options.placeholder}} ng-required=options.required ng-disabled=options.disabled ng-model=value></div>');
     $templateCache.put('directives/formly-field-textarea.html', '<div class=form-group><label for={{id}}>{{options.label || \'Text\'}} {{options.required ? \'*\' : \'\'}}</label><textarea type=text class=form-control id={{id}} rows={{options.lines}} placeholder={{options.placeholder}} ng-required=options.required ng-disabled=options.disabled ng-model=value>\n' + '\t</textarea></div>');
     $templateCache.put('directives/formly-field.html', '');
-    $templateCache.put('directives/formly-form.html', '<form class=formly role=form><formly-field ng-repeat="field in fields" options=field form-value=result[field.key||$index] class=formly-field form-id={{options.uniqueFormId}} index={{$index}}></formly-field><button type=submit ng-hide=options.hideSubmit>{{options.submitCopy || "Submit"}}</button></form>');
+    $templateCache.put('directives/formly-form.html', '<form class=formly role=form><formly-field ng-repeat="field in fields" options=field form-value=result[field.key||$index] class=formly-field form-id=options.uniqueFormId index=$index ng-hide=field.hide></formly-field><button type=submit ng-hide=options.hideSubmit>{{options.submitCopy || "Submit"}}</button></form>');
   }
 ]);

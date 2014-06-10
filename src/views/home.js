@@ -132,7 +132,19 @@ app.controller('home', function($scope, $parse, $rootScope) {
 	}, {
 		key: 'checkThis',
 		type: 'checkbox',
-		label: 'Check this here'
+		label: 'Check this here (to reveal something secret...)'
+	}, {
+		key: 'hiddenWhenUnchecked',
+		type: 'text',
+		label: 'Conditional input',
+		placeholder: 'This is a big secret! Try typing "joe"',
+		hideExpression: '!checkThis'
+	}, {
+		key: 'showWhenJoe',
+		type: 'text',
+		label: 'You typed Joe! You found me!',
+		placeholder: 'hideExpressions are evaluated on the result',
+		hideExpression: 'hiddenWhenUnchecked !== "joe"'
 	}, {
 		key:'secretCode',
 		type: 'hidden',

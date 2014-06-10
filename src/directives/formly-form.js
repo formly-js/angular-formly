@@ -19,6 +19,16 @@ angular.module('formly.render')
 					scope.formOnParentScope = scope[attr.name];
 				}
 			}
+		},
+		controller: function($scope, $element, $parse) {
+			$scope.$watch('result', function(newValue) {
+			angular.forEach($scope.fields, function(field, index) {
+					if (field.hideExpression) {
+						var getter = $parse(field.hideExpression);
+						field.hide = getter($scope.result);
+					}
+				});
+			}, true);
 		}
 	};
 });
