@@ -92,10 +92,10 @@ Forms can be customized with the options below.
 >`submitCopy` customizes the submit button copy. Defaults to 'Submit'.
 
 ### Creating Form Fields
-When constructing fields use the options below to customize each field object. You must set at least a `type` or `templateUrl`.
+When constructing fields use the options below to customize each field object. You must set at least a `type`, `template`, or `templateUrl`.
 
 ##### type (string)
->`type` is the type of field to be rendered. Either type or templateUrl must be set.
+>`type` is the type of field to be rendered. Either type, template, or templateUrl must be set.
 
 ###### Default
 >`null`
@@ -113,14 +113,14 @@ When constructing fields use the options below to customize each field object. Y
 
 ---
 ##### template (string)
->`template` can be set instead of `type` to use a custom html template form field. Should be used with one-liners mostly (like a directive). Useful for adding functionality to fields.
+>`template` can be set instead of `type` or `templateUrl` to use a custom html template form field. Should be used with one-liners mostly (like a directive). Useful for adding functionality to fields.
 
 ###### Default
 >`undefined`
 
 ---
 ##### templateUrl (string)
->`templateUrl` can be set instead of `type` to use a custom html template form field. Set a path relative to the root of the application. ie `directives/custom-field.html`
+>`templateUrl` can be set instead of `type` or `template` to use a custom html template form field. Set a path relative to the root of the application. ie `directives/custom-field.html`
 
 ###### Default
 >`undefined`

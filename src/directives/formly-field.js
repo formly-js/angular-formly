@@ -78,9 +78,15 @@ angular.module('formly.render')
 			if (typeof $scope.options.default !== 'undefined') {
 				$scope.value = $scope.options.default;
 			}
+			var type = $scope.options.type;
+			if (!type && $scope.options.template) {
+				type = 'template';
+			} else if (!type && $scope.options.templateUrl) {
+				type = 'templateUrl';
+			}
 
 			// set field id to link labels and fields
-			$scope.id = $scope.formId + ($scope.options.type || 'Custom') + $scope.index;
+			$scope.id = $scope.formId + type + $scope.index;
 		}
 	};
 });
