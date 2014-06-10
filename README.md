@@ -112,6 +112,13 @@ When constructing fields use the options below to customize each field object. Y
 > [`email`](#email-form-field)
 
 ---
+##### template (string)
+>`template` can be set instead of `type` to use a custom html template form field. Should be used with one-liners mostly (like a directive). Useful for adding functionality to fields.
+
+###### Default
+>`undefined`
+
+---
 ##### templateUrl (string)
 >`templateUrl` can be set instead of `type` to use a custom html template form field. Set a path relative to the root of the application. ie `directives/custom-field.html`
 
