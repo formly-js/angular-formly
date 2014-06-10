@@ -137,20 +137,14 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		key: 'hiddenWhenUnchecked',
 		type: 'text',
 		label: 'Conditional input',
-		placeholder: 'These both use the same hideExpression...',
-		hideExpression: '!checkThis'
-	}, {
-		key: 'hiddenWhenUnchecked2',
-		type: 'text',
-		label: 'Type "joe" in here',
-		placeholder: '... so there is only one $watch for both of them',
+		placeholder: 'This is a big secret! Try typing "joe"',
 		hideExpression: '!checkThis'
 	}, {
 		key: 'showWhenJoe',
 		type: 'text',
 		label: 'You typed Joe! You found me!',
-		placeholder: 'Different hideExpression, different $watch',
-		hideExpression: 'hiddenWhenUnchecked2 !== "joe"'
+		placeholder: 'hideExpressions are evaluated on the result',
+		hideExpression: 'hiddenWhenUnchecked !== "joe"'
 	}, {
 		key:'secretCode',
 		type: 'hidden',
