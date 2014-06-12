@@ -6,13 +6,10 @@ angular.module('formly.render')
 		templateUrl: 'directives/formly-form.html',
 		replace: true,
 		scope: {
-			formId: '@formId',
 			fields: '=fields',
 			options: '=options',
 			result: '=result',
 			formOnParentScope: '=name'
-		},
-		controller: function formController($scope, $element) {
 		},
 		compile: function (scope, iElement, iAttrs, controller, transcludeFn) {
 			return {
@@ -22,6 +19,16 @@ angular.module('formly.render')
 					scope.formOnParentScope = scope[attr.name];
 				}
 			}
+		},
+		controller: function($scope, $element, $parse) {
+			$scope.$watch('result', function(newValue) {
+			angular.forEach($scope.fields, function(field, index) {
+					if (field.hideExpression) {
+						var getter = $parse(field.hideExpression);
+						field.hide = getter($scope.result);
+					}
+				});
+			}, true);
 		}
 	};
 });

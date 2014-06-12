@@ -3,8 +3,9 @@
 				  options="field"
 				  form-value="result[field.key||$index]"
 				  class="formly-field"
-				  form-id="{{options.uniqueFormId}}"
-				  index="{{$index}}">
+				  form-id="options.uniqueFormId"
+				  index="$index"
+				  ng-hide="field.hide">
 	</formly-field>
 	<button type="submit"
 			ng-hide="options.hideSubmit">

@@ -89,6 +89,16 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		max: 100,
 		required: true
 	}, {
+		key: 'seeWhatYouType',
+		type: 'customTemplate',
+		templateUrl: 'views/custom-template.html',
+		label: 'Do you like seeing what you type?'
+	}, {
+		key: 'useDirective',
+		template: '<div custom-field add-smile="true"></div>',
+		type: 'customField',
+		label: 'Do you want the power?'
+	}, {
 		key: 'transportation',
 		type: 'select',
 		label: 'How do you get around in the city',
@@ -132,7 +142,19 @@ app.controller('home', function($scope, $parse, $rootScope) {
 	}, {
 		key: 'checkThis',
 		type: 'checkbox',
-		label: 'Check this here'
+		label: 'Check this here (to reveal something secret...)'
+	}, {
+		key: 'hiddenWhenUnchecked',
+		type: 'text',
+		label: 'Conditional input',
+		placeholder: 'This is a big secret! Try typing "joe"',
+		hideExpression: '!checkThis'
+	}, {
+		key: 'showWhenJoe',
+		type: 'text',
+		label: 'You typed Joe! You found me!',
+		placeholder: 'hideExpressions are evaluated on the result',
+		hideExpression: 'hiddenWhenUnchecked !== "joe"'
 	}, {
 		key:'secretCode',
 		type: 'hidden',
@@ -140,6 +162,7 @@ app.controller('home', function($scope, $parse, $rootScope) {
 	}];
 
 	$scope.formOptions = {
+		uniqueFormId: 'formly',
 		submitCopy: 'Save'
 	};
 	$scope.submittedData = null;

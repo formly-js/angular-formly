@@ -46,32 +46,47 @@ angular.module('formly.render')
 		transclude: true,
 		scope: {
 			optionsData: '&options',
-			formId: '@formId',
-			index: '@index',
+			formId: '=formId',
+			index: '=index',
 			value: '=formValue'
 		},
 		link: function fieldLink($scope, $element, $attr) {
-			var templateUrl = getTemplateUrl($scope.options.type);
-			if (templateUrl) {
-				$http.get(templateUrl, {
-					cache: $templateCache
-				}).success(function(data) {
-					//template data returned
-					$element.html(data);
-					$compile($element.contents())($scope);
-				});
+			var template = $scope.options.template;
+			if (template) {
+				setElementTemplate(template);
 			} else {
-				console.log('Formly Error: template type \'' + $scope.options.type + '\' not supported.');
+				var templateUrl = $scope.options.templateUrl || getTemplateUrl($scope.options.type);
+				if (templateUrl) {
+					$http.get(templateUrl, {
+						cache: $templateCache
+					}).then(function(response) {
+						setElementTemplate(response.data);
+					}, function(error) {
+						console.log('Formly Error: Problem loading template for ' + templateUrl, error);
+					});
+				} else {
+					console.log('Formly Error: template type \'' + $scope.options.type + '\' not supported.');
+				}
+			}
+			function setElementTemplate(templateData) {
+				$element.html(templateData);
+				$compile($element.contents())($scope);
 			}
 		},
 		controller: function fieldController($scope) {
 			$scope.options = $scope.optionsData();
-			if ($scope.options.default) {
+			if (typeof $scope.options.default !== 'undefined') {
 				$scope.value = $scope.options.default;
+			}
+			var type = $scope.options.type;
+			if (!type && $scope.options.template) {
+				type = 'template';
+			} else if (!type && $scope.options.templateUrl) {
+				type = 'templateUrl';
 			}
 
 			// set field id to link labels and fields
-			$scope.id = $scope.formId + $scope.options.type + $scope.index;
+			$scope.id = $scope.formId + type + $scope.index;
 		}
 	};
 });
