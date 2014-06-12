@@ -89,6 +89,16 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		max: 100,
 		required: true
 	}, {
+		key: 'seeWhatYouType',
+		type: 'customTemplate',
+		templateUrl: 'views/custom-template.html',
+		label: 'Do you like seeing what you type?'
+	}, {
+		key: 'useDirective',
+		template: '<div custom-field add-smile="true"></div>',
+		type: 'customField',
+		label: 'Do you want the power?'
+	}, {
 		key: 'transportation',
 		type: 'select',
 		label: 'How do you get around in the city',

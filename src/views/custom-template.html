@@ -1,0 +1,15 @@
+<div class="form-group">
+	<div>Look mah! Custom Templates!</div>
+	<label for="{{id}}">
+		{{options.label || 'Text'}}
+		{{options.required ? '*' : ''}}
+	</label>
+	<div>{{value}}</div>
+	<input type="text"
+		   class="form-control"
+		   id="{{id}}"
+		   placeholder="{{options.placeholder}}"
+		   ng-required="options.required"
+		   ng-disabled="options.disabled"
+		   ng-model="value">
+</div>
