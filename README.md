@@ -9,7 +9,7 @@ Formly for Angular is an AngularJS module which has directives to help customize
 ## Dependencies
 - Required to use Formly:
  - Angular
- - Twitter Bootstrap (CSS Only)
+ - Twitter Bootstrap (Default templates use TBS, you can create use your own templates with [`formlyTemplateProvider`](#global-config))
 
 - Dev dependencies to build Formly
  - npm
