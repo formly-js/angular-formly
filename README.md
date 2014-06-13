@@ -396,6 +396,37 @@ _Example password field_
 	}
 ```
 
+## Other Notes
+
+### Global Config
+
+You can configure formly to use custom templates for specified types (your own "text" template) by injecting the `formlyTemplateProvider` in your app's `config` function. The `formlyTemplateProvider` has the following functions:
+
+#### setTemplateUrl
+
+Allows you to set a template
+
+```javascript
+formlyTemplateProvider.setTemplateUrl('radio', 'views/custom-formly-radio.html');
+formlyTemplateProvider.setTemplateUrl('checkbox', 'views/custom-formly-checkbox.html');
+
+// the same can be accomplished with
+
+formlyTemplateProvider.setTemplate({
+	radio: 'views/custom-formly-radio.html',
+	checkbox: 'views/custom-formly-checkbox.html'
+});
+```
+
+#### getTemplateUrl
+
+Allows you to get the template
+
+```javascript
+formlyTemplateProvider.setTemplateUrl('radio', 'views/custom-formly-radio.html');
+formlyTemplateProvider.getTemplateUrl('radio') === 'views/custom-formly-radio.html'; // true
+```
+
 ## Roadmap
 
 ## Release Notes
