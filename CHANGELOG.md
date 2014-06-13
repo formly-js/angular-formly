@@ -4,7 +4,7 @@ Version numbers correspond to `bower.json` version
 
 ## Features
 
-Adding the `formlyProvider` which allows developers to set templateUrls for types. Also allows them to make custom types.
+Adding the `formlyTemplateProvider` which allows developers to set templateUrls for types. Also allows them to make custom types.
 
 ## Bug Fixes
 

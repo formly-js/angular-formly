@@ -8,7 +8,7 @@ var app = angular.module('app', ['ng',
 
 app.constant('usingCustomTypeTemplates', window.localStorage.getItem('useCustomTypeTemplates') === 'true');
 
-app.config(function($stateProvider, $urlRouterProvider, $locationProvider, formlyProvider, usingCustomTypeTemplates) {
+app.config(function($stateProvider, $urlRouterProvider, $locationProvider, formlyTemplateProvider, usingCustomTypeTemplates) {
 	$locationProvider.html5Mode(false);
 	$locationProvider.hashPrefix('!');
 
@@ -21,9 +21,9 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, forml
 		controller: 'home'
 	});
 	if (usingCustomTypeTemplates) {
-		formlyProvider.setTemplateUrl('text', 'views/custom-field-text.html');
+		formlyTemplateProvider.setTemplateUrl('text', 'views/custom-field-text.html');
 		// or
-		formlyProvider.setTemplateUrl({
+		formlyTemplateProvider.setTemplateUrl({
 			radio: 'views/custom-field-radio.html',
 			checkbox: 'views/custom-field-checkbox.html'
 		});

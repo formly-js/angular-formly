@@ -35,7 +35,7 @@ module.exports = function(grunt) {
 					{
 						expand: true,
 						cwd: '<%= formlyConfig.base %>/',
-						src: ['directives/formly*.*', 'modules/formly*.*', '!.jshintrc'],
+						src: ['directives/formly*.*', 'modules/formly*.*', 'providers/formly*.*', '!.jshintrc'],
 						dest: '.tmp/'
 					}
 				]
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
 		concat: {
 			build: {
 				// specifing files so that they are added in this order
-				src: ['.tmp/modules/formly*.js', '.tmp/directives/formly*.js', '.tmp/formly*.js'],
+				src: ['.tmp/modules/formly*.js', '.tmp/directives/formly*.js', '.tmp/providers/formly*.js', '.tmp/formly*.js'],
 				dest: '.tmp/formly.js'
 			}
 		},
