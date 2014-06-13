@@ -93,7 +93,7 @@ Forms can be customized with the options below.
 >`submitCopy` customizes the submit button copy. Defaults to 'Submit'.
 
 ### Creating Form Fields
-When constructing fields use the options below to customize each field object. You must set at least a `type`, `template`, or `templateUrl`.
+When constructing fields use the options below to customize each field object. You must set at least a `type`, `template`, or `templateUrl`. You can also override/add custom types. See "Other Notes" below.
 
 ##### type (string)
 >`type` is the type of field to be rendered. Either type, template, or templateUrl must be set.
