@@ -1,0 +1,14 @@
+<div class="form-group">
+	Custom field of type "text"
+	<label for="{{id}}">
+		{{options.label || 'Text'}}
+		{{options.required ? '*' : ''}}
+	</label>
+	<input type="text"
+		   class="form-control"
+		   id="{{id}}"
+		   placeholder="{{options.placeholder}}"
+		   ng-required="options.required"
+		   ng-disabled="options.disabled"
+		   ng-model="value">
+</div>

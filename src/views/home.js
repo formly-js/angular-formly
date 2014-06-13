@@ -1,5 +1,5 @@
 'use strict';
-app.controller('home', function($scope, $parse, $rootScope) {
+app.controller('home', function($scope, $parse, $rootScope, $window, usingCustomTypeTemplates) {
 	// Public Methods
 	$scope.onSubmit = function onSubmit() {
 		$scope.submittedData = $scope.formData;
@@ -9,6 +9,16 @@ app.controller('home', function($scope, $parse, $rootScope) {
 		var strippedObj = angular.copy(obj);
 		var result = JSON.stringify(strippedObj, null, Number(tabWidth));
 		return result;
+	};
+
+	$scope.toggleCustomTypeTemplates = function() {
+		if (usingCustomTypeTemplates) {
+			$window.localStorage.removeItem('useCustomTypeTemplates');
+		} else {
+			$window.localStorage.setItem('useCustomTypeTemplates', 'true');
+		}
+		// reload state
+		$window.location.reload();
 	};
 
 	// Private Methods
@@ -36,6 +46,12 @@ app.controller('home', function($scope, $parse, $rootScope) {
 	});
 
 	// Public Vars
+	if (usingCustomTypeTemplates) {
+		$scope.typeTemplatesButton = 'Use Built-in Type Templates';
+	} else {
+		$scope.typeTemplatesButton = 'Use Custom Type Templates';
+	}
+
 	$scope.formFields = [{
 		key: 'firstName',
 		type: 'text',

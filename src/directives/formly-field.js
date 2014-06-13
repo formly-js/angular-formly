@@ -1,46 +1,6 @@
 'use strict';
 angular.module('formly.render')
-.directive('formlyField', function formlyField($http, $compile, $templateCache) {
-
-	var getTemplateUrl = function(type) {
-		var templateUrl = '';
-
-		switch(type) {
-			case 'textarea':
-				templateUrl = 'directives/formly-field-textarea.html';
-				break;
-			case 'radio':
-				templateUrl = 'directives/formly-field-radio.html';
-				break;
-			case 'select':
-				templateUrl = 'directives/formly-field-select.html';
-				break;
-			case 'number':
-				templateUrl = 'directives/formly-field-number.html';
-				break;
-			case 'checkbox':
-				templateUrl = 'directives/formly-field-checkbox.html';
-				break;
-			case 'password' :
-				templateUrl = 'directives/formly-field-password.html';
-				break;
-			case 'hidden' :
-				templateUrl = 'directives/formly-field-hidden.html';
-				break;
-			case 'email':
-				templateUrl = 'directives/formly-field-email.html';
-				break;
-			case 'text':
-				templateUrl = 'directives/formly-field-text.html';
-				break;
-			default :
-				templateUrl = null;
-				break;
-		}
-
-		return templateUrl;
-	};
-	
+.directive('formlyField', function formlyField($http, $compile, $templateCache, formly) {
 	return {
 		restrict: 'AE',
 		transclude: true,
@@ -55,7 +15,7 @@ angular.module('formly.render')
 			if (template) {
 				setElementTemplate(template);
 			} else {
-				var templateUrl = $scope.options.templateUrl || getTemplateUrl($scope.options.type);
+				var templateUrl = $scope.options.templateUrl || formly.getTemplateUrl($scope.options.type);
 				if (templateUrl) {
 					$http.get(templateUrl, {
 						cache: $templateCache

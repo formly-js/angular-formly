@@ -16,6 +16,11 @@
 				Edit JSON
 			</button>
 
+			<button class="btn btn-success"
+			        ng-click="toggleCustomTypeTemplates()">
+				{{typeTemplatesButton}}
+			</button>
+
 			<h3>Options</h3>
 			<div source="toPrettyJSON(formOptions, 4)"
 				 hljs>
