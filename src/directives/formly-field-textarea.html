@@ -10,6 +10,8 @@
 			  placeholder="{{options.placeholder}}"
 			  ng-required="options.required"
 			  ng-disabled="options.disabled"
-			  ng-model="value">
+			  ng-model="value"
+              ng-pattern="{{ options.pattern }}"
+            >
 	</textarea>
 </div>
