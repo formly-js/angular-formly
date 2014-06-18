@@ -6,9 +6,9 @@ angular.module('formly.render')
 		templateUrl: 'directives/formly-form.html',
 		replace: true,
 		scope: {
-			fields: '=fields',
-			options: '=options',
-			result: '=result',
+			fields: '=',
+			options: '=?',
+			result: '=',
 			formOnParentScope: '=name'
 		},
 		compile: function (scope, iElement, iAttrs, controller, transcludeFn) {
