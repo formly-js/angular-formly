@@ -1,5 +1,15 @@
 Version numbers correspond to `bower.json` version
 
+# 0.0.12
+
+## Features
+
+Adding the `formlyOptionsProvider` which allows developers to set default form options.
+
+## Bug Fixes
+
+## Breaking Changes
+
 # 0.0.11
 
 ## Features

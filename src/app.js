@@ -8,7 +8,7 @@ var app = angular.module('app', ['ng',
 
 app.constant('usingCustomTypeTemplates', window.localStorage.getItem('useCustomTypeTemplates') === 'true');
 
-app.config(function($stateProvider, $urlRouterProvider, $locationProvider, formlyTemplateProvider, usingCustomTypeTemplates) {
+app.config(function($stateProvider, $urlRouterProvider, $locationProvider, formlyTemplateProvider, formlyOptionsProvider, usingCustomTypeTemplates) {
 	$locationProvider.html5Mode(false);
 	$locationProvider.hashPrefix('!');
 
@@ -28,6 +28,13 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, forml
 			checkbox: 'views/custom-field-checkbox.html'
 		});
 	}
+
+	formlyOptionsProvider.setOption('uniqueFormId', 'whyConfigureUniqueId');
+	// or
+	formlyOptionsProvider.setOption({
+		submitCopy: 'Configured Submit',
+		hideSubmit: true
+	});
 });
 
 app.run(function($rootScope, $state, $stateParams, $window) {

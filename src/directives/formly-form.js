@@ -1,6 +1,6 @@
 'use strict';
 angular.module('formly.render')
-.directive('formlyForm', function formlyForm() {
+.directive('formlyForm', function formlyForm(formlyOptions) {
 	return {
 		restrict: 'AE',
 		templateUrl: 'directives/formly-form.html',
@@ -21,6 +21,7 @@ angular.module('formly.render')
 			}
 		},
 		controller: function($scope, $element, $parse) {
+			$scope.options = angular.extend(formlyOptions.getOptions(), $scope.options);
 			$scope.$watch('result', function(newValue) {
 			angular.forEach($scope.fields, function(field, index) {
 					if (field.hideExpression) {
