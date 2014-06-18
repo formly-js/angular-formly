@@ -44,15 +44,15 @@ Example data as it would be set in the controller
 			key: 'username',
 
 			//default value
-			default: 'uberuser'
+			default: 'uberuser',
 			type: 'text',
 			label: 'Username',
 			placeholder: 'johndoe',
 			required: true,
-			disabled: false, //default: false
+			disabled: false //default: false
 		},
 		{
-			key: 'password'
+			key: 'password',
 			type: 'password',
 			label: 'Password',
 			required: true,
