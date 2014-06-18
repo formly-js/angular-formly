@@ -92,6 +92,9 @@ Forms can be customized with the options below. Note, you can configure this on 
 #### submitCopy (string, optional)
 >`submitCopy` customizes the submit button copy. Defaults to 'Submit'.
 
+#### submitButtonTemplate (string, optional)
+>`submitButtonTemplate` customizes the template used for the submit button. Compiled on the scope, so you have access to all other options (and any custom options) in your custom template.
+
 ### Creating Form Fields
 When constructing fields use the options below to customize each field object. You must set at least a `type`, `template`, or `templateUrl`.
 

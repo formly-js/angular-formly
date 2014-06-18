@@ -1,6 +1,6 @@
 'use strict';
 angular.module('formly.render')
-.directive('formlyForm', function formlyForm(formlyOptions) {
+.directive('formlyForm', function formlyForm(formlyOptions, $compile) {
 	return {
 		restrict: 'AE',
 		templateUrl: 'directives/formly-form.html',
@@ -14,6 +14,10 @@ angular.module('formly.render')
 		compile: function (scope, iElement, iAttrs, controller, transcludeFn) {
 			return {
 				post: function (scope, ele, attr, controller) {
+					scope.options = angular.extend(formlyOptions.getOptions(), scope.options);
+					if (scope.options.submitButtonTemplate) {
+						ele.find('button').replaceWith($compile(scope.options.submitButtonTemplate)(scope));
+					}
 					//Post gets called after angular has created the FormController
 					//Now pass the FormController back up to the parent scope
 					scope.formOnParentScope = scope[attr.name];
@@ -21,7 +25,6 @@ angular.module('formly.render')
 			}
 		},
 		controller: function($scope, $element, $parse) {
-			$scope.options = angular.extend(formlyOptions.getOptions(), $scope.options);
 			$scope.$watch('result', function(newValue) {
 			angular.forEach($scope.fields, function(field, index) {
 					if (field.hideExpression) {

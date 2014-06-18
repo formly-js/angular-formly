@@ -33,7 +33,12 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, forml
 	// or
 	formlyOptionsProvider.setOption({
 		submitCopy: 'Configured Submit',
-		hideSubmit: true
+		hideSubmit: true,
+		submitButtonTemplate: [
+			'<button type="submit" class="btn btn-primary" ng-hide="options.hideSubmit">',
+				'{{options.submitCopy || "Submit"}} boo yeah!',
+			'</button>'
+		].join('')
 	});
 });
 

@@ -5,7 +5,8 @@ angular.module('formly.render')
 	var options = {
 		uniqueFormId: null,
 		submitCopy: "Submit",
-		hideSubmit: false
+		hideSubmit: false,
+		submitButtonTemplate: null
 	};
 
 	function setOption(name, value) {

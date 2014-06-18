@@ -6,6 +6,8 @@ Version numbers correspond to `bower.json` version
 
 Adding the `formlyOptionsProvider` which allows developers to set default form options.
 
+Adding `submitButtonTemplate` to the configurable `formlyOptions`. If it has a value, then the button in the `formly-form` directive will be replaced with the compiled (on the scope) version of that value. Also adding twitter classes to the submit button so hopefully this template will be unecessary in some cases.
+
 ## Bug Fixes
 
 ## Breaking Changes
