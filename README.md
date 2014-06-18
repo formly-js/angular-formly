@@ -81,7 +81,7 @@ Example data as it would be set in the controller
 	};
 ```
 ### Creating Forms
-Forms can be customized with the options below.
+Forms can be customized with the options below. Note, you can configure this on a form-by-form basis as shown in the example, or globally using the [`formlyOptionsProvider`](#global-config).
 
 #### uniqueFormId (string, required)
 >`uniqueFormId` is used to identify the form.
@@ -91,6 +91,9 @@ Forms can be customized with the options below.
 
 #### submitCopy (string, optional)
 >`submitCopy` customizes the submit button copy. Defaults to 'Submit'.
+
+#### submitButtonTemplate (string, optional)
+>`submitButtonTemplate` customizes the template used for the submit button. Compiled on the scope, so you have access to all other options (and any custom options) in your custom template.
 
 ### Creating Form Fields
 When constructing fields use the options below to customize each field object. You must set at least a `type`, `template`, or `templateUrl`.
@@ -400,9 +403,11 @@ _Example password field_
 
 ### Global Config
 
+#### formlyTemplateProvider
+
 You can configure formly to use custom templates for specified types (your own "text" template) by injecting the `formlyTemplateProvider` in your app's `config` function. The `formlyTemplateProvider` has the following functions:
 
-#### setTemplateUrl
+##### setTemplateUrl
 
 Allows you to set a template
 
@@ -418,7 +423,7 @@ formlyTemplateProvider.setTemplate({
 });
 ```
 
-#### getTemplateUrl
+##### getTemplateUrl
 
 Allows you to get the template
 
@@ -426,6 +431,30 @@ Allows you to get the template
 formlyTemplateProvider.setTemplateUrl('radio', 'views/custom-formly-radio.html');
 formlyTemplateProvider.getTemplateUrl('radio') === 'views/custom-formly-radio.html'; // true
 ```
+
+#### formlyOptionsProvider
+
+You can configure default options for all forms using the `formlyOptionsProvider` in your app's `config` function. This has the following api:
+
+##### setOption
+
+Allows you to set an option
+
+```javascript
+formlyOptionsProvider.setOption('uniqueFormId', 'probablyDontWantToDoThis');
+formlyOptionsProvider.setOption('submitCopy', 'Save');
+
+// the same can be accomplished with
+
+formlyOptionsProvider.setOption({
+	submitCopy: 'Save',
+	uniqueFormId: 'probablyDontWantToDoThis'
+});
+```
+
+##### getOptions
+
+Returns a copy of the current options. This is used internally.
 
 ## Roadmap
 
