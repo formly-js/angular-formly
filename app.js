@@ -29,7 +29,7 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, forml
 		});
 	}
 
-	formlyOptionsProvider.setOption('uniqueFormId', 'whyConfigureUniqueId');
+	formlyOptionsProvider.setOption('uniqueFormId', 'defaultUniqueId');
 	// or
 	formlyOptionsProvider.setOption({
 		submitCopy: 'Configured Submit',
