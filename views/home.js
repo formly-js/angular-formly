@@ -1,5 +1,5 @@
 'use strict';
-app.controller('home', function($scope, $parse, $rootScope, $window, usingCustomTypeTemplates) {
+app.controller('home', function($scope, $parse, formlyOptions, $window, usingCustomTypeTemplates) {
 	// Public Methods
 	$scope.onSubmit = function onSubmit() {
 		$scope.submittedData = $scope.formData;
@@ -29,8 +29,6 @@ app.controller('home', function($scope, $parse, $rootScope, $window, usingCustom
 			$scope.formFields = $parse(newValue)({});
 			$scope.formFieldsError = false;
 		} catch (e) {
-			// eat $parse error
-			// console.log('Formly Demo App Error: error parsing data, changes not applied');
 			$scope.formFieldsError = true;
 		}
 	});
@@ -39,8 +37,6 @@ app.controller('home', function($scope, $parse, $rootScope, $window, usingCustom
 			$scope.formOptions = $parse(newValue)({});
 			$scope.formOptionsError = false;
 		} catch (e) {
-			// eat $parse error
-			// console.log('Formly Demo App Error: error parsing data, changes not applied');
 			$scope.formOptionsError = true;
 		}
 	});
@@ -51,6 +47,8 @@ app.controller('home', function($scope, $parse, $rootScope, $window, usingCustom
 	} else {
 		$scope.typeTemplatesButton = 'Use Custom Type Templates';
 	}
+
+	$scope.preConfiguredOptions = formlyOptions.getOptions();
 
 	$scope.formFields = [{
 		key: 'firstName',
@@ -179,7 +177,8 @@ app.controller('home', function($scope, $parse, $rootScope, $window, usingCustom
 
 	$scope.formOptions = {
 		uniqueFormId: 'formly',
-		submitCopy: 'Save'
+		submitCopy: 'Save',
+		hideSubmit: false
 	};
 	$scope.submittedData = null;
 	$scope.formData = {};

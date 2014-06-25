@@ -19,7 +19,7 @@ angular.module('formly.render')
 			templateMap[name] = templateUrl;
 		} else {
 			angular.forEach(name, function(templateUrl, name) {
-				setTemplateUrl(name, templateUrl)
+				setTemplateUrl(name, templateUrl);
 			});
 		}
 	}
