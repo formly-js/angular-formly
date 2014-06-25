@@ -7,57 +7,57 @@
 </div>
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-sm-4 col-md-4 col-lg-4"
-		     ng-hide="editJSON">
+		<div class="col-sm-4 col-md-4 col-lg-4">
+			<!-- Pre configured options -->
+			<h3>Configured Default Options</h3>
+			<div hljs source="preConfiguredOptions|json"></div>
 
-			<!-- Formatted JSON -->
-			<button class="btn btn-success"
-			        ng-click="editJSON = true">
-				Edit JSON
-			</button>
+			<span>
+				<!-- Formatted JSON -->
+				<button class="btn btn-success"
+				        ng-click="editJSON = true"
+				        ng-hide="editJSON">
+					Edit JSON
+				</button>
+				<button class="btn btn-success"
+				        ng-click="editJSON = false"
+				        ng-show="editJSON">
+					Pretty JSON
+				</button>
 
-			<button class="btn btn-success"
-			        ng-click="toggleCustomTypeTemplates()">
-				{{typeTemplatesButton}}
-			</button>
+				<button class="btn btn-success"
+				        ng-click="toggleCustomTypeTemplates()">
+					{{typeTemplatesButton}}
+				</button>
 
-			<h3>Options</h3>
-			<div source="toPrettyJSON(formOptions, 4)"
-				 hljs>
-			</div>
+				<h3>Options (Overrides configured default options)</h3>
+				<div class="form-group"
+				     ng-class="{'has-error': formOptionsError}"
+				     ng-show="editJSON">
+					<textarea class="form-control"
+					          ng-model="formOptionsStr"
+					          rows="5">
+					</textarea>
+				</div>
+				<div source="toPrettyJSON(formOptions, 4)"
+				     ng-hide="editJSON"
+				     hljs>
+				</div>
 
-			<h3>Fields</h3>
-			<div source="toPrettyJSON(formFields, 4)"
-				 hljs>
-			 </div>
-		</div>
-
-		<div class="col-sm-4 col-md-4 col-lg-4"
-			 ng-show="editJSON">
-
-			<!-- Edit JSON -->
-			<button class="btn btn-success"
-					ng-click="editJSON = false">
-				Pretty JSON
-			</button>
-
-			<h3>Options</h3>
-			<div class="form-group"
-				 ng-class="{'has-error': formOptionsError}">
-				<textarea class="form-control"
-				          ng-model="formOptionsStr"
-				          rows="5">
-				</textarea>
-			</div>
-
-			<h3>Fields</h3>
-			<div class="form-group"
-				 ng-class="{'has-error': formFieldsError}">
-				<textarea class="form-control"
-				          ng-model="formFieldsStr"
-				          rows="15">
-				</textarea>
-			</div>
+				<h3>Fields</h3>
+				<div class="form-group"
+					 ng-class="{'has-error': formFieldsError}"
+				     ng-show="editJSON">
+					<textarea class="form-control"
+					          ng-model="formFieldsStr"
+					          rows="15">
+					</textarea>
+				</div>
+				<div source="toPrettyJSON(formFields, 4)"
+				     ng-hide="editJSON"
+				     hljs>
+				</div>
+			</span>
 		</div>
 		<div class="col-sm-4 col-md-4 col-lg-4">
 
@@ -106,9 +106,6 @@
 				</tbody>
 
 			</table>
-
-			<h3>Configured Default Options</h3>
-			<div hljs source="preConfiguredOptions|json"></div>
 		</div>
 	</div>
 </div>
