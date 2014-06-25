@@ -60,41 +60,76 @@ angular.module('formly.render').directive('formlyField', [
   }
 ]);
 'use strict';
-angular.module('formly.render').directive('formlyForm', function formlyForm() {
-  return {
-    restrict: 'AE',
-    templateUrl: 'directives/formly-form.html',
-    replace: true,
-    scope: {
-      fields: '=fields',
-      options: '=options',
-      result: '=result',
-      formOnParentScope: '=name'
-    },
-    compile: function (scope, iElement, iAttrs, controller, transcludeFn) {
-      return {
-        post: function (scope, ele, attr, controller) {
-          //Post gets called after angular has created the FormController
-          //Now pass the FormController back up to the parent scope
-          scope.formOnParentScope = scope[attr.name];
-        }
-      };
-    },
-    controller: [
-      '$scope',
-      '$element',
-      '$parse',
-      function ($scope, $element, $parse) {
-        $scope.$watch('result', function (newValue) {
-          angular.forEach($scope.fields, function (field, index) {
-            if (field.hideExpression) {
-              var getter = $parse(field.hideExpression);
-              field.hide = getter($scope.result);
+angular.module('formly.render').directive('formlyForm', [
+  'formlyOptions',
+  '$compile',
+  function formlyForm(formlyOptions, $compile) {
+    return {
+      restrict: 'AE',
+      templateUrl: 'directives/formly-form.html',
+      replace: true,
+      scope: {
+        fields: '=',
+        options: '=?',
+        result: '=',
+        formOnParentScope: '=name'
+      },
+      compile: function (scope, iElement, iAttrs, controller, transcludeFn) {
+        return {
+          post: function (scope, ele, attr, controller) {
+            scope.options = angular.extend(formlyOptions.getOptions(), scope.options);
+            if (scope.options.submitButtonTemplate) {
+              ele.find('button').replaceWith($compile(scope.options.submitButtonTemplate)(scope));
             }
-          });
-        }, true);
-      }
-    ]
+            //Post gets called after angular has created the FormController
+            //Now pass the FormController back up to the parent scope
+            scope.formOnParentScope = scope[attr.name];
+          }
+        };
+      },
+      controller: [
+        '$scope',
+        '$element',
+        '$parse',
+        function ($scope, $element, $parse) {
+          $scope.$watch('result', function (newValue) {
+            angular.forEach($scope.fields, function (field, index) {
+              if (field.hideExpression) {
+                var getter = $parse(field.hideExpression);
+                field.hide = getter($scope.result);
+              }
+            });
+          }, true);
+        }
+      ]
+    };
+  }
+]);
+'use strict';
+angular.module('formly.render').provider('formlyOptions', function () {
+  var options = {
+      uniqueFormId: null,
+      submitCopy: 'Submit',
+      hideSubmit: false,
+      submitButtonTemplate: null
+    };
+  function setOption(name, value) {
+    if (typeof name === 'string') {
+      options[name] = value;
+    } else {
+      angular.forEach(name, function (val, name) {
+        setOption(name, val);
+      });
+    }
+  }
+  function getOptions() {
+    // copy to avoid third-parties manipulating the options outside of the api.
+    return angular.copy(options);
+  }
+  this.setOption = setOption;
+  this.getOptions = getOptions;
+  this.$get = function formlyOptions() {
+    return this;
   };
 });
 'use strict';
@@ -143,6 +178,6 @@ angular.module('formly.render').run([
     $templateCache.put('directives/formly-field-text.html', '<div class=form-group><label for={{id}}>{{options.label || \'Text\'}} {{options.required ? \'*\' : \'\'}}</label><input class=form-control id={{id}} placeholder={{options.placeholder}} ng-required=options.required ng-disabled=options.disabled ng-model=value></div>');
     $templateCache.put('directives/formly-field-textarea.html', '<div class=form-group><label for={{id}}>{{options.label || \'Text\'}} {{options.required ? \'*\' : \'\'}}</label><textarea type=text class=form-control id={{id}} rows={{options.lines}} placeholder={{options.placeholder}} ng-required=options.required ng-disabled=options.disabled ng-model=value>\n' + '\t</textarea></div>');
     $templateCache.put('directives/formly-field.html', '');
-    $templateCache.put('directives/formly-form.html', '<form class=formly role=form><formly-field ng-repeat="field in fields" options=field form-value=result[field.key||$index] class=formly-field form-id=options.uniqueFormId index=$index ng-hide=field.hide></formly-field><button type=submit ng-hide=options.hideSubmit>{{options.submitCopy || "Submit"}}</button></form>');
+    $templateCache.put('directives/formly-form.html', '<form class=formly role=form><formly-field ng-repeat="field in fields" options=field form-value=result[field.key||$index] class=formly-field form-id=options.uniqueFormId index=$index ng-hide=field.hide></formly-field><button type=submit class="btn btn-primary" ng-hide=options.hideSubmit>{{options.submitCopy || "Submit"}}</button></form>');
   }
 ]);
