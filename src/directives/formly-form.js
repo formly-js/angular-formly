@@ -25,11 +25,31 @@ angular.module('formly.render')
 			}
 		},
 		controller: function($scope, $element, $parse) {
-			$scope.$watch('result', function(newValue) {
+			// setup watches for watchExpressions
 			angular.forEach($scope.fields, function(field, index) {
+				if (angular.isDefined(field.watch)) {
+					var watchExpression = field.watch.expression;
+					if (angular.isFunction(watchExpression)) {
+						// wrap the field's watch expression so we can call it with the field as the first arg as a helper
+						watchExpression = function() {
+							var args = Array.prototype.slice.call(arguments, 0);
+							args.unshift(field);
+							return field.watch.expression.apply(this, args);
+						}
+					}
+
+					$scope.$watch(watchExpression, function() {
+						// wrap the field's watch listener so we can call it with the field as the first arg as a helper
+						var args = Array.prototype.slice.call(arguments, 0);
+						args.unshift(field);
+						return field.watch.listener.apply(this, args);
+					});
+				}
+			});
+			$scope.$watch('result', function(newValue) {
+				angular.forEach($scope.fields, function(field, index) {
 					if (field.hideExpression) {
-						var getter = $parse(field.hideExpression);
-						field.hide = getter($scope.result);
+						field.hide = $parse(field.hideExpression)($scope.result);
 					}
 				});
 			}, true);
