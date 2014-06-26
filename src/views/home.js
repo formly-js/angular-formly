@@ -203,6 +203,7 @@ app.controller('home', function($scope, $parse, formlyOptions, $window, usingCus
 	};
 	$scope.submittedData = null;
 	$scope.formData = {};
+	$scope.hiddenFormData = {};
 	$scope.formFieldsStr = $scope.toPrettyJSON($scope.formFields, 4);
 	$scope.formOptionsStr = $scope.toPrettyJSON($scope.formOptions, 4);
 	$scope.formFieldsError = false;
