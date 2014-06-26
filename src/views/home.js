@@ -175,13 +175,35 @@ app.controller('home', function($scope, $parse, formlyOptions, $window, usingCus
 		default: 'secret_code'
 	}];
 
+	$scope.hiddenFormFields = [
+		{
+			key: 'field',
+			type: 'textarea',
+			label: 'This is a special form field',
+			placeholder: 'It has a watch property with an expression function that depends on something outside the result...',
+			watch: {
+				expression: function(field) {
+					return !/joe/ig.test($scope.formData.hiddenWhenUnchecked);
+				},
+				listener: function(field, _new) {
+					field.hide = _new;
+				}
+			}
+		}
+	];
+
 	$scope.formOptions = {
 		uniqueFormId: 'formly',
 		submitCopy: 'Save',
 		hideSubmit: false
 	};
+	$scope.hiddenFormOptions = {
+		uniqueFormId: 'hiddenFormly',
+		hideSubmit: true
+	};
 	$scope.submittedData = null;
 	$scope.formData = {};
+	$scope.hiddenFormData = {};
 	$scope.formFieldsStr = $scope.toPrettyJSON($scope.formFields, 4);
 	$scope.formOptionsStr = $scope.toPrettyJSON($scope.formOptions, 4);
 	$scope.formFieldsError = false;

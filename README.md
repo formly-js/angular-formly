@@ -178,6 +178,23 @@ When constructing fields use the options below to customize each field object. Y
 ###### Default
 >`undefined`
 
+---
+##### watch.expression (object)
+>`watch` has two properties called `expression` and `listener`. The `watch.expression` is added to the formly directive's scope. If it's a function, it will be wrapped and called with the field as the first argument, followed by the normal arguments for a watcher. The `listener` will also be wrapped and called with the field as the first argument, followed by hte normal arguments for a watch listener.
+
+For example:
+
+```javascript
+// normal watcher
+$scope.$watch(function expression(theScope) {}, function listener(newValue, oldValue, theScope) {});
+
+// field watcher
+$scope.$watch(function expression(field, theScope) {}, function listener(field, newValue, oldValue, theScope) {});
+```
+
+###### Default
+>`undefined`
+
 ### Form Fields
 Below is a detailed description of each form fields and its custom properties.
 
