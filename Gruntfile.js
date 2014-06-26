@@ -81,7 +81,7 @@ module.exports = function(grunt) {
 						removeAttributeQuotes: true,
 						removeComments: true, // Only if you don't use comment directives!
 						removeEmptyAttributes: true,
-						removeRedundantAttributes: true,
+						removeRedundantAttributes: false, //removing this as it can removes properties that can be used when styling
 						removeScriptTypeAttributes: true,
 						removeStyleLinkTypeAttributes: true
 					}
