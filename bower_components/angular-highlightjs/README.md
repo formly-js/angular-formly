@@ -2,7 +2,10 @@
 
 AngularJS directive for syntax highlighting with [highlight.js](http://highlightjs.org/).
 
-#### [Demo](http://plnkr.co/edit/OPxzDu?p=preview)
+#### Demos
+
+* [Self-highlight plunk](http://plnkr.co/edit/OPxzDu?p=preview)
+* [JSON pretty print](http://plnkr.co/edit/WCmBTQ?p=preview)
 
 ## Requirements
 
@@ -46,7 +49,22 @@ bower install PatternConsulting/bower-angular
 bower install angular-highlightjs
 ```
 
-## Usage
+## Configuration
+
+**Configuration works with highlight.js >= 8.0**
+
+In configuration phase, call `hljsServiceProvider.setOptions()` to configure with [highlight.js options](http://highlightjs.readthedocs.org/en/latest/api.html#configure-options).
+
+```js
+myApp.config(function (hljsServiceProvider) {
+  hljsServiceProvider.setOptions({
+    // replace tab with 4 spaces
+    tabReplace: '    '
+  });
+});
+```
+
+## Directive usage
 
 ### hljs
 This is a required directive. Without any other supportive directives, it provides basic inline highlight function. For better understanding, some notes about using it are specified in the live example page.

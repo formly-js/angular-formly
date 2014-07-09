@@ -1,6 +1,6 @@
 {
   "name": "angular-highlightjs",
-  "version": "0.2.1",
+  "version": "0.2.7",
   "description": "AngularJS directive for syntax highlighting with highlight.js.",
   "main": "angular-highlightjs.js",
   "ignore": [
