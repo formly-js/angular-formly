@@ -22,9 +22,13 @@ See `bower.json` and `index.html` in the `master` branch for a full list / more 
 
 2. Include the javascript file in your index.html, Formly comes in the following flavors:
  - Vanilla: no fancy styling, just plain html
+
  `<script src="bower_components/angular-formly/dist/formly.min.js"></script>`
- -Bootstrap: bootstrap compatible forms, form-groups, etc.
+
+ - Bootstrap: bootstrap compatible forms, form-groups, etc.
+
  `<script src="bower_components/angular-formly/dist/formly.bootstrap.min.js"></script>`
+
  - DIY: You can create your own templates with `formlyTemplateProvider`! Use any of the builds above and override all the templates or just the ones you need.
 
 3. Add 'formly' as a required module to your angular app, usually in `app.js`:  
