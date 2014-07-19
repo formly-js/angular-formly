@@ -1,9 +1,10 @@
-<div>
+<div class="form-group">
 	<label for="{{id}}">
 		{{options.label || 'Number'}}
 		{{options.required ? '*' : ''}}
 	</label>
 	<input type="number"
+		   class="form-control"
 		   id="{{id}}"
 		   placeholder="{{options.placeholder}}"
 		   ng-required="options.required"

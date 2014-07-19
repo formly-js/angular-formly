@@ -27,6 +27,19 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, forml
 			radio: 'views/custom-field-radio.html',
 			checkbox: 'views/custom-field-checkbox.html'
 		});
+	} else {
+		// using bootstrap cause vanilla is ugly, normally you would use the included prebuilt bootstrap file
+		formlyTemplateProvider.setTemplateUrl({
+			textarea: 'directives/bootstrap/formly-field-textarea.html',
+			radio: 'directives/bootstrap/formly-field-radio.html',
+			select: 'directives/bootstrap/formly-field-select.html',
+			number: 'directives/bootstrap/formly-field-number.html',
+			checkbox: 'directives/bootstrap/formly-field-checkbox.html',
+			password: 'directives/bootstrap/formly-field-password.html',
+			hidden: 'directives/bootstrap/formly-field-hidden.html',
+			email: 'directives/bootstrap/formly-field-email.html',
+			text: 'directives/bootstrap/formly-field-text.html'
+		});
 	}
 
 	formlyOptionsProvider.setOption('uniqueFormId', 'defaultUniqueId');

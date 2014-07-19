@@ -1,9 +1,10 @@
-<div>
+<div class="form-group">
 	<label for="{{id}}">
 		{{options.label || 'Text'}}
 		{{options.required ? '*' : ''}}
 	</label>
 	<textarea type="text"
+			  class="form-control"
 			  id="{{id}}"
 			  rows="{{options.lines}}"
 			  placeholder="{{options.placeholder}}"

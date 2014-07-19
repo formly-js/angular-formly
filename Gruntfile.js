@@ -27,10 +27,11 @@ module.exports = function(grunt) {
 			src: ['**']
 		},
 		clean: {
-			build: ['.tmp/**/*', 'dist/**/*']
+			build: ['.tmp/**/*'],
+			dist: ['dist/**/*']
 		},
 		copy: {
-			build: {
+			vanilla: {
 				files: [
 					{
 						expand: true,
@@ -40,11 +41,21 @@ module.exports = function(grunt) {
 					}
 				]
 			},
+			bootstrap: {
+				files: [
+					{
+						expand: true,
+						cwd: '<%= formlyConfig.base %>/',
+						src: ['directives/formly*.js', 'directives/bootstrap/formly*.html', 'modules/formly*.*', 'providers/formly*.*', '!.jshintrc'],
+						dest: '.tmp/'
+					}
+				]
+			},
 			deploy: {
 				files: [{
 					expand: true,
-					cwd: '.tmp',
-					src: ['formly.js', 'formly.min.js', 'formly.min.map'],
+					cwd: '.tmp/dist',
+					src: ['formly*.*'],
 					dest: 'dist/'
 				}]
 			}
@@ -57,9 +68,13 @@ module.exports = function(grunt) {
 			}
 		},
 		uglify: {
-			build: {
-				src: '.tmp/formly.js',
-				dest: '.tmp/formly.min.js'
+			vanilla: {
+				src: '.tmp/dist/formly.js',
+				dest: '.tmp/dist/formly.min.js'
+			},
+			bootstrap: {
+				src: '.tmp/dist/formly.bootstrap.js',
+				dest: '.tmp/dist/formly.bootstrap.min.js'
 			},
 			options: {
 				mangle: true,
@@ -67,10 +82,10 @@ module.exports = function(grunt) {
 			}
 		},
 		ngtemplates: {
-			build: {
+			vanilla: {
 				cwd: '.tmp/',
 				src: [
-					'**/formly*.html'
+					'directives/formly*.html'
 				],
 				dest: '.tmp/formly-templates.js',
 				options: {
@@ -86,12 +101,39 @@ module.exports = function(grunt) {
 						removeStyleLinkTypeAttributes: true
 					}
 				}
+			},
+			bootstrap: {
+				cwd: '.tmp/',
+				src: [
+					'directives/bootstrap/formly*.html'
+				],
+				dest: '.tmp/formly-templates.js',
+				options: {
+					module: 'formly.render',
+					url: function(url) {
+						return url.replace('bootstrap/', '');
+					},
+					htmlmin: {
+						collapseBooleanAttributes: true,
+						collapseWhitespace: true,
+						removeAttributeQuotes: true,
+						removeComments: true, // Only if you don't use comment directives!
+						removeEmptyAttributes: true,
+						removeRedundantAttributes: false, //removing this as it can removes properties that can be used when styling
+						removeScriptTypeAttributes: true,
+						removeStyleLinkTypeAttributes: true
+					}
+				}
 			}
 		},
 		ngmin: {
-			build: {
+			vanilla: {
 				src: '.tmp/formly.js',
-				dest: '.tmp/formly.js'
+				dest: '.tmp/dist/formly.js'
+			},
+			bootstrap: {
+				src: '.tmp/formly.js',
+				dest: '.tmp/dist/formly.bootstrap.js'
 			}
 		},
 		watch: {
@@ -126,12 +168,28 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask('build', [
+		'clean:dist',
+		'build:vanilla',
+		'build:bootstrap'
+	]);
+
+	grunt.registerTask('build:vanilla', [
 		'clean:build',
-		'copy:build',
-		'ngtemplates:build',
+		'copy:vanilla',
+		'ngtemplates:vanilla',
 		'concat:build',
-		'ngmin:build',
-		'uglify:build',
+		'ngmin:vanilla',
+		'uglify:vanilla',
+		'copy:deploy'
+	]);
+
+	grunt.registerTask('build:bootstrap', [
+		'clean:build',
+		'copy:bootstrap',
+		'ngtemplates:bootstrap',
+		'concat:build',
+		'ngmin:bootstrap',
+		'uglify:bootstrap',
 		'copy:deploy'
 	]);
 };

@@ -2,11 +2,13 @@
 	<formly-field ng-repeat="field in fields"
 				  options="field"
 				  form-value="result[field.key||$index]"
+				  class="formly-field"
 				  form-id="options.uniqueFormId"
 				  index="$index"
 				  ng-hide="field.hide">
 	</formly-field>
 	<button type="submit"
+			class="btn btn-primary"
 			ng-hide="options.hideSubmit">
 		{{options.submitCopy || "Submit"}}
 	</button>
