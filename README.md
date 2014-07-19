@@ -17,10 +17,10 @@ Formly for Angular is an AngularJS module which has directives to help customize
 See `bower.json` and `index.html` in the `master` branch for a full list / more details
 
 ## Install in your project
-1. Install with Bower  
- `$ bower install angular-formly`
+- Install with Bower  
+ `$ bower install angular-formly --save`
 
-2. Include the javascript file in your index.html, Formly comes in the following flavors:
+- Include the javascript file in your index.html, Formly comes in the following flavors:
  - Vanilla: no fancy styling, just plain html
 
  `<script src="bower_components/angular-formly/dist/formly.min.js"></script>`
@@ -31,7 +31,7 @@ See `bower.json` and `index.html` in the `master` branch for a full list / more 
 
  - DIY: You can create your own templates with `formlyTemplateProvider`! Use any of the builds above and override all the templates or just the ones you need.
 
-3. Add 'formly' as a required module to your angular app, usually in `app.js`:  
+- Add 'formly' as a required module to your angular app, usually in `app.js`:  
  `var app = angular.module('app', ['ng', 'ui.router', 'formly']);`
 
 ## Documentation
