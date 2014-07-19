@@ -9,7 +9,6 @@ Formly for Angular is an AngularJS module which has directives to help customize
 ## Dependencies
 - Required to use Formly:
  - Angular
- - Twitter Bootstrap (Default templates use TBS, you can create use your own templates with [`formlyTemplateProvider`](#global-config))
 
 - Dev dependencies to build Formly
  - npm
@@ -21,8 +20,12 @@ See `bower.json` and `index.html` in the `master` branch for a full list / more 
 1. Install with Bower  
  `$ bower install angular-formly`
 
-2. Include the files in your index.html  
+2. Include the javascript file in your index.html, Formly comes in the following flavors:
+ - Vanilla: no fancy styling, just plain html
  `<script src="bower_components/angular-formly/dist/formly.min.js"></script>`
+ -Bootstrap: bootstrap compatible forms, form-groups, etc.
+ `<script src="bower_components/angular-formly/dist/formly.bootstrap.min.js"></script>`
+ - DIY: You can create your own templates with formlyTemplateProvider! Use any of the builds above and override all the templates or just the ones you need.
 
 3. Add 'formly' as a required module to your angular app, usually in `app.js`:  
  `var app = angular.module('app', ['ng', 'ui.router', 'formly']);`
