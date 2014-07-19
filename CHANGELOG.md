@@ -1,4 +1,8 @@
 Version numbers correspond to `bower.json` version
+# 0.0.14
+
+Botched a publish with npm, so 0.0.13 became 0.0.14, just needed to update the changelog.
+
 # 0.0.13
 
 ## Features
