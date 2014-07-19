@@ -1,4 +1,13 @@
 Version numbers correspond to `bower.json` version
+# 0.0.13
+
+## Features
+Added support for both vanilla and bootstrap templates, I hope that this opens the Formly up for even more default template options for other libraries, ie Ionic or Foundation.
+
+Moved Bootstrap bower dependency to `devDependencies`.
+
+## Breaking Changes
+Anyone using the old library and needing bootstrap styles will need to switch to the new bootstrap js.
 
 # 0.0.12
 
