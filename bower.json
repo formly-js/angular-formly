@@ -25,12 +25,12 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.2.10",
-    "bootstrap": "~3.1.1"
+    "angular": "~1.2.10"
   },
   "devDependencies": {
     "angular-ui-router": "#0.2.8-bowratic-tedium",
     "angular-highlightjs": "~0.2.1",
-    "highlightjs": "~8.0.0"
+    "highlightjs": "~8.0.0",
+    "bootstrap": "~3.1.1"
   }
 }
