@@ -7,7 +7,9 @@
 		   class="form-control"
 		   id="{{id}}"
 		   placeholder="{{options.placeholder}}"
+			 aria-describedby="{{id}}_description"
 		   ng-required="options.required"
 		   ng-disabled="options.disabled"
 		   ng-model="value">
+   <p id="{{id}}_description" class="help-block" ng-if="options.description">{{options.description}}</p>
 </div>

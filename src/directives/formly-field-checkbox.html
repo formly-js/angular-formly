@@ -1,10 +1,12 @@
 <div>
 	<label>
 		<input type="checkbox"
+			 	 aria-describedby="{{id}}_description"
 			   ng-required="options.required"
 			   ng-disabled="options.disabled"
 			   ng-model="value">
 		{{options.label || 'Checkbox'}}
 		{{options.required ? '*' : ''}}
 	</label>
+   <p id="{{id}}_description" ng-if="options.description">{{options.description}}</p>
 </div>
