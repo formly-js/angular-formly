@@ -57,6 +57,7 @@ Example data as it would be set in the controller
 			placeholder: 'johndoe',
 			required: true,
 			disabled: false //default: false
+			description: 'Descriptive text'
 		},
 		{
 			key: 'password',
@@ -181,6 +182,13 @@ When constructing fields use the options below to customize each field object. Y
 ---
 ##### placeholder (string)
 >`placeholder` is used to add placeholder text to some inputs.
+
+###### Default
+>`undefined`
+
+---
+##### description (string)
+>`description` is used to add descriptive text to all inputs.
 
 ###### Default
 >`undefined`
