@@ -504,3 +504,11 @@ Returns a copy of the current options. This is used internally.
 ## Grunt targets
 * `grunt dev`: Creates a server for testing at `http://0.0.0.0:4000`
 * `grunt publish`: Copies the src folder and bower_components to gh-pages
+
+## Contributing
+
+When submitting a Pull Request please submit it to the `master` branch.
+
+## What do you need help with?
+* Test! We don't have any...
+* Any of the issues in GitHub, let us know if you have some time to fix one.
