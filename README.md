@@ -509,6 +509,12 @@ Returns a copy of the current options. This is used internally.
 
 When submitting a Pull Request please submit it to the `master` branch.
 
+Please do the following:
+* Follow the existing styles
+** Use the third option here: http://blogs.msdn.com/b/cyrusn/archive/2004/09/14/229474.aspx (Thats how we roll)
+* Update the README with documentation so people can read how your changes work
+* Update the example so people can see how your changes work
+
 ## What do you need help with?
 * Test! We don't have any...
 * Any of the issues in GitHub, let us know if you have some time to fix one.
