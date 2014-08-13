@@ -488,6 +488,10 @@ formlyOptionsProvider.setOption({
 
 Returns a copy of the current options. This is used internally.
 
+## Tips and Tricks
+
+Please see [the Wiki](https://github.com/nimbly/angular-formly/wiki) for tips and tricks from the community.
+
 ## Roadmap
 
 ## Release Notes
