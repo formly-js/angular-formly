@@ -473,21 +473,29 @@ formlyTemplateProvider.getTemplateUrl('radio') === 'views/custom-formly-radio.ht
 
 #### formlyOptionsProvider
 
-You can configure default options for all forms using the `formlyOptionsProvider` in your app's `config` function. This has the following api:
+You can configure default options for all forms using the `formlyOptionsProvider` in your app's `config` function. The following options are used by angular-formly and are available for configuration:
+
+- uniqueFormId - not useful for global configuration, but useful on a per-form basis. Defaults to null
+- submitCopy - what the submit button should say. Defaults to "Submit"
+- hideSubmit - whether to hide the submit button. Defaults to false
+- submitButtonTemplate - a custom template for the submit button. Defaults to null
+- useNgIfToHide - whether to use `ng-if` for hiding fields (rather than `ng-hide`). Useful for removing watchers. Defaults to false (use `ng-hide`)
+
+To change these defaults globally, you have the following api:
 
 ##### setOption
 
 Allows you to set an option
 
 ```javascript
-formlyOptionsProvider.setOption('uniqueFormId', 'probablyDontWantToDoThis');
+formlyOptionsProvider.setOption('useNgIfToHide', true);
 formlyOptionsProvider.setOption('submitCopy', 'Save');
 
 // the same can be accomplished with
 
 formlyOptionsProvider.setOption({
 	submitCopy: 'Save',
-	uniqueFormId: 'probablyDontWantToDoThis'
+	useNgIfToHide: true
 });
 ```
 

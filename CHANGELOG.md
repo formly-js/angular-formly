@@ -3,6 +3,7 @@ Version numbers correspond to `bower.json` version
 
 - Now providing the `result` to each field template authors have the power to associate other values of the result set with the template
 - Adding `requiredExpression` to field options and assinging the field's `required` property based on its evaluation. Works very much like `hideExpression`
+- Added option to use `ng-if` instead of `ng-hide` to hide fields.
 
 # 0.0.14
 

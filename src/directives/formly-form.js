@@ -1,9 +1,31 @@
 'use strict';
 angular.module('formly.render')
 .directive('formlyForm', function formlyForm(formlyOptions, $compile) {
+	var templateHide = 'ng-hide="field.hide"';
+	var fieldsTemplate = [
+		'<formly-field ng-repeat="field in fields"',
+					  'options="field"',
+					  'form-result="result"',
+					  'form-value="result[field.key||$index]"',
+					  'form-id="options.uniqueFormId"',
+					  'ng-hide="field.hide"',
+					  'index="$index">',
+		'</formly-field>'
+	].join(' ')
 	return {
 		restrict: 'AE',
-		templateUrl: 'directives/formly-form.html',
+		template: function(el, attr) {
+			var useNgIf = formlyOptions.getOptions().useNgIfToHide;
+			return [
+				'<form class="formly" role="form">',
+					'<div class="ng-hide">fields</div>',
+					'<button type="submit"',
+							'ng-show="!options.hideSubmit">',
+						'{{options.submitCopy || "Submit"}}',
+					'</button>',
+				'</form>'
+			].join(' ');
+		},
 		replace: true,
 		scope: {
 			fields: '=',
@@ -11,13 +33,18 @@ angular.module('formly.render')
 			result: '=',
 			formOnParentScope: '=name'
 		},
-		compile: function (scope, iElement, iAttrs, controller, transcludeFn) {
+		compile: function () {
 			return {
 				post: function (scope, ele, attr, controller) {
 					scope.options = angular.extend(formlyOptions.getOptions(), scope.options);
 					if (scope.options.submitButtonTemplate) {
 						ele.find('button').replaceWith($compile(scope.options.submitButtonTemplate)(scope));
 					}
+					var template = fieldsTemplate;
+					if (scope.options.useNgIfToHide) {
+						template = template.replace(templateHide, 'ng-if="!field.hide"');
+					}
+					ele.find('div').replaceWith($compile(template)(scope));
 					//Post gets called after angular has created the FormController
 					//Now pass the FormController back up to the parent scope
 					scope.formOnParentScope = scope[attr.name];
