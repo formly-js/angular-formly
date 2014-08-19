@@ -114,7 +114,8 @@ app.controller('home', function($scope, $parse, formlyOptions, $window, usingCus
 		key: 'seeWhatYouType',
 		type: 'customTemplate',
 		templateUrl: 'views/custom-template.html',
-		label: 'Do you like seeing what you type?'
+		label: 'do you like seeing what you type?',
+		nameKey: 'firstName'
 	}, {
 		key: 'useDirective',
 		template: '<div custom-field add-smile="true"></div>',
