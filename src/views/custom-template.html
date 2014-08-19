@@ -1,7 +1,7 @@
 <div class="form-group">
 	<div>Look mah! Custom Templates!</div>
 	<label for="{{id}}">
-		{{options.label || 'Text'}}
+		{{result[options.nameKey] ? result[options.nameKey] + ',' : ''}} {{options.label || 'Text'}}
 		{{options.required ? '*' : ''}}
 	</label>
 	<div>{{result[options.key || index]}}</div>
