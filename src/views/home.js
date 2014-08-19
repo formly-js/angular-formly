@@ -61,10 +61,16 @@ app.controller('home', function($scope, $parse, formlyOptions, $window, usingCus
 		label: 'Last Name',
 		placeholder: 'Doe'
 	}, {
+		key: 'emailRequired',
+		type: 'checkbox',
+		label: 'Email required',
+		description: 'Do you really want us to have your email?'
+	}, {	
 		key: 'email',
 		type: 'email',
 		placeholder: 'janedoe@gmail.com',
-		description: 'We won\'t spam you'
+		description: 'We won\'t spam you',
+		requiredExpression: 'emailRequired'
 	}, {
 		key: 'about',
 		type: 'textarea',

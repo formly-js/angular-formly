@@ -53,6 +53,9 @@ angular.module('formly.render')
 					if (field.hideExpression) {
 						field.hide = $parse(field.hideExpression)($scope.result);
 					}
+					if (field.requiredExpression) {
+						field.required = $parse(field.requiredExpression)($scope.result);
+					}
 				});
 			}, true);
 		}

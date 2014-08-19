@@ -1,4 +1,9 @@
 Version numbers correspond to `bower.json` version
+# Latest
+
+- Now providing the `result` to each field template authors have the power to associate other values of the result set with the template
+- Adding `requiredExpression` to field options and assinging the field's `required` property based on its evaluation. Works very much like `hideExpression`
+
 # 0.0.14
 
 Botched a publish with npm, so 0.0.13 became 0.0.14, just needed to update the changelog.

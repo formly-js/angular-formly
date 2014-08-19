@@ -159,6 +159,13 @@ When constructing fields use the options below to customize each field object. Y
 >`undefined`
 
 ---
+##### requiredExpression (expression string)
+>`requiredExpression` is used to conditionally require the input. Evaluates on the `result` and uses the `required` property on the field.
+
+###### Default
+>`undefined`
+
+---
 ##### hideExpression (expression string)
 >`hideExpression` is used to conditionally show the input. Evaluates on the `result` and uses the `hide` property on the field.
 
