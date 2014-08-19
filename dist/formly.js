@@ -65,9 +65,31 @@ angular.module('formly.render').directive('formlyForm', [
   'formlyOptions',
   '$compile',
   function formlyForm(formlyOptions, $compile) {
+    var templateHide = 'ng-hide="field.hide"';
+    var fieldsTemplate = [
+        '<formly-field ng-repeat="field in fields"',
+        'options="field"',
+        'form-result="result"',
+        'form-value="result[field.key||$index]"',
+        'form-id="options.uniqueFormId"',
+        'ng-hide="field.hide"',
+        'index="$index">',
+        '</formly-field>'
+      ].join(' ');
     return {
       restrict: 'AE',
-      templateUrl: 'directives/formly-form.html',
+      template: function (el, attr) {
+        var useNgIf = formlyOptions.getOptions().useNgIfToHide;
+        return [
+          '<form class="formly" role="form">',
+          '<div class="ng-hide">fields</div>',
+          '<button type="submit"',
+          'ng-show="!options.hideSubmit">',
+          '{{options.submitCopy || "Submit"}}',
+          '</button>',
+          '</form>'
+        ].join(' ');
+      },
       replace: true,
       scope: {
         fields: '=',
@@ -75,13 +97,18 @@ angular.module('formly.render').directive('formlyForm', [
         result: '=',
         formOnParentScope: '=name'
       },
-      compile: function (scope, iElement, iAttrs, controller, transcludeFn) {
+      compile: function () {
         return {
           post: function (scope, ele, attr, controller) {
             scope.options = angular.extend(formlyOptions.getOptions(), scope.options);
             if (scope.options.submitButtonTemplate) {
               ele.find('button').replaceWith($compile(scope.options.submitButtonTemplate)(scope));
             }
+            var template = fieldsTemplate;
+            if (scope.options.useNgIfToHide) {
+              template = template.replace(templateHide, 'ng-if="!field.hide"');
+            }
+            ele.find('div').replaceWith($compile(template)(scope));
             //Post gets called after angular has created the FormController
             //Now pass the FormController back up to the parent scope
             scope.formOnParentScope = scope[attr.name];
@@ -134,7 +161,8 @@ angular.module('formly.render').provider('formlyOptions', function () {
       uniqueFormId: null,
       submitCopy: 'Submit',
       hideSubmit: false,
-      submitButtonTemplate: null
+      submitButtonTemplate: null,
+      useNgIfToHide: false
     };
   function setOption(name, value) {
     if (typeof name === 'string') {
@@ -200,7 +228,5 @@ angular.module('formly.render').run([
     $templateCache.put('directives/formly-field-select.html', '<div><label for={{id}}>{{options.label || \'Select\'}} {{options.required ? \'*\' : \'\'}}</label><select id={{id}} aria-describedby={{id}}_description ng-model=value ng-required=options.required ng-disabled=options.disabled ng-init="value = options.options[options.default]" ng-options="option.value as option.name group by option.group for option in options.options"></select><p id={{id}}_description ng-if=options.description>{{options.description}}</p></div>');
     $templateCache.put('directives/formly-field-text.html', '<div><label for={{id}}>{{options.label || \'Text\'}} {{options.required ? \'*\' : \'\'}}</label><input type=text id={{id}} placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=value><p id={{id}}_description ng-if=options.description>{{options.description}}</p></div>');
     $templateCache.put('directives/formly-field-textarea.html', '<div><label for={{id}}>{{options.label || \'Text\'}} {{options.required ? \'*\' : \'\'}}</label><textarea type=text id={{id}} rows={{options.lines}} placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=value>\n' + '\t</textarea><p id={{id}}_description ng-if=options.description>{{options.description}}</p></div>');
-    $templateCache.put('directives/formly-field.html', '');
-    $templateCache.put('directives/formly-form.html', '<form class=formly role=form><formly-field ng-repeat="field in fields" options=field form-result=result form-value=result[field.key||$index] form-id=options.uniqueFormId index=$index ng-hide=field.hide></formly-field><button type=submit ng-hide=options.hideSubmit>{{options.submitCopy || "Submit"}}</button></form>');
   }
 ]);
