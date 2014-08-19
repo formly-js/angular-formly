@@ -8,7 +8,8 @@ angular.module('formly.render')
 			optionsData: '&options',
 			formId: '=formId',
 			index: '=index',
-			value: '=formValue'
+			value: '=formValue',
+			result: '=formResult'
 		},
 		link: function fieldLink($scope, $element, $attr) {
 			var template = $scope.options.template;

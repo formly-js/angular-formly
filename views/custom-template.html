@@ -4,7 +4,7 @@
 		{{options.label || 'Text'}}
 		{{options.required ? '*' : ''}}
 	</label>
-	<div>{{value}}</div>
+	<div>{{result[options.key || index]}}</div>
 	<input type="text"
 		   class="form-control"
 		   id="{{id}}"

@@ -61,9 +61,16 @@ app.controller('home', function($scope, $parse, formlyOptions, $window, usingCus
 		label: 'Last Name',
 		placeholder: 'Doe'
 	}, {
+		key: 'emailRequired',
+		type: 'checkbox',
+		label: 'Email required',
+		description: 'Do you really want us to have your email?'
+	}, {	
 		key: 'email',
 		type: 'email',
-		placeholder: 'janedoe@gmail.com'
+		placeholder: 'janedoe@gmail.com',
+		description: 'We won\'t spam you',
+		requiredExpression: 'emailRequired'
 	}, {
 		key: 'about',
 		type: 'textarea',
@@ -81,7 +88,8 @@ app.controller('home', function($scope, $parse, formlyOptions, $window, usingCus
 				value: 'yesyes'
 			}, {
 				name: 'Yes, but I\'m not a fan...',
-				value: 'yesno'
+				value: 'yesno',
+				description: 'Help me!'
 			}, {
 				name: 'Nope',
 				value: 'no'
@@ -156,7 +164,8 @@ app.controller('home', function($scope, $parse, formlyOptions, $window, usingCus
 	}, {
 		key: 'checkThis',
 		type: 'checkbox',
-		label: 'Check this here (to reveal something secret...)'
+		label: 'Check this here',
+		description: 'To reveal something secret...'
 	}, {
 		key: 'hiddenWhenUnchecked',
 		type: 'text',

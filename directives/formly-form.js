@@ -27,7 +27,9 @@ angular.module('formly.render')
 		controller: function($scope, $element, $parse) {
 			// setup watches for watchExpressions
 			angular.forEach($scope.fields, function(field, index) {
-				if (angular.isDefined(field.watch)) {
+				if (angular.isDefined(field.watch) &&
+					angular.isDefined(field.watch.expression) &&
+					angular.isDefined(field.watch.listener)) {
 					var watchExpression = field.watch.expression;
 					if (angular.isFunction(watchExpression)) {
 						// wrap the field's watch expression so we can call it with the field as the first arg as a helper
@@ -50,6 +52,9 @@ angular.module('formly.render')
 				angular.forEach($scope.fields, function(field, index) {
 					if (field.hideExpression) {
 						field.hide = $parse(field.hideExpression)($scope.result);
+					}
+					if (field.requiredExpression) {
+						field.required = $parse(field.requiredExpression)($scope.result);
 					}
 				});
 			}, true);
