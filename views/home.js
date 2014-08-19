@@ -204,7 +204,8 @@ app.controller('home', function($scope, $parse, formlyOptions, $window, usingCus
 	$scope.formOptions = {
 		uniqueFormId: 'formly',
 		submitCopy: 'Save',
-		hideSubmit: false
+		hideSubmit: false,
+		useNgIfToHide: true
 	};
 	$scope.hiddenFormOptions = {
 		uniqueFormId: 'hiddenFormly',
