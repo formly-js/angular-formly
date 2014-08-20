@@ -399,6 +399,9 @@ _Example number field_
 >The password field allows password input, it uses an input with `type='password'`.
 ##### default (string, optional)
 
+##### trimWhitespace (boolean, optional)
+Unlike other formly fields, which use Angular's default setting to trim leading and trailing whitespace, the password field captures whitespace. You can override this by setting `trimWhitespace` to `true`.
+
 _Example password field_
 ```json
 	{
