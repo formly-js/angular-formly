@@ -125,6 +125,7 @@ app.controller('home', function($scope, $parse, formlyOptions, $window, usingCus
 		key: 'transportation',
 		type: 'select',
 		label: 'How do you get around in the city',
+		default: 'Skateboard',
 		options: [
 			{
 				name: 'Car',
