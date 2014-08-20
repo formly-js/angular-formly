@@ -1,5 +1,5 @@
 Version numbers correspond to `bower.json` version
-# 0.0.15
+# 0.0.16
 
 - The password field no longer uses whitespace trimming.
 - Added option to override whitespace trim setting for the password field.
