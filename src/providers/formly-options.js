@@ -7,7 +7,7 @@ angular.module('formly.render')
 		submitCopy: "Submit",
 		hideSubmit: false,
 		submitButtonTemplate: null,
-		useNgIfToHide: false
+		useNgIfToHide: true
 	};
 
 	function setOption(name, value) {

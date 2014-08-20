@@ -1,8 +1,14 @@
 Version numbers correspond to `bower.json` version
-# Latest
+# 0.0.15
 
-- Now providing the `result` to each field template authors have the power to associate other values of the result set with the template
-- Adding `requiredExpression` to field options and assinging the field's `required` property based on its evaluation. Works very much like `hideExpression`
+- The password field no longer uses whitespace trimming.
+- Added option to override whitespace trim setting for the password field.
+- Revised support for setting the `default` for `select` fields.
+- Added notes on contributing.
+- Fixed #55 Error: field.watch.listener is undefined.
+- Added support for `description` to all form fields.
+- Now providing the `result` to each field template authors have the power to associate other values of the result set with the template.
+- Adding `requiredExpression` to field options and assinging the field's `required` property based on its evaluation. Works very much like `hideExpression`.
 - Added option to use `ng-if` instead of `ng-hide` to hide fields.
 
 # 0.0.14
