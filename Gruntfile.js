@@ -62,14 +62,14 @@ module.exports = function(grunt) {
 
 	// targets build config (because they're pretty much identical)
 	var targets = ['vanilla', 'bootstrap', 'no-template'];
-	
+
 	_.each(targets, function(target) {
 		var tmp = '.tmp/' + target;
 		var noTemplates = target === 'no-template';
 
 		var preBuiltDest = tmp + '-build-prep';
 		var builtDest = tmp + '-built';
-		
+
 		var templatesFile = preBuiltDest + '/formly-templates.js';
 		var targetFilename = 'formly.' + target;
 		if (noTemplates) {
@@ -81,9 +81,8 @@ module.exports = function(grunt) {
 		var commonCopyPatterns = ['**/*.*']
 		if (noTemplates) {
 			commonCopyPatterns.push('!**/formly-template-config.js');
-			console.log(commonCopyPatterns);
 		}
-		
+
 		config.copy[target] = {
 			files: [
 				{
@@ -142,7 +141,7 @@ module.exports = function(grunt) {
 		};
 	});
 
-	
+
 	// Pass config to grunt
 	grunt.initConfig(config);
 
