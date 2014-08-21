@@ -143,4 +143,19 @@ Tells the highlight.js which language syntax should be used to highlight the cod
 <div hljs include="'partials/lang-php'" language="perl"></div>
 ```
 
+
+#### compile (optional)
+Type: `expression`
+Default: `undefined`
+
+Compiles the highlighted code and links it with current scope. The expression will be evaluated after every actual highlight action.
+
+The attribute works with all methhods of highlighting: `hljs`, `hljs source` and `hljs include`.
+
+[Live example](http://pc035860.github.io/angular-highlightjs/example/#/hljs-compile)
+
+```html
+<div hljs include="'compile-me'" compile="true"></div>
+```
+
 ### Happy highlighting!!!
