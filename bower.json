@@ -32,8 +32,5 @@
     "angular-highlightjs": "~0.3.0",
     "highlightjs": "~8.0.0",
     "bootstrap": "~3.2.0"
-  },
-  "resolutions": {
-    "bootstrap": "~3.2.0"
   }
 }
