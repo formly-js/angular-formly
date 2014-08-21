@@ -20,6 +20,17 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, forml
 		templateUrl: 'views/home.html',
 		controller: 'home'
 	});
+
+	// Normally wouldn't have to worry about this,
+	// but we need to specify it because we're not using a built version.
+	var fields = [
+		'textarea', 'radio', 'select', 'number', 'checkbox',
+		'password', 'hidden', 'email', 'text'
+	];
+	angular.forEach(fields, function(field) {
+		formlyTemplateProvider.setTemplateUrl(field, 'src/bootstrap/fields/formly-field-' + field + '.html');
+	});
+
 	if (usingCustomTypeTemplates) {
 		formlyTemplateProvider.setTemplateUrl('text', 'views/custom-field-text.html');
 		// or
@@ -27,21 +38,8 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, forml
 			radio: 'views/custom-field-radio.html',
 			checkbox: 'views/custom-field-checkbox.html'
 		});
-	} else {
-		// using bootstrap cause vanilla is ugly, normally you would use the included prebuilt bootstrap file
-		formlyTemplateProvider.setTemplateUrl({
-			textarea: 'directives/bootstrap/formly-field-textarea.html',
-			radio: 'directives/bootstrap/formly-field-radio.html',
-			select: 'directives/bootstrap/formly-field-select.html',
-			number: 'directives/bootstrap/formly-field-number.html',
-			checkbox: 'directives/bootstrap/formly-field-checkbox.html',
-			password: 'directives/bootstrap/formly-field-password.html',
-			hidden: 'directives/bootstrap/formly-field-hidden.html',
-			email: 'directives/bootstrap/formly-field-email.html',
-			text: 'directives/bootstrap/formly-field-text.html'
-		});
 	}
-
+	
 	formlyOptionsProvider.setOption('uniqueFormId', 'defaultUniqueId');
 	// or
 	formlyOptionsProvider.setOption({

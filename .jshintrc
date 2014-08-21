@@ -2,14 +2,18 @@
 	// Details: https://github.com/victorporof/Sublime-JSHint#using-your-own-jshintrc-options
 	// Example: https://github.com/jshint/jshint/blob/master/examples/.jshintrc
 	// Documentation: http://www.jshint.com/docs/
-	"browser": false,
+	"browser": true,
 	"devel": true,
 	"esnext": true,
+	"globals": {
+		"app": true,
+		"angular": false
+	},
 	"globalstrict": true,
 	"quotmark": true,
 	"smarttabs": true,
 	"trailing": true,
 	"undef": true,
 	"unused": "vars",
-	"node": true
+	"node": false
 }

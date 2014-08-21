@@ -1,8 +1,10 @@
 ## Formly
 Formly for Angular is an AngularJS module which has directives to help customize and render JSON based forms. The directive originated from a need to allow our users to create surveys and distribute them easily. Currently we've can render the form data from JSON and assign a model to form so we can receive the submitted data.
 
+```html
 	<formly-form result="formData" fields="formFields" options="formOptions" ng-submit="onSubmit()">
 	</formly-form>
+```
 
 ### Demo : http://Nimbly.github.io/angular-formly/
 
@@ -21,15 +23,19 @@ See `bower.json` and `index.html` in the `master` branch for a full list / more 
  `$ bower install angular-formly --save`
 
 - Include the javascript file in your index.html, Formly comes in the following flavors:
- - Vanilla: no fancy styling, just plain html
+ - No templates: you provide all your custom templates using the `formlyTemplateProvider`
 
  `<script src="bower_components/angular-formly/dist/formly.min.js"></script>`
+
+ - Vanilla: no fancy styling, just plain html
+
+ `<script src="bower_components/angular-formly/dist/formly.vanilla.min.js"></script>`
 
  - Bootstrap: bootstrap compatible forms, form-groups, etc.
 
  `<script src="bower_components/angular-formly/dist/formly.bootstrap.min.js"></script>`
 
- - DIY: You can create your own templates with `formlyTemplateProvider`! Use any of the builds above and override all the templates or just the ones you need.
+ - DIY: Regardless of which flavor you use, you can create your own templates with `formlyTemplateProvider`. Use any of the builds above and override all the templates or just the ones you need.
 
 - Add 'formly' as a required module to your angular app, usually in `app.js`:  
  `var app = angular.module('app', ['ng', 'ui.router', 'formly']);`
