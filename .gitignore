@@ -14,7 +14,8 @@ logs
 results
 
 node_modules
-ignored_bower_components
+bower_components
+!demo/bower_components
 *.sublime-workspace
 # build folder
 .grunt
