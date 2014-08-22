@@ -529,6 +529,8 @@ Please see [the Wiki](https://github.com/nimbly/angular-formly/wiki) for tips an
 3. update README, CHANGELOG, bower.json, and do any other final polishing to prepare for publishing
 	1. git commit changes
 
+*Note:* There's a symlink for `src` and `bower_components` in the `demo` folder. Just FYI...
+
 ## Grunt targets
 * `grunt dev`: Creates a server for testing at `http://0.0.0.0:4000`
 * `grunt publish`: Copies the src folder and bower_components to gh-pages
