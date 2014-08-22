@@ -1,6 +1,6 @@
-'use strict';
 angular.module('formly.render')
 .directive('formlyField', function formlyField($http, $compile, $templateCache, formlyConfig) {
+	'use strict';
 	return {
 		restrict: 'AE',
 		transclude: true,
@@ -23,10 +23,10 @@ angular.module('formly.render')
 					}).then(function(response) {
 						setElementTemplate(response.data);
 					}, function(error) {
-						console.log('Formly Error: Problem loading template for ' + templateUrl, error);
+						console.warn('Formly Error: Problem loading template for ' + templateUrl, error);
 					});
 				} else {
-					console.log('Formly Error: template type \'' + $scope.options.type + '\' not supported.');
+					console.warn('Formly Error: template type \'' + $scope.options.type + '\' not supported.');
 				}
 			}
 			function setElementTemplate(templateData) {

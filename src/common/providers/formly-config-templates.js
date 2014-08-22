@@ -1,7 +1,7 @@
 // This file adds the default templates to the formlyTemplateProvider.
 // It is excluded from the no-templates build.
-'use strict';
 angular.module('formly.render').config(function(formlyConfigProvider) {
+	'use strict';
 	var fields = [
 		'textarea', 'radio', 'select', 'number', 'checkbox',
 		'password', 'hidden', 'email', 'text'

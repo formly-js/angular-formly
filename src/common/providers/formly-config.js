@@ -1,6 +1,6 @@
-'use strict';
 angular.module('formly.render')
 .provider('formlyConfig', function() {
+	'use strict';
 
 	var templateUrlMap = {};
 	var templateMap = {};
@@ -41,6 +41,6 @@ angular.module('formly.render')
 
 	this.$get = function formlyConfig() {
 		return this;
-	}
+	};
 	
 });

@@ -2,9 +2,9 @@
 angular.module('formly.render', []);
 // Main Formly Module
 angular.module('formly', ['formly.render']);
-'use strict';
 angular.module('formly.render')
 .provider('formlyConfig', function() {
+	'use strict';
 
 	var templateUrlMap = {};
 	var templateMap = {};
@@ -37,16 +37,20 @@ angular.module('formly.render')
 		return templateMap[type];
 	}
 
-	this.setTemplateUrl = setTemplateUrl;
 	this.getTemplateUrl = getTemplateUrl;
+	this.setTemplateUrl = setTemplateUrl;
+
+	this.getTemplate = getTemplate;
+	this.setTemplate = setTemplate;
+
 	this.$get = function formlyConfig() {
 		return this;
-	}
+	};
 	
 });
-'use strict';
 angular.module('formly.render')
 .directive('formlyField', ["$http", "$compile", "$templateCache", "formlyConfig", function formlyField($http, $compile, $templateCache, formlyConfig) {
+	'use strict';
 	return {
 		restrict: 'AE',
 		transclude: true,
@@ -69,10 +73,10 @@ angular.module('formly.render')
 					}).then(function(response) {
 						setElementTemplate(response.data);
 					}, function(error) {
-						console.log('Formly Error: Problem loading template for ' + templateUrl, error);
+						console.warn('Formly Error: Problem loading template for ' + templateUrl, error);
 					});
 				} else {
-					console.log('Formly Error: template type \'' + $scope.options.type + '\' not supported.');
+					console.warn('Formly Error: template type \'' + $scope.options.type + '\' not supported.');
 				}
 			}
 			function setElementTemplate(templateData) {
@@ -98,9 +102,9 @@ angular.module('formly.render')
 	};
 }]);
 
-'use strict';
 angular.module('formly.render')
 .directive('formlyForm', function formlyForm() {
+	'use strict';
 	return {
 		restrict: 'E',
 		templateUrl: 'directives/formly-form.html',
@@ -119,7 +123,7 @@ angular.module('formly.render')
 					//Now pass the FormController back up to the parent scope
 					scope.formOnParentScope = scope[attr.name];
 				}
-			}
+			};
 		},
 		controller: ["$scope", "$element", "$parse", function($scope, $element, $parse) {
 			// setup watches for watchExpressions
@@ -134,7 +138,7 @@ angular.module('formly.render')
 							var args = Array.prototype.slice.call(arguments, 0);
 							args.unshift(field);
 							return field.watch.expression.apply(this, args);
-						}
+						};
 					}
 
 					$scope.$watch(watchExpression, function() {
@@ -158,6 +162,14 @@ angular.module('formly.render')
 		}]
 	};
 });
+angular.module('formly.render').run(['$templateCache', function($templateCache) {
+  'use strict';
+
+  $templateCache.put('directives/formly-form.html',
+    "<form class=formly role=form><formly-field ng-repeat=\"field in fields\" options=field form-result=result form-value=result[field.key||$index] form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></form>"
+  );
+
+}]);
 angular.module('formly.render').run(['$templateCache', function($templateCache) {
   'use strict';
 

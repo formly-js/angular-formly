@@ -37,6 +37,14 @@ module.exports = function(grunt) {
 		jshint: {
 			src: ['src/**/*.js']
 		},
+		mocha: {
+			all: {
+				src: ['tests/testrunner.html']
+			},
+			options: {
+				run: true
+			}
+		},
 		watch: {
 			livereload: {
 				files: ['<%= formlyConfig.dist %>/**/*.{js,html}', '<%= formlyConfig.demo %>/**/*.{js,css,html}'],
@@ -94,13 +102,13 @@ module.exports = function(grunt) {
 				{
 					expand: true,
 					cwd: '<%= formlyConfig.base %>/',
-					src: [target + '/**/*.*'],
+					src: [target + '/**/*.*', '!**/*Spec.js'],
 					dest: preBuiltDest
 				},
 				{
 					expand: true,
 					cwd: '<%= formlyConfig.base %>/common',
-					src: commonCopyPatterns,
+					src: commonCopyPatterns.concat(['!**/*Spec.js']),
 					dest: preBuiltDest
 				}
 			]
@@ -185,9 +193,7 @@ module.exports = function(grunt) {
 	var buildTasks = _.map(targets, function(target) {
 		return 'build:' + target;
 	});
-	buildTasks.unshift('clean:tmp');
-	buildTasks.push('clean:dist');
-	buildTasks.push('copy:deploy');
+	buildTasks = ['jshint', 'mocha'].concat(buildTasks).concat(['clean:dist', 'copy:deploy']);
 
 	grunt.registerTask('build', buildTasks);
 

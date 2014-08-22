@@ -1,6 +1,6 @@
-'use strict';
 angular.module('formly.render')
 .directive('formlyForm', function formlyForm() {
+	'use strict';
 	return {
 		restrict: 'E',
 		templateUrl: 'directives/formly-form.html',
@@ -19,7 +19,7 @@ angular.module('formly.render')
 					//Now pass the FormController back up to the parent scope
 					scope.formOnParentScope = scope[attr.name];
 				}
-			}
+			};
 		},
 		controller: function($scope, $element, $parse) {
 			// setup watches for watchExpressions
@@ -34,7 +34,7 @@ angular.module('formly.render')
 							var args = Array.prototype.slice.call(arguments, 0);
 							args.unshift(field);
 							return field.watch.expression.apply(this, args);
-						}
+						};
 					}
 
 					$scope.$watch(watchExpression, function() {
