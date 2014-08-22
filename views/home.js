@@ -1,5 +1,5 @@
 'use strict';
-app.controller('home', function($scope, $parse, formlyOptions, $window, usingCustomTypeTemplates) {
+app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplates) {
 	// Public Methods
 	$scope.onSubmit = function onSubmit() {
 		$scope.submittedData = $scope.formData;
@@ -47,8 +47,6 @@ app.controller('home', function($scope, $parse, formlyOptions, $window, usingCus
 	} else {
 		$scope.typeTemplatesButton = 'Use Custom Type Templates';
 	}
-
-	$scope.preConfiguredOptions = formlyOptions.getOptions();
 
 	$scope.formFields = [{
 		key: 'firstName',
@@ -110,6 +108,10 @@ app.controller('home', function($scope, $parse, formlyOptions, $window, usingCus
 		min: 0,
 		max: 100,
 		required: true
+	}, {
+		key: 'inlineCustom',
+		type: 'inline-custom',
+		label: 'Example of setTemplate'
 	}, {
 		key: 'seeWhatYouType',
 		type: 'customTemplate',
@@ -204,14 +206,10 @@ app.controller('home', function($scope, $parse, formlyOptions, $window, usingCus
 	];
 
 	$scope.formOptions = {
-		uniqueFormId: 'formly',
-		submitCopy: 'Save',
-		hideSubmit: false,
-		useNgIfToHide: true
+		uniqueFormId: 'formly'
 	};
 	$scope.hiddenFormOptions = {
-		uniqueFormId: 'hiddenFormly',
-		hideSubmit: true
+		uniqueFormId: 'hiddenFormly'
 	};
 	$scope.submittedData = null;
 	$scope.formData = {};
