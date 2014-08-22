@@ -4,7 +4,49 @@ angular.module('formly.render', []);
 angular.module('formly', ['formly.render']);
 'use strict';
 angular.module('formly.render')
-.directive('formlyField', ["$http", "$compile", "$templateCache", "formlyTemplate", function formlyField($http, $compile, $templateCache, formlyTemplate) {
+.provider('formlyConfig', function() {
+
+	var templateUrlMap = {};
+	var templateMap = {};
+
+	function setTemplateUrl(name, templateUrl) {
+		if (typeof name === 'string') {
+			templateUrlMap[name] = templateUrl;
+		} else {
+			angular.forEach(name, function(templateUrl, name) {
+				setTemplateUrl(name, templateUrl);
+			});
+		}
+	}
+
+	function getTemplateUrl(type) {
+		return templateUrlMap[type];
+	}
+
+	function setTemplate(name, template) {
+		if (typeof name === 'string') {
+			templateMap[name] = template;
+		} else {
+			angular.forEach(name, function(template, name) {
+				setTemplate(name, template);
+			});
+		}
+	}
+
+	function getTemplate(type) {
+		return templateMap[type];
+	}
+
+	this.setTemplateUrl = setTemplateUrl;
+	this.getTemplateUrl = getTemplateUrl;
+	this.$get = function formlyConfig() {
+		return this;
+	}
+	
+});
+'use strict';
+angular.module('formly.render')
+.directive('formlyField', ["$http", "$compile", "$templateCache", "formlyConfig", function formlyField($http, $compile, $templateCache, formlyConfig) {
 	return {
 		restrict: 'AE',
 		transclude: true,
@@ -16,11 +58,11 @@ angular.module('formly.render')
 			result: '=formResult'
 		},
 		link: function fieldLink($scope, $element, $attr) {
-			var template = $scope.options.template;
+			var template = $scope.options.template || formlyConfig.getTemplate($scope.options.type);
 			if (template) {
 				setElementTemplate(template);
 			} else {
-				var templateUrl = $scope.options.templateUrl || formlyTemplate.getTemplateUrl($scope.options.type);
+				var templateUrl = $scope.options.templateUrl || formlyConfig.getTemplateUrl($scope.options.type);
 				if (templateUrl) {
 					$http.get(templateUrl, {
 						cache: $templateCache
@@ -58,33 +100,12 @@ angular.module('formly.render')
 
 'use strict';
 angular.module('formly.render')
-.directive('formlyForm', ["formlyOptions", "$compile", function formlyForm(formlyOptions, $compile) {
-	var templateHide = 'ng-hide="field.hide"';
-	var fieldsTemplate = [
-		'<formly-field ng-repeat="field in fields"',
-					  'options="field"',
-					  'form-result="result"',
-					  'form-value="result[field.key||$index]"',
-					  'form-id="options.uniqueFormId"',
-					  'ng-hide="field.hide"',
-					  'index="$index">',
-		'</formly-field>'
-	].join(' ')
+.directive('formlyForm', function formlyForm() {
 	return {
-		restrict: 'AE',
-		template: function(el, attr) {
-			var useNgIf = formlyOptions.getOptions().useNgIfToHide;
-			return [
-				'<form class="formly" role="form">',
-					'<div class="ng-hide">fields</div>',
-					'<button type="submit"',
-							'ng-show="!options.hideSubmit">',
-						'{{options.submitCopy || "Submit"}}',
-					'</button>',
-				'</form>'
-			].join(' ');
-		},
+		restrict: 'E',
+		templateUrl: 'directives/formly-form.html',
 		replace: true,
+		transclude: true,
 		scope: {
 			fields: '=',
 			options: '=?',
@@ -94,15 +115,6 @@ angular.module('formly.render')
 		compile: function () {
 			return {
 				post: function (scope, ele, attr, controller) {
-					scope.options = angular.extend(formlyOptions.getOptions(), scope.options);
-					if (scope.options.submitButtonTemplate) {
-						ele.find('button').replaceWith($compile(scope.options.submitButtonTemplate)(scope));
-					}
-					var template = fieldsTemplate;
-					if (scope.options.useNgIfToHide) {
-						template = template.replace(templateHide, 'ng-if="!field.hide"');
-					}
-					ele.find('div').replaceWith($compile(template)(scope));
 					//Post gets called after angular has created the FormController
 					//Now pass the FormController back up to the parent scope
 					scope.formOnParentScope = scope[attr.name];
@@ -145,7 +157,7 @@ angular.module('formly.render')
 			}, true);
 		}]
 	};
-}]);
+});
 angular.module('formly.render').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -195,77 +207,24 @@ angular.module('formly.render').run(['$templateCache', function($templateCache) 
   );
 
 }]);
+angular.module('formly.render').run(['$templateCache', function($templateCache) {
+  'use strict';
 
-'use strict';
-angular.module('formly.render')
-.provider('formlyOptions', function() {
+  $templateCache.put('directives/formly-form.html',
+    "<form class=formly role=form><formly-field ng-repeat=\"field in fields\" options=field form-result=result form-value=result[field.key||$index] form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></form>"
+  );
 
-	var options = {
-		uniqueFormId: null,
-		submitCopy: "Submit",
-		hideSubmit: false,
-		submitButtonTemplate: null,
-		useNgIfToHide: false
-	};
+}]);
 
-	function setOption(name, value) {
-		if (typeof name === 'string') {
-			options[name] = value;
-		} else {
-			angular.forEach(name, function(val, name) {
-				setOption(name, val);
-			});
-		}
-	}
-
-	function getOptions() {
-		// copy to avoid third-parties manipulating the options outside of the api.
-		return angular.copy(options);
-	}
-
-	this.setOption = setOption;
-	this.getOptions = getOptions;
-	this.$get = function formlyOptions() {
-		return this;
-	}
-	
-});
 // This file adds the default templates to the formlyTemplateProvider.
 // It is excluded from the no-templates build.
 'use strict';
-angular.module('formly.render').config(["formlyTemplateProvider", function(formlyTemplateProvider) {
+angular.module('formly.render').config(["formlyConfigProvider", function(formlyConfigProvider) {
 	var fields = [
 		'textarea', 'radio', 'select', 'number', 'checkbox',
 		'password', 'hidden', 'email', 'text'
 	];
 	angular.forEach(fields, function(field) {
-		formlyTemplateProvider.setTemplateUrl(field, 'fields/formly-field-' + field + '.html');
+		formlyConfigProvider.setTemplateUrl(field, 'fields/formly-field-' + field + '.html');
 	});
 }]);
-'use strict';
-angular.module('formly.render')
-.provider('formlyTemplate', function() {
-
-	var templateMap = {};
-
-	function setTemplateUrl(name, templateUrl) {
-		if (typeof name === 'string') {
-			templateMap[name] = templateUrl;
-		} else {
-			angular.forEach(name, function(templateUrl, name) {
-				setTemplateUrl(name, templateUrl);
-			});
-		}
-	}
-
-	function getTemplateUrl(type) {
-		return templateMap[type];
-	};
-
-	this.setTemplateUrl = setTemplateUrl;
-	this.getTemplateUrl = getTemplateUrl;
-	this.$get = function formlyTemplate() {
-		return this;
-	}
-	
-});

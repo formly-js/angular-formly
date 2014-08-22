@@ -23,7 +23,7 @@ See `bower.json` and `index.html` in the `master` branch for a full list / more 
  `$ bower install angular-formly --save`
 
 - Include the javascript file in your index.html, Formly comes in the following flavors:
- - No templates: you provide all your custom templates using the `formlyTemplateProvider`
+ - No templates: you provide all your custom templates using the `formlyConfigProvider`
 
  `<script src="bower_components/angular-formly/dist/formly.min.js"></script>`
 
@@ -35,7 +35,7 @@ See `bower.json` and `index.html` in the `master` branch for a full list / more 
 
  `<script src="bower_components/angular-formly/dist/formly.bootstrap.min.js"></script>`
 
- - DIY: Regardless of which flavor you use, you can create your own templates with `formlyTemplateProvider`. Use any of the builds above and override all the templates or just the ones you need.
+ - DIY: Regardless of which flavor you use, you can create your own templates with `formlyConfigProvider`. Use any of the builds above and override all the templates or just the ones you need.
 
 - Add 'formly' as a required module to your angular app, usually in `app.js`:  
  `var app = angular.module('app', ['ng', 'ui.router', 'formly']);`
@@ -45,6 +45,7 @@ See `bower.json` and `index.html` in the `master` branch for a full list / more 
 You can add a formly-form in your HTML templates as shown below.
 ```html
 	<formly-form result="formData" fields="formFields" options="formOptions" ng-submit="onSubmit()">
+		<button type="submit">Hello World</button>
 	</formly-form>
 ```  
 
@@ -77,17 +78,8 @@ Example data as it would be set in the controller
 	];
 
 	$scope.formOptions = {
-
 		//Set the id of the form
-		uniqueFormId: 'myFormId',
-
-		//Hide the submit button that is added automaticaly
-		//default: false
-		hideSubmit: false,
-
-		//Set the text on the default submit button
-		//default: Submit
-		submitCopy: 'Login'
+		uniqueFormId: 'myFormId'
 	};
 
 	$scope.onSubmit = function() {
@@ -95,19 +87,7 @@ Example data as it would be set in the controller
 	};
 ```
 ### Creating Forms
-Forms can be customized with the options below. Note, you can configure this on a form-by-form basis as shown in the example, or globally using the [`formlyOptionsProvider`](#global-config).
-
-#### uniqueFormId (string, required)
->`uniqueFormId` is used to identify the form.
-
-#### hideSubmit (boolean, optional)
->`hideSubmit` hides the submit button when set to `true`. Defaults to false.
-
-#### submitCopy (string, optional)
->`submitCopy` customizes the submit button copy. Defaults to 'Submit'.
-
-#### submitButtonTemplate (string, optional)
->`submitButtonTemplate` customizes the template used for the submit button. Compiled on the scope, so you have access to all other options (and any custom options) in your custom template.
+Forms can be customized with the options below.
 
 ### Creating Form Fields
 When constructing fields use the options below to customize each field object. You must set at least a `type`, `template`, or `templateUrl`.
@@ -451,21 +431,21 @@ _Example password field_
 
 ### Global Config
 
-#### formlyTemplateProvider
+#### formlyConfigProvider
 
-You can configure formly to use custom templates for specified types (your own "text" template) by injecting the `formlyTemplateProvider` in your app's `config` function. The `formlyTemplateProvider` has the following functions:
+You can configure formly to use custom templates for specified types (your own "text" template) by injecting the `formlyConfigProvider` in your app's `config` function. The `formlyConfigProvider` has the following functions:
 
 ##### setTemplateUrl
 
 Allows you to set a template
 
 ```javascript
-formlyTemplateProvider.setTemplateUrl('radio', 'views/custom-formly-radio.html');
-formlyTemplateProvider.setTemplateUrl('checkbox', 'views/custom-formly-checkbox.html');
+formlyConfigProvider.setTemplateUrl('radio', 'views/custom-formly-radio.html');
+formlyConfigProvider.setTemplateUrl('checkbox', 'views/custom-formly-checkbox.html');
 
 // the same can be accomplished with
 
-formlyTemplateProvider.setTemplate({
+formlyConfigProvider.setTemplate({
 	radio: 'views/custom-formly-radio.html',
 	checkbox: 'views/custom-formly-checkbox.html'
 });
@@ -476,41 +456,13 @@ formlyTemplateProvider.setTemplate({
 Allows you to get the template
 
 ```javascript
-formlyTemplateProvider.setTemplateUrl('radio', 'views/custom-formly-radio.html');
-formlyTemplateProvider.getTemplateUrl('radio') === 'views/custom-formly-radio.html'; // true
+formlyConfigProvider.setTemplateUrl('radio', 'views/custom-formly-radio.html');
+formlyConfigProvider.getTemplateUrl('radio') === 'views/custom-formly-radio.html'; // true
 ```
 
-#### formlyOptionsProvider
+##### setTemplate & getTemplate
 
-You can configure default options for all forms using the `formlyOptionsProvider` in your app's `config` function. The following options are used by angular-formly and are available for configuration:
-
-- uniqueFormId - not useful for global configuration, but useful on a per-form basis. Defaults to null
-- submitCopy - what the submit button should say. Defaults to "Submit"
-- hideSubmit - whether to hide the submit button. Defaults to false
-- submitButtonTemplate - a custom template for the submit button. Defaults to null
-- useNgIfToHide - whether to use `ng-if` for hiding fields (rather than `ng-hide`). Useful for removing watchers. Defaults to false (use `ng-hide`)
-
-To change these defaults globally, you have the following api:
-
-##### setOption
-
-Allows you to set an option
-
-```javascript
-formlyOptionsProvider.setOption('useNgIfToHide', true);
-formlyOptionsProvider.setOption('submitCopy', 'Save');
-
-// the same can be accomplished with
-
-formlyOptionsProvider.setOption({
-	submitCopy: 'Save',
-	useNgIfToHide: true
-});
-```
-
-##### getOptions
-
-Returns a copy of the current options. This is used internally.
+Work pretty much the same as the their url counterparts, except they accept an actual template string rather than a url.
 
 ## Tips and Tricks
 

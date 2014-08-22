@@ -8,7 +8,7 @@ var app = angular.module('app', ['ng',
 
 app.constant('usingCustomTypeTemplates', window.localStorage.getItem('useCustomTypeTemplates') === 'true');
 
-app.config(function($stateProvider, $urlRouterProvider, $locationProvider, formlyTemplateProvider, formlyOptionsProvider, usingCustomTypeTemplates) {
+app.config(function($stateProvider, $urlRouterProvider, $locationProvider, formlyConfigProvider, usingCustomTypeTemplates) {
 	$locationProvider.html5Mode(false);
 	$locationProvider.hashPrefix('!');
 
@@ -21,36 +21,16 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, forml
 		controller: 'home'
 	});
 
-	// Normally wouldn't have to worry about this,
-	// but we need to specify it because we're not using a built version.
-	var fields = [
-		'textarea', 'radio', 'select', 'number', 'checkbox',
-		'password', 'hidden', 'email', 'text'
-	];
-	angular.forEach(fields, function(field) {
-		formlyTemplateProvider.setTemplateUrl(field, 'src/bootstrap/fields/formly-field-' + field + '.html');
-	});
-
 	if (usingCustomTypeTemplates) {
-		formlyTemplateProvider.setTemplateUrl('text', 'views/custom-field-text.html');
+		formlyConfigProvider.setTemplateUrl('text', 'views/custom-field-text.html');
 		// or
-		formlyTemplateProvider.setTemplateUrl({
+		formlyConfigProvider.setTemplateUrl({
 			radio: 'views/custom-field-radio.html',
 			checkbox: 'views/custom-field-checkbox.html'
 		});
 	}
-	
-	formlyOptionsProvider.setOption('uniqueFormId', 'defaultUniqueId');
-	// or
-	formlyOptionsProvider.setOption({
-		submitCopy: 'Configured Submit',
-		hideSubmit: true,
-		submitButtonTemplate: [
-			'<button type="submit" class="btn btn-primary" ng-hide="options.hideSubmit">',
-				'{{options.submitCopy || "Submit"}} boo yeah!',
-			'</button>'
-		].join('')
-	});
+
+	formlyConfigProvider.setTemplate('inline-custom', '<label>Inline-custom template</label><br /><input ng-model="value" class="form-control">')
 });
 
 app.run(function($rootScope, $state, $stateParams, $window) {

@@ -9,9 +9,6 @@
 	<div class="row">
 		<div class="col-sm-4 col-md-4 col-lg-4">
 			<!-- Pre configured options -->
-			<h3>Configured Default Options</h3>
-			<div hljs source="preConfiguredOptions|json"></div>
-
 			<span>
 				<!-- Formatted JSON -->
 				<button class="btn btn-success"
@@ -29,20 +26,6 @@
 				        ng-click="toggleCustomTypeTemplates()">
 					{{typeTemplatesButton}}
 				</button>
-
-				<h3>Options (Overrides configured default options)</h3>
-				<div class="form-group"
-				     ng-class="{'has-error': formOptionsError}"
-				     ng-show="editJSON">
-					<textarea class="form-control"
-					          ng-model="formOptionsStr"
-					          rows="5">
-					</textarea>
-				</div>
-				<div source="toPrettyJSON(formOptions, 4)"
-				     ng-hide="editJSON"
-				     hljs>
-				</div>
 
 				<h3>Fields</h3>
 				<div class="form-group"
@@ -67,6 +50,7 @@
 			             fields="formFields"
 			             options="formOptions"
 			             ng-submit="onSubmit()">
+				<button type="submit" class="btn btn-primary">Submit it!</button>
 			</formly-form>
 			<br />
 			<br />
@@ -74,6 +58,7 @@
 						 result="hiddenFormData"
 						 fields="hiddenFormFields"
 						 options="hiddenFormOptions">
+			</formly-form>
 		</div>
 		<div class="col-sm-4 col-md-4 col-lg-4">
 

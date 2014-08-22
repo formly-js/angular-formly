@@ -1,6 +1,6 @@
 'use strict';
 angular.module('formly.render')
-.directive('formlyField', function formlyField($http, $compile, $templateCache, formlyTemplate) {
+.directive('formlyField', function formlyField($http, $compile, $templateCache, formlyConfig) {
 	return {
 		restrict: 'AE',
 		transclude: true,
@@ -12,11 +12,11 @@ angular.module('formly.render')
 			result: '=formResult'
 		},
 		link: function fieldLink($scope, $element, $attr) {
-			var template = $scope.options.template;
+			var template = $scope.options.template || formlyConfig.getTemplate($scope.options.type);
 			if (template) {
 				setElementTemplate(template);
 			} else {
-				var templateUrl = $scope.options.templateUrl || formlyTemplate.getTemplateUrl($scope.options.type);
+				var templateUrl = $scope.options.templateUrl || formlyConfig.getTemplateUrl($scope.options.type);
 				if (templateUrl) {
 					$http.get(templateUrl, {
 						cache: $templateCache

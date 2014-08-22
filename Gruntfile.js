@@ -10,6 +10,7 @@ module.exports = function(grunt) {
 			hostname: 'localhost', // change to 0.0.0.0 to listen on all connections
 			base: 'src',
 			demo: 'demo',
+			dist: 'dist',
 			port: 4000,
 			livereloadport: 35701
 		},
@@ -30,17 +31,22 @@ module.exports = function(grunt) {
 			src: ['**']
 		},
 		clean: {
-			build: ['.tmp/**/*', 'dist/**/*']
+			tmp: '.tmp/**/*',
+			dist: 'dist/**/*'
 		},
 		jshint: {
 			src: ['src/**/*.js']
 		},
 		watch: {
 			livereload: {
-				files: ['<%= formlyConfig.base %>/**/*.{js,html}'],
+				files: ['<%= formlyConfig.dist %>/**/*.{js,html}', '<%= formlyConfig.demo %>/**/*.{js,css,html}'],
 				options: {
 					livereload: '<%= formlyConfig.livereloadport %>'
 				}
+			},
+			build: {
+				files: ['<%= formlyConfig.base %>/**/*.{js,html}'],
+				tasks: ['build:onlyBootstrap']
 			}
 		},
 
@@ -80,7 +86,7 @@ module.exports = function(grunt) {
 
 		var commonCopyPatterns = ['**/*.*']
 		if (noTemplates) {
-			commonCopyPatterns.push('!**/formly-template-config.js');
+			commonCopyPatterns.push('!**/formly-config-templates.js');
 		}
 
 		config.copy[target] = {
@@ -100,29 +106,39 @@ module.exports = function(grunt) {
 			]
 		};
 
-		config.ngtemplates[target] = {
-			cwd: preBuiltDest + '/' + target + '/',
-			src: [
-				'fields/**/*.html'
-			],
-			dest: templatesFile,
-			options: {
-				module: 'formly.render',
-				htmlmin: {
-					collapseBooleanAttributes: true,
-					collapseWhitespace: true,
-					removeAttributeQuotes: true,
-					removeComments: true,
-					removeEmptyAttributes: true,
-					removeRedundantAttributes: false,
-					removeScriptTypeAttributes: true,
-					removeStyleLinkTypeAttributes: true
-				}
+		var ngtemplatesOptions = {
+			module: 'formly.render',
+			append: true,
+			htmlmin: {
+				collapseBooleanAttributes: true,
+				collapseWhitespace: true,
+				removeAttributeQuotes: true,
+				removeComments: true,
+				removeEmptyAttributes: true,
+				removeRedundantAttributes: false,
+				removeScriptTypeAttributes: true,
+				removeStyleLinkTypeAttributes: true
 			}
 		};
 
+		config.ngtemplates[target] = {
+			options: ngtemplatesOptions,
+			files: [
+				{
+					cwd: preBuiltDest + '/' + target + '/',
+					src: [ 'fields/**/*.html' ],
+					dest: templatesFile
+				},
+				{
+					cwd: preBuiltDest + '/',
+					src: [ 'directives/**/*.html' ],
+					dest: templatesFile
+				}
+			]
+		};
+
 		config.concat[target] = {
-			src: [preBuiltDest + '/modules/**/*.js', preBuiltDest + '/**/*.js'],
+			src: [preBuiltDest + '/modules/**/*.js', preBuiltDest + '/providers/formly-config.js', preBuiltDest + '/**/*.js'],
 			dest: concatFile
 		};
 
@@ -154,6 +170,7 @@ module.exports = function(grunt) {
 		'watch'
 	]);
 
+	// the code below creates tasks for build:{{target}} (i.e. build:bootstrap)
 	_.each(targets, function(target) {
 		grunt.registerTask('build:' + target, [
 			'copy:' + target,
@@ -168,10 +185,17 @@ module.exports = function(grunt) {
 	var buildTasks = _.map(targets, function(target) {
 		return 'build:' + target;
 	});
-	buildTasks.unshift('clean:build');
+	buildTasks.unshift('clean:tmp');
+	buildTasks.push('clean:dist');
 	buildTasks.push('copy:deploy');
 
 	grunt.registerTask('build', buildTasks);
+
+	grunt.registerTask('build:onlyBootstrap', [
+		'clean:tmp',
+		'build:bootstrap',
+		'copy:deploy'
+	]);
 
 	grunt.registerTask('default', ['build']);
 };
