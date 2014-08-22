@@ -1,14 +1,17 @@
 language:
- - node_js
+- node_js
 node_js:
- - '0.10'
+- '0.10'
 branches:
   only:
-    - master
+  - master
 before_script:
- - npm install -g grunt-cli
- - npm install -g bower
- - npm install
- - bower install
+- npm install -g grunt-cli
+- npm install -g bower
+- npm install
+- bower install
 script:
- - grunt build
+- grunt build
+notifications:
+  slack:
+    secure: V/CXlCkFJ4AKLpyovKdCAa8OeSMcLrSDr5oL3V8FoR1jWuGwcNQQsF+O6qw3VDpjjbmqARUWdnSu0jgB+QJRvCG/CwmqRx4cnkVlMAal2XtxCiCse2uPQJ2mbJv/boFWtzbJgwcYCww0WXSDIhBMNDxkwCqVxn9BpgABgtIi8iw=
