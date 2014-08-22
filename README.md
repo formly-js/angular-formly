@@ -42,6 +42,8 @@ See `bower.json` and `index.html` in the `master` branch for a full list / more 
 
 ## Documentation
 
+*Note:* This `README.md` is for the latest version of `formly`. There have been some changes in the latest version which is not stable. For documentation on the latest stable version, see the [0.0.16 documentation](https://github.com/nimbly/angular-formly/tree/0.0.16)
+
 You can add a formly-form in your HTML templates as shown below.
 ```html
 	<formly-form result="formData" fields="formFields" options="formOptions" ng-submit="onSubmit()">
