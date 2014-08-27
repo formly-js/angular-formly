@@ -38,5 +38,14 @@
 		<script src="views/custom-field.js"></script>
 
 		<script src="dist/formly.bootstrap.min.js"></script>
+
+    <script>
+      // make errors longer...
+      window.onerror = function (errorMsg, url, lineNumber, columnNumber, errorObject) {
+        if (/<omitted>/.test(errorMsg)) {
+          console.error('Error: ' + errorObject ? errorObject.message : errorMsg);
+        }
+      };
+    </script>
 	</body>
 </html>
