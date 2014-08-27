@@ -62,8 +62,6 @@ Example data as it would be set in the controller
 			//the key to be used in the result values {... "username": "johndoe" ... }
 			key: 'username',
 
-			//default value
-			default: 'uberuser',
 			type: 'text',
 			label: 'Username',
 			placeholder: 'johndoe',
@@ -412,8 +410,7 @@ _Example password field_
 ```json
 	{
 		"key": "hiddenCode",
-		"type": "hidden",
-		"default": "hidden_code"
+		"type": "hidden"
 	}
 ```
 
@@ -486,10 +483,11 @@ Please see [the Wiki](https://github.com/nimbly/angular-formly/wiki) for tips an
 3. update README, CHANGELOG, bower.json, and do any other final polishing to prepare for publishing
 	1. git commit changes
 
-*Note:* There's a symlink for `src` and `bower_components` in the `demo` folder. Just FYI...
+*Note:* There's a symlink for `src` and `bower_components` in the `demo` and `tests` folders. Just FYI...
 
 ## Grunt targets
 * `grunt dev`: Creates a server for testing at `http://0.0.0.0:4000`
+* `grunt build`: Creates the dist
 * `grunt publish`: Copies the src folder and bower_components to gh-pages
 
 ## Contributing

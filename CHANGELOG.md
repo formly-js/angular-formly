@@ -4,6 +4,8 @@ Version numbers correspond to `bower.json` version
 
 ## Backward compatible changes:
 
+- Fixed bug with initializing select template.
+
 ## Internal Changes
 
 - Moved all demo-only related files to a demo folder and added a symbolic link to src and bower_components so when it's deployed the src and bower_components go with it. This will also allow us to make a symlink in the test directory when it's created.
@@ -18,7 +20,7 @@ Version numbers correspond to `bower.json` version
 - Removed `formlyOptionsProvider` because all useful global customizability is now unecessary.
 - Renamed `formlyTemplateProvider` to `formlyConfigProvider` to make it more generic for any future customization needs. The api is the same as before.
 - Added `setTemplate` and `getTemplate` to the `formlyConfigProvider` allowing developers to set template strings rather than simply a url.
-
+- Removed `default` property. Interact with the `formData` to set the form data.
 
 # 0.0.16
 
