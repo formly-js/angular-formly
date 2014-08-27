@@ -86,9 +86,6 @@ angular.module('formly.render')
 		},
 		controller: ["$scope", function fieldController($scope) {
 			$scope.options = $scope.optionsData();
-			if (typeof $scope.options.default !== 'undefined') {
-				$scope.value = $scope.options.default;
-			}
 			var type = $scope.options.type;
 			if (!type && $scope.options.template) {
 				type = 'template';

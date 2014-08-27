@@ -1,4 +1,4 @@
-// This file adds the default templates to the formlyTemplateProvider.
+// This file adds the default templates to the formlyConfigProvider.
 // It is excluded from the no-templates build.
 angular.module('formly.render').config(function(formlyConfigProvider) {
 	'use strict';

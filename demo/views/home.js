@@ -79,7 +79,6 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		key: 'triedEmber',
 		type: 'radio',
 		label: 'Have you tried EmberJs yet?',
-		default: 'no',
 		options: [
 			{
 				name: 'Yes, and I love it!',
@@ -98,13 +97,11 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		type: 'text',
 		label: 'Angular Fan?',
 		disabled: true,
-		default: 'yes',
 		required: true
 	}, {
 		key: 'love',
 		type: 'number',
 		label: 'How much love?',
-		default: 2,
 		min: 0,
 		max: 100,
 		required: true
@@ -127,37 +124,46 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		key: 'transportation',
 		type: 'select',
 		label: 'How do you get around in the city',
-		default: 'Skateboard',
 		options: [
 			{
 				name: 'Car',
+        value: 'car',
 				group: 'inefficiently'
 			}, {
 				name: 'Helicopter',
+				value: 'helicopter',
 				group: 'inefficiently'
 			}, {
 				name: 'Sport Utility Vehicle',
+				value: 'sport-utility-vehicle',
 				group: 'inefficiently'
 			}, {
 				name: 'Bicycle',
+				value: 'bicycle',
 				group: 'efficiently'
 			}, {
 				name: 'Skateboard',
+				value: 'skateboard',
 				group: 'efficiently'
 			}, {
 				name: 'Walk',
+				value: 'walk',
 				group: 'efficiently'
 			}, {
 				name: 'Bus',
+				value: 'bus',
 				group: 'efficiently'
 			}, {
 				name: 'Scooter',
+				value: 'scooter',
 				group: 'efficiently'
 			}, {
 				name: 'Train',
+				value: 'train',
 				group: 'efficiently'
 			}, {
-				name: 'Hot Air Baloon',
+				name: 'Hot Air Balloon',
+				value: 'hot-air-balloon',
 				group: 'efficiently'
 			}
 		]
@@ -184,8 +190,7 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		hideExpression: 'hiddenWhenUnchecked !== "joe"'
 	}, {
 		key:'secretCode',
-		type: 'hidden',
-		default: 'secret_code'
+		type: 'hidden'
 	}];
 
 	$scope.hiddenFormFields = [
@@ -212,7 +217,13 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		uniqueFormId: 'hiddenFormly'
 	};
 	$scope.submittedData = null;
-	$scope.formData = {};
+	$scope.formData = {
+    triedEmber: 'no',
+    transportation: 'hot-air-balloon',
+    angularFan: 'yes',
+    love: 2,
+    secretCode: 'secret_code'
+  };
 	$scope.hiddenFormData = {};
 	$scope.formFieldsStr = $scope.toPrettyJSON($scope.formFields, 4);
 	$scope.formOptionsStr = $scope.toPrettyJSON($scope.formOptions, 4);

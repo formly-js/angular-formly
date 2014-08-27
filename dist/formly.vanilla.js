@@ -86,9 +86,6 @@ angular.module('formly.render')
 		},
 		controller: ["$scope", function fieldController($scope) {
 			$scope.options = $scope.optionsData();
-			if (typeof $scope.options.default !== 'undefined') {
-				$scope.value = $scope.options.default;
-			}
 			var type = $scope.options.type;
 			if (!type && $scope.options.template) {
 				type = 'template';
@@ -196,7 +193,7 @@ angular.module('formly.render').run(['$templateCache', function($templateCache) 
 
 
   $templateCache.put('fields/formly-field-select.html',
-    "<div><label for={{id}}>{{options.label || 'Select'}} {{options.required ? '*' : ''}}</label><select id={{id}} aria-describedby={{id}}_description ng-model=value ng-required=options.required ng-disabled=options.disabled ng-init=\"value = options.default\" ng-options=\"option.value as option.name group by option.group for option in options.options\"></select><p id={{id}}_description ng-if=options.description>{{options.description}}</p></div>"
+    "<div><label for={{id}}>{{options.label || 'Select'}} {{options.required ? '*' : ''}}</label><select id={{id}} aria-describedby={{id}}_description ng-model=value ng-required=options.required ng-disabled=options.disabled ng-options=\"option.value as option.name group by option.group for option in options.options\"></select><p id={{id}}_description ng-if=options.description>{{options.description}}</p></div>"
   );
 
 
@@ -220,7 +217,7 @@ angular.module('formly.render').run(['$templateCache', function($templateCache) 
 
 }]);
 
-// This file adds the default templates to the formlyTemplateProvider.
+// This file adds the default templates to the formlyConfigProvider.
 // It is excluded from the no-templates build.
 angular.module('formly.render').config(["formlyConfigProvider", function(formlyConfigProvider) {
 	'use strict';

@@ -8,7 +8,6 @@
 			ng-model="value"
 			ng-required="options.required"
 			ng-disabled="options.disabled"
-			ng-init="value = options.default"
 			ng-options="option.value as option.name group by option.group for option in options.options">
 	</select>
   <p id="{{id}}_description" ng-if="options.description">{{options.description}}</p>

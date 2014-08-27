@@ -92,7 +92,7 @@ module.exports = function(grunt) {
 		var concatFile = builtDest + '/' + targetFilename + '.js';
 		var uglifyFile = builtDest + '/' + targetFilename + '.min.js';
 
-		var commonCopyPatterns = ['**/*.*']
+		var commonCopyPatterns = ['**/*.*'];
 		if (noTemplates) {
 			commonCopyPatterns.push('!**/formly-config-templates.js');
 		}
