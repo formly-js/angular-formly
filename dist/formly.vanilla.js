@@ -113,10 +113,9 @@ angular.module('formly.render')
 			optionsData: '&options',
 			formId: '=formId',
 			index: '=index',
-			value: '=formValue',
 			result: '=formResult'
 		},
-		link: function fieldLink($scope, $element, $attr) {
+		link: function fieldLink($scope, $element) {
 			var template = $scope.options.template || formlyConfig.getTemplate($scope.options.type);
 			if (template) {
 				setElementTemplate(template);
@@ -280,7 +279,7 @@ angular.module('formly.render').run(['$templateCache', function($templateCache) 
   'use strict';
 
   $templateCache.put('directives/formly-form.html',
-    "<form class=formly role=form><formly-field ng-repeat=\"field in fields\" options=field form-result=result form-value=result[field.key||$index] form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></form>"
+    "<form class=formly role=form><formly-field ng-repeat=\"field in fields\" options=field form-result=result form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></form>"
   );
 
 }]);
