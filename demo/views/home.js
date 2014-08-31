@@ -32,12 +32,12 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 			$scope.formFieldsError = true;
 		}
 	});
-	$scope.$watch('formOptionsStr', function onOptionsUpdated(newValue, OldValue) {
+	$scope.$watch('formDataStr', function onDataUpdated(newValue, OldValue) {
 		try {
-			$scope.formOptions = $parse(newValue)({});
-			$scope.formOptionsError = false;
+			$scope.formData = $parse(newValue)({});
+			$scope.formDataError = false;
 		} catch (e) {
-			$scope.formOptionsError = true;
+			$scope.formDataError = true;
 		}
 	});
 
@@ -218,15 +218,15 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 	};
 	$scope.submittedData = null;
 	$scope.formData = {
-    triedEmber: 'no',
-    transportation: 'hot-air-balloon',
-    angularFan: 'yes',
-    love: 2,
-    secretCode: 'secret_code'
-  };
+		triedEmber: 'no',
+		transportation: 'hot-air-balloon',
+		angularFan: 'yes',
+		love: 2,
+		secretCode: 'secret_code'
+	};
 	$scope.hiddenFormData = {};
 	$scope.formFieldsStr = $scope.toPrettyJSON($scope.formFields, 4);
-	$scope.formOptionsStr = $scope.toPrettyJSON($scope.formOptions, 4);
+	$scope.formDataStr = $scope.toPrettyJSON($scope.formData, 4);
 	$scope.formFieldsError = false;
-	$scope.formOptionsError = false;
+	$scope.formDataError = false;
 });
