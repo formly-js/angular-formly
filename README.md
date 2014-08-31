@@ -190,6 +190,13 @@ When constructing fields use the options below to customize each field object. Y
 >`undefined`
 
 ---
+##### data (*)
+>`data` is reserved for the developer. You have our guarantee to be able to use this and not worry about future versions of formly overriding your usage and preventing you from upgrading :-)
+
+###### Default
+>`undefined`
+
+---
 ##### watch.expression (object)
 >`watch` has two properties called `expression` and `listener`. The `watch.expression` is added to the formly directive's scope. If it's a function, it will be wrapped and called with the field as the first argument, followed by the normal arguments for a watcher. The `listener` will also be wrapped and called with the field as the first argument, followed by hte normal arguments for a watch listener.
 
