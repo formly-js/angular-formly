@@ -5,6 +5,7 @@ Version numbers correspond to `bower.json` version
 ## Backward compatible changes:
 
 - Fixed bug with initializing select template.
+- Added the ability to do validation on fields.
 
 ## Internal Changes
 
