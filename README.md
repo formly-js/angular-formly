@@ -206,6 +206,13 @@ $scope.$watch(function expression(field, theScope) {}, function listener(field, 
 ###### Default
 >`undefined`
 
+---
+##### validators (object|array)
+>`validators` is an object or array of validator objects. A validator has two properties called `name` and `validate`. Templates can pass this option to the `formly-custom-validation` directive which will add a parser to the `ngModel` controller of the field. The `validate` property can be a function which is passed the `$viewValue` of the field and the field's scope. It can also be an expression which will be evaluated with `value` (the `$viewValue`), `result`, and `options` of the field available. The `name` property is used as the name of the validity state (the name of the object on `$error`).
+
+###### Default
+>`undefined`
+
 ### Form Fields
 Below is a detailed description of each form fields and its custom properties.
 
@@ -435,7 +442,9 @@ _Example password field_
 
 Formly uses angular's built-in validation mechanisms. See the [angular docs](https://docs.angularjs.org/guide/forms) for more information on this.
 
-The form name is what you specify on the `formly-form` directive as the `name` attribute. If you're using a custom template, to specify a field name use the `formly-dynamic-name` directive where the value is an expression which would return the name. This expression is only run once, and it is run immediately. Formly will add a `formField` property to the field, and you can reference that in your template with `options.formField` to get access to properties like `$invalid` or `$error`. See the bootstrap templates for an example. 
+The form name is what you specify on the `formly-form` directive as the `name` attribute. If you're using a custom template, to specify a field name use the `formly-dynamic-name` directive where the value is an expression which would return the name. This expression is only run once, and it is run immediately. Formly will add a `formField` property to the field, and you can reference that in your template with `options.formField` to get access to properties like `$invalid` or `$error`. See the bootstrap templates for an example.
+ 
+You can also specify custom validation in your JSON. See the field called `validators` for more information on this. If you wish to leverage this in a custom template, use the `formly-custom-validation` directive and pass `options.validators` to it. 
 
 ### Global Config
 

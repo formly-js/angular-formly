@@ -5,7 +5,8 @@ Version numbers correspond to `bower.json` version
 ## Backward compatible changes:
 
 - Fixed bug with initializing select template.
-- Added the ability to do validation on fields.
+- Added the ability to do validation on fields with `formly-dynamic-name`.
+- Added `formly-custom-validation` directive.
 
 ## Internal Changes
 

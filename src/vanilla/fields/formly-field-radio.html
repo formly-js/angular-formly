@@ -7,6 +7,7 @@
 		<label>
 			<input type="radio"
                    formly-dynamic-name="options.key"
+                   formly-custom-validation="options.validators"
 				   id="{{id + '_'+ $index}}"
 			 	   aria-describedby="{{id}}_description"
 				   ng-value="option.value"

@@ -1,5 +1,20 @@
 'use strict';
 app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplates) {
+
+	// function scope vars
+
+	// Because you can edit the formFields as JSON, we lose the validate function on here
+	// storing it here to add it back when the JSON updates the formFields.
+	var seeWhatYouTypeValidators = {
+		name: 'notYes',
+		validate: function(value) {
+			return 'yes' === value;
+		},
+		note: 'This note property is actually not part of validators, but I thought you should know that this field\'s validator has a function you can\'t see...'
+	};
+	var seeWhatYouTypeIndex = -1;
+
+
 	// Public Methods
 	$scope.onSubmit = function onSubmit() {
 		$scope.submittedData = $scope.formData;
@@ -26,15 +41,16 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 	// Private Methods
 
 	// Events
-	$scope.$watch('formFieldsStr', function onOptionsUpdated(newValue, OldValue) {
+	$scope.$watch('formFieldsStr', function onOptionsUpdated(newValue) {
 		try {
 			$scope.formFields = $parse(newValue)({});
+			$scope.formFields[seeWhatYouTypeIndex].validators = seeWhatYouTypeValidators;
 			$scope.formFieldsError = false;
 		} catch (e) {
 			$scope.formFieldsError = true;
 		}
 	});
-	$scope.$watch('formDataStr', function onDataUpdated(newValue, OldValue) {
+	$scope.$watch('formDataStr', function onDataUpdated(newValue) {
 		try {
 			$scope.formData = $parse(newValue)({});
 			$scope.formDataError = false;
@@ -116,12 +132,19 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		type: 'customTemplate',
 		templateUrl: 'views/custom-template.html',
 		label: 'do you like seeing what you type?',
-		nameKey: 'firstName'
+		nameKey: 'firstName',
+		validators: seeWhatYouTypeValidators
 	}, {
 		key: 'useDirective',
 		template: '<div custom-field add-smile="true"></div>',
 		type: 'customField',
-		label: 'Do you want the power?'
+		label: 'Do you want the power?',
+		validators: [
+			{
+				name: 'notYes',
+				validate: 'value === "yes"'
+			}
+		]
 	}, {
 		key: 'transportation',
 		type: 'select',
@@ -129,7 +152,7 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		options: [
 			{
 				name: 'Car',
-        value: 'car',
+				value: 'car',
 				group: 'inefficiently'
 			}, {
 				name: 'Helicopter',
@@ -174,6 +197,14 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		type: 'password',
 		label: 'Password'
 	}, {
+		key: 'repeatPassword',
+		type: 'password',
+		label: 'Repeat Password',
+		validators: {
+			name: 'noMatch',
+			validate: 'value === result.password'
+		}
+	}, {
 		key: 'checkThis',
 		type: 'checkbox',
 		label: 'Check this here',
@@ -191,6 +222,13 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		placeholder: 'hideExpressions are evaluated on the result',
 		hideExpression: 'hiddenWhenUnchecked !== "joe"'
 	}];
+
+	$scope.formFields.some(function (field, index) {
+		if (field.key === 'seeWhatYouType') {
+			seeWhatYouTypeIndex = index;
+			return true;
+		}
+	});
 
 	$scope.hiddenFormFields = [
 		{
