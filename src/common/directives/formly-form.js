@@ -14,7 +14,7 @@ angular.module('formly.render')
 		},
 		compile: function () {
 			return {
-				post: function (scope, ele, attr, controller) {
+				post: function (scope, ele, attr) {
 					//Post gets called after angular has created the FormController
 					//Now pass the FormController back up to the parent scope
 					scope.formOnParentScope = scope[attr.name];
@@ -23,7 +23,7 @@ angular.module('formly.render')
 		},
 		controller: function($scope, $element, $parse) {
 			// setup watches for watchExpressions
-			angular.forEach($scope.fields, function(field, index) {
+			angular.forEach($scope.fields, function(field) {
 				if (angular.isDefined(field.watch) &&
 					angular.isDefined(field.watch.expression) &&
 					angular.isDefined(field.watch.listener)) {
@@ -45,8 +45,8 @@ angular.module('formly.render')
 					});
 				}
 			});
-			$scope.$watch('result', function(newValue) {
-				angular.forEach($scope.fields, function(field, index) {
+			$scope.$watch('result', function onResultUpdate() {
+				angular.forEach($scope.fields, function(field) {
 					if (field.hideExpression) {
 						field.hide = $parse(field.hideExpression)($scope.result);
 					}
@@ -55,6 +55,19 @@ angular.module('formly.render')
 					}
 				});
 			}, true);
+
+			$scope.$on('formly-dynamic-name-update', function(e) {
+				e.stopPropagation();
+				window.setTimeout(function() {
+					angular.forEach($scope.fields, function(field) {
+						var formField = $scope.formOnParentScope[field.key];
+						if (formField) {
+							field.formField = formField;
+						}
+					});
+				}); // next tick, give angular an event loop to finish compiling
+			});
+
 		}
 	};
 });

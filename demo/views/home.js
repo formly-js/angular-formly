@@ -7,8 +7,10 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 
 	$scope.toPrettyJSON = function(obj, tabWidth) {
 		var strippedObj = angular.copy(obj);
-		var result = JSON.stringify(strippedObj, null, Number(tabWidth));
-		return result;
+		angular.forEach(strippedObj, function removeFormFieldForPerformancePurposes(field) {
+			delete field.formField;
+		});
+		return JSON.stringify(strippedObj, null, Number(tabWidth));
 	};
 
 	$scope.toggleCustomTypeTemplates = function() {
@@ -188,9 +190,6 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		label: 'You typed Joe! You found me!',
 		placeholder: 'hideExpressions are evaluated on the result',
 		hideExpression: 'hiddenWhenUnchecked !== "joe"'
-	}, {
-		key:'secretCode',
-		type: 'hidden'
 	}];
 
 	$scope.hiddenFormFields = [

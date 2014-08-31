@@ -4,6 +4,7 @@
 		{{options.required ? '*' : ''}}
 	</label>
 	<select id="{{id}}"
+            formly-dynamic-name="options.key"
 			aria-describedby="{{id}}_description"
 			ng-model="value"
 			ng-required="options.required"

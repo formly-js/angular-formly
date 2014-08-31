@@ -6,7 +6,7 @@
 	<div ng-repeat="(key, option) in options.options">
 		<label>
 			<input type="radio"
-				   name="{{id}}"
+                   formly-dynamic-name="options.key"
 				   id="{{id + '_'+ $index}}"
 			 	   aria-describedby="{{id}}_description"
 				   ng-value="option.value"
