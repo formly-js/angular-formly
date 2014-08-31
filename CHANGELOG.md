@@ -23,6 +23,7 @@ Version numbers correspond to `bower.json` version
 - Renamed `formlyTemplateProvider` to `formlyConfigProvider` to make it more generic for any future customization needs. The api is the same as before.
 - Added `setTemplate` and `getTemplate` to the `formlyConfigProvider` allowing developers to set template strings rather than simply a url.
 - Removed `default` property. Interact with the `formData` to set the form data.
+- Removed `value` from scope on templates. To access the value, you must now use `result[option.key || $index]`.
 
 # 0.0.16
 

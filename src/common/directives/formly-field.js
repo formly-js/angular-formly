@@ -8,10 +8,9 @@ angular.module('formly.render')
 			optionsData: '&options',
 			formId: '=formId',
 			index: '=index',
-			value: '=formValue',
 			result: '=formResult'
 		},
-		link: function fieldLink($scope, $element, $attr) {
+		link: function fieldLink($scope, $element) {
 			var template = $scope.options.template || formlyConfig.getTemplate($scope.options.type);
 			if (template) {
 				setElementTemplate(template);

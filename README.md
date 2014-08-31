@@ -271,9 +271,6 @@ _Example checkbox field_
 #### Radio form field
 >The radio field allows multiple choice input with a series of linked inputs, with `type='radio'`.
 
-##### default (string, optional) 
->The default can be set to the `value` of one of the `options`.
-
 ##### options (array, required)
 >`options` is an array of options for the radio form field to display. Each option should be an object with a `name`(string) and `value`(string or number).
 
