@@ -50,16 +50,26 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 			$scope.formFieldsError = true;
 		}
 	});
-	$scope.$watch('formDataStr', function onDataUpdated(newValue) {
-		try {
-			$scope.formData = $parse(newValue)({});
-			$scope.formDataError = false;
-		} catch (e) {
-			$scope.formDataError = true;
-		}
-	});
+    $scope.$watch('formDataStr', function onDataUpdated(newValue) {
+        try {
+            $scope.formData = $parse(newValue)({});
+            $scope.formDataError = false;
+        } catch (e) {
+            $scope.formDataError = true;
+        }
+    });
 
-	// Public Vars
+    $scope.$watch('editJSON', function onDataObjectUpdated(newValue) {
+        try {
+            if(newValue == true) {
+                $scope.formDataStr = $scope.toPrettyJSON($scope.formData, 4);
+            }
+        } catch (e) {
+            $scope.formDataError = true;
+        }
+    });
+
+    // Public Vars
 	if (usingCustomTypeTemplates) {
 		$scope.typeTemplatesButton = 'Use Built-in Type Templates';
 	} else {
