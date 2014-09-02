@@ -66,7 +66,7 @@ Example data as it would be set in the controller
 			label: 'Username',
 			placeholder: 'johndoe',
 			required: true,
-			disabled: false //default: false
+			disabled: false, //default: false
 			description: 'Descriptive text'
 		},
 		{
