@@ -56,17 +56,19 @@ angular.module('formly.render')
 				});
 			}, true);
 
-			$scope.$on('formly-dynamic-name-update', function(e) {
-				e.stopPropagation();
-				window.setTimeout(function() {
-					angular.forEach($scope.fields, function(field) {
-						var formField = $scope.formOnParentScope[field.key];
-						if (formField) {
-							field.formField = formField;
-						}
-					});
-				}); // next tick, give angular an event loop to finish compiling
-			});
+			if ($scope.formOnParentScope) {
+				$scope.$on('formly-dynamic-name-update', function(e) {
+					e.stopPropagation();
+					window.setTimeout(function() {
+						angular.forEach($scope.fields, function(field) {
+							var formField = $scope.formOnParentScope[field.key];
+							if (formField) {
+								field.formField = formField;
+							}
+						});
+					}); // next tick, give angular an event loop to finish compiling
+				});
+			}
 
 		}
 	};
