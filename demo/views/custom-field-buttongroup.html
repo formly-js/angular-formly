@@ -1,0 +1,19 @@
+<div class="btn-group" data-toggle="{{options.selectType==='multiple' ? 'buttons-checkbox' : 'buttons-radio'}}"
+     ng-required="options.required">
+    Custom field of type "buttongroup"
+    <label class="control-label">
+        {{options.label}}
+        {{options.required ? '*' : ''}}
+    </label>
+    <br>
+    <button type="button"
+            class="btn btn-primary {{$parent.result[$parent.options.key].indexOf((options.valueDelimiter || '|') + option.value + (options.valueDelimiter || '|') ) > -1 ? 'active' : ''}}"
+            name="{{id}}"
+            id="{{id + '_'+ $index}}"
+            ng-value="option.value"
+            ng-model="$parent.result[$parent.options.key || $parent.index]"
+            ng-click="$parent.result[$parent.options.key] = options.selectType==='single' ? (options.valueDelimiter || '|') + option.value + (options.valueDelimiter || '|') : ($parent.result[$parent.options.key].indexOf(option.value) > -1 ? $parent.result[$parent.options.key].replace((options.valueDelimiter || '|') + option.value + (options.valueDelimiter || '|'), '') : $parent.result[$parent.options.key] + (options.valueDelimiter || '|') + option.value + (options.valueDelimiter || '|'))"
+            ng-repeat="(key, option) in options.options">
+        {{option.name}}
+    </button>
+</div>
