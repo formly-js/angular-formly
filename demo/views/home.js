@@ -58,6 +58,15 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 			$scope.formDataError = true;
 		}
 	});
+	$scope.$watch('editJSON', function onDataObjectUpdated(newValue) {
+		try {
+			if(newValue == true) {
+				$scope.formDataStr = $scope.toPrettyJSON($scope.formData, 4);
+			}
+		} catch (e) {
+			$scope.formDataError = true;
+		}
+	});
 
 	// Public Vars
 	if (usingCustomTypeTemplates) {
