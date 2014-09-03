@@ -50,10 +50,20 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 			$scope.formFieldsError = true;
 		}
 	});
-	$scope.$watch('formDataStr', function onDataUpdated(newValue) {
+    $scope.$watch('formDataStr', function onDataUpdated(newValue) {
 		try {
 			$scope.formData = $parse(newValue)({});
 			$scope.formDataError = false;
+		} catch (e) {
+			$scope.formDataError = true;
+		}
+	});
+
+	$scope.$watch('editJSON', function onDataObjectUpdated(newValue) {
+		try {
+			if(newValue == true) {
+				$scope.formDataStr = $scope.toPrettyJSON($scope.formData, 4);
+			}
 		} catch (e) {
 			$scope.formDataError = true;
 		}
@@ -110,7 +120,59 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 				value: 'no'
 			}
 		]
-	}, {
+    }, {
+        "key": "multiSelectButtons",
+        "type": "buttongroup",
+        "selectType": "multiple",
+        "valueDelimiter": "|",
+        "label": "Is this thing on?",
+        "options": [
+            {
+                "name": "Sure",
+                "value": "sure"
+            },
+            {
+                "name": "Nope",
+                "value": "nope"
+            },
+            {
+                "name": "Why Not?",
+                "value": "whynot"
+            }
+        ]
+    }, {
+        "key": "singleToggle",
+        "type": "buttongroup",
+        "selectType": "multiple",
+        "valueDelimiter": "|",
+        "label": "Toggle me!",
+        "options": [
+            {
+                "name": "toggle",
+                "value": "active"
+            }
+        ]
+    }, {
+        "key": "singleSelectButtons",
+        "type": "buttongroup",
+        "selectType": "single",
+        "required": true,
+        "label": "Which one is best?",
+        "options": [
+            {
+                "name": "Apple",
+                "value": "apple"
+            },
+            {
+                "name": "Banana",
+                "value": "banana"
+            },
+            {
+                "name": "Peach",
+                "value": "peach"
+            }
+        ]
+    }, {
 		key: 'angularFan',
 		type: 'text',
 		label: 'Angular Fan?',

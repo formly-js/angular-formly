@@ -26,7 +26,8 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, forml
 		// or
 		formlyConfigProvider.setTemplateUrl({
 			radio: 'views/custom-field-radio.html',
-			checkbox: 'views/custom-field-checkbox.html'
+			checkbox: 'views/custom-field-checkbox.html',
+            buttongroup: 'views/custom-field-buttongroup.html'
 		});
 	}
 
