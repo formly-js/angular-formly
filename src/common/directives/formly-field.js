@@ -1,5 +1,5 @@
 angular.module('formly.render')
-.directive('formlyField', function formlyField($http, $compile, $templateCache, formlyConfig) {
+.directive('formlyField', function formlyField($http, $compile, $templateCache, $interpolate, formlyConfig) {
 	'use strict';
 	return {
 		restrict: 'AE',
@@ -29,6 +29,14 @@ angular.module('formly.render')
 				}
 			}
 			function setElementTemplate(templateData) {
+				var startSym = $interpolate.startSymbol();
+				var endSym = $interpolate.endSymbol();
+				if (startSym !== '{{') {
+					templateData = templateData.replace(/\{\{/g, startSym);
+				}
+				if (endSym !== '}}') {
+					templateData = templateData.replace(/\}\}/g, endSym);
+				}
 				$element.html(templateData);
 				$compile($element.contents())($scope);
 			}
