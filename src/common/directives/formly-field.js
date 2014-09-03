@@ -13,7 +13,7 @@ angular.module('formly.render')
 		link: function fieldLink($scope, $element) {
 			var template = $scope.options.template || formlyConfig.getTemplate($scope.options.type);
 			if (template) {
-				setElementTemplate(template);
+				setElementTemplate($templateCache.get(template));
 			} else {
 				var templateUrl = $scope.options.templateUrl || formlyConfig.getTemplateUrl($scope.options.type);
 				if (templateUrl) {
