@@ -210,21 +210,20 @@ angular.module('formly.render')
 					}
 				});
 			}, true);
-
-			if ($scope.formOnParentScope) {
-				$scope.$on('formly-dynamic-name-update', function(e) {
-					e.stopPropagation();
-					window.setTimeout(function() {
-						angular.forEach($scope.fields, function(field) {
-							var formField = $scope.formOnParentScope[field.key];
-							if (formField) {
-								field.formField = formField;
-							}
-						});
-					}); // next tick, give angular an event loop to finish compiling
-				});
-			}
-
+			$scope.$on('formly-dynamic-name-update', function(e) {
+				e.stopPropagation();
+				if (!$scope.formOnParentScope) {
+					return;
+				}
+				window.setTimeout(function() {
+					angular.forEach($scope.fields, function(field) {
+						var formField = $scope.formOnParentScope[field.key];
+						if (formField) {
+							field.formField = formField;
+						}
+					});
+				}); // next tick, give angular an event loop to finish compiling
+			});
 		}]
 	};
 });
@@ -232,47 +231,47 @@ angular.module('formly.render').run(['$templateCache', function($templateCache) 
   'use strict';
 
   $templateCache.put('fields/formly-field-checkbox.html',
-    "<div class=checkbox ng-class=\"{'has-error': options.formField.$invalid}\"><label><input type=checkbox id={{id}} formly-dynamic-name=options.key formly-custom-validation=options.validators aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=\"result[options.key || index]\"> {{options.label || 'Checkbox'}} {{options.required ? '*' : ''}}</label><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
+    "<div class=checkbox><label><input type=checkbox aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=value> {{options.label || 'Checkbox'}} {{options.required ? '*' : ''}}</label><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
   );
 
 
   $templateCache.put('fields/formly-field-email.html',
-    "<div class=form-group ng-class=\"{'has-error': options.formField.$invalid}\"><label for={{id}}>{{options.label || 'Email'}} {{options.required ? '*' : ''}}</label><input type=email class=form-control id={{id}} formly-dynamic-name=options.key formly-custom-validation=options.validators placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=\"result[options.key || index]\"><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
+    "<div class=form-group><label for={{id}}>{{options.label || 'Email'}} {{options.required ? '*' : ''}}</label><input type=email class=form-control id={{id}} placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=value><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
   );
 
 
   $templateCache.put('fields/formly-field-hidden.html',
-    "<input type=hidden ng-model=\"result[options.key || index]\">"
+    "<input type=hidden ng-model=value>"
   );
 
 
   $templateCache.put('fields/formly-field-number.html',
-    "<div class=form-group ng-class=\"{'has-error': options.formField.$invalid}\"><label for={{id}}>{{options.label || 'Number'}} {{options.required ? '*' : ''}}</label><input type=number class=form-control id={{id}} formly-dynamic-name=options.key formly-custom-validation=options.validators placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled min={{options.min}} max={{options.max}} ng-minlength={{options.minlength}} ng-maxlength={{options.maxlength}} ng-model=\"result[options.key || index]\"><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
+    "<div class=form-group><label for={{id}}>{{options.label || 'Number'}} {{options.required ? '*' : ''}}</label><input type=number class=form-control id={{id}} placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled min={{options.min}} max={{options.max}} ng-minlength={{options.minlength}} ng-maxlength={{options.maxlength}} ng-model=value><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
   );
 
 
   $templateCache.put('fields/formly-field-password.html',
-    "<div class=form-group ng-class=\"{'has-error': options.formField.$invalid}\"><label for={{id}}>{{options.label || 'Password'}} {{options.required ? '*' : ''}}</label><input type=password class=form-control id={{id}} formly-dynamic-name=options.key formly-custom-validation=options.validators aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-trim=\"{{options.trimWhitespace || false}}\" ng-model=\"result[options.key || index]\"><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
+    "<div class=form-group><label for={{id}}>{{options.label || 'Password'}} {{options.required ? '*' : ''}}</label><input type=password class=form-control id={{id}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-trim=\"{{options.trimWhitespace || false}}\" ng-model=value><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
   );
 
 
   $templateCache.put('fields/formly-field-radio.html',
-    "<div class=radio-group ng-class=\"{'has-error': options.formField.$invalid}\"><label class=control-label>{{options.label}} {{options.required ? '*' : ''}}</label><div class=radio ng-repeat=\"(key, option) in options.options\"><label><input type=radio formly-dynamic-name=options.key formly-custom-validation=options.validators id=\"{{id + '_'+ $index}}\" aria-describedby={{id}}_description ng-value=option.value ng-required=options.required ng-model=\"$parent.result[$parent.options.key || $parent.index]\"> {{option.name}}</label><p id={{id}}_description class=help-block ng-if=option.description>{{option.description}}</p></div></div>"
+    "<div class=radio-group><label class=control-label>{{options.label}} {{options.required ? '*' : ''}}</label><div class=radio ng-repeat=\"(key, option) in options.options\"><label><input type=radio name={{id}} id=\"{{id + '_'+ $index}}\" aria-describedby={{id}}_description ng-value=option.value ng-required=options.required ng-model=$parent.value> {{option.name}}</label><p id={{id}}_description class=help-block ng-if=option.description>{{option.description}}</p></div></div>"
   );
 
 
   $templateCache.put('fields/formly-field-select.html',
-    "<div class=form-group ng-class=\"{'has-error': options.formField.$invalid}\"><label for={{id}}>{{options.label || 'Select'}} {{options.required ? '*' : ''}}</label><select class=form-control id={{id}} formly-dynamic-name=options.key formly-custom-validation=options.validators aria-describedby={{id}}_description ng-model=\"result[options.key || index]\" ng-required=options.required ng-disabled=options.disabled ng-options=\"option.value as option.name group by option.group for option in options.options\"></select><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
+    "<div class=form-group><label for={{id}}>{{options.label || 'Select'}} {{options.required ? '*' : ''}}</label><select class=form-control id={{id}} aria-describedby={{id}}_description ng-model=value ng-required=options.required ng-disabled=options.disabled ng-options=\"option.value as option.name group by option.group for option in options.options\"></select><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
   );
 
 
   $templateCache.put('fields/formly-field-text.html',
-    "<div class=form-group ng-class=\"{'has-error': options.formField.$invalid}\"><label for={{id}}>{{options.label || 'Text'}} {{options.required ? '*' : ''}}</label><input type=text class=form-control id={{id}} formly-dynamic-name=options.key formly-custom-validation=options.validators placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=\"result[options.key || index]\"><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
+    "<div class=form-group><label for={{id}}>{{options.label || 'Text'}} {{options.required ? '*' : ''}}</label><input type=text class=form-control id={{id}} placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=value><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
   );
 
 
   $templateCache.put('fields/formly-field-textarea.html',
-    "<div class=form-group ng-class=\"{'has-error': options.formField.$invalid}\"><label for={{id}}>{{options.label || 'Text'}} {{options.required ? '*' : ''}}</label><textarea type=text class=form-control id={{id}} formly-dynamic-name=options.key formly-custom-validation=options.validators rows={{options.lines}} placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=\"result[options.key || index]\">\n" +
+    "<div class=form-group><label for={{id}}>{{options.label || 'Text'}} {{options.required ? '*' : ''}}</label><textarea type=text class=form-control id={{id}} rows={{options.lines}} placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=value>\n" +
     "\t</textarea><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
   );
 
@@ -281,7 +280,64 @@ angular.module('formly.render').run(['$templateCache', function($templateCache) 
   'use strict';
 
   $templateCache.put('directives/formly-form.html',
-    "<form class=formly role=form><formly-field ng-repeat=\"field in fields\" options=field form-result=result form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></form>"
+    "<form class=formly role=form><formly-field ng-repeat=\"field in fields\" options=field form-result=result form-value=result[field.key||$index] form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></form>"
+  );
+
+}]);
+angular.module('formly.render').run(['$templateCache', function($templateCache) {
+  'use strict';
+
+  $templateCache.put('fields/formly-field-checkbox.html',
+    "<div class=checkbox><label><input type=checkbox aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=value> {{options.label || 'Checkbox'}} {{options.required ? '*' : ''}}</label><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
+  );
+
+
+  $templateCache.put('fields/formly-field-email.html',
+    "<div class=form-group><label for={{id}}>{{options.label || 'Email'}} {{options.required ? '*' : ''}}</label><input type=email class=form-control id={{id}} placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=value><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
+  );
+
+
+  $templateCache.put('fields/formly-field-hidden.html',
+    "<input type=hidden ng-model=value>"
+  );
+
+
+  $templateCache.put('fields/formly-field-number.html',
+    "<div class=form-group><label for={{id}}>{{options.label || 'Number'}} {{options.required ? '*' : ''}}</label><input type=number class=form-control id={{id}} placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled min={{options.min}} max={{options.max}} ng-minlength={{options.minlength}} ng-maxlength={{options.maxlength}} ng-model=value><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
+  );
+
+
+  $templateCache.put('fields/formly-field-password.html',
+    "<div class=form-group><label for={{id}}>{{options.label || 'Password'}} {{options.required ? '*' : ''}}</label><input type=password class=form-control id={{id}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-trim=\"{{options.trimWhitespace || false}}\" ng-model=value><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
+  );
+
+
+  $templateCache.put('fields/formly-field-radio.html',
+    "<div class=radio-group><label class=control-label>{{options.label}} {{options.required ? '*' : ''}}</label><div class=radio ng-repeat=\"(key, option) in options.options\"><label><input type=radio name={{id}} id=\"{{id + '_'+ $index}}\" aria-describedby={{id}}_description ng-value=option.value ng-required=options.required ng-model=$parent.value> {{option.name}}</label><p id={{id}}_description class=help-block ng-if=option.description>{{option.description}}</p></div></div>"
+  );
+
+
+  $templateCache.put('fields/formly-field-select.html',
+    "<div class=form-group><label for={{id}}>{{options.label || 'Select'}} {{options.required ? '*' : ''}}</label><select class=form-control id={{id}} aria-describedby={{id}}_description ng-model=value ng-required=options.required ng-disabled=options.disabled ng-options=\"option.value as option.name group by option.group for option in options.options\"></select><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
+  );
+
+
+  $templateCache.put('fields/formly-field-text.html',
+    "<div class=form-group><label for={{id}}>{{options.label || 'Text'}} {{options.required ? '*' : ''}}</label><input type=text class=form-control id={{id}} placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=value><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
+  );
+
+
+  $templateCache.put('fields/formly-field-textarea.html',
+    "<div class=form-group><label for={{id}}>{{options.label || 'Text'}} {{options.required ? '*' : ''}}</label><textarea type=text class=form-control id={{id}} rows={{options.lines}} placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=value>\n" +
+    "\t</textarea><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
+  );
+
+}]);
+angular.module('formly.render').run(['$templateCache', function($templateCache) {
+  'use strict';
+
+  $templateCache.put('directives/formly-form.html',
+    "<form class=formly role=form><formly-field ng-repeat=\"field in fields\" options=field form-result=result form-value=result[field.key||$index] form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></form>"
   );
 
 }]);
