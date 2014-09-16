@@ -1,5 +1,5 @@
 angular.module('formly.render')
-.directive('formlyForm', function formlyForm() {
+.directive('formlyForm', function formlyForm($timeout) {
 	'use strict';
 	return {
 		restrict: 'E',
@@ -60,7 +60,7 @@ angular.module('formly.render')
 				if (!$scope.formOnParentScope) {
 					return;
 				}
-				window.setTimeout(function() {
+				$timeout(function() {
 					angular.forEach($scope.fields, function(field) {
 						var formField = $scope.formOnParentScope[field.key];
 						if (formField) {
