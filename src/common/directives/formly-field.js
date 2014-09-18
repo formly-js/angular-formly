@@ -11,7 +11,17 @@ angular.module('formly.render')
 			result: '=formResult'
 		},
 		link: function fieldLink($scope, $element) {
-			var template = $scope.options.template || formlyConfig.getTemplate($scope.options.type);
+      var templateOptions = 0;
+      templateOptions += $scope.options.template ? 1 : 0;
+      templateOptions += $scope.options.type ? 1 : 0;
+      templateOptions += $scope.options.templateUrl ? 1 : 0;
+      if (templateOptions === 0) {
+        console.warn('Formly Error: template type \'' + $scope.options.type + '\' not supported. On element:', $element);
+        return;
+      } else if (templateOptions > 1) {
+        console.warn('Formly Error: You must only provide a type, template, or templateUrl for a field. On element:', $element);
+      }
+      var template = $scope.options.template || formlyConfig.getTemplate($scope.options.type);
 			if (template) {
 				setElementTemplate(template);
 			} else {
@@ -24,8 +34,6 @@ angular.module('formly.render')
 					}, function(error) {
 						console.warn('Formly Error: Problem loading template for ' + templateUrl, error);
 					});
-				} else {
-					console.warn('Formly Error: template type \'' + $scope.options.type + '\' not supported.');
 				}
 			}
 			function setElementTemplate(templateData) {

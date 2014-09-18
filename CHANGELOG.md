@@ -7,6 +7,7 @@ Version numbers correspond to `bower.json` version
 - Fixed bug with initializing select template.
 - Added the ability to do validation on fields with `formly-dynamic-name`.
 - Added `formly-custom-validation` directive.
+- Added warning in `formly-field` when more than just a type, template, or templateUrl are provided (should only have one)
 
 ## Internal Changes
 

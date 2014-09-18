@@ -466,7 +466,7 @@ formlyConfigProvider.setTemplateUrl('checkbox', 'views/custom-formly-checkbox.ht
 
 // the same can be accomplished with
 
-formlyConfigProvider.setTemplate({
+formlyConfigProvider.setTemplateUrl({
 	radio: 'views/custom-formly-radio.html',
 	checkbox: 'views/custom-formly-checkbox.html'
 });
@@ -491,34 +491,8 @@ Please see [the Wiki](https://github.com/nimbly/angular-formly/wiki) for tips an
 
 ## Roadmap
 
-## Release Notes
-
-## Development
-
-1. `git checkout master`
-	1. run `npm install && bower install`
-	2. test your code using `grunt dev` which hosts the app at `http://localhost:4000`
-	3. commit your changes
-3. update README, CHANGELOG, bower.json, and do any other final polishing to prepare for publishing
-	1. git commit changes
-
-*Note:* There's a symlink for `src` and `bower_components` in the `demo` and `tests` folders. Just FYI...
-
-## Grunt targets
-* `grunt dev`: Creates a server for testing at `http://0.0.0.0:4000`
-* `grunt build`: Creates the dist
-* `grunt publish`: Copies the src folder and bower_components to gh-pages
+- Split out the templates into other repositories
 
 ## Contributing
 
-When submitting a Pull Request please submit it to the `master` branch.
-
-Please do the following:
-* Follow the existing styles
-** Use the third option here: http://blogs.msdn.com/b/cyrusn/archive/2004/09/14/229474.aspx (Thats how we roll)
-* Update the README with documentation so people can read how your changes work
-* Update the example so people can see how your changes work
-
-## What do you need help with?
-* Test! We don't have any...
-* Any of the issues in GitHub, let us know if you have some time to fix one.
+Please see the [CONTRIBUTING Guidelines](CONTRIBUTING.md).

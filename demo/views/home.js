@@ -138,7 +138,6 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		label: 'Example of setTemplate'
 	}, {
 		key: 'seeWhatYouType',
-		type: 'customTemplate',
 		templateUrl: 'views/custom-template.html',
 		label: 'do you like seeing what you type?',
 		nameKey: 'firstName',
@@ -146,7 +145,6 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 	}, {
 		key: 'useDirective',
 		template: '<div custom-field add-smile="true"></div>',
-		type: 'customField',
 		label: 'Do you want the power?',
 		validators: [
 			{
