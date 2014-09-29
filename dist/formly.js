@@ -243,19 +243,3 @@ angular.module('formly.render').run(['$templateCache', function($templateCache) 
   );
 
 }]);
-angular.module('formly.render').run(['$templateCache', function($templateCache) {
-  'use strict';
-
-  $templateCache.put('directives/formly-form.html',
-    "<form class=formly role=form><formly-field ng-repeat=\"field in fields\" options=field form-result=result form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></form>"
-  );
-
-}]);
-angular.module('formly.render').run(['$templateCache', function($templateCache) {
-  'use strict';
-
-  $templateCache.put('directives/formly-form.html',
-    "<form class=formly role=form><formly-field ng-repeat=\"field in fields\" options=field form-result=result form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></form>"
-  );
-
-}]);
