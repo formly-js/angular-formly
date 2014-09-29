@@ -487,7 +487,7 @@ Work pretty much the same as the their url counterparts, except they accept an a
 
 ## Tips and Tricks
 
-Please see [the Wiki](https://github.com/nimbly/angular-formly/wiki) for tips and tricks from the community.
+Please see [the Wiki](https://github.com/angular-formly/angular-formly/wiki) for tips and tricks from the community.
 
 ## Roadmap
 
