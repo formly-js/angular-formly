@@ -9,7 +9,7 @@ Formly for Angular is an AngularJS module which has directives to help customize
 	</formly-form>
 ```
 
-### Demo : http://angular-formly.github.io/angular-formly/
+### Demo : http://formly-js.github.io/angular-formly/
 
 ## Dependencies
 - Required to use Formly:
