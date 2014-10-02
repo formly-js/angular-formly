@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/angular-formly/angular-formly.svg)](https://travis-ci.org/angular-formly/angular-formly)
-[![Coverage Status](https://img.shields.io/coveralls/angular-formly/angular-formly.svg)](https://coveralls.io/r/angular-formly/angular-formly)
+[![Build Status](https://travis-ci.org/formly-js/angular-formly.svg)](https://travis-ci.org/angular-formly/angular-formly)
+[![Coverage Status](https://img.shields.io/coveralls/formly-js/angular-formly.svg)](https://coveralls.io/r/angular-formly/angular-formly)
 
 ## Formly
 Formly for Angular is an AngularJS module which has directives to help customize and render JSON based forms. The directive originated from a need to allow our users to create surveys and distribute them easily. Currently we've can render the form data from JSON and assign a model to form so we can receive the submitted data.
@@ -45,7 +45,7 @@ See `bower.json` and `index.html` in the `master` branch for a full list / more 
 
 ## Documentation
 
-*Note:* This `README.md` is for the latest version of `formly`. There have been some changes in the latest version which is not stable. For documentation on the latest stable version, see the [0.0.16 documentation](https://github.com/angular-formly/angular-formly/tree/0.0.16)
+*Note:* This `README.md` is for the latest version of `formly`. There have been some changes in the latest version which is not stable. For documentation on the latest stable version, see the [0.0.16 documentation](https://github.com/formly-js/angular-formly/tree/0.0.16)
 
 You can add a formly-form in your HTML templates as shown below.
 ```html
@@ -487,7 +487,7 @@ Work pretty much the same as the their url counterparts, except they accept an a
 
 ## Tips and Tricks
 
-Please see [the Wiki](https://github.com/angular-formly/angular-formly/wiki) for tips and tricks from the community.
+Please see [the Wiki](https://github.com/formly-js/angular-formly/wiki) for tips and tricks from the community.
 
 ## Roadmap
 
