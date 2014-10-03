@@ -496,3 +496,8 @@ Please see [the Wiki](https://github.com/formly-js/angular-formly/wiki) for tips
 ## Contributing
 
 Please see the [CONTRIBUTING Guidelines](CONTRIBUTING.md).
+
+## Thanks
+
+A special thanks to [Nimbly](http://gonimbly.com) for creating/sponsoring Angular-Formly's development.
+Thanks to [Kent C. Dodds](https://github.com/kentcdodds) for his continued support on the project.
