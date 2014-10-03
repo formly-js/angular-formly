@@ -2,11 +2,11 @@
 
 ## Issues
 
-If you've found an issue, please submit it in [the issues](https://github.com/angular-formly/angular-formly/issues) with a link to a plunker that demonstrates the issue (use [this template](http://plnkr.co/edit/tpl:1R3t4fvpXcJyiu96ICY5?p=preview))
+If you've found an issue, please submit it in [the issues](https://github.com/formly-js/angular-formly/issues) with a link to a plunker that demonstrates the issue (use [this template](http://plnkr.co/edit/tpl:1R3t4fvpXcJyiu96ICY5?p=preview))
 
 ## Pull Requests
 
-If you would like to add functionality, please submit [an issue](https://github.com/angular-formly/angular-formly/issues) first to make sure it's a direction we want to take.
+If you would like to add functionality, please submit [an issue](https://github.com/formly-js/angular-formly/issues) first to make sure it's a direction we want to take.
 
 When submitting a Pull Request please submit it to the `master` branch.
 

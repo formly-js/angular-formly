@@ -2,16 +2,16 @@
   "name": "angular-formly",
   "version": "0.0.16",
   "author": "Astrism <astrisms@gmail.com>",
-  "homepage": "http://angular-formly.github.io/angular-formly/",
+  "homepage": "http://formly-js.github.io/angular-formly/",
   "repository": {
     "type": "git",
-    "url": "git://github.com/angular-formly/angular-formly.git"
+    "url": "git://github.com/formly-js/angular-formly.git"
   },
   "main": "dist/formly.min.js",
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://raw.githubusercontent.com/angular-formly/angular-formly/master/LICENSE"
+      "url": "https://raw.githubusercontent.com/formly-js/angular-formly/master/LICENSE"
     }
   ],
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
