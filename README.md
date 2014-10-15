@@ -116,6 +116,17 @@ When constructing fields use the options below to customize each field object. Y
 ##### template (string)
 >`template` can be set instead of `type` or `templateUrl` to use a custom html template form field. Should be used with one-liners mostly (like a directive). Useful for adding functionality to fields.
 
+**Note:** This can be used to add HTML instead of a form field.
+
+Examples:
+```html
+template: '<p>Some text here</p>'
+```
+
+```html
+template: '<hr />'
+```
+
 ###### Default
 >`undefined`
 
