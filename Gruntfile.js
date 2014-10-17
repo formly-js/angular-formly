@@ -116,7 +116,6 @@ module.exports = function(grunt) {
 
 		var ngtemplatesOptions = {
 			module: 'formly.render',
-			append: true,
 			htmlmin: {
 				collapseBooleanAttributes: true,
 				collapseWhitespace: true,
@@ -129,21 +128,21 @@ module.exports = function(grunt) {
 			}
 		};
 
+		var ngtemplatesFiles = {
+			cwd: preBuiltDest + '/',
+			src: [ 'directives/**/*.html' ],
+			dest: templatesFile
+		};
+
+		if (!noTemplates) {
+			ngtemplatesFiles.src.push(target+'/fields/{,**/}*.html');
+		}
+
 		config.ngtemplates[target] = {
 			options: ngtemplatesOptions,
-			files: [
-				{
-					cwd: preBuiltDest + '/' + target + '/',
-					src: [ 'fields/**/*.html' ],
-					dest: templatesFile
-				},
-				{
-					cwd: preBuiltDest + '/',
-					src: [ 'directives/**/*.html' ],
-					dest: templatesFile
-				}
-			]
+			files: [ ngtemplatesFiles ]
 		};
+
 
 		config.concat[target] = {
 			src: [preBuiltDest + '/modules/**/*.js', preBuiltDest + '/providers/formly-config.js', preBuiltDest + '/**/*.js'],
