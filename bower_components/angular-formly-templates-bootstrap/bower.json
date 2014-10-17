@@ -1,0 +1,40 @@
+{
+  "name": "angular-formly-templates-bootstrap",
+  "version": "0.0.1",
+  "authors": [
+    "Astrism <astrisms@gmail.com>"
+  ],
+  "main": [
+    "dist/angular-formly-templates-bootstrap.min.js",
+    "dist/angular-formly-templates-bootstrap.min.map"
+  ],
+  "description": "Angular-Formly plugin which outputs bootstrap compatible form fields.",
+  "keywords": [
+    "AngularJs",
+    "form",
+    "formly",
+    "json",
+    "bootstrap",
+    "html"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.22",
+    "angular-formly": "#474ec466fe0a0c71b4d23b6bd6af8306899fc517"
+  },
+  "devDependencies": {
+    "angular-ui-router": "~0.2.10",
+    "angular-highlightjs": "~0.3.0",
+    "highlightjs": "~8.0.0",
+    "bootstrap": "~3.2.0",
+    "chai": "~1.9.1",
+    "mocha": "~1.21.4"
+  }
+}

@@ -1,0 +1,21 @@
+<div class="form-group" ng-class="{'has-error': options.formField.$invalid}">
+	<label for="{{id}}">
+		{{options.label || 'Number'}}
+		{{options.required ? '*' : ''}}
+	</label>
+	<input type="number"
+		   class="form-control"
+		   id="{{id}}"
+           formly-dynamic-name="options.key"
+           formly-custom-validation="options.validators"
+		   placeholder="{{options.placeholder}}"
+		   aria-describedby="{{id}}_description"
+		   ng-required="options.required"
+		   ng-disabled="options.disabled"
+		   min="{{options.min}}"
+		   max="{{options.max}}"
+		   ng-minlength="{{options.minlength}}"
+		   ng-maxlength="{{options.maxlength}}"
+		   ng-model="result[options.key || index]">
+   <p id="{{id}}_description" class="help-block" ng-if="options.description">{{options.description}}</p>
+</div>
