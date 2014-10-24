@@ -29,11 +29,11 @@ See `bower.json` and `index.html` in the `master` branch for a full list / more 
 
  `<script src="bower_components/angular-formly/dist/formly.min.js"></script>`
 
-> *Prebuilt Templates*
+  > *Prebuilt Templates*
  - [Vanilla Template](https://github.com/formly-js/angular-formly-templates-vanilla#install-in-your-project): no fancy styling, just plain html
  - [Bootstrap Templates](https://github.com/formly-js/angular-formly-templates-bootstrap#install-in-your-project): bootstrap compatible forms, form-groups, etc.
 
-> DIY: Regardless of which flavor you use, you can create your own templates with `formlyConfigProvider`. Use any of the builds above and override all the templates or just the ones you need.
+  > DIY: Regardless of which flavor you use, you can create your own templates with `formlyConfigProvider`. Use any of the builds above and override all the templates or just the ones you need.
 
 3. Add 'formly' as a required module to your angular app, usually in `app.js`:  
  `var app = angular.module('app', ['ng', 'ui.router', 'formly']);`
