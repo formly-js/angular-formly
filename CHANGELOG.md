@@ -18,6 +18,7 @@ Version numbers correspond to `bower.json` version
 
 ## Breaking changes:
 
+- Moved all field templates to separate repositories.
 - Added no-template build that builds to `formly.js` and changed vanilla build to `formly.vanilla.js`.
 - Removed all options to customize the submit button and now transclude instead. Because there are multiple skins of formly it made little sense to have a template for formly that needed different styling based on the build target (bootstrap vs. vanilla). The `formly-form` directive now transcludes so a submit button can be added there.
 - Removed `formlyOptionsProvider` because all useful global customizability is now unecessary.
