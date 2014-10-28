@@ -51,7 +51,7 @@ angular.module('formly.render')
 			}
 
 			// set field id to link labels and fields
-			$scope.id = $scope.formId + type + $scope.index;
+			$scope.id = $scope.formId + type + $scope.options.key + $scope.index;
 		}
 	};
 });
