@@ -1,6 +1,12 @@
 Version numbers correspond to `bower.json` version
 
-# Latest (maybe 0.1.0)
+# Latest
+
+## Breaking changes:
+
+- Changing the id given to fields. It now also contains the key also. We don't expect anyone was depending on this, but it does change behavior so it's listed as a breaking change.
+
+# 1.0.0
 
 ## Backward compatible changes:
 
