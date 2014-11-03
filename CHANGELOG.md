@@ -2,6 +2,10 @@ Version numbers correspond to `bower.json` version
 
 # Latest
 
+## Backward compatible changes:
+
+- Adding class `formly-field` to the fields to make it easier to select them with css selectors.
+
 ## Breaking changes:
 
 - Changing the id given to fields. It now also contains the key also. We don't expect anyone was depending on this, but it does change behavior so it's listed as a breaking change.

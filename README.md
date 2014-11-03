@@ -135,7 +135,7 @@ template: '<hr />'
 
 ---
 ##### key (string)
->By default form results are keyed by location in the form array, you can override this by specifying a `key`. 
+>By default form results are keyed by location in the form array, you can override this by specifying a `key`.
 
 ###### Default
 >`undefined`
@@ -449,13 +449,17 @@ _Example password field_
 
 ## Other Notes
 
+### CSS Classes
+
+The resulting form element has the class `formly` and each field has the class `formly-field`.
+
 ### Validation
 
 Formly uses angular's built-in validation mechanisms. See the [angular docs](https://docs.angularjs.org/guide/forms) for more information on this.
 
 The form name is what you specify on the `formly-form` directive as the `name` attribute. If you're using a custom template, to specify a field name use the `formly-dynamic-name` directive where the value is an expression which would return the name. This expression is only run once, and it is run immediately. Formly will add a `formField` property to the field, and you can reference that in your template with `options.formField` to get access to properties like `$invalid` or `$error`. See the bootstrap templates for an example.
- 
-You can also specify custom validation in your JSON. See the field called `validators` for more information on this. If you wish to leverage this in a custom template, use the `formly-custom-validation` directive and pass `options.validators` to it. 
+
+You can also specify custom validation in your JSON. See the field called `validators` for more information on this. If you wish to leverage this in a custom template, use the `formly-custom-validation` directive and pass `options.validators` to it.
 
 ### Global Config
 
@@ -498,7 +502,7 @@ Please see [the Wiki](https://github.com/formly-js/angular-formly/wiki) for tips
 
 ## Roadmap
 
-- Split out the templates into other repositories
+- Perhaps integrate with [angular-form-builder](http://kelp404.github.io/angular-form-builder/)
 
 ## Contributing
 
