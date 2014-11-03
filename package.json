@@ -32,7 +32,6 @@
     "grunt-gh-pages": "~0.9.0",
     "grunt-mocha": "^0.4.11",
     "grunt-ng-annotate": "^0.3.2",
-    "grunt-ngmin": "0.0.3",
     "load-grunt-tasks": "^0.6.0",
     "lodash-node": "^2.4.1",
     "time-grunt": "^0.4.0"
