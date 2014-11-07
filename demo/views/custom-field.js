@@ -2,7 +2,7 @@ app.directive('customField', function($timeout) {
 	return {
 		template: function(el, attrs) {
 			return [
-				'<div class="form-group" ng-class="{\'has-error\': options.formField.$invalid}">',
+				'<div class="form-group" ng-class="{\'has-error\': form[options.key].$invalid}">',
 					(attrs.hasOwnProperty('addSmile') ? ':-)' : ''),
 					'<label for="{{id}}">',
 						'{{options.label || "Text"}}',

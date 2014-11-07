@@ -6,9 +6,10 @@ angular.module('formly.render')
 		transclude: true,
 		scope: {
 			optionsData: '&options',
-			formId: '=formId',
-			index: '=index',
-			result: '=formResult'
+			formId: '=',
+			index: '=',
+			result: '=formResult',
+			form: '=?'
 		},
 		link: function fieldLink($scope, $element) {
       var templateOptions = 0;
