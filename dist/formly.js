@@ -65,9 +65,10 @@ angular.module('formly.render')
 		transclude: true,
 		scope: {
 			optionsData: '&options',
-			formId: '=formId',
-			index: '=index',
-			result: '=formResult'
+			formId: '=',
+			index: '=',
+			result: '=formResult',
+			form: '=?'
 		},
 		link: function fieldLink($scope, $element) {
       var templateOptions = 0;
@@ -239,7 +240,7 @@ angular.module('formly.render').run(['$templateCache', function($templateCache) 
   'use strict';
 
   $templateCache.put('directives/formly-form.html',
-    "<form class=formly role=form><formly-field ng-repeat=\"field in fields\" class=formly-field options=field form-result=result form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></form>"
+    "<form class=formly role=form><formly-field ng-repeat=\"field in fields\" class=formly-field options=field form-result=result form=formOnParentScope form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></form>"
   );
 
 }]);
