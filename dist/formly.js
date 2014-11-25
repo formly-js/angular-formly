@@ -12,34 +12,39 @@ angular.module('formly.render').directive('formlyCustomValidation', ["$parse", f
 			if (!validators) {
 				return;
 			}
-			if (!angular.isArray(validators)) {
-				validators = [validators];
+			if (angular.isArray(validators) || (validators.name && validators.validate)) {
+				// using old api, convert to the new api
+				if (!angular.isArray(validators)) {
+					validators = [validators];
+				}
+				var newValidators = {};
+				angular.forEach(validators, function(validator) {
+					newValidators[validator.name] = validator.validate;
+				});
+				validators = newValidators;
 			}
 
 			// setup watchers and parsers
-			angular.forEach(validators, function(validator) {
+			angular.forEach(validators, function(validator, name) {
 				ctrl.$parsers.unshift(function(viewValue) {
-					applyValidity(validator, viewValue);
+					applyValidity(validator, name, viewValue);
 					return viewValue;
 				});
 			});
 
-			function applyValidity(validator, value) {
-				if (!validator.validate) {
-					return;
-				}
+			function applyValidity(validator, name, value) {
 				var isValid = false;
-				if (angular.isFunction(validator.validate)) {
-					isValid = validator.validate(value, scope);
+				if (angular.isFunction(validator)) {
+					isValid = validator(value, scope);
 				} else {
 					var validationScope = {
 						value: value,
 						options: scope.options,
 						result: scope.result
 					};
-					isValid = $parse(validator.validate)(validationScope);
+					isValid = $parse(validator)(validationScope);
 				}
-				ctrl.$setValidity(validator.name, isValid);
+				ctrl.$setValidity(name, isValid);
 			}
 		}
 	};

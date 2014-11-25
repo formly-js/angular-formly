@@ -6,11 +6,9 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 	// Because you can edit the formFields as JSON, we lose the validate function on here
 	// storing it here to add it back when the JSON updates the formFields.
 	var seeWhatYouTypeValidators = {
-		name: 'notYes',
-		validate: function(value) {
+		notYes: function(value) {
 			return 'yes' === value;
-		},
-		note: 'This note property is actually not part of validators, but I thought you should know that this field\'s validator has a function you can\'t see...'
+		}
 	};
 	var seeWhatYouTypeIndex = -1;
 
@@ -146,12 +144,10 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		key: 'useDirective',
 		template: '<div custom-field add-smile="true"></div>',
 		label: 'Do you want the power?',
-		validators: [
-			{
-				name: 'notYes',
-				validate: 'value === "yes"'
-			}
-		]
+		validators: {
+			notYes: 'value === "yes"'
+		}
+		
 	}, {
 		key: 'transportation',
 		type: 'select',
@@ -208,8 +204,7 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		type: 'password',
 		label: 'Repeat Password',
 		validators: {
-			name: 'noMatch',
-			validate: 'value === result.password'
+			noMatch: 'value === result.password'
 		}
 	}, {
 		key: 'checkThis',

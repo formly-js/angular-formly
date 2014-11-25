@@ -6,6 +6,7 @@ Version numbers correspond to `bower.json` version
 
 - Adding class `formly-field` to the fields to make it easier to select them with css selectors.
 - Adding optional `form` to what is passed to the formly-field. This gives the developer some flexibility to how they do field validation by not forcing them to rely on the mokey-patching that angular-formly does to each field.
+- Changing API to validators in a backwards compatible way (checking whether the validators conform to the old API and if they do then converting them to the new form). This is a much simpler api.
 
 ## Breaking changes:
 

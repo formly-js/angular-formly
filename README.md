@@ -221,8 +221,8 @@ $scope.$watch(function expression(field, theScope) {}, function listener(field, 
 >`undefined`
 
 ---
-##### validators (object|array)
->`validators` is an object or array of validator objects. A validator has two properties called `name` and `validate`. Templates can pass this option to the `formly-custom-validation` directive which will add a parser to the `ngModel` controller of the field. The `validate` property can be a function which is passed the `$viewValue` of the field and the field's scope. It can also be an expression which will be evaluated with `value` (the `$viewValue`), `result`, and `options` of the field available. The `name` property is used as the name of the validity state (the name of the object on `$error`).
+##### validators (object)
+>`validators` is an object where the keys are the name of the validity (to be passed to `$setValidity`) and the values are functions or expressions which returns true if it is valid. Templates can pass this option to the `formly-custom-validation` directive which will add a parser to the `ngModel` controller of the field. The property value can be a function which is passed the `$viewValue` of the field and the field's scope. It can also be an expression which will be evaluated with `value` (the `$viewValue`), `result`, and `options` of the field available.
 
 ###### Default
 >`undefined`
