@@ -33,6 +33,7 @@
     "highlightjs": "~8.0.0",
     "bootstrap": "~3.2.0",
     "chai": "~1.9.1",
-    "mocha": "~1.21.4"
+    "mocha": "~1.21.4",
+    "angular-formly-templates-bootstrap": "~0.0.1"
   }
 }

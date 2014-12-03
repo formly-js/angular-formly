@@ -20,13 +20,13 @@ Follow the instructions [here](http://softwaremaniacs.org/soft/highlight/en/down
 Using a prebuilt version of highlight.js hosted at Yandex here.
 ```html
 <!-- personal preference: github theme -->
-<link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css">
-<script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/github.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
 ```
 
 Include `angular-highlightjs` module script with AngularJS script on your page.
 ```html
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
 <script src="http://pc035860.github.io/angular-highlightjs/angular-highlightjs.min.js"></script>
 ```
 
@@ -37,14 +37,8 @@ angular.module('myApp', ['hljs']);
 
 ## Install with Bower
 
-Note that the `angular-highlightjs` bower package contains no AngularJS dependency.
 
 ```sh
-# install AngularJS (stable)
-bower install angular
-# or (unstable)
-bower install PatternConsulting/bower-angular
-
 # install angular-highlightjs & highlightjs
 bower install angular-highlightjs
 ```
@@ -69,6 +63,8 @@ myApp.config(function (hljsServiceProvider) {
 ### hljs
 This is a required directive. Without any other supportive directives, it provides basic inline highlight function. For better understanding, some notes about using it are specified in the live example page.
 
+The directive automatically escapes its content HTML entities by default. Can be turned off with explicitly configuration `escape="{expression evaled to false}"` or `no-escape`, and **they're only applicable for "just-`hljs`" usage**.
+
 [Live example](http://pc035860.github.io/angular-highlightjs/example/#/hljs)
 
 ```html
@@ -77,6 +73,11 @@ This is a required directive. Without any other supportive directives, it provid
 <!-- put your codes here -->
 </div>
 <!-- hljs end -->
+
+<!-- Will get the same result as above -->
+<div hljs no-escape>
+&lt;!-- put your codes here --&gt;
+</div>
 ```
 
 #### source (optional)

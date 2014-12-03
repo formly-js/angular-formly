@@ -1,8 +1,13 @@
 <div class="jumbotron">
 	<div class="container">
 		<h1>Formly for Angular: Bootstrap Templates</h1>
-		<p>JSON powered forms <br>
-		<a href="https://github.com/formly-js/angular-formly-templates-bootstrap">https://github.com/formly-js/angular-formly-templates-bootstrap</a></p>
+		<p>
+			JSON powered forms
+			<br>
+			<a href="https://github.com/formly-js/angular-formly-templates-bootstrap">
+				https://github.com/formly-js/angular-formly-templates-bootstrap
+			</a>
+		</p>
 	</div>
 </div>
 <div class="container-fluid">
@@ -24,7 +29,7 @@
 
 				<h3>Fields</h3>
 				<div class="form-group"
-					 ng-class="{'has-error': formFieldsError}"
+				     ng-class="{'has-error': formFieldsError}"
 				     ng-show="editJSON">
 					<textarea class="form-control"
 					          ng-model="formFieldsStr"
@@ -45,21 +50,27 @@
 			             fields="formFields"
 			             options="formOptions"
 			             ng-submit="onSubmit()">
-				<button type="submit" class="btn btn-primary">Submit it!</button>
+				<button type="submit"
+				        class="btn btn-primary">
+					Submit it!
+				</button>
 			</formly-form>
 		</div>
 		<div class="col-sm-4 col-md-4 col-lg-4">
 
 			<h3>Submitted Data</h3>
-			<div ng-hide="editJSON" hljs source="formData|json"></div>
-            <div class="form-group"
-                 ng-class="{'has-error': formFieldsError}"
-                 ng-show="editJSON">
-                <textarea class="form-control"
-                          ng-model="formDataStr"
-                          rows="15">
-                </textarea>
-            </div>
+			<div ng-hide="editJSON"
+			     hljs
+			     source="formData|json">
+			</div>
+			<div class="form-group"
+			     ng-class="{'has-error': formFieldsError}"
+			     ng-show="editJSON">
+				<textarea class="form-control"
+				          ng-model="formDataStr"
+				          rows="15">
+				</textarea>
+			</div>
 
 			<h3>Form State</h3>
 			<table class="table table-condensed">

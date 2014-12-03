@@ -115,16 +115,23 @@ function HljsCtrl (hljsCache,   hljsService) {
     compile: function(tElm, tAttrs, transclude) {
       // get static code
       // strip the starting "new line" character
-      var staticCode = tElm[0].innerHTML.replace(/^(\r\n|\r|\n)/m, '');
+      var staticHTML = tElm[0].innerHTML.replace(/^(\r\n|\r|\n)/m, ''),
+          staticText = tElm[0].textContent.replace(/^(\r\n|\r|\n)/m, '');
 
       // put template
       tElm.html('<pre><code class="hljs"></code></pre>');
 
       return function postLink(scope, iElm, iAttrs, ctrl) {
-        var compileCheck;
+        var compileCheck, escapeCheck;
 
         if (angular.isDefined(iAttrs.compile)) {
           compileCheck = $parse(iAttrs.compile);
+        }
+
+        if (angular.isDefined(iAttrs.escape)) {
+          escapeCheck = $parse(iAttrs.escape);
+        } else if (angular.isDefined(iAttrs.noEscape)) {
+          escapeCheck = $parse('false');
         }
 
         ctrl.init(iElm.find('code'));
@@ -135,8 +142,21 @@ function HljsCtrl (hljsCache,   hljsService) {
           });
         }
 
-        if (staticCode) {
-          ctrl.highlight(staticCode);
+        if ((staticHTML || staticText) && 
+            angular.isUndefined(iAttrs.source) && angular.isUndefined(iAttrs.include)) {
+
+          var code;
+
+          // Auto-escape check
+          // default to "true"
+          if (escapeCheck && !escapeCheck(scope)) {
+            code = staticText;
+          }
+          else {
+            code = staticHTML;
+          }
+
+          ctrl.highlight(code);
 
           // Check if the highlight result needs to be compiled
           if (compileCheck && compileCheck(scope)) {

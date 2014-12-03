@@ -1,6 +1,6 @@
 {
   "name": "angular-formly-templates-bootstrap",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "authors": [
     "Astrism <astrisms@gmail.com>"
   ],
@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "angular": "~1.2.22",
-    "angular-formly": "#474ec466fe0a0c71b4d23b6bd6af8306899fc517"
+    "angular-formly": "~1.0.0"
   },
   "devDependencies": {
     "angular-ui-router": "~0.2.10",

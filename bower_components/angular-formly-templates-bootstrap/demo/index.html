@@ -4,18 +4,21 @@
 		<title>Formly for Angular</title>
 
 		<!-- build:css css/style.css -->
-		<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="bower_components/highlightjs/styles/default.css">
-		<link rel="stylesheet" type="text/css" href="main.css">
+		<link rel="stylesheet"
+		      href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet"
+		      href="bower_components/highlightjs/styles/default.css">
+		<link rel="stylesheet"
+		      href="main.css">
 		<!-- endbuild -->
 	</head>
 	<body ng-app="app">
 		<div class="loading"
-			 ng-show="isViewLoading">
-			 <div class="content">
+		     ng-show="isViewLoading">
+			<div class="content">
 				Loading...
 			</div>
-		 </div>
+		</div>
 
 		<div ui-view
 			 class="view">
@@ -23,7 +26,9 @@
 
 		<div class="footer">
 			<div class="container">
-				<a href="https://github.com/formly-js/angular-formly-templates-bootstrap">See the project on GitHub</a>
+				<a href="https://github.com/formly-js/angular-formly-templates-bootstrap">
+					See the project on GitHub
+				</a>
 			</div>
 		</div>
 
@@ -37,13 +42,13 @@
 
 		<script src="dist/angular-formly-templates-bootstrap.js"></script>
 
-    <script>
-      // make errors longer...
-      window.onerror = function (errorMsg, url, lineNumber, columnNumber, errorObject) {
-        if (/<omitted>/.test(errorMsg)) {
-          console.error('Error: ' + errorObject ? errorObject.message : errorMsg);
-        }
-      };
-    </script>
+		<script>
+			// make errors longer...
+			window.onerror = function (errorMsg, url, lineNumber, columnNumber, errorObject) {
+				if (/<omitted>/.test(errorMsg)) {
+					console.error('Error: ' + errorObject ? errorObject.message : errorMsg);
+				}
+			};
+		</script>
 	</body>
 </html>

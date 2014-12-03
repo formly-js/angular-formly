@@ -12,34 +12,47 @@ angular.module('formly.render').directive('formlyCustomValidation', ["$parse", f
 			if (!validators) {
 				return;
 			}
-			if (!angular.isArray(validators)) {
-				validators = [validators];
+			if (angular.isArray(validators) || (validators.name && validators.validate)) {
+				// using old api, convert to the new api
+				if (!angular.isArray(validators)) {
+					validators = [validators];
+				}
+				var newValidators = {};
+				angular.forEach(validators, function(validator) {
+					newValidators[validator.name] = validator.validate;
+				});
+				validators = newValidators;
 			}
 
 			// setup watchers and parsers
-			angular.forEach(validators, function(validator) {
-				ctrl.$parsers.unshift(function(viewValue) {
-					applyValidity(validator, viewValue);
-					return viewValue;
-				});
+			var hasValidators = ctrl.hasOwnProperty('$validators');
+			angular.forEach(validators, function(validator, name) {
+				if (hasValidators) {
+					ctrl.$validators[name] = function(modelValue, viewValue) {
+						return getValidity(validator, name, modelValue || viewValue);
+					};
+				} else {
+					ctrl.$parsers.unshift(function(viewValue) {
+						var isValid = getValidity(validator, name, viewValue);
+						ctrl.$setValidity(name, isValid);
+						return viewValue;
+					});
+				}
 			});
 
-			function applyValidity(validator, value) {
-				if (!validator.validate) {
-					return;
-				}
+			function getValidity(validator, name, value) {
 				var isValid = false;
-				if (angular.isFunction(validator.validate)) {
-					isValid = validator.validate(value, scope);
+				if (angular.isFunction(validator)) {
+					isValid = validator(value, scope);
 				} else {
 					var validationScope = {
 						value: value,
 						options: scope.options,
 						result: scope.result
 					};
-					isValid = $parse(validator.validate)(validationScope);
+					isValid = $parse(validator)(validationScope);
 				}
-				ctrl.$setValidity(validator.name, isValid);
+				return isValid;
 			}
 		}
 	};
@@ -65,9 +78,10 @@ angular.module('formly.render')
 		transclude: true,
 		scope: {
 			optionsData: '&options',
-			formId: '=formId',
-			index: '=index',
-			result: '=formResult'
+			formId: '=',
+			index: '=',
+			result: '=formResult',
+			form: '=?'
 		},
 		link: function fieldLink($scope, $element) {
       var templateOptions = 0;
@@ -110,7 +124,7 @@ angular.module('formly.render')
 			}
 
 			// set field id to link labels and fields
-			$scope.id = $scope.formId + type + $scope.index;
+			$scope.id = $scope.formId + type + $scope.options.key + $scope.index;
 		}]
 	};
 }]);
@@ -239,7 +253,7 @@ angular.module('formly.render').run(['$templateCache', function($templateCache) 
   'use strict';
 
   $templateCache.put('directives/formly-form.html',
-    "<form class=formly role=form><formly-field ng-repeat=\"field in fields\" options=field form-result=result form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></form>"
+    "<form class=formly role=form><formly-field ng-repeat=\"field in fields\" class=formly-field options=field form-result=result form=formOnParentScope form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></form>"
   );
 
 }]);

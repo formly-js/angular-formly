@@ -7,7 +7,7 @@ angular.module('formly.render').run(['$templateCache', function($templateCache) 
 
 
   $templateCache.put('fields/formly-field-email.html',
-    "<div class=form-group ng-class=\"{'has-error': options.formField.$invalid}\"><label for={{id}}>{{options.label || 'Email'}} {{options.required ? '*' : ''}}</label><input type=email class=form-control id={{id}} formly-dynamic-name=options.key formly-custom-validation=options.validators placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=\"result[options.key || index]\"><p id={{id}}_description class=help-block ng-if=options.description>{{options.description}}</p></div>"
+    "<div class=form-group ng-class=\"{'has-error': options.formField.$invalid}\"><label for={{id}}>{{options.label || 'Email'}} {{options.required ? '*' : ''}}</label><input type=email class=form-control id={{id}} formly-dynamic-name=options.key formly-custom-validation=options.validators placeholder={{options.placeholder}} aria-describedby={{id}}_description ng-required=options.required ng-disabled=options.disabled ng-model=\"result[options.key || index]\"><p id={{id}}_description lass=help-block ng-if=options.description>{{options.description}}</p></div>"
   );
 
 

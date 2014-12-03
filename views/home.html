@@ -2,7 +2,10 @@
 	<div class="container">
 		<h1>Formly for Angular</h1>
 		<p>JSON powered forms <br>
-		<a href="https://github.com/formly-js/angular-formly">https://github.com/formly-js/angular-formly</a></p>
+			<a href="https://github.com/formly-js/angular-formly">
+				https://github.com/formly-js/angular-formly
+			</a>
+		</p>
 	</div>
 </div>
 <div class="container-fluid">
@@ -29,7 +32,7 @@
 
 				<h3>Fields</h3>
 				<div class="form-group"
-					 ng-class="{'has-error': formFieldsError}"
+				     ng-class="{'has-error': formFieldsError}"
 				     ng-show="editJSON">
 					<textarea class="form-control"
 					          ng-model="formFieldsStr"
@@ -50,28 +53,33 @@
 			             fields="formFields"
 			             options="formOptions"
 			             ng-submit="onSubmit()">
-				<button type="submit" class="btn btn-primary">Submit it!</button>
+				<button type="submit"
+				        class="btn btn-primary also">
+					Submit it! (Transcluded)
+				</button>
 			</formly-form>
 			<br />
 			<br />
 			<formly-form name="hiddenFormlyForm"
-						 result="hiddenFormData"
-						 fields="hiddenFormFields"
-						 options="hiddenFormOptions">
+			             result="hiddenFormData"
+			             fields="hiddenFormFields"
+			             options="hiddenFormOptions">
 			</formly-form>
 		</div>
 		<div class="col-sm-4 col-md-4 col-lg-4">
 
 			<h3>Submitted Data</h3>
-			<div ng-hide="editJSON" hljs source="formData|json"></div>
-            <div class="form-group"
-                 ng-class="{'has-error': formFieldsError}"
-                 ng-show="editJSON">
-                <textarea class="form-control"
-                          ng-model="formDataStr"
-                          rows="15">
-                </textarea>
-            </div>
+			<div ng-hide="editJSON"
+			     hljs
+			     source="formData|json"></div>
+			<div class="form-group"
+			     ng-class="{'has-error': formFieldsError}"
+			     ng-show="editJSON">
+				<textarea class="form-control"
+				          ng-model="formDataStr"
+				          rows="15">
+				</textarea>
+			</div>
 
 			<h3>Form State</h3>
 			<table class="table table-condensed">

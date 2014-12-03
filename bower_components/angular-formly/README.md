@@ -22,30 +22,26 @@ Formly for Angular is an AngularJS module which has directives to help customize
 See `bower.json` and `index.html` in the `master` branch for a full list / more details
 
 ## Install in your project
-- Install with Bower  
+1. Install with Bower  
  `$ bower install angular-formly --save`
 
-- Include the javascript file in your index.html, Formly comes in the following flavors:
- - No templates: you provide all your custom templates using the `formlyConfigProvider`
+2. Include the javascript file in your index.html, Formly without any form templates. You can create your own or use some of our prebuilt templates which cover basic form types, then extend with your own as needed.
 
  `<script src="bower_components/angular-formly/dist/formly.min.js"></script>`
 
- - Vanilla: no fancy styling, just plain html
+  ### Prebuilt Templates
+ - [Vanilla Template](https://github.com/formly-js/angular-formly-templates-vanilla#install-in-your-project): no fancy styling, just plain html
+ - [Bootstrap Templates](https://github.com/formly-js/angular-formly-templates-bootstrap#install-in-your-project): bootstrap compatible forms, form-groups, etc.
 
- `<script src="bower_components/angular-formly/dist/formly.vanilla.min.js"></script>`
+  ### DIY Templates
+  Regardless of which flavor you use, you can create your own templates with `formlyConfigProvider`. Use any of the builds above and override all the templates or just the ones you need.
 
- - Bootstrap: bootstrap compatible forms, form-groups, etc.
-
- `<script src="bower_components/angular-formly/dist/formly.bootstrap.min.js"></script>`
-
- - DIY: Regardless of which flavor you use, you can create your own templates with `formlyConfigProvider`. Use any of the builds above and override all the templates or just the ones you need.
-
-- Add 'formly' as a required module to your angular app, usually in `app.js`:  
+3. Add 'formly' as a required module to your angular app, usually in `app.js`:  
  `var app = angular.module('app', ['ng', 'ui.router', 'formly']);`
 
 ## Documentation
 
-*Note:* This `README.md` is for the latest version of `formly`. There have been some changes in the latest version which is not stable. For documentation on the latest stable version, see the [0.0.16 documentation](https://github.com/formly-js/angular-formly/tree/0.0.16)
+*Note:* This `README.md` is for the latest version of `formly`. There have been some changes in the latest version which is not stable. For documentation on the latest stable version, see the [1.0.0 documentation](https://github.com/formly-js/angular-formly/tree/1.0.0)
 
 You can add a formly-form in your HTML templates as shown below.
 ```html
