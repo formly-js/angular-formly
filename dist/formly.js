@@ -25,14 +25,22 @@ angular.module('formly.render').directive('formlyCustomValidation', ["$parse", f
 			}
 
 			// setup watchers and parsers
+			var hasValidators = ctrl.hasOwnProperty('$validators');
 			angular.forEach(validators, function(validator, name) {
-				ctrl.$parsers.unshift(function(viewValue) {
-					applyValidity(validator, name, viewValue);
-					return viewValue;
-				});
+				if (hasValidators) {
+					ctrl.$validators[name] = function(modelValue, viewValue) {
+						return getValidity(validator, name, modelValue || viewValue);
+					};
+				} else {
+					ctrl.$parsers.unshift(function(viewValue) {
+						var isValid = getValidity(validator, name, viewValue);
+						ctrl.$setValidity(name, isValid);
+						return viewValue;
+					});
+				}
 			});
 
-			function applyValidity(validator, name, value) {
+			function getValidity(validator, name, value) {
 				var isValid = false;
 				if (angular.isFunction(validator)) {
 					isValid = validator(value, scope);
@@ -44,7 +52,7 @@ angular.module('formly.render').directive('formlyCustomValidation', ["$parse", f
 					};
 					isValid = $parse(validator)(validationScope);
 				}
-				ctrl.$setValidity(name, isValid);
+				return isValid;
 			}
 		}
 	};
