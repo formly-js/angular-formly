@@ -7,7 +7,8 @@ Version numbers correspond to `bower.json` version
 - Adding class `formly-field` to the fields to make it easier to select them with css selectors.
 - Adding optional `form` to what is passed to the formly-field. This gives the developer some flexibility to how they do field validation by not forcing them to rely on the mokey-patching that angular-formly does to each field.
 - Changing API to validators in a backwards compatible way (checking whether the validators conform to the old API and if they do then converting them to the new form). This is a much simpler api.
-- `formly-custom-validation` supports the new `$validators` api if available (in angular 1.3), otherwise it falls back to `$parsers`. (Does not currently support `$asyncValidators` but will later).
+- `formly-custom-validation` supports the new `$validators` api if available (in angular 1.3), otherwise it falls back to `$parsers`.
+- `formly-custom-validation` supports `$asyncValidators` by adding `isAsync = true` property to the validation function.
 
 ## Breaking changes:
 

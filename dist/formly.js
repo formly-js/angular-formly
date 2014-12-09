@@ -28,7 +28,8 @@ angular.module('formly.render').directive('formlyCustomValidation', ["$parse", f
 			var hasValidators = ctrl.hasOwnProperty('$validators');
 			angular.forEach(validators, function(validator, name) {
 				if (hasValidators) {
-					ctrl.$validators[name] = function(modelValue, viewValue) {
+					var validatorCollection = validator.isAsync ? '$asyncValidators' : '$validators';
+					ctrl[validatorCollection][name] = function(modelValue, viewValue) {
 						return getValidity(validator, name, modelValue || viewValue);
 					};
 				} else {

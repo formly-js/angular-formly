@@ -222,7 +222,7 @@ $scope.$watch(function expression(field, theScope) {}, function listener(field, 
 
 ---
 ##### validators (object)
->`validators` is an object where the keys are the name of the validity (to be passed to `$setValidity`) and the values are functions or expressions which returns true if it is valid. Templates can pass this option to the `formly-custom-validation` directive which will add a parser to the `ngModel` controller of the field. The property value can be a function which is passed the `$viewValue` of the field and the field's scope. It can also be an expression which will be evaluated with `value` (the `$viewValue`), `result`, and `options` of the field available.
+>`validators` is an object where the keys are the name of the validity (to be passed to `$setValidity`) and the values are functions or expressions which returns true if it is valid. Templates can pass this option to the `formly-custom-validation` directive which will add a parser to the `ngModel` controller of the field. The property value can be a function which is passed the `$viewValue` of the field and the field's scope. It can also be an expression which will be evaluated with `value` (the `$viewValue`), `result`, and `options` of the field available. **Note:** Formly will utilize the `$validators` pipeline (introduced in angular 1.3) if available, otherwise it will fallback to `$parsers`. If you are using angular 1.3, you can also use the `$asyncValidators` pipeline by adding the property `isAsync = true` to your validator function.
 
 ###### Default
 >`undefined`
