@@ -1,4 +1,4 @@
-<div class="form-group" ng-class="{'has-error': options.formField.$invalid}">
+<div class="form-group" ng-class="{'has-error': options.formField.$invalid && options.formField.$touched}">
 	<div>Look mah! Custom Templates!</div>
 	<label for="{{id}}">
 		{{result[options.nameKey] ? result[options.nameKey] + ',' : ''}} {{options.label || 'Text'}}

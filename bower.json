@@ -28,6 +28,7 @@
     "angular": "~1.2.22"
   },
   "devDependencies": {
+    "angular": "~1.3.5",
     "angular-ui-router": "~0.2.10",
     "angular-highlightjs": "~0.3.0",
     "highlightjs": "~8.0.0",
@@ -35,5 +36,8 @@
     "chai": "~1.9.1",
     "mocha": "~1.21.4",
     "angular-formly-templates-bootstrap": "~0.0.1"
+  },
+  "resolutions": {
+    "angular": "~1.3.5"
   }
 }

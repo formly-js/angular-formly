@@ -15,6 +15,10 @@ Version numbers correspond to `bower.json` version
 - Changing the id given to fields. It now also contains the key also. We don't expect anyone was depending on this, but it does change behavior so it's listed as a breaking change.
 - Changing from `form` to `ng-form` to allow for nesting forms [as recommended](https://docs.angularjs.org/api/ng/directive/ngForm).
 
+## Internal Changes
+
+- Upgraded devDependencies to use angular 1.3 so the demo can show off `$asyncValidators`.
+
 # 1.0.0
 
 ## Backward compatible changes:

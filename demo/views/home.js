@@ -1,5 +1,5 @@
 'use strict';
-app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplates) {
+app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemplates) {
 
 	// function scope vars
 
@@ -11,6 +11,24 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		}
 	};
 	var seeWhatYouTypeIndex = -1;
+
+	var notYesValidators = {
+		notYes: asyncNotYesValidator
+	};
+	var useDirectiveIndex = -1;
+
+	function asyncNotYesValidator(value) {
+		return $q(function(resolve, reject) {
+			setTimeout(function() {
+				if (value === 'yes') {
+					resolve(true);
+				} else {
+					reject('not yes');
+				}
+			}, Math.floor((Math.random() * 600) + 300));
+		});
+	}
+	asyncNotYesValidator.isAsync = true;
 
 
 	// Public Methods
@@ -43,6 +61,7 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		try {
 			$scope.formFields = $parse(newValue)({});
 			$scope.formFields[seeWhatYouTypeIndex].validators = seeWhatYouTypeValidators;
+			$scope.formFields[useDirectiveIndex].validators = notYesValidators;
 			$scope.formFieldsError = false;
 		} catch (e) {
 			$scope.formFieldsError = true;
@@ -144,10 +163,7 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		key: 'useDirective',
 		template: '<div custom-field add-smile="true"></div>',
 		label: 'Do you want the power?',
-		validators: {
-			notYes: 'value === "yes"'
-		}
-		
+		validators: notYesValidators
 	}, {
 		key: 'transportation',
 		type: 'select',
@@ -225,10 +241,12 @@ app.controller('home', function($scope, $parse, $window, usingCustomTypeTemplate
 		hideExpression: 'hiddenWhenUnchecked !== "joe"'
 	}];
 
-	$scope.formFields.some(function (field, index) {
+	$scope.formFields.forEach(function (field, index) {
 		if (field.key === 'seeWhatYouType') {
 			seeWhatYouTypeIndex = index;
-			return true;
+		}
+		if (field.key === 'useDirective') {
+			useDirectiveIndex = index;
 		}
 	});
 
