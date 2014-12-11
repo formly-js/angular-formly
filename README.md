@@ -330,24 +330,30 @@ _Example select field_
 		"label": "How do you get around in the city",
 		"options": [
 			{
-				"name": "Car"
+				"name": "Car",
+				"value": "car"
 			},
 			{
-				"name": "Helicopter"
+				"name": "Helicopter",
+				"value": "helicopter"
 			},
 			{
-				"name": "Sport Utility Vehicle"
+				"name": "Sport Utility Vehicle",
+				"value": "sport-utility-vehicle"
 			},
 			{
 				"name": "Bicycle",
+				"value": "bicycle",
 				"group": "low emissions"
 			},
 			{
 				"name": "Skateboard",
+				"value": "skateboard",
 				"group": "low emissions"
 			},
 			{
 				"name": "Walk",
+				"value": "walk",
 				"group": "low emissions"
 			},
 			{
@@ -356,14 +362,17 @@ _Example select field_
 			},
 			{
 				"name": "Scooter",
+				"value": "scooter",
 				"group": "low emissions"
 			},
 			{
 				"name": "Train",
+				"value": "train",
 				"group": "low emissions"
 			},
 			{
 				"name": "Hot Air Baloon",
+				"value": "hot-air-baloon",
 				"group": "low emissions"
 			}
 		]
