@@ -93,6 +93,7 @@ module.exports = function(grunt) {
 					preBuiltDest + '/modules/*.js',
 					preBuiltDest + '/directives/*.js',
 					preBuiltDest + '/providers/*.js',
+					preBuiltDest + '/services/*.js',
 					preBuiltDest + '/*.js'],
 				dest: concatFile
 			}
