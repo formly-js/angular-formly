@@ -116,7 +116,7 @@ angular.module('formly.render')
 				var field = $scope.options;
 				angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
 					if (angular.isFunction(expression)) {
-						field[prop] = expression(getFieldValue(), $scope);
+						field[prop] = expression(valueGetterSetter(), $scope);
 					} else {
 						var scopeWithValue = angular.extend({
 							value: valueGetterSetter()
