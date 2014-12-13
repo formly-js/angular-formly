@@ -86,7 +86,15 @@ angular.module('formly.render')
 		controller: ["$scope", "$parse", function fieldController($scope, $parse) {
 			// set field id to link labels and fields
 			$scope.id = getFieldId();
+			angular.extend($scope.options, {
+				runExpressions: runExpressions,
+				modelOptions: {
+					getterSetter: true,
+					allowInvalid: true
+				}
+			});
 			$scope.options.runExpressions = runExpressions;
+			$scope.value = valueGetterSetter;
 
 			// initalization
 			runExpressions($scope.result);
@@ -111,14 +119,17 @@ angular.module('formly.render')
 						field[prop] = expression(getFieldValue(), $scope);
 					} else {
 						var scopeWithValue = angular.extend({
-							value: getFieldValue()
+							value: valueGetterSetter()
 						}, $scope);
 						field[prop] = $parse(expression)(scopeWithValue);
 					}
 				});
 			}
 
-			function getFieldValue() {
+			function valueGetterSetter(newVal) {
+				if (angular.isDefined(newVal)) {
+					$scope.result[$scope.options.key || $scope.index] = newVal;
+				}
 				return $scope.result[$scope.options.key || $scope.index];
 			}
 		}],
@@ -231,7 +242,7 @@ angular.module('formly.render')
 						// wrap the field's watch expression so we can call it with the field as the first arg and the stop function as the last arg as a helper
 						watchExpression = function formlyWatchExpression() {
 							var args = Array.prototype.slice.call(arguments, 0);
-							args.unshift(field);
+							args.unshift($scope.fields[index]); // don't just use field here to ensure that we've got the right field reference
 							args.push(stopWatching);
 							return field.watch.expression.apply(this, args);
 						};
@@ -242,7 +253,7 @@ angular.module('formly.render')
 						// wrap the field's watch listener so we can call it with the field as the first arg and the stop function as the last arg as a helper
 						watchListener = function formlyWatchListener() {
 							var args = Array.prototype.slice.call(arguments, 0);
-							args.unshift(field);
+							args.unshift($scope.fields[index]); // don't just use field here to ensure that we've got the right field reference
 							args.push(stopWatching);
 							return field.watch.listener.apply(this, args);
 						};

@@ -15,7 +15,15 @@ angular.module('formly.render')
 		controller: function fieldController($scope, $parse) {
 			// set field id to link labels and fields
 			$scope.id = getFieldId();
+			angular.extend($scope.options, {
+				runExpressions: runExpressions,
+				modelOptions: {
+					getterSetter: true,
+					allowInvalid: true
+				}
+			});
 			$scope.options.runExpressions = runExpressions;
+			$scope.value = valueGetterSetter;
 
 			// initalization
 			runExpressions($scope.result);
@@ -40,14 +48,17 @@ angular.module('formly.render')
 						field[prop] = expression(getFieldValue(), $scope);
 					} else {
 						var scopeWithValue = angular.extend({
-							value: getFieldValue()
+							value: valueGetterSetter()
 						}, $scope);
 						field[prop] = $parse(expression)(scopeWithValue);
 					}
 				});
 			}
 
-			function getFieldValue() {
+			function valueGetterSetter(newVal) {
+				if (angular.isDefined(newVal)) {
+					$scope.result[$scope.options.key || $scope.index] = newVal;
+				}
 				return $scope.result[$scope.options.key || $scope.index];
 			}
 		},

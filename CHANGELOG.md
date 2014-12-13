@@ -16,6 +16,8 @@ Version numbers correspond to `bower.json` version
 - `watch` listners and expressions now take a new last argument which is the deregistration function
 - `expressionProperties` introduced to give more control over property values for fields. It adds a `runExpressions` function to each field which is run on every result update and can be run with the result.
 - `validator` string expressions now run with all scope properties rather than just options and result.
+- field definition now has a `modelOptions` for use in `ng-model-options`
+- `formly-field` now adds a `value` getter/setter to scope for use in ng-model in combination with `ng-model-options` as well as general helper functionality.
 
 ## Breaking changes:
 

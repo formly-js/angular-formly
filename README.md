@@ -149,6 +149,13 @@ template: '<hr />'
 >`undefined`
 
 ---
+##### modelOptions (object)
+>`modelOptions` is used to make your templates easier to work with. Noramlly, you would have to do this in each of your templates: `ng-model="result[options.key || index]"`. However, if you like, you can take advantage of `ng-model-options` via the `modelOptions` property. This will allow you to do `ng-model="value" ng-model-options="options.modelOptions"` not necessarily less verbose, but a little easier to understand. To accomplish this, each `formly-field` adds a `value` function on the scope. It is a traditional getter/setter for you to use in your templates. For more information on ng-model-options, see [these](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-getters-and-setters) [egghead](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-updateon-and-debounce) [lessons](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ngmodeloptions-allows-you-to-set-a-timezone-on-your-model).
+
+##### Default
+>`{ getterSetter: true, allowInvalid: true }`
+
+---
 ##### watch (object|array of watches)
 >`watch` is an object which has at least two properties called `expression` and `listener`. The `watch.expression` is added to the `formly-form` directive's scope. If it's a function, it will be wrapped and called with the field as the first argument, followed by the normal arguments for a watcher, followed the watcher's `stop` function. If it's not defined, it will default to the value of the field. The `listener` will also be wrapped and called with the field as the first argument, followed by the normal arguments for a watch listener. You can also specify a type (`$watchCollection` or `$watchGroup`) via the `type` property (defaults to `$watch`) and whether you want it to be a deep watch via the `deep` property (defaults to `false`).
 
@@ -233,7 +240,7 @@ Please see [the Wiki](https://github.com/formly-js/angular-formly/wiki) for tips
 
 There are four places where you can put expressions. The context in which these expressions are evaluated is important. There are two different types of context and each is explained below:
 
-1) watch - expression and listener can be functions or expression strings. These are both evaluated on the `formly-form` scope, despite being applied to a specific field. This allows the expressions to run even if the field's scope has been destroyed (via an ng-if like when the field is hidden).
+1) watch - expression and listener can be functions or expression strings. This is a regular angular `$watch` (depending on the specified `type`) function and it is created on the `formly-form` scope, despite being applied to a specific field. This allows the expressions to run even if the field's scope has been destroyed (via an ng-if like when the field is hidden).
 2) expressionProperties & validators - these expressions can be functions or expression strings. If it's a function, it's invoked with the arguments `value` and `scope`. The scope in this case, is the field's scope. If it's an expression string, it is evaluated using `$parse` and the locals are the `scope` and the current value of the field (as if it were a member of `scope`).
 
 ## Roadmap

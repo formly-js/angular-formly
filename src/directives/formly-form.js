@@ -67,7 +67,7 @@ angular.module('formly.render')
 						// wrap the field's watch expression so we can call it with the field as the first arg and the stop function as the last arg as a helper
 						watchExpression = function formlyWatchExpression() {
 							var args = Array.prototype.slice.call(arguments, 0);
-							args.unshift(field);
+							args.unshift($scope.fields[index]); // don't just use field here to ensure that we've got the right field reference
 							args.push(stopWatching);
 							return field.watch.expression.apply(this, args);
 						};
@@ -78,7 +78,7 @@ angular.module('formly.render')
 						// wrap the field's watch listener so we can call it with the field as the first arg and the stop function as the last arg as a helper
 						watchListener = function formlyWatchListener() {
 							var args = Array.prototype.slice.call(arguments, 0);
-							args.unshift(field);
+							args.unshift($scope.fields[index]); // don't just use field here to ensure that we've got the right field reference
 							args.push(stopWatching);
 							return field.watch.listener.apply(this, args);
 						};

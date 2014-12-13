@@ -12,7 +12,8 @@
 				   id="{{id + '_'+ $index}}"
 				   ng-value="option.value"
 				   ng-required="options.required"
-				   ng-model="$parent.result[$parent.options.key || $parent.index]">
+				   ng-model="value"
+				   ng-model-options="options.modelOptions">
 			{{option.name}}
 		</label>
 	</div>

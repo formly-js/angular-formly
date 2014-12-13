@@ -259,7 +259,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 			},
 			listener: function(field, isHappy, oldValue, scope) {
 				if (isHappy) {
-					scope.result.field2 = ':-)';
+					scope.result[field.key] = ':-)';
 				}
 			}
 		}
