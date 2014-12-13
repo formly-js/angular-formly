@@ -21,7 +21,7 @@ angular.module('formly.render')
 				console.warn('Formly Error: template type \'' + $scope.options.type + '\' not supported. On element:', $element);
 				return;
 			} else if (templateOptions > 1) {
-				console.warn('Formly Error: You must only provide a type, template, or templateUrl for a field. On element:', $element);
+				throw new Error('Formly Error: You must only provide a type, template, or templateUrl for a field. Provided: ' + JSON.stringify($scope.options));
 			}
 			var template = $scope.options.template || formlyConfig.getTemplate($scope.options.type);
 			if (template) {
