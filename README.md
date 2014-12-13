@@ -42,11 +42,15 @@ See `bower.json` and `index.html` in the `master` branch for a full list / more 
 
 *Note:* This `README.md` is for the latest version of `formly`. There have been some changes in the latest version which is not stable. For documentation on the latest stable version, see the [1.0.0 documentation](https://github.com/formly-js/angular-formly/tree/1.0.0)
 
+### Example
+
+Here's an example using the vanilla template properties
+
 You can add a formly-form in your HTML templates as shown below.
 ```html
-	<formly-form result="formData" fields="formFields" options="formOptions" ng-submit="onSubmit()">
-		<button type="submit">Hello World</button>
-	</formly-form>
+<formly-form result="formData" fields="formFields" options="formOptions">
+	<button ng-click="onSubmit()">Hello World</button>
+</formly-form>
 ```  
 
 Example data as it would be set in the controller
@@ -70,7 +74,9 @@ Example data as it would be set in the controller
 			label: 'Password',
 			required: true,
 			disabled: false, //default: false
-			hideExpression: '!username' // hide when username is blank
+			expressionProperties: {
+				hide: '!result.username' // hide when username is blank
+			}
 		}
 
 	];
@@ -84,9 +90,6 @@ Example data as it would be set in the controller
 		console.log('form submitted:', $scope.formData);
 	};
 ```
-### Creating Forms
-Forms can be customized with the options below.
-
 ### Creating Form Fields
 When constructing fields use the options below to customize each field object. You must set at least a `type`, `template`, or `templateUrl`.
 
@@ -97,15 +100,7 @@ When constructing fields use the options below to customize each field object. Y
 >`null`
 
 ###### Values
-> [`text`](#text-form-field),
-> [`textarea`](#textarea-form-field),
-> [`radio`](#radio-form-field)
-> [`select`](#select-form-field)
-> [`number`](#number-form-field)
-> [`checkbox`](#checkbox-form-field),
-> [`password`](#password-form-field),
-> [`hidden`](#hidden-form-field),
-> [`email`](#email-form-field)
+> depends on the template set you're using. See documentation for the specific fieldset you are using.
 
 ---
 ##### template (string)
@@ -140,57 +135,8 @@ template: '<hr />'
 >`undefined`
 
 ---
-##### label (string)
->`label` is used to add an html label to each field.
-
-###### Default
->A default is set for each field based on its type. ie `Text`, `Checkbox`, `Password`
-
----
-##### required (boolean)
->`required` is used to add the required attribute to a form field.
-
-###### Default
->`undefined`
-
----
-##### requiredExpression (expression string)
->`requiredExpression` is used to conditionally require the input. Evaluates on the `result` and uses the `required` property on the field.
-
-###### Default
->`undefined`
-
----
-##### hideExpression (expression string)
->`hideExpression` is used to conditionally show the input. Evaluates on the `result` and uses the `hide` property on the field.
-
-###### Default
->`undefined`
-
----
-##### hide (boolean)
->`hide` is used to conditionally show the input. When true, the input is hidden (meant to be used with a watch).
-
-###### Default
->`undefined`
-
----
-##### disabled (boolean)
->`disabled` is used to add the disabled attribute to a form field.
-
-###### Default
->`undefined`
-
----
-##### placeholder (string)
->`placeholder` is used to add placeholder text to some inputs.
-
-###### Default
->`undefined`
-
----
-##### description (string)
->`description` is used to add descriptive text to all inputs.
+##### expressionProperties (object)
+>`expressionProperties` is a hash where the key is a property to be set on the main field config and the value is an expression used to assign that property. The expression is evaluated using `$parse` with an object that has `value` (the value of the field) and all other scope properties for the field (like `result`, `index`, `form`, etc.)
 
 ###### Default
 >`undefined`
@@ -203,17 +149,17 @@ template: '<hr />'
 >`undefined`
 
 ---
-##### watch.expression (object)
->`watch` has two properties called `expression` and `listener`. The `watch.expression` is added to the formly directive's scope. If it's a function, it will be wrapped and called with the field as the first argument, followed by the normal arguments for a watcher. The `listener` will also be wrapped and called with the field as the first argument, followed by hte normal arguments for a watch listener.
+##### watch (object|array of watches)
+>`watch` is an object which has at least two properties called `expression` and `listener`. The `watch.expression` is added to the `formly-form` directive's scope. If it's a function, it will be wrapped and called with the field as the first argument, followed by the normal arguments for a watcher, followed the watcher's `stop` function. If it's not defined, it will default to the value of the field. The `listener` will also be wrapped and called with the field as the first argument, followed by the normal arguments for a watch listener. You can also specify a type (`$watchCollection` or `$watchGroup`) via the `type` property (defaults to `$watch`) and whether you want it to be a deep watch via the `deep` property (defaults to `false`).
 
-For example:
+How the api differs from a normal `$watch`:
 
 ```javascript
 // normal watcher
 $scope.$watch(function expression(theScope) {}, function listener(newValue, oldValue, theScope) {});
 
 // field watcher
-$scope.$watch(function expression(field, theScope) {}, function listener(field, newValue, oldValue, theScope) {});
+$scope.$watch(function expression(field, theScope, stop) {}, function listener(field, newValue, oldValue, theScope, stop) {});
 ```
 
 ###### Default
@@ -221,230 +167,10 @@ $scope.$watch(function expression(field, theScope) {}, function listener(field, 
 
 ---
 ##### validators (object)
->`validators` is an object where the keys are the name of the validity (to be passed to `$setValidity`) and the values are functions or expressions which returns true if it is valid. Templates can pass this option to the `formly-custom-validation` directive which will add a parser to the `ngModel` controller of the field. The property value can be a function which is passed the `$viewValue` of the field and the field's scope. It can also be an expression which will be evaluated with `value` (the `$viewValue`), `result`, and `options` of the field available. **Note:** Formly will utilize the `$validators` pipeline (introduced in angular 1.3) if available, otherwise it will fallback to `$parsers`. If you are using angular 1.3, you can also use the `$asyncValidators` pipeline by adding the property `isAsync = true` to your validator function.
+>`validators` is an object where the keys are the name of the validity (to be passed to `$setValidity`) and the values are functions or expressions which returns true if it is valid. Templates can pass this option to the `formly-custom-validation` directive which will add a parser to the `ngModel` controller of the field. The property value can be a function which is passed the `$viewValue` of the field and the field's scope. It can also be an expression which will be evaluated with `value` (the `$viewValue`) and all properties on the field's scope (like `result` and `options`). **Note:** Formly will utilize the `$validators` pipeline (introduced in angular 1.3) if available, otherwise it will fallback to `$parsers`. If you are using angular 1.3, you can also use the `$asyncValidators` pipeline by adding the property `isAsync = true` to your validator function.
 
 ###### Default
 >`undefined`
-
-### Form Fields
-Below is a detailed description of each form fields and its custom properties.
-
-#### Text form field
->The text field allows single line input with a input element set to `type='text'`. It doesn't have any custom properties.
-
-##### default (string, optional)
-
-_Example text field_
-```json
-	{
-		"type": "text",
-		"key": "firstName",
-		"placeholder": "jane doe",
-		"label": "First name"
-	}
-```
-
----
-#### Textarea form field
->The textarea field creates multiline input with a textarea element.
-
-##### default (string, optional)
-
-##### lines (number, optional)
->`lines` sets the rows attribute for the textarea element. If unset, the default is 2 lines.
-
-_Example textarea field_
-```json
-	{
-		"type": "textarea",
-		"key": "about",
-		"placeholder": "I like puppies",
-		"label": "Tell me about yourself",
-		"lines": 4
-	}
-```
-
----
-#### Checkbox form field
->The checkbox field allows checkbox input with a input element set to `type='checkbox'`. It doesn't have any custom properties.
-
-##### default (boolean, optional)
-
-_Example checkbox field_
-```json
-	{
-		"type": "checkbox",
-		"key": "checkThis",
-		"label": "Check this box",
-		"default": true
-	}
-```
-
----
-#### Radio form field
->The radio field allows multiple choice input with a series of linked inputs, with `type='radio'`.
-
-##### options (array, required)
->`options` is an array of options for the radio form field to display. Each option should be an object with a `name`(string) and `value`(string or number).
-
-_Example radio field_
-```json
-	{
-		"key": "triedEmber",
-		"type": "radio",
-		"label": "Have you tried EmberJs yet?",
-		"default": "no",
-		"options": [
-			{
-				"name": "Yes, and I love it!",
-				"value": "yesyes"
-			},
-			{
-				"name": "Yes, but I'm not a fan...",
-				"value": "yesno"
-			},
-			{
-				"name": "Nope",
-				"value": "no"
-			}
-		]
-	}
-```
-
----
-#### Select form field
->The select field allows selection via dropdown using the select element.
-
-##### default (number, optional)
->The default can be set to the index of one of the `options`.
-
-##### options (array, required)
->`options` is an array of options for the select form field to display. Each option should be an object with a `name`(string). You may optionally add a `group` to some or all of your options.
-
-_Example select field_
-```json
-	{
-		"key": "transportation",
-		"type": "select",
-		"label": "How do you get around in the city",
-		"options": [
-			{
-				"name": "Car"
-			},
-			{
-				"name": "Helicopter"
-			},
-			{
-				"name": "Sport Utility Vehicle"
-			},
-			{
-				"name": "Bicycle",
-				"group": "low emissions"
-			},
-			{
-				"name": "Skateboard",
-				"group": "low emissions"
-			},
-			{
-				"name": "Walk",
-				"group": "low emissions"
-			},
-			{
-				"name": "Bus",
-				"group": "low emissions"
-			},
-			{
-				"name": "Scooter",
-				"group": "low emissions"
-			},
-			{
-				"name": "Train",
-				"group": "low emissions"
-			},
-			{
-				"name": "Hot Air Baloon",
-				"group": "low emissions"
-			}
-		]
-	}
-```
-
----
-#### Number form field
->The number field allows input that is restricted to numbers. Browsers also provide minimal ui to increase and decrease the current value.
-
-##### default (number, optional)
-
-##### min (number, optional)
->`min` sets minimum acceptable value for the input.
-
-##### max (number, optional)
->`max` sets maximum acceptable value for the input.
-
-##### minlength (number, optional)
->`minlength` sets minimum number of characters for the input. If a number less than this value it will not be submitted with the form. eg 1000 is 4 characters long and if `minlength` is set to 5, it would not be sent. Currently there is no error displayed to the user if they do not meet the requirement.
-
-##### maxlength (number, optional)
->`maxlength` sets maximum number of characters for the input. If a number is greater than this value it will not be submitted with the form. eg 1000 is 4 characters long and if `maxlength` is set to 2, it would not be sent. Currently there is no error displayed to the user if they do not meet the requirement.
-
-_Example number field_
-```json
-	{
-		"key": "love",
-		"type": "number",
-		"label": "How much love?",
-		"default": 2,
-		"min": 0,
-		"max": 100,
-		"required": true
-	}
-```
-
----
-#### Password form field
->The password field allows password input, it uses an input with `type='password'`.
-##### default (string, optional)
-
-##### trimWhitespace (boolean, optional)
-Unlike other formly fields, which use Angular's default setting to trim leading and trailing whitespace, the password field captures whitespace. You can override this by setting `trimWhitespace` to `true`.
-
-_Example password field_
-```json
-	{
-		"key": "password",
-		"type": "password",
-		"label": "Password"
-	}
-```
-
----
-#### Hidden form field
->The hidden field allows hidden input, it uses an input with `type='hidden'`.
-
-##### default (number or string, required)
-
-_Example password field_
-```json
-	{
-		"key": "hiddenCode",
-		"type": "hidden"
-	}
-```
-
----
-#### Email form field
->The email field allows email input, it uses an input with `type='email'`. Browsers will provide basic email address validation by default.
-
-##### default (string, optional)
-
-_Example password field_
-```json
-	{
-		"key": "email",
-		"type": "email",
-		"placeholder": "janedoe@gmail.com"
-	}
-```
 
 ## Other Notes
 
@@ -502,6 +228,13 @@ Formly gives some useful warnings when you attempt to use a template that doesn'
 ## Tips and Tricks
 
 Please see [the Wiki](https://github.com/formly-js/angular-formly/wiki) for tips and tricks from the community.
+
+### Expressions
+
+There are four places where you can put expressions. The context in which these expressions are evaluated is important. There are two different types of context and each is explained below:
+
+1) watch - expression and listener can be functions or expression strings. These are both evaluated on the `formly-form` scope, despite being applied to a specific field. This allows the expressions to run even if the field's scope has been destroyed (via an ng-if like when the field is hidden).
+2) expressionProperties & validators - these expressions can be functions or expression strings. If it's a function, it's invoked with the arguments `value` and `scope`. The scope in this case, is the field's scope. If it's an expression string, it is evaluated using `$parse` and the locals are the `scope` and the current value of the field (as if it were a member of `scope`).
 
 ## Roadmap
 

@@ -1,16 +1,55 @@
 angular.module('formly.render')
-.directive('formlyField', function formlyField($http, $compile, $templateCache, formlyConfig) {
+.directive('formlyField', function formlyField($http, $compile, $templateCache, formlyConfig, formlyUtil) {
 	'use strict';
 	return {
 		restrict: 'AE',
 		transclude: true,
 		scope: {
-			optionsData: '&options',
-			formId: '=',
-			index: '=',
-			fields: '=',
+			options: '=',
+			formId: '=?',
+			index: '=?',
+			fields: '=?',
 			result: '=formResult',
 			form: '=?'
+		},
+		controller: function fieldController($scope, $parse) {
+			// set field id to link labels and fields
+			$scope.id = getFieldId();
+			$scope.options.runExpressions = runExpressions;
+
+			// initalization
+			runExpressions($scope.result);
+
+			// function definitions
+			function getFieldId() {
+				var type = $scope.options.type;
+				if (!type && $scope.options.template) {
+					type = 'template';
+				} else if (!type && $scope.options.templateUrl) {
+					type = 'templateUrl';
+				}
+
+				return $scope.formId + type + $scope.options.key + $scope.index;
+			}
+
+
+			function runExpressions(result) {
+				var field = $scope.options;
+				angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
+					if (angular.isFunction(expression)) {
+						field[prop] = expression(getFieldValue(), $scope);
+					} else {
+						var scopeWithValue = angular.extend({
+							value: getFieldValue()
+						}, $scope);
+						field[prop] = $parse(expression)(scopeWithValue);
+					}
+				});
+			}
+
+			function getFieldValue() {
+				return $scope.result[$scope.options.key || $scope.index];
+			}
 		},
 		link: function fieldLink($scope, $element) {
 			var templateOptions = 0;
@@ -18,10 +57,10 @@ angular.module('formly.render')
 			templateOptions += $scope.options.type ? 1 : 0;
 			templateOptions += $scope.options.templateUrl ? 1 : 0;
 			if (templateOptions === 0) {
-				warn('Formly Error: template type \'' + $scope.options.type + '\' not supported. On element:', $element);
+				warn('Formly Warning: template type \'' + $scope.options.type + '\' not supported. On element:', $element);
 				return;
 			} else if (templateOptions > 1) {
-				throw new Error('Formly Error: You must only provide a type, template, or templateUrl for a field. Provided: ' + JSON.stringify($scope.options));
+				formlyUtil.throwErrorWithField('You must only provide a type, template, or templateUrl for a field', $scope.options);
 			}
 			var template = $scope.options.template || formlyConfig.getTemplate($scope.options.type);
 			if (template) {
@@ -34,7 +73,7 @@ angular.module('formly.render')
 					}).then(function(response) {
 						setElementTemplate(response.data);
 					}, function(error) {
-						warn('Formly Error: Problem loading template for ' + templateUrl, error);
+						warn('Formly Warning: Problem loading template for ' + templateUrl, error);
 					});
 				}
 			}
@@ -42,18 +81,6 @@ angular.module('formly.render')
 				$element.html(templateData);
 				$compile($element.contents())($scope);
 			}
-		},
-		controller: function fieldController($scope) {
-			$scope.options = $scope.optionsData();
-			var type = $scope.options.type;
-			if (!type && $scope.options.template) {
-				type = 'template';
-			} else if (!type && $scope.options.templateUrl) {
-				type = 'templateUrl';
-			}
-
-			// set field id to link labels and fields
-			$scope.id = $scope.formId + type + $scope.options.key + $scope.index;
 		}
 	};
 

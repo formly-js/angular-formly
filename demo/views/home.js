@@ -112,7 +112,9 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 		type: 'email',
 		placeholder: 'janedoe@gmail.com',
 		description: 'We won\'t spam you',
-		requiredExpression: 'emailRequired'
+		expressionProperties: {
+			required: 'result.emailRequired'
+		}
 	}, {
 		key: 'about',
 		type: 'textarea',
@@ -232,13 +234,45 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 		type: 'text',
 		label: 'Conditional input',
 		placeholder: 'This is a big secret! Try typing "joe"',
-		hideExpression: '!checkThis'
+		expressionProperties: {
+			hide: '!result.checkThis'
+		}
 	}, {
 		key: 'showWhenJoe',
 		type: 'text',
 		label: 'You typed Joe! You found me!',
-		placeholder: 'hideExpressions are evaluated on the result',
-		hideExpression: 'hiddenWhenUnchecked !== "joe"'
+		placeholder: 'expression property example',
+		expressionProperties: {
+			hide: 'value !== "joe"'
+		}
+	}, {
+		key: 'happyField',
+		type: 'text',
+		label: 'Custom Expression Properties',
+		expressionProperties: {
+			isHappy: 'value === "happy"'
+		},
+		placeholder: 'Type "happy"',
+		watch: {
+			expression: function(field) {
+				return field.isHappy;
+			},
+			listener: function(field, isHappy, oldValue, scope) {
+				if (isHappy) {
+					scope.result.field2 = ':-)';
+				}
+			}
+		}
+	}, {
+		key: 'consolingField',
+		type: 'text',
+		label: 'Listner only Watch Example',
+		placeholder: 'type and see the console',
+		watch: {
+			listener: function(field, newValue) {
+				console.log(newValue);
+			}
+		}
 	}];
 
 	$scope.formFields.forEach(function (field, index) {
@@ -257,7 +291,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 			label: 'This is a special form field',
 			placeholder: 'It has a watch property with an expression function that depends on something outside the result...',
 			watch: {
-				expression: function(field) {
+				expression: function(field, formScope) {
 					return !/joe/ig.test($scope.formData.hiddenWhenUnchecked);
 				},
 				listener: function(field, _new) {

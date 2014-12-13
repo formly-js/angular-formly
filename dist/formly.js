@@ -46,11 +46,9 @@ angular.module('formly.render').directive('formlyCustomValidation', ["$parse", f
 				if (angular.isFunction(validator)) {
 					isValid = validator(value, scope);
 				} else {
-					var validationScope = {
-						value: value,
-						options: scope.options,
-						result: scope.result
-					};
+					var validationScope = angular.extend({
+						value: value
+					}, scope);
 					isValid = $parse(validator)(validationScope);
 				}
 				return isValid;
@@ -72,29 +70,68 @@ angular.module('formly.render').directive('formlyDynamicName', function formlyDy
 	};
 });
 angular.module('formly.render')
-.directive('formlyField', ["$http", "$compile", "$templateCache", "formlyConfig", function formlyField($http, $compile, $templateCache, formlyConfig) {
+.directive('formlyField', ["$http", "$compile", "$templateCache", "formlyConfig", "formlyUtil", function formlyField($http, $compile, $templateCache, formlyConfig, formlyUtil) {
 	'use strict';
 	return {
 		restrict: 'AE',
 		transclude: true,
 		scope: {
-			optionsData: '&options',
-			formId: '=',
-			index: '=',
-			fields: '=',
+			options: '=',
+			formId: '=?',
+			index: '=?',
+			fields: '=?',
 			result: '=formResult',
 			form: '=?'
 		},
+		controller: ["$scope", "$parse", function fieldController($scope, $parse) {
+			// set field id to link labels and fields
+			$scope.id = getFieldId();
+			$scope.options.runExpressions = runExpressions;
+
+			// initalization
+			runExpressions($scope.result);
+
+			// function definitions
+			function getFieldId() {
+				var type = $scope.options.type;
+				if (!type && $scope.options.template) {
+					type = 'template';
+				} else if (!type && $scope.options.templateUrl) {
+					type = 'templateUrl';
+				}
+
+				return $scope.formId + type + $scope.options.key + $scope.index;
+			}
+
+
+			function runExpressions(result) {
+				var field = $scope.options;
+				angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
+					if (angular.isFunction(expression)) {
+						field[prop] = expression(getFieldValue(), $scope);
+					} else {
+						var scopeWithValue = angular.extend({
+							value: getFieldValue()
+						}, $scope);
+						field[prop] = $parse(expression)(scopeWithValue);
+					}
+				});
+			}
+
+			function getFieldValue() {
+				return $scope.result[$scope.options.key || $scope.index];
+			}
+		}],
 		link: function fieldLink($scope, $element) {
 			var templateOptions = 0;
 			templateOptions += $scope.options.template ? 1 : 0;
 			templateOptions += $scope.options.type ? 1 : 0;
 			templateOptions += $scope.options.templateUrl ? 1 : 0;
 			if (templateOptions === 0) {
-				warn('Formly Error: template type \'' + $scope.options.type + '\' not supported. On element:', $element);
+				warn('Formly Warning: template type \'' + $scope.options.type + '\' not supported. On element:', $element);
 				return;
 			} else if (templateOptions > 1) {
-				throw new Error('Formly Error: You must only provide a type, template, or templateUrl for a field. Provided: ' + JSON.stringify($scope.options));
+				formlyUtil.throwErrorWithField('You must only provide a type, template, or templateUrl for a field', $scope.options);
 			}
 			var template = $scope.options.template || formlyConfig.getTemplate($scope.options.type);
 			if (template) {
@@ -107,7 +144,7 @@ angular.module('formly.render')
 					}).then(function(response) {
 						setElementTemplate(response.data);
 					}, function(error) {
-						warn('Formly Error: Problem loading template for ' + templateUrl, error);
+						warn('Formly Warning: Problem loading template for ' + templateUrl, error);
 					});
 				}
 			}
@@ -115,19 +152,7 @@ angular.module('formly.render')
 				$element.html(templateData);
 				$compile($element.contents())($scope);
 			}
-		},
-		controller: ["$scope", function fieldController($scope) {
-			$scope.options = $scope.optionsData();
-			var type = $scope.options.type;
-			if (!type && $scope.options.template) {
-				type = 'template';
-			} else if (!type && $scope.options.templateUrl) {
-				type = 'templateUrl';
-			}
-
-			// set field id to link labels and fields
-			$scope.id = $scope.formId + type + $scope.options.key + $scope.index;
-		}]
+		}
 	};
 
 	function warn() {
@@ -138,7 +163,7 @@ angular.module('formly.render')
 }]);
 
 angular.module('formly.render')
-.directive('formlyForm', ["$timeout", function formlyForm($timeout) {
+.directive('formlyForm', function formlyForm() {
 	'use strict';
 	return {
 		restrict: 'E',
@@ -160,40 +185,19 @@ angular.module('formly.render')
 				}
 			};
 		},
-		controller: ["$scope", "$element", "$parse", function($scope, $element, $parse) {
-			// setup watches for watchExpressions
-			angular.forEach($scope.fields, function(field) {
-				if (angular.isDefined(field.watch) &&
-					angular.isDefined(field.watch.expression) &&
-					angular.isDefined(field.watch.listener)) {
-					var watchExpression = field.watch.expression;
-					if (angular.isFunction(watchExpression)) {
-						// wrap the field's watch expression so we can call it with the field as the first arg as a helper
-						watchExpression = function() {
-							var args = Array.prototype.slice.call(arguments, 0);
-							args.unshift(field);
-							return field.watch.expression.apply(this, args);
-						};
-					}
+		controller: ["$scope", "$timeout", "formlyUtil", "$interval", function($scope, $timeout, formlyUtil, $interval) {
+			
+			angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
 
-					$scope.$watch(watchExpression, function() {
-						// wrap the field's watch listener so we can call it with the field as the first arg as a helper
-						var args = Array.prototype.slice.call(arguments, 0);
-						args.unshift(field);
-						return field.watch.listener.apply(this, args);
-					});
-				}
-			});
-			$scope.$watch('result', function onResultUpdate() {
+			// watch the result and evaluate watch expressions that depend on it.
+			$scope.$watch('result', function onResultUpdate(newResult) {
 				angular.forEach($scope.fields, function(field) {
-					if (field.hideExpression) {
-						field.hide = $parse(field.hideExpression)($scope.result);
-					}
-					if (field.requiredExpression) {
-						field.required = $parse(field.requiredExpression)($scope.result);
-					}
+					/*jshint -W030 */
+					field.runExpressions && field.runExpressions(newResult);
 				});
 			}, true);
+
+			// listen for formly-dynamic-name fields to notify that the field name has been set and angular has put the field on the form
 			$scope.$on('formly-dynamic-name-update', function(e) {
 				e.stopPropagation();
 				if (!$scope.formOnParentScope) {
@@ -208,9 +212,49 @@ angular.module('formly.render')
 					});
 				}); // next tick, give angular an event loop to finish compiling
 			});
+
+			function setupWatchers(field, index) {
+				var watchers = field.watch;
+				if (!angular.isDefined(watchers)) {
+					return;
+				}
+				if (!angular.isArray(watchers)) {
+					watchers = [watchers];
+				}
+				angular.forEach(watchers, function(watcher) {
+					var stopWatching;
+					if (!angular.isDefined(watcher.listener)) {
+						formlyUtil.throwErrorWithField('All field watchers must have a listener', field);
+					}
+					var watchExpression = watcher.expression || 'result["' + field.key + '" || ' + index + ']';
+					if (angular.isFunction(watchExpression)) {
+						// wrap the field's watch expression so we can call it with the field as the first arg and the stop function as the last arg as a helper
+						watchExpression = function formlyWatchExpression() {
+							var args = Array.prototype.slice.call(arguments, 0);
+							args.unshift(field);
+							args.push(stopWatching);
+							return field.watch.expression.apply(this, args);
+						};
+						watchExpression.displayName = 'Formly Watch Expression for field for ' + field.key;
+					}
+					var watchListener = watcher.listener;
+					if (angular.isFunction(watchListener)) {
+						// wrap the field's watch listener so we can call it with the field as the first arg and the stop function as the last arg as a helper
+						watchListener = function formlyWatchListener() {
+							var args = Array.prototype.slice.call(arguments, 0);
+							args.unshift(field);
+							args.push(stopWatching);
+							return field.watch.listener.apply(this, args);
+						};
+						watchListener.displayName = 'Formly Watch Listener for field for ' + field.key;
+					}
+					var type = watcher.type || '$watch';
+					stopWatching = $scope[type](watchExpression, watchListener, watcher.watchDeep);
+				});
+			}
 		}]
 	};
-}]);
+});
 angular.module('formly.render')
 .provider('formlyConfig', function() {
 	'use strict';
@@ -258,6 +302,16 @@ angular.module('formly.render')
 		return this;
 	};
 	
+});
+angular.module('formly.render')
+.factory('formlyUtil', function() {
+	return {
+		throwErrorWithField: throwErrorWithField
+	};
+
+	function throwErrorWithField(message, field) {
+		throw new Error('Formly Error: ' + message + '. Field definition: ' + angular.toJson(field));
+	}
 });
 angular.module('formly.render').run(['$templateCache', function($templateCache) {
   'use strict';

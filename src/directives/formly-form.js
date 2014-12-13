@@ -1,5 +1,5 @@
 angular.module('formly.render')
-.directive('formlyForm', function formlyForm($timeout) {
+.directive('formlyForm', function formlyForm() {
 	'use strict';
 	return {
 		restrict: 'E',
@@ -21,40 +21,19 @@ angular.module('formly.render')
 				}
 			};
 		},
-		controller: function($scope, $element, $parse) {
-			// setup watches for watchExpressions
-			angular.forEach($scope.fields, function(field) {
-				if (angular.isDefined(field.watch) &&
-					angular.isDefined(field.watch.expression) &&
-					angular.isDefined(field.watch.listener)) {
-					var watchExpression = field.watch.expression;
-					if (angular.isFunction(watchExpression)) {
-						// wrap the field's watch expression so we can call it with the field as the first arg as a helper
-						watchExpression = function() {
-							var args = Array.prototype.slice.call(arguments, 0);
-							args.unshift(field);
-							return field.watch.expression.apply(this, args);
-						};
-					}
+		controller: function($scope, $timeout, formlyUtil, $interval) {
+			
+			angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
 
-					$scope.$watch(watchExpression, function() {
-						// wrap the field's watch listener so we can call it with the field as the first arg as a helper
-						var args = Array.prototype.slice.call(arguments, 0);
-						args.unshift(field);
-						return field.watch.listener.apply(this, args);
-					});
-				}
-			});
-			$scope.$watch('result', function onResultUpdate() {
+			// watch the result and evaluate watch expressions that depend on it.
+			$scope.$watch('result', function onResultUpdate(newResult) {
 				angular.forEach($scope.fields, function(field) {
-					if (field.hideExpression) {
-						field.hide = $parse(field.hideExpression)($scope.result);
-					}
-					if (field.requiredExpression) {
-						field.required = $parse(field.requiredExpression)($scope.result);
-					}
+					/*jshint -W030 */
+					field.runExpressions && field.runExpressions(newResult);
 				});
 			}, true);
+
+			// listen for formly-dynamic-name fields to notify that the field name has been set and angular has put the field on the form
 			$scope.$on('formly-dynamic-name-update', function(e) {
 				e.stopPropagation();
 				if (!$scope.formOnParentScope) {
@@ -69,6 +48,46 @@ angular.module('formly.render')
 					});
 				}); // next tick, give angular an event loop to finish compiling
 			});
+
+			function setupWatchers(field, index) {
+				var watchers = field.watch;
+				if (!angular.isDefined(watchers)) {
+					return;
+				}
+				if (!angular.isArray(watchers)) {
+					watchers = [watchers];
+				}
+				angular.forEach(watchers, function(watcher) {
+					var stopWatching;
+					if (!angular.isDefined(watcher.listener)) {
+						formlyUtil.throwErrorWithField('All field watchers must have a listener', field);
+					}
+					var watchExpression = watcher.expression || 'result["' + field.key + '" || ' + index + ']';
+					if (angular.isFunction(watchExpression)) {
+						// wrap the field's watch expression so we can call it with the field as the first arg and the stop function as the last arg as a helper
+						watchExpression = function formlyWatchExpression() {
+							var args = Array.prototype.slice.call(arguments, 0);
+							args.unshift(field);
+							args.push(stopWatching);
+							return field.watch.expression.apply(this, args);
+						};
+						watchExpression.displayName = 'Formly Watch Expression for field for ' + field.key;
+					}
+					var watchListener = watcher.listener;
+					if (angular.isFunction(watchListener)) {
+						// wrap the field's watch listener so we can call it with the field as the first arg and the stop function as the last arg as a helper
+						watchListener = function formlyWatchListener() {
+							var args = Array.prototype.slice.call(arguments, 0);
+							args.unshift(field);
+							args.push(stopWatching);
+							return field.watch.listener.apply(this, args);
+						};
+						watchListener.displayName = 'Formly Watch Listener for field for ' + field.key;
+					}
+					var type = watcher.type || '$watch';
+					stopWatching = $scope[type](watchExpression, watchListener, watcher.watchDeep);
+				});
+			}
 		}
 	};
 });

@@ -11,16 +11,24 @@ Version numbers correspond to `bower.json` version
 - `formly-custom-validation` supports `$asyncValidators` by adding `isAsync = true` property to the validation function.
 - `formly-form` now passes `formly-field` all of the fields.
 - `formlyConfigProvider` now allows you to disable console warnings via `disableWarnings` boolean (defaults to `false`).
+- `watch` can now accept an array of `watch` objects.
+- `watch` objects can now have `deep` and `type` to have more control over the watch that is created
+- `watch` listners and expressions now take a new last argument which is the deregistration function
+- `expressionProperties` introduced to give more control over property values for fields. It adds a `runExpressions` function to each field which is run on every result update and can be run with the result.
+- `validator` string expressions now run with all scope properties rather than just options and result.
 
 ## Breaking changes:
 
 - Changing the id given to fields. It now also contains the key also. We don't expect anyone was depending on this, but it does change behavior so it's listed as a breaking change.
 - Changing from `form` to `ng-form` to allow for nesting forms [as recommended](https://docs.angularjs.org/api/ng/directive/ngForm).
 - Changing warning to throwing an error when more than one template option is provided (type, template, or templateUrl). You should never be allowed to do this in the first place.
+- `hideExpression` and `requiredExpression` have been removed in favor of `expressionProperties`
+- `formly-field` now expects `options` to be a bound property (`=`) rather than an expression (`&`)
 
 ## Internal Changes
 
 - Upgraded devDependencies to use angular 1.3 so the demo can show off `$asyncValidators`.
+- `formly-field`: `formlyId` and `index` are now optional properties
 
 # 1.0.0
 

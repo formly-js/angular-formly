@@ -42,11 +42,9 @@ angular.module('formly.render').directive('formlyCustomValidation', function($pa
 				if (angular.isFunction(validator)) {
 					isValid = validator(value, scope);
 				} else {
-					var validationScope = {
-						value: value,
-						options: scope.options,
-						result: scope.result
-					};
+					var validationScope = angular.extend({
+						value: value
+					}, scope);
 					isValid = $parse(validator)(validationScope);
 				}
 				return isValid;
