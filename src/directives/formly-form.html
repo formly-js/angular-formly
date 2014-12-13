@@ -1,9 +1,10 @@
 <ng-form class="formly"
-      role="form">
+         role="form">
 	<formly-field ng-repeat="field in fields"
 	              class="formly-field"
 	              options="field"
 	              form-result="result"
+	              fields="fields"
 	              form="formOnParentScope"
 	              form-id="options.uniqueFormId"
 	              ng-if="!field.hide"

@@ -8,6 +8,7 @@ angular.module('formly.render')
 			optionsData: '&options',
 			formId: '=',
 			index: '=',
+			fields: '=',
 			result: '=formResult',
 			form: '=?'
 		},

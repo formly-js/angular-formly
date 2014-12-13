@@ -9,6 +9,7 @@ Version numbers correspond to `bower.json` version
 - Changing API to validators in a backwards compatible way (checking whether the validators conform to the old API and if they do then converting them to the new form). This is a much simpler api.
 - `formly-custom-validation` supports the new `$validators` api if available (in angular 1.3), otherwise it falls back to `$parsers`.
 - `formly-custom-validation` supports `$asyncValidators` by adding `isAsync = true` property to the validation function.
+- `formly-form` now passes `formly-field` all of the fields.
 
 ## Breaking changes:
 
