@@ -81,21 +81,22 @@ angular.module('formly.render')
 			optionsData: '&options',
 			formId: '=',
 			index: '=',
+			fields: '=',
 			result: '=formResult',
 			form: '=?'
 		},
 		link: function fieldLink($scope, $element) {
-      var templateOptions = 0;
-      templateOptions += $scope.options.template ? 1 : 0;
-      templateOptions += $scope.options.type ? 1 : 0;
-      templateOptions += $scope.options.templateUrl ? 1 : 0;
-      if (templateOptions === 0) {
-        console.warn('Formly Error: template type \'' + $scope.options.type + '\' not supported. On element:', $element);
-        return;
-      } else if (templateOptions > 1) {
-        console.warn('Formly Error: You must only provide a type, template, or templateUrl for a field. On element:', $element);
-      }
-      var template = $scope.options.template || formlyConfig.getTemplate($scope.options.type);
+			var templateOptions = 0;
+			templateOptions += $scope.options.template ? 1 : 0;
+			templateOptions += $scope.options.type ? 1 : 0;
+			templateOptions += $scope.options.templateUrl ? 1 : 0;
+			if (templateOptions === 0) {
+				warn('Formly Error: template type \'' + $scope.options.type + '\' not supported. On element:', $element);
+				return;
+			} else if (templateOptions > 1) {
+				throw new Error('Formly Error: You must only provide a type, template, or templateUrl for a field. Provided: ' + JSON.stringify($scope.options));
+			}
+			var template = $scope.options.template || formlyConfig.getTemplate($scope.options.type);
 			if (template) {
 				setElementTemplate(template);
 			} else {
@@ -106,7 +107,7 @@ angular.module('formly.render')
 					}).then(function(response) {
 						setElementTemplate(response.data);
 					}, function(error) {
-						console.warn('Formly Error: Problem loading template for ' + templateUrl, error);
+						warn('Formly Error: Problem loading template for ' + templateUrl, error);
 					});
 				}
 			}
@@ -128,6 +129,12 @@ angular.module('formly.render')
 			$scope.id = $scope.formId + type + $scope.options.key + $scope.index;
 		}]
 	};
+
+	function warn() {
+		if (!formlyConfig.disableWarnings) {
+			console.warn.apply(console, arguments);
+		}
+	}
 }]);
 
 angular.module('formly.render')
@@ -245,6 +252,8 @@ angular.module('formly.render')
 	this.getTemplate = getTemplate;
 	this.setTemplate = setTemplate;
 
+	this.disableWarnings = false;
+
 	this.$get = function formlyConfig() {
 		return this;
 	};
@@ -254,7 +263,7 @@ angular.module('formly.render').run(['$templateCache', function($templateCache) 
   'use strict';
 
   $templateCache.put('directives/formly-form.html',
-    "<ng-form class=formly role=form><formly-field ng-repeat=\"field in fields\" class=formly-field options=field form-result=result form=formOnParentScope form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></ng-form>"
+    "<ng-form class=formly role=form><formly-field ng-repeat=\"field in fields\" class=formly-field options=field form-result=result fields=fields form=formOnParentScope form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></ng-form>"
   );
 
 }]);
