@@ -18,7 +18,7 @@ angular.module('formly.render')
 			templateOptions += $scope.options.type ? 1 : 0;
 			templateOptions += $scope.options.templateUrl ? 1 : 0;
 			if (templateOptions === 0) {
-				console.warn('Formly Error: template type \'' + $scope.options.type + '\' not supported. On element:', $element);
+				warn('Formly Error: template type \'' + $scope.options.type + '\' not supported. On element:', $element);
 				return;
 			} else if (templateOptions > 1) {
 				throw new Error('Formly Error: You must only provide a type, template, or templateUrl for a field. Provided: ' + JSON.stringify($scope.options));
@@ -34,7 +34,7 @@ angular.module('formly.render')
 					}).then(function(response) {
 						setElementTemplate(response.data);
 					}, function(error) {
-						console.warn('Formly Error: Problem loading template for ' + templateUrl, error);
+						warn('Formly Error: Problem loading template for ' + templateUrl, error);
 					});
 				}
 			}
@@ -56,4 +56,10 @@ angular.module('formly.render')
 			$scope.id = $scope.formId + type + $scope.options.key + $scope.index;
 		}
 	};
+
+	function warn() {
+		if (!formlyConfig.disableWarnings) {
+			console.warn.apply(console, arguments);
+		}
+	}
 });

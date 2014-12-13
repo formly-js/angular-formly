@@ -5,8 +5,7 @@
 Formly for Angular is an AngularJS module which has directives to help customize and render JSON based forms. The directive originated from a need to allow our users to create surveys and distribute them easily. Currently we've can render the form data from JSON and assign a model to form so we can receive the submitted data.
 
 ```html
-	<formly-form result="formData" fields="formFields" options="formOptions" ng-submit="onSubmit()">
-	</formly-form>
+<formly-form result="formData" fields="formFields" options="formOptions"></formly-form>
 ```
 
 ### Demo : http://formly-js.github.io/angular-formly/
@@ -495,6 +494,10 @@ formlyConfigProvider.getTemplateUrl('radio') === 'views/custom-formly-radio.html
 ##### setTemplate & getTemplate
 
 Work pretty much the same as the their url counterparts, except they accept an actual template string rather than a url.
+
+##### disableWarnings
+
+Formly gives some useful warnings when you attempt to use a template that doesn't exist or there's a problem loading a template. You can disable these warnings via `formlyConfigProvider.disableWarnings = true`
 
 ## Tips and Tricks
 

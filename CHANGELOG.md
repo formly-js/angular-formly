@@ -10,6 +10,7 @@ Version numbers correspond to `bower.json` version
 - `formly-custom-validation` supports the new `$validators` api if available (in angular 1.3), otherwise it falls back to `$parsers`.
 - `formly-custom-validation` supports `$asyncValidators` by adding `isAsync = true` property to the validation function.
 - `formly-form` now passes `formly-field` all of the fields.
+- `formlyConfigProvider` now allows you to disable console warnings via `disableWarnings` boolean (defaults to `false`).
 
 ## Breaking changes:
 

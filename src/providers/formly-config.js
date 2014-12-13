@@ -39,6 +39,8 @@ angular.module('formly.render')
 	this.getTemplate = getTemplate;
 	this.setTemplate = setTemplate;
 
+	this.disableWarnings = false;
+
 	this.$get = function formlyConfig() {
 		return this;
 	};
