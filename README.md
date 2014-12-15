@@ -136,7 +136,7 @@ template: '<hr />'
 
 ---
 ##### expressionProperties (object)
->`expressionProperties` is a hash where the key is a property to be set on the main field config and the value is an expression used to assign that property. The expression is evaluated using `$parse` with an object that has `value` (the value of the field) and all other scope properties for the field (like `result`, `index`, `form`, etc.)
+>`expressionProperties` is an object where the key is a property to be set on the main field config and the value is an expression used to assign that property. One special case is `data` which is an object that behaves the same as `expressionProperties` except the value is assigned to `field.data` rather than just `field`. The expression can be a function or string expression and will be evaluated using `formlyEval` from `formlyUtils` see below for more information.
 
 ###### Default
 >`undefined`
@@ -174,7 +174,7 @@ $scope.$watch(function expression(field, theScope, stop) {}, function listener(f
 
 ---
 ##### validators (object)
->`validators` is an object where the keys are the name of the validity (to be passed to `$setValidity`) and the values are functions or expressions which returns true if it is valid. Templates can pass this option to the `formly-custom-validation` directive which will add a parser to the `ngModel` controller of the field. The property value can be a function which is passed the `$viewValue` of the field and the field's scope. It can also be an expression which will be evaluated with `value` (the `$viewValue`) and all properties on the field's scope (like `result` and `options`). **Note:** Formly will utilize the `$validators` pipeline (introduced in angular 1.3) if available, otherwise it will fallback to `$parsers`. If you are using angular 1.3, you can also use the `$asyncValidators` pipeline by adding the property `isAsync = true` to your validator function.
+>`validators` is an object where the keys are the name of the validity (to be passed to `$setValidity`) and the values are functions or expressions which returns true if it is valid. Templates can pass this option to the `formly-custom-validation` directive which will add a parser (or validator, see note) to the `ngModel` controller of the field. The validator can be a function or string expression and will be evaluated using `formlyEval` from `formlyUtils` see below for more information. **Note:** Formly will utilize the `$validators` pipeline (introduced in angular 1.3) if available, otherwise it will fallback to `$parsers`. If you are using angular 1.3, you can also use the `$asyncValidators` pipeline by adding the property `isAsync = true` to your validator function.
 
 ###### Default
 >`undefined`
@@ -240,8 +240,9 @@ Please see [the Wiki](https://github.com/formly-js/angular-formly/wiki) for tips
 
 There are four places where you can put expressions. The context in which these expressions are evaluated is important. There are two different types of context and each is explained below:
 
-1) watch - expression and listener can be functions or expression strings. This is a regular angular `$watch` (depending on the specified `type`) function and it is created on the `formly-form` scope, despite being applied to a specific field. This allows the expressions to run even if the field's scope has been destroyed (via an ng-if like when the field is hidden).
-2) expressionProperties & validators - these expressions can be functions or expression strings. If it's a function, it's invoked with the arguments `value` and `scope`. The scope in this case, is the field's scope. If it's an expression string, it is evaluated using `$parse` and the locals are the `scope` and the current value of the field (as if it were a member of `scope`).
+1) watch - expression and listener can be functions or expression strings. This is a regular angular `$watch` (depending on the specified `type`) function and it is created on the `formly-form` scope, despite being applied to a specific field. This allows the expressions to run even if the field's scope has been destroyed (via an ng-if like when the field is hidden). The function signature differs from a normal `$watch` however. See above for more details.
+
+2) expressionProperties & validators - these expressions can be functions or expression strings. If it's a function, it's invoked with the arguments `$viewValue`, `$modelValue`, and `scope`. The scope in this case, is the field's scope. If it's an expression string, it is evaluated using `$scope.$eval` with a locals object that has `$viewValue` and `$modelValue` (however, in the case of `expressionProperties`, `$viewValue` will simply be the `$modelValue` because they don't have a hook into the `ngModelController` but we want to keep the api consistent).
 
 ## Roadmap
 

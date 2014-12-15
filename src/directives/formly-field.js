@@ -12,7 +12,7 @@ angular.module('formly.render')
 			result: '=formResult',
 			form: '=?'
 		},
-		controller: function fieldController($scope, $parse) {
+		controller: function fieldController($scope) {
 			// set field id to link labels and fields
 			$scope.id = getFieldId();
 			angular.extend($scope.options, {
@@ -43,14 +43,15 @@ angular.module('formly.render')
 
 			function runExpressions(result) {
 				var field = $scope.options;
+				var currentValue = valueGetterSetter();
 				angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
-					if (angular.isFunction(expression)) {
-						field[prop] = expression(valueGetterSetter(), $scope);
+					if (prop !== 'data') {
+						field[prop] = formlyUtil.formlyEval($scope, expression, currentValue);
 					} else {
-						var scopeWithValue = angular.extend({
-							value: valueGetterSetter()
-						}, $scope);
-						field[prop] = $parse(expression)(scopeWithValue);
+						field.data = field.data || {};
+						angular.forEach(field.expressionProperties.data, function runExpression(dataExpression, dataProp) {
+							field.data[dataProp] = formlyUtil.formlyEval($scope, dataExpression, currentValue);
+						});
 					}
 				});
 			}

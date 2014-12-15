@@ -6,7 +6,6 @@ Version numbers correspond to `bower.json` version
 
 - Adding class `formly-field` to the fields to make it easier to select them with css selectors.
 - Adding optional `form` to what is passed to the formly-field. This gives the developer some flexibility to how they do field validation by not forcing them to rely on the mokey-patching that angular-formly does to each field.
-- Changing API to validators in a backwards compatible way (checking whether the validators conform to the old API and if they do then converting them to the new form). This is a much simpler api.
 - `formly-custom-validation` supports the new `$validators` api if available (in angular 1.3), otherwise it falls back to `$parsers`.
 - `formly-custom-validation` supports `$asyncValidators` by adding `isAsync = true` property to the validation function.
 - `formly-form` now passes `formly-field` all of the fields.
@@ -15,12 +14,13 @@ Version numbers correspond to `bower.json` version
 - `watch` objects can now have `deep` and `type` to have more control over the watch that is created
 - `watch` listners and expressions now take a new last argument which is the deregistration function
 - `expressionProperties` introduced to give more control over property values for fields. It adds a `runExpressions` function to each field which is run on every result update and can be run with the result.
-- `validator` string expressions now run with all scope properties rather than just options and result.
+- `validator` string expressions now run with `$scope.$eval` and a locals object.
 - field definition now has a `modelOptions` for use in `ng-model-options`
 - `formly-field` now adds a `value` getter/setter to scope for use in ng-model in combination with `ng-model-options` as well as general helper functionality.
 
 ## Breaking changes:
 
+- Changing API to validators.
 - Changing the id given to fields. It now also contains the key also. We don't expect anyone was depending on this, but it does change behavior so it's listed as a breaking change.
 - Changing from `form` to `ng-form` to allow for nesting forms [as recommended](https://docs.angularjs.org/api/ng/directive/ngForm).
 - Changing warning to throwing an error when more than one template option is provided (type, template, or templateUrl). You should never be allowed to do this in the first place.
