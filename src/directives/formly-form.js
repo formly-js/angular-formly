@@ -50,10 +50,13 @@ angular.module('formly.render')
 			});
 
 			function setupWatchers(field, index) {
-				var watchers = field.watch;
-				if (!angular.isDefined(watchers)) {
+				if (!field.hasOwnProperty('watch') || !angular.isDefined(watchers)) {
+					// must check for own property because of this:
+					// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/watch
+					// (－‸ლ)   <-- yes, that's a face palm...
 					return;
 				}
+				var watchers = field.watch;
 				if (!angular.isArray(watchers)) {
 					watchers = [watchers];
 				}
