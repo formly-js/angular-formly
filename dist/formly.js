@@ -2,7 +2,7 @@
 angular.module('formly.render', []);
 // Main Formly Module
 angular.module('formly', ['formly.render']);
-angular.module('formly.render').directive('formlyCustomValidation', ["$parse", function($parse) {
+angular.module('formly.render').directive('formlyCustomValidation', ["formlyUtil", function(formlyUtil) {
 	'use strict';
 
 	return {
@@ -12,47 +12,23 @@ angular.module('formly.render').directive('formlyCustomValidation', ["$parse", f
 			if (!validators) {
 				return;
 			}
-			if (angular.isArray(validators) || (validators.name && validators.validate)) {
-				// using old api, convert to the new api
-				if (!angular.isArray(validators)) {
-					validators = [validators];
-				}
-				var newValidators = {};
-				angular.forEach(validators, function(validator) {
-					newValidators[validator.name] = validator.validate;
-				});
-				validators = newValidators;
-			}
-
+			
 			// setup watchers and parsers
 			var hasValidators = ctrl.hasOwnProperty('$validators');
 			angular.forEach(validators, function(validator, name) {
 				if (hasValidators) {
 					var validatorCollection = validator.isAsync ? '$asyncValidators' : '$validators';
 					ctrl[validatorCollection][name] = function(modelValue, viewValue) {
-						return getValidity(validator, name, modelValue || viewValue);
+						return formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
 					};
 				} else {
 					ctrl.$parsers.unshift(function(viewValue) {
-						var isValid = getValidity(validator, name, viewValue);
+						var isValid = formlyUtil.formlyEval(scope, validator, ctrl.$modelValue, viewValue);
 						ctrl.$setValidity(name, isValid);
 						return viewValue;
 					});
 				}
 			});
-
-			function getValidity(validator, name, value) {
-				var isValid = false;
-				if (angular.isFunction(validator)) {
-					isValid = validator(value, scope);
-				} else {
-					var validationScope = angular.extend({
-						value: value
-					}, scope);
-					isValid = $parse(validator)(validationScope);
-				}
-				return isValid;
-			}
 		}
 	};
 }]);
@@ -83,7 +59,7 @@ angular.module('formly.render')
 			result: '=formResult',
 			form: '=?'
 		},
-		controller: ["$scope", "$parse", function fieldController($scope, $parse) {
+		controller: ["$scope", function fieldController($scope) {
 			// set field id to link labels and fields
 			$scope.id = getFieldId();
 			angular.extend($scope.options, {
@@ -114,14 +90,15 @@ angular.module('formly.render')
 
 			function runExpressions(result) {
 				var field = $scope.options;
+				var currentValue = valueGetterSetter();
 				angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
-					if (angular.isFunction(expression)) {
-						field[prop] = expression(valueGetterSetter(), $scope);
+					if (prop !== 'data') {
+						field[prop] = formlyUtil.formlyEval($scope, expression, currentValue);
 					} else {
-						var scopeWithValue = angular.extend({
-							value: valueGetterSetter()
-						}, $scope);
-						field[prop] = $parse(expression)(scopeWithValue);
+						field.data = field.data || {};
+						angular.forEach(field.expressionProperties.data, function runExpression(dataExpression, dataProp) {
+							field.data[dataProp] = formlyUtil.formlyEval($scope, dataExpression, currentValue);
+						});
 					}
 				});
 			}
@@ -317,11 +294,23 @@ angular.module('formly.render')
 angular.module('formly.render')
 .factory('formlyUtil', function() {
 	return {
-		throwErrorWithField: throwErrorWithField
+		throwErrorWithField: throwErrorWithField,
+		formlyEval: formlyEval
 	};
 
 	function throwErrorWithField(message, field) {
 		throw new Error('Formly Error: ' + message + '. Field definition: ' + angular.toJson(field));
+	}
+
+	function formlyEval(scope, expression, modelValue, viewValue) {
+		if (angular.isFunction(expression)) {
+			return expression(viewValue, modelValue, scope);
+		} else {
+			return scope.$eval(expression, {
+				$viewValue: viewValue,
+				$modelValue: modelValue
+			});
+		}
 	}
 });
 angular.module('formly.render').run(['$templateCache', function($templateCache) {
