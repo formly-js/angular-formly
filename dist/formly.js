@@ -104,6 +104,9 @@ angular.module('formly.render')
 			}
 
 			function valueGetterSetter(newVal) {
+				if (!$scope.result || (!$scope.options.key && !$scope.index)) {
+					return;
+				}
 				if (angular.isDefined(newVal)) {
 					$scope.result[$scope.options.key || $scope.index] = newVal;
 				}
