@@ -6,8 +6,8 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 	// Because you can edit the formFields as JSON, we lose the validate function on here
 	// storing it here to add it back when the JSON updates the formFields.
 	var seeWhatYouTypeValidators = {
-		notYes: function(value) {
-			return 'yes' === value;
+		notYes: function(viewValue, modelValue) {
+			return 'yes' === (modelValue || viewValue);
 		}
 	};
 	var seeWhatYouTypeIndex = -1;
@@ -17,7 +17,8 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 	};
 	var useDirectiveIndex = -1;
 
-	function asyncNotYesValidator(value) {
+	function asyncNotYesValidator(viewValue, modelValue) {
+		var value = modelValue || viewValue;
 		return $q(function(resolve, reject) {
 			setTimeout(function() {
 				if (value === 'yes') {
@@ -222,7 +223,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 		type: 'password',
 		label: 'Repeat Password',
 		validators: {
-			noMatch: 'value === result.password'
+			noMatch: '$modelValue === result.password'
 		}
 	}, {
 		key: 'checkThis',
@@ -243,23 +244,25 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 		label: 'You typed Joe! You found me!',
 		placeholder: 'expression property example',
 		expressionProperties: {
-			hide: 'value !== "joe"'
+			hide: '$modelValue !== "joe"'
 		}
 	}, {
 		key: 'happyField',
 		type: 'text',
 		label: 'Custom Expression Properties',
 		expressionProperties: {
-			isHappy: 'value === "happy"'
+			isHappy: '$modelValue === "happy"'
 		},
 		placeholder: 'Type "happy"',
 		watch: {
 			expression: function(field) {
 				return field.isHappy;
 			},
-			listener: function(field, isHappy, oldValue, scope) {
+			listener: function(field, isHappy, oldValue, scope, stopWatching) {
 				if (isHappy) {
 					scope.result[field.key] = ':-)';
+					field.placeholder = 'Works only once to demo removing watcher.'
+					stopWatching();
 				}
 			}
 		}
