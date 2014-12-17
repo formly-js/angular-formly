@@ -223,22 +223,24 @@ angular.module('formly.render')
 					var watchExpression = watcher.expression || 'result["' + field.key + '" || ' + index + ']';
 					if (angular.isFunction(watchExpression)) {
 						// wrap the field's watch expression so we can call it with the field as the first arg and the stop function as the last arg as a helper
+						var originalExpression = watchExpression;
 						watchExpression = function formlyWatchExpression() {
 							var args = Array.prototype.slice.call(arguments, 0);
 							args.unshift($scope.fields[index]); // don't just use field here to ensure that we've got the right field reference
 							args.push(stopWatching);
-							return field.watch.expression.apply(this, args);
+							return originalExpression.apply(this, args);
 						};
 						watchExpression.displayName = 'Formly Watch Expression for field for ' + field.key;
 					}
 					var watchListener = watcher.listener;
 					if (angular.isFunction(watchListener)) {
 						// wrap the field's watch listener so we can call it with the field as the first arg and the stop function as the last arg as a helper
+						var originalListener = watchListener;
 						watchListener = function formlyWatchListener() {
 							var args = Array.prototype.slice.call(arguments, 0);
 							args.unshift($scope.fields[index]); // don't just use field here to ensure that we've got the right field reference
 							args.push(stopWatching);
-							return field.watch.listener.apply(this, args);
+							return originalListener.apply(this, args);
 						};
 						watchListener.displayName = 'Formly Watch Listener for field for ' + field.key;
 					}
