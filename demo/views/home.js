@@ -254,7 +254,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 			isHappy: '$modelValue === "happy"'
 		},
 		placeholder: 'Type "happy"',
-		watch: {
+		watcher: {
 			expression: function(field) {
 				return field.isHappy;
 			},
@@ -271,7 +271,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 		type: 'text',
 		label: 'Listner only Watch Example',
 		placeholder: 'type and see the console',
-		watch: {
+		watcher: {
 			listener: function(field, newValue) {
 				console.log(newValue);
 			}
@@ -293,7 +293,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 			type: 'textarea',
 			label: 'This is a special form field',
 			placeholder: 'It has a watch property with an expression function that depends on something outside the result...',
-			watch: {
+			watcher: {
 				expression: function(field, formScope) {
 					return !/joe/ig.test($scope.formData.hiddenWhenUnchecked);
 				},

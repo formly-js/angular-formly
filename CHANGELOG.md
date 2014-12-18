@@ -10,9 +10,9 @@ Version numbers correspond to `bower.json` version
 - `formly-custom-validation` supports `$asyncValidators` by adding `isAsync = true` property to the validation function.
 - `formly-form` now passes `formly-field` all of the fields.
 - `formlyConfigProvider` now allows you to disable console warnings via `disableWarnings` boolean (defaults to `false`).
-- `watch` can now accept an array of `watch` objects.
-- `watch` objects can now have `deep` and `type` to have more control over the watch that is created
-- `watch` listners and expressions now take a new last argument which is the deregistration function
+- `watcher` can now accept an array of `watcher` objects.
+- `watcher` objects can now have `deep` and `type` to have more control over the watch that is created
+- `watcher` listners and expressions now take a new last argument which is the deregistration function
 - `expressionProperties` introduced to give more control over property values for fields. It adds a `runExpressions` function to each field which is run on every result update and can be run with the result.
 - `validator` string expressions now run with `$scope.$eval` and a locals object.
 - field definition now has a `modelOptions` for use in `ng-model-options`
@@ -26,6 +26,7 @@ Version numbers correspond to `bower.json` version
 - Changing warning to throwing an error when more than one template option is provided (type, template, or templateUrl). You should never be allowed to do this in the first place.
 - `hideExpression` and `requiredExpression` have been removed in favor of `expressionProperties`
 - `formly-field` now expects `options` to be a bound property (`=`) rather than an expression (`&`)
+- `watch` changed to `watcher` because Firefox defines `watch` on all objects, so determining whether the field had a watch on it was problematic.
 
 ## Internal Changes
 
