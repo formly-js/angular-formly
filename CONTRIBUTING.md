@@ -2,7 +2,7 @@
 
 ## Issues
 
-If you've found an issue, please submit it in [the issues](https://github.com/formly-js/angular-formly/issues) with a link to a plunker that demonstrates the issue (use [this template](http://plnkr.co/edit/tpl:1R3t4fvpXcJyiu96ICY5?p=preview))
+If you've found an issue, please submit it in [the issues](https://github.com/formly-js/angular-formly/issues) with a link to a jsbin that demonstrates the issue (clone [this template](http://jsbin.com/biqesi/edit))
 
 ## Pull Requests
 
