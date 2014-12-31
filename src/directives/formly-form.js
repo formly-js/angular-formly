@@ -17,7 +17,7 @@ angular.module('formly.render')
 				post: function (scope, ele, attr) {
 					//Post gets called after angular has created the FormController
 					//Now pass the FormController back up to the parent scope
-					scope.formOnParentScope = scope[attr.name];
+					scope.formOnParentScope = scope.$eval(attr.name);
 				}
 			};
 		},
