@@ -27,6 +27,7 @@ Version numbers correspond to `bower.json` version
 - `hideExpression` and `requiredExpression` have been removed in favor of `expressionProperties`
 - `formly-field` now expects `options` to be a bound property (`=`) rather than an expression (`&`)
 - `watch` changed to `watcher` because Firefox defines `watch` on all objects, so determining whether the field had a watch on it was problematic.
+- Changing from attribute `name` to `form` on the `formly-form` directive as this makes more sense.
 
 ## Internal Changes
 
