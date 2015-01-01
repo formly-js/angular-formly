@@ -35,7 +35,7 @@
     "bootstrap": "~3.2.0",
     "chai": "~1.9.1",
     "mocha": "~1.21.4",
-    "angular-formly-templates-bootstrap": "~0.0.1"
+    "angular-formly-templates-bootstrap": "https://github.com/formly-js/angular-formly-templates-bootstrap.git#2c1021bf051a99db0369f9f281855777461a4a5b"
   },
   "resolutions": {
     "angular": "~1.3.5"

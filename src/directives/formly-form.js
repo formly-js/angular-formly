@@ -12,7 +12,7 @@ angular.module('formly.render')
 			result: '=',
 			form: '=?'
 		},
-		controller: function($scope, $timeout, formlyUtil) {
+		controller: function($scope, formlyUtil) {
 			$scope.formId = 'formly_' + currentFormId++;
 			
 			angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
@@ -24,23 +24,6 @@ angular.module('formly.render')
 					field.runExpressions && field.runExpressions(newResult);
 				});
 			}, true);
-
-			// listen for formly-dynamic-name fields to notify that the field name has been set and angular has put the field on the form
-			// this is only necessary for pre angular 1.3 which brought interpolatable name attributes.
-			$scope.$on('formly-dynamic-name-update', function(e) {
-				e.stopPropagation();
-				if (!$scope.form) {
-					return;
-				}
-				$timeout(function() {
-					angular.forEach($scope.fields, function(field) {
-						var formField = $scope.form[field.key];
-						if (formField) {
-							field.formField = formField;
-						}
-					});
-				}); // next tick, give angular an event loop to finish compiling
-			});
 
 			function setupWatchers(field, index) {
 				if (!angular.isDefined(field.watcher)) {

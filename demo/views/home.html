@@ -39,7 +39,7 @@
 					          rows="15">
 					</textarea>
 				</div>
-				<div source="toPrettyJSON(formFields, 4)"
+				<div source="formFieldsStr"
 				     ng-hide="editJSON"
 				     hljs>
 				</div>
@@ -103,10 +103,6 @@
 				<tr>
 					<td>$invalid</td>
 					<td>{{myFormName.$invalid}}</td>
-				</tr>
-				<tr>
-					<td>$error</td>
-					<td>{{myFormName.$error}}</td>
 				</tr>
 				</tbody>
 

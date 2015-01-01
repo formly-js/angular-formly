@@ -1,8 +1,11 @@
 angular.module('formly.render')
-.factory('formlyUtil', function() {
+.factory('formlyUtil', function(formlyConfig) {
+  'use strict';
 	return {
 		throwErrorWithField: throwErrorWithField,
-		formlyEval: formlyEval
+		formlyEval: formlyEval,
+		warn: warn,
+		getFieldId: getFieldId
 	};
 
 	function throwErrorWithField(message, field) {
@@ -19,4 +22,24 @@ angular.module('formly.render')
 			});
 		}
 	}
+
+	function warn() {
+		if (!formlyConfig.disableWarnings) {
+			var args = Array.prototype.slice.call(arguments);
+			args.unshift('Formly Warning:');
+			console.warn.apply(console, args);
+		}
+	}
+
+	function getFieldId(formId, options, index) {
+		var type = options.type;
+		if (!type && options.template) {
+			type = 'template';
+		} else if (!type && options.templateUrl) {
+			type = 'templateUrl';
+		}
+
+		return [formId, type, options.key, index].join('_');
+	}
+
 });

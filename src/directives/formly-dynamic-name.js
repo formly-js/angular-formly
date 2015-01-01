@@ -7,7 +7,6 @@ angular.module('formly.render').directive('formlyDynamicName', function formlyDy
 			$element.removeAttr('formly-dynamic-name');
 			$attrs.$set('name', $scope.$eval($attrs.formlyDynamicName));
 			delete $attrs.formlyDynamicName;
-			$scope.$emit('formly-dynamic-name-update');
 		}
 	};
 });

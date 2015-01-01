@@ -182,9 +182,9 @@ The resulting form element has the class `formly` and each field has the class `
 
 ### Validation
 
-Formly uses angular's built-in validation mechanisms. See the [angular docs](https://docs.angularjs.org/guide/forms) for more information on this.
+Formly uses angular's built-in validation mechanisms. See the [angular docs](https://docs.angularjs.org/guide/forms) for more information on this. (Note, if you're using Angular 1.3, formly utilizies the new `$validators` and `$asyncValidators` pipelines, otherwise, it falls back to good old `$parsers`. Either way, your API is the same, though you can't do asynchornous validation with 1.2.x).
 
-The form name is what you specify on the `formly-form` directive as the `name` attribute. If you're using a custom template, to specify a field name use the `formly-dynamic-name` directive where the value is an expression which would return the name. This expression is only run once, and it is run immediately. Formly will add a `formField` property to the field, and you can reference that in your template with `options.formField` to get access to properties like `$invalid` or `$error`. See the bootstrap templates for an example.
+The form controller is bound to what you specify as the `form` attribute on the `formly-form` directive. Make sure to specify a name on any `ng-model` in your custom templates to ensure that the `formControl` is added to the `options`. If you're using Angular 1.3, the `name` attribute is interpolateable (you can use `{{id}}`). If you are stuck on 1.2.x, you can use the `formly-dynamic-name` directive where the value is an expression which would return the name (so, `formly-dynamic-name="id"`). Formly will add a `formControl` property to the field, and you can reference that in your template with `options.formControl` to get access to properties like `$invalid` or `$error`. See the bootstrap templates for an example.
 
 You can also specify custom validation in your JSON. See the field called `validators` for more information on this. If you wish to leverage this in a custom template, use the `formly-custom-validation` directive and pass `options.validators` to it.
 
@@ -235,7 +235,7 @@ Please see [the Wiki](https://github.com/formly-js/angular-formly/wiki) for tips
 
 There are four places where you can put expressions. The context in which these expressions are evaluated is important. There are two different types of context and each is explained below:
 
-1) watch - expression and listener can be functions or expression strings. This is a regular angular `$watch` (depending on the specified `type`) function and it is created on the `formly-form` scope, despite being applied to a specific field. This allows the expressions to run even if the field's scope has been destroyed (via an ng-if like when the field is hidden). The function signature differs from a normal `$watch` however. See above for more details.
+1) watcher - expression and listener can be functions or expression strings. This is a regular angular `$watch` (depending on the specified `type`) function and it is created on the `formly-form` scope, despite being applied to a specific field. This allows the expressions to run even if the field's scope has been destroyed (via an ng-if like when the field is hidden). The function signature differs from a normal `$watch` however. See above for more details.
 
 2) expressionProperties & validators - these expressions can be functions or expression strings. If it's a function, it's invoked with the arguments `$viewValue`, `$modelValue`, and `scope`. The scope in this case, is the field's scope. If it's an expression string, it is evaluated using `$scope.$eval` with a locals object that has `$viewValue` and `$modelValue` (however, in the case of `expressionProperties`, `$viewValue` will simply be the `$modelValue` because they don't have a hook into the `ngModelController` but we want to keep the api consistent).
 

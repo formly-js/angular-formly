@@ -8,7 +8,7 @@
 		 ng-repeat="(key, option) in options.options">
 		<label>
 			<input type="radio"
-				   name="{{id}}"
+				   formly-dynamic-name="id"
 				   id="{{id + '_'+ $index}}"
 				   ng-value="option.value"
 				   ng-required="options.required"

@@ -29,6 +29,8 @@ Version numbers correspond to `bower.json` version
 - `watch` changed to `watcher` because Firefox defines `watch` on all objects, so determining whether the field had a watch on it was problematic.
 - Changing from attribute `name` to `form` on the `formly-form` directive as this makes more sense.
 - Removing `options` attribute from `formly-form`. There is no good reason to specify an ID for a form (and certainly no good reason to depend on it), so it is now generated on a counter. The ID was the only attribute left on options, so now `options` is no longer needed.
+- Renaming `formField` to `formControl` as this is a more widely used term (specifically bootstrap uses this term).
+- Using the field's ID for the `ngModel` name rather than simply `options.key` to ensure there are no collisions and improve consistency. Also adding logic to automatically add the `formControl` to the field's `options` allowing for ease of displaying error messaging and styling and allowing us to remove the `$broadcast` from the dynamic name directive (woot).
 
 ## Internal Changes
 
