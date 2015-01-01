@@ -7,7 +7,8 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 	// storing it here to add it back when the JSON updates the formFields.
 	var seeWhatYouTypeValidators = {
 		notYes: function(viewValue, modelValue) {
-			return 'yes' === (modelValue || viewValue);
+			var value = modelValue || viewValue;
+			return !value || value === 'yes';
 		}
 	};
 	var seeWhatYouTypeIndex = -1;
@@ -21,7 +22,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 		var value = modelValue || viewValue;
 		return $q(function(resolve, reject) {
 			setTimeout(function() {
-				if (value === 'yes') {
+				if (!value || value === 'yes') {
 					resolve(true);
 				} else {
 					reject('not yes');
@@ -34,7 +35,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 
 	// Public Methods
 	$scope.onSubmit = function onSubmit() {
-		$scope.submittedData = $scope.formData;
+		alert(angular.toJson($scope.formData, true));
 	};
 
 	$scope.toPrettyJSON = function(obj, tabWidth) {
