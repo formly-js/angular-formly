@@ -6,7 +6,7 @@ angular.module('formly.render')
 		transclude: true,
 		scope: {
 			options: '=',
-			result: '=',
+			model: '=',
 			formId: '=?',
 			index: '=?',
 			fields: '=?',
@@ -26,9 +26,12 @@ angular.module('formly.render')
 			$scope.value = valueGetterSetter;
 
 			// initalization
-			runExpressions($scope.result);
+			runExpressions();
 			if (!$scope.options.noFormControl) {
 				setFormControl();
+			}
+			if ($scope.options.model) {
+				$scope.$watch('options.model', runExpressions, true);
 			}
 
 			// function definitions
@@ -49,13 +52,13 @@ angular.module('formly.render')
 			}
 
 			function valueGetterSetter(newVal) {
-				if (!$scope.result || (!$scope.options.key && !$scope.index)) {
+				if (!$scope.model || (!$scope.options.key && !$scope.index)) {
 					return;
 				}
 				if (angular.isDefined(newVal)) {
-					$scope.result[$scope.options.key || $scope.index] = newVal;
+					$scope.model[$scope.options.key || $scope.index] = newVal;
 				}
-				return $scope.result[$scope.options.key || $scope.index];
+				return $scope.model[$scope.options.key || $scope.index];
 			}
 
 			function setFormControl() {

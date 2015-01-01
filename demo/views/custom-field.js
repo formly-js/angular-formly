@@ -18,7 +18,7 @@ app.directive('customField', function() {
 							   'placeholder="{{options.placeholder}}"',
 							   'ng-required="options.required"',
 							   'ng-disabled="options.disabled"',
-							   'ng-model="result[options.key || index]">',
+							   'ng-model="model[options.key || index]">',
 						'<span ng-show="options.formControl.$pending" style="position:absolute;top:9px;right:10px;color:lightgray;font-size:.8em">',
 							'Pretending to load something...',
 						'</span>',

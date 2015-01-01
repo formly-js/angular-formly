@@ -18,6 +18,8 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 	};
 	var useDirectiveIndex = -1;
 
+	var anotherResultFieldIndex = -1;
+
 	function asyncNotYesValidator(viewValue, modelValue) {
 		var value = modelValue || viewValue;
 		return $q(function(resolve, reject) {
@@ -64,6 +66,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 			$scope.formFields = $parse(newValue)({});
 			$scope.formFields[seeWhatYouTypeIndex].validators = seeWhatYouTypeValidators;
 			$scope.formFields[useDirectiveIndex].validators = notYesValidators;
+			$scope.formFields[anotherResultFieldIndex].model = $scope.formData.subObject.deeperValue;
 			$scope.formFieldsError = false;
 		} catch (e) {
 			$scope.formFieldsError = true;
@@ -94,6 +97,21 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 		$scope.typeTemplatesButton = 'Use Custom Type Templates';
 	}
 
+	$scope.submittedData = null;
+	$scope.formData = {
+		triedEmber: 'no',
+		transportation: 'hot-air-balloon',
+		angularFan: 'yes',
+		love: 2,
+		secretCode: 'secret_code'
+	};
+	$scope.hiddenFormData = {
+		subObject: {
+			deeperValue: {anotherResultField: 'Sweet!'}
+		}
+	};
+	window.formData = $scope.formData;
+
 	$scope.formFields = [{
 		key: 'firstName',
 		type: 'text',
@@ -115,7 +133,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 		placeholder: 'janedoe@gmail.com',
 		description: 'We won\'t spam you',
 		expressionProperties: {
-			required: 'result.emailRequired'
+			required: 'model.emailRequired'
 		}
 	}, {
 		key: 'about',
@@ -224,7 +242,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 		type: 'password',
 		label: 'Repeat Password',
 		validators: {
-			noMatch: '$modelValue === result.password'
+			noMatch: '$modelValue === model.password'
 		}
 	}, {
 		key: 'checkThis',
@@ -237,7 +255,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 		label: 'Conditional input',
 		placeholder: 'This is a big secret! Try typing "joe"',
 		expressionProperties: {
-			hide: '!result.checkThis'
+			hide: '!model.checkThis'
 		}
 	}, {
 		key: 'showWhenJoe',
@@ -261,7 +279,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 			},
 			listener: function(field, isHappy, oldValue, scope, stopWatching) {
 				if (isHappy) {
-					scope.result[field.key] = ':-)';
+					scope.model[field.key] = ':-)';
 					field.placeholder = 'Works only once to demo removing watcher.';
 					stopWatching();
 				}
@@ -279,6 +297,8 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 		}
 	}];
 
+
+
 	$scope.formFields.forEach(function (field, index) {
 		if (field.key === 'seeWhatYouType') {
 			seeWhatYouTypeIndex = index;
@@ -286,34 +306,31 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 		if (field.key === 'useDirective') {
 			useDirectiveIndex = index;
 		}
+		if (field.key === 'anotherResultField') {
+			anotherResultFieldIndex = index;
+		}
 	});
 
-	$scope.hiddenFormFields = [
-		{
-			key: 'field',
-			type: 'textarea',
-			label: 'This is a special form field',
-			placeholder: 'It has a watch property with an expression function that depends on something outside the result...',
-			watcher: {
-				expression: function(field, formScope) {
-					return !/joe/ig.test($scope.formData.hiddenWhenUnchecked);
-				},
-				listener: function(field, _new) {
-					field.hide = _new;
-				}
+	$scope.hiddenFormFields = [{
+		key: 'field',
+		type: 'textarea',
+		label: 'This is a special form field',
+		placeholder: 'It has a watch property with an expression function that depends on something outside the model...',
+		watcher: {
+			expression: function(field, formScope) {
+				return !/joe/ig.test($scope.formData.hiddenWhenUnchecked);
+			},
+			listener: function(field, _new) {
+				field.hide = _new;
 			}
 		}
-	];
+	}, {
+		key: 'anotherResultField',
+		model: $scope.hiddenFormData.subObject.deeperValue,
+		type: 'text',
+		label: 'Specified Result Example'
+	}];
 
-	$scope.submittedData = null;
-	$scope.formData = {
-		triedEmber: 'no',
-		transportation: 'hot-air-balloon',
-		angularFan: 'yes',
-		love: 2,
-		secretCode: 'secret_code'
-	};
-	$scope.hiddenFormData = {};
 	$scope.formFieldsStr = $scope.toPrettyJSON($scope.formFields, 4);
 	$scope.formDataStr = $scope.toPrettyJSON($scope.formData, 4);
 	$scope.formFieldsError = false;

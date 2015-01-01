@@ -1,10 +1,10 @@
 <div class="form-group" ng-class="{'has-error': options.formControl.$invalid && options.formControl.$touched}">
 	<div>Look mah! Custom Templates!</div>
 	<label for="{{id}}">
-		{{result[options.nameKey] ? result[options.nameKey] + ',' : ''}} {{options.label || 'Text'}}
+		{{model[options.nameKey] ? model[options.nameKey] + ',' : ''}} {{options.label || 'Text'}}
 		{{options.required ? '*' : ''}}
 	</label>
-	<div>{{result[options.key || index]}}</div>
+	<div>{{model[options.key || index]}}</div>
     <div class="help-block" ng-show="options.formControl.$error.notYes">Why not? (type "yes")</div>
 	<input type="text"
 		   class="form-control"
@@ -14,5 +14,5 @@
 		   placeholder="{{options.placeholder}}"
 		   ng-required="options.required"
 		   ng-disabled="options.disabled"
-		   ng-model="result[options.key || index]">
+		   ng-model="model[options.key || index]">
 </div>

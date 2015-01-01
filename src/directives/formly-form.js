@@ -9,7 +9,7 @@ angular.module('formly.render')
 		transclude: true,
 		scope: {
 			fields: '=',
-			result: '=',
+			model: '=',
 			form: '=?'
 		},
 		controller: function($scope, formlyUtil) {
@@ -17,8 +17,8 @@ angular.module('formly.render')
 			
 			angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
 
-			// watch the result and evaluate watch expressions that depend on it.
-			$scope.$watch('result', function onResultUpdate(newResult) {
+			// watch the model and evaluate watch expressions that depend on it.
+			$scope.$watch('model', function onResultUpdate(newResult) {
 				angular.forEach($scope.fields, function(field) {
 					/*jshint -W030 */
 					field.runExpressions && field.runExpressions(newResult);
@@ -38,7 +38,7 @@ angular.module('formly.render')
 					if (!angular.isDefined(watcher.listener)) {
 						formlyUtil.throwErrorWithField('All field watchers must have a listener', field);
 					}
-					var watchExpression = watcher.expression || 'result["' + field.key + '" || ' + index + ']';
+					var watchExpression = watcher.expression || 'model["' + field.key + '" || ' + index + ']';
 					if (angular.isFunction(watchExpression)) {
 						// wrap the field's watch expression so we can call it with the field as the first arg and the stop function as the last arg as a helper
 						var originalExpression = watchExpression;

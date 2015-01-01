@@ -2,11 +2,11 @@
          name="form"
          role="form">
 	<div formly-field
-		 ng-repeat="field in fields"
+		 ng-repeat="field in fields track by $index"
 		 ng-if="!field.hide"
 		 class="formly-field"
 		 options="field"
-		 result="result"
+		 model="field.model || model"
 		 fields="fields"
 		 form="form"
 		 form-id="formId"

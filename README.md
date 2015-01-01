@@ -5,7 +5,7 @@
 Formly for Angular is an AngularJS module which has directives to help customize and render JSON based forms. The directive originated from a need to allow our users to create surveys and distribute them easily. Currently we've can render the form data from JSON and assign a model to form so we can receive the submitted data.
 
 ```html
-<formly-form result="formData" fields="formFields"></formly-form>
+<formly-form model="formData" fields="formFields"></formly-form>
 ```
 
 ### Demo : http://formly-js.github.io/angular-formly/
@@ -48,7 +48,7 @@ Here's an example using the vanilla template properties
 
 You can add a formly-form in your HTML templates as shown below.
 ```html
-<formly-form result="formData" fields="formFields">
+<formly-form model="formData" fields="formFields">
 	<button ng-click="onSubmit()">Hello World</button>
 </formly-form>
 ```  
@@ -58,7 +58,7 @@ Example data as it would be set in the controller
 	$scope.formData = {};
 	$scope.formFields = [
 		{
-			//the key to be used in the result values {... "username": "johndoe" ... }
+			//the key to be used in the model values {... "username": "johndoe" ... }
 			key: 'username',
 
 			type: 'text',
@@ -75,7 +75,7 @@ Example data as it would be set in the controller
 			required: true,
 			disabled: false, //default: false
 			expressionProperties: {
-				hide: '!result.username' // hide when username is blank
+				hide: '!model.username' // hide when username is blank
 			}
 		}
 
@@ -124,7 +124,14 @@ template: '<hr />'
 
 ---
 ##### key (string)
->By default form results are keyed by location in the form array, you can override this by specifying a `key`.
+>By default form models are keyed by location in the form array, you can override this by specifying a `key`.
+
+###### Default
+>`undefined`
+
+---
+##### model (object)
+>By default, the `model` passed to the `formly-field` directive is the same as the `model` passed to the `formly-form`. However, if the field has a `model` specified, then the specified `model` is used for that field (and that field only). Also, a deep watch is added to the `formly-field` directive's scope to run the `expressionProperties` when the specified `model` changes.
 
 ###### Default
 >`undefined`
@@ -145,7 +152,7 @@ template: '<hr />'
 
 ---
 ##### modelOptions (object)
->`modelOptions` is used to make your templates easier to work with. Noramlly, you would have to do this in each of your templates: `ng-model="result[options.key || index]"`. However, if you like, you can take advantage of `ng-model-options` via the `modelOptions` property. This will allow you to do `ng-model="value" ng-model-options="options.modelOptions"` not necessarily less verbose, but a little easier to understand. To accomplish this, each `formly-field` adds a `value` function on the scope. It is a traditional getter/setter for you to use in your templates. For more information on ng-model-options, see [these](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-getters-and-setters) [egghead](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-updateon-and-debounce) [lessons](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ngmodeloptions-allows-you-to-set-a-timezone-on-your-model).
+>`modelOptions` is used to make your templates easier to work with. Noramlly, you would have to do this in each of your templates: `ng-model="model[options.key || index]"`. However, if you like, you can take advantage of `ng-model-options` via the `modelOptions` property. This will allow you to do `ng-model="value" ng-model-options="options.modelOptions"` not necessarily less verbose, but a little easier to understand. To accomplish this, each `formly-field` adds a `value` function on the scope. It is a traditional getter/setter for you to use in your templates. For more information on ng-model-options, see [these](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-getters-and-setters) [egghead](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-updateon-and-debounce) [lessons](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ngmodeloptions-allows-you-to-set-a-timezone-on-your-model).
 
 ##### Default
 >`{ getterSetter: true, allowInvalid: true }`

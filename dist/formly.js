@@ -52,7 +52,7 @@ angular.module('formly.render')
 		transclude: true,
 		scope: {
 			options: '=',
-			result: '=',
+			model: '=',
 			formId: '=?',
 			index: '=?',
 			fields: '=?',
@@ -72,9 +72,12 @@ angular.module('formly.render')
 			$scope.value = valueGetterSetter;
 
 			// initalization
-			runExpressions($scope.result);
+			runExpressions();
 			if (!$scope.options.noFormControl) {
 				setFormControl();
+			}
+			if ($scope.options.model) {
+				$scope.$watch('options.model', runExpressions, true);
 			}
 
 			// function definitions
@@ -95,13 +98,13 @@ angular.module('formly.render')
 			}
 
 			function valueGetterSetter(newVal) {
-				if (!$scope.result || (!$scope.options.key && !$scope.index)) {
+				if (!$scope.model || (!$scope.options.key && !$scope.index)) {
 					return;
 				}
 				if (angular.isDefined(newVal)) {
-					$scope.result[$scope.options.key || $scope.index] = newVal;
+					$scope.model[$scope.options.key || $scope.index] = newVal;
 				}
-				return $scope.result[$scope.options.key || $scope.index];
+				return $scope.model[$scope.options.key || $scope.index];
 			}
 
 			function setFormControl() {
@@ -176,7 +179,7 @@ angular.module('formly.render')
 		transclude: true,
 		scope: {
 			fields: '=',
-			result: '=',
+			model: '=',
 			form: '=?'
 		},
 		controller: ["$scope", "formlyUtil", function($scope, formlyUtil) {
@@ -184,8 +187,8 @@ angular.module('formly.render')
 			
 			angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
 
-			// watch the result and evaluate watch expressions that depend on it.
-			$scope.$watch('result', function onResultUpdate(newResult) {
+			// watch the model and evaluate watch expressions that depend on it.
+			$scope.$watch('model', function onResultUpdate(newResult) {
 				angular.forEach($scope.fields, function(field) {
 					/*jshint -W030 */
 					field.runExpressions && field.runExpressions(newResult);
@@ -205,7 +208,7 @@ angular.module('formly.render')
 					if (!angular.isDefined(watcher.listener)) {
 						formlyUtil.throwErrorWithField('All field watchers must have a listener', field);
 					}
-					var watchExpression = watcher.expression || 'result["' + field.key + '" || ' + index + ']';
+					var watchExpression = watcher.expression || 'model["' + field.key + '" || ' + index + ']';
 					if (angular.isFunction(watchExpression)) {
 						// wrap the field's watch expression so we can call it with the field as the first arg and the stop function as the last arg as a helper
 						var originalExpression = watchExpression;
@@ -333,7 +336,7 @@ angular.module('formly.render').run(['$templateCache', function($templateCache) 
   'use strict';
 
   $templateCache.put('directives/formly-form.html',
-    "<ng-form class=formly name=form role=form><div formly-field ng-repeat=\"field in fields\" ng-if=!field.hide class=formly-field options=field result=result fields=fields form=form form-id=formId index=$index></div><div ng-transclude></div></ng-form>"
+    "<ng-form class=formly name=form role=form><div formly-field ng-repeat=\"field in fields track by $index\" ng-if=!field.hide class=formly-field options=field model=\"field.model || model\" fields=fields form=form form-id=formId index=$index></div><div ng-transclude></div></ng-form>"
   );
 
 }]);

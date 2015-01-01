@@ -17,6 +17,7 @@ Version numbers correspond to `bower.json` version
 - `validator` string expressions now run with `$scope.$eval` and a locals object.
 - field definition now has a `modelOptions` for use in `ng-model-options`
 - `formly-field` now adds a `value` getter/setter to scope for use in ng-model in combination with `ng-model-options` as well as general helper functionality.
+- `formly-form` now will default to the field's `model` property and fallback to the `model` specified to the `formly-form` directive. This allows you to specify a different model for a specific field.
 
 ## Breaking changes:
 
@@ -32,6 +33,7 @@ Version numbers correspond to `bower.json` version
 - Renaming `formField` to `formControl` as this is a more widely used term (specifically bootstrap uses this term).
 - Using the field's ID for the `ngModel` name rather than simply `options.key` to ensure there are no collisions and improve consistency. Also adding logic to automatically add the `formControl` to the field's `options` allowing for ease of displaying error messaging and styling and allowing us to remove the `$broadcast` from the dynamic name directive (woot).
 - `formly-form` now uses `formly-field` as an attribute instead of an element with a div. I don't expect this to be a real issue, but it may mess with your css if you're being too specific about things or referencing formly-field as an element.
+- `formly-form` and `formly-field` changed the name `result` to `model`. This makes things more clear because `result` sounds more like *after* something has happend, and *model* sounds more like the thing that is being represented in real-time in the form. Hopefully this improved terminology will alleviate common confusion about how to preload the form and what the `model`'s relationship is to the `fields`
 
 ## Internal Changes
 
