@@ -53,7 +53,8 @@
 			             fields="formFields"
 			             ng-submit="onSubmit()">
 				<button type="submit"
-				        class="btn btn-primary also">
+				        class="btn btn-primary also"
+						ng-disabled="myFormName.$invalid">
 					Submit it! (Transcluded)
 				</button>
 			</formly-form>
@@ -66,7 +67,7 @@
 		</div>
 		<div class="col-sm-4 col-md-4 col-lg-4">
 
-			<h3>Submitted Data</h3>
+			<h3>Data Model</h3>
 			<div ng-hide="editJSON"
 			     hljs
 			     source="formData|json"></div>
