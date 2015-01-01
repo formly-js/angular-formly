@@ -8,7 +8,7 @@
 		       aria-describedby="{{id}}_description"
 		       ng-required="options.required"
 		       ng-disabled="options.disabled"
-		       ng-model="result[options.key || index]">
+		       ng-model="model[options.key || index]">
 		{{options.label || 'Checkbox'}}
 		{{options.required ? '*' : ''}}
 	</label>

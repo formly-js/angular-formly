@@ -14,7 +14,7 @@
 			       aria-describedby="{{id}}_description"
 			       ng-value="option.value"
 			       ng-required="options.required"
-			       ng-model="$parent.result[$parent.options.key || $parent.index]">
+			       ng-model="$parent.model[$parent.options.key || $parent.index]">
 			{{option.name}}
 		</label>
 		<p id="{{id}}_description"
