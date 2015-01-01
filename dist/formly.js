@@ -333,7 +333,7 @@ angular.module('formly.render').run(['$templateCache', function($templateCache) 
   'use strict';
 
   $templateCache.put('directives/formly-form.html',
-    "<ng-form class=formly name=form role=form><formly-field ng-repeat=\"field in fields\" class=formly-field options=field result=result fields=fields form=form form-id=formId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></ng-form>"
+    "<ng-form class=formly name=form role=form><div formly-field ng-repeat=\"field in fields\" ng-if=!field.hide class=formly-field options=field result=result fields=fields form=form form-id=formId index=$index></div><div ng-transclude></div></ng-form>"
   );
 
 }]);
