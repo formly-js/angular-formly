@@ -5,7 +5,7 @@
 Formly for Angular is an AngularJS module which has directives to help customize and render JSON based forms. The directive originated from a need to allow our users to create surveys and distribute them easily. Currently we've can render the form data from JSON and assign a model to form so we can receive the submitted data.
 
 ```html
-<formly-form result="formData" fields="formFields" options="formOptions"></formly-form>
+<formly-form result="formData" fields="formFields"></formly-form>
 ```
 
 ### Demo : http://formly-js.github.io/angular-formly/
@@ -48,7 +48,7 @@ Here's an example using the vanilla template properties
 
 You can add a formly-form in your HTML templates as shown below.
 ```html
-<formly-form result="formData" fields="formFields" options="formOptions">
+<formly-form result="formData" fields="formFields">
 	<button ng-click="onSubmit()">Hello World</button>
 </formly-form>
 ```  
@@ -80,11 +80,6 @@ Example data as it would be set in the controller
 		}
 
 	];
-
-	$scope.formOptions = {
-		//Set the id of the form
-		uniqueFormId: 'myFormId'
-	};
 
 	$scope.onSubmit = function() {
 		console.log('form submitted:', $scope.formData);

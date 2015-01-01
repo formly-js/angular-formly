@@ -28,6 +28,7 @@ Version numbers correspond to `bower.json` version
 - `formly-field` now expects `options` to be a bound property (`=`) rather than an expression (`&`)
 - `watch` changed to `watcher` because Firefox defines `watch` on all objects, so determining whether the field had a watch on it was problematic.
 - Changing from attribute `name` to `form` on the `formly-form` directive as this makes more sense.
+- Removing `options` attribute from `formly-form`. There is no good reason to specify an ID for a form (and certainly no good reason to depend on it), so it is now generated on a counter. The ID was the only attribute left on options, so now `options` is no longer needed.
 
 ## Internal Changes
 

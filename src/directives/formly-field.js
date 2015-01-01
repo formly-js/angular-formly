@@ -6,10 +6,10 @@ angular.module('formly.render')
 		transclude: true,
 		scope: {
 			options: '=',
+			result: '=',
 			formId: '=?',
 			index: '=?',
 			fields: '=?',
-			result: '=formResult',
 			form: '=?'
 		},
 		controller: function fieldController($scope) {
@@ -37,11 +37,11 @@ angular.module('formly.render')
 					type = 'templateUrl';
 				}
 
-				return $scope.formId + type + $scope.options.key + $scope.index;
+				return [$scope.formId, type, $scope.options.key, $scope.index].join('_');
 			}
 
 
-			function runExpressions(result) {
+			function runExpressions() {
 				var field = $scope.options;
 				var currentValue = valueGetterSetter();
 				angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
