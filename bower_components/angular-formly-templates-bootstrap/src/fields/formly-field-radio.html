@@ -1,5 +1,5 @@
 <div class="radio-group"
-     ng-class="{'has-error': options.formField.$invalid}">
+     ng-class="{'has-error': options.formControl.$invalid}">
 	<label class="control-label">
 		{{options.label}}
 		{{options.required ? '*' : ''}}
@@ -8,7 +8,7 @@
 	     ng-repeat="(key, option) in options.options">
 		<label>
 			<input type="radio"
-			       formly-dynamic-name="options.key"
+			       formly-dynamic-name="id"
 			       formly-custom-validation="options.validators"
 			       id="{{id + '_'+ $index}}"
 			       aria-describedby="{{id}}_description"

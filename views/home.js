@@ -40,7 +40,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 	$scope.toPrettyJSON = function(obj, tabWidth) {
 		var strippedObj = angular.copy(obj);
 		angular.forEach(strippedObj, function removeFormFieldForPerformancePurposes(field) {
-			delete field.formField;
+			delete field.formControl;
 		});
 		return JSON.stringify(strippedObj, null, Number(tabWidth));
 	};
@@ -261,7 +261,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 			listener: function(field, isHappy, oldValue, scope, stopWatching) {
 				if (isHappy) {
 					scope.result[field.key] = ':-)';
-					field.placeholder = 'Works only once to demo removing watcher.'
+					field.placeholder = 'Works only once to demo removing watcher.';
 					stopWatching();
 				}
 			}
@@ -269,7 +269,7 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 	}, {
 		key: 'consolingField',
 		type: 'text',
-		label: 'Listner only Watch Example',
+		label: 'Listener only Watch Example',
 		placeholder: 'type and see the console',
 		watcher: {
 			listener: function(field, newValue) {
@@ -304,12 +304,6 @@ app.controller('home', function($scope, $parse, $window, $q, usingCustomTypeTemp
 		}
 	];
 
-	$scope.formOptions = {
-		uniqueFormId: 'formly'
-	};
-	$scope.hiddenFormOptions = {
-		uniqueFormId: 'hiddenFormly'
-	};
 	$scope.submittedData = null;
 	$scope.formData = {
 		triedEmber: 'no',

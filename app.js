@@ -30,7 +30,7 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, forml
 		});
 	}
 
-	formlyConfigProvider.setTemplate('inline-custom', '<label>Inline-custom template</label><br /><input ng-model="result[options.key || index]" class="form-control">')
+	formlyConfigProvider.setTemplate('inline-custom', '<label>Inline-custom template</label><br /><input ng-model="result[options.key || index]" formly-dynamic-name="id" class="form-control">');
 });
 
 app.run(function($rootScope, $state, $stateParams, $window) {

@@ -41,7 +41,6 @@ angular.module('formly.render').directive('formlyDynamicName', function formlyDy
 			$element.removeAttr('formly-dynamic-name');
 			$attrs.$set('name', $scope.$eval($attrs.formlyDynamicName));
 			delete $attrs.formlyDynamicName;
-			$scope.$emit('formly-dynamic-name-update');
 		}]
 	};
 });
@@ -53,15 +52,15 @@ angular.module('formly.render')
 		transclude: true,
 		scope: {
 			options: '=',
+			result: '=',
 			formId: '=?',
 			index: '=?',
 			fields: '=?',
-			result: '=formResult',
 			form: '=?'
 		},
-		controller: ["$scope", function fieldController($scope) {
+		controller: ["$scope", "$interval", function fieldController($scope, $interval) {
 			// set field id to link labels and fields
-			$scope.id = getFieldId();
+			$scope.id = formlyUtil.getFieldId($scope.formId, $scope.options, $scope.index);
 			angular.extend($scope.options, {
 				runExpressions: runExpressions,
 				modelOptions: {
@@ -74,21 +73,13 @@ angular.module('formly.render')
 
 			// initalization
 			runExpressions($scope.result);
-
-			// function definitions
-			function getFieldId() {
-				var type = $scope.options.type;
-				if (!type && $scope.options.template) {
-					type = 'template';
-				} else if (!type && $scope.options.templateUrl) {
-					type = 'templateUrl';
-				}
-
-				return $scope.formId + type + $scope.options.key + $scope.index;
+			if (!$scope.options.noFormControl) {
+				setFormControl();
 			}
 
+			// function definitions
 
-			function runExpressions(result) {
+			function runExpressions() {
 				var field = $scope.options;
 				var currentValue = valueGetterSetter();
 				angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
@@ -112,6 +103,33 @@ angular.module('formly.render')
 				}
 				return $scope.result[$scope.options.key || $scope.index];
 			}
+
+			function setFormControl() {
+				var stopWaitingForDestroy;
+				var maxTime = 2000;
+				var intervalTime = 5;
+				var iterations = 0;
+				var interval = $interval(function() {
+					iterations++;
+					if (!angular.isDefined($scope.options.key) && !angular.isDefined($scope.index)) {
+						return cleanUp();
+					}
+					var formControl = $scope.form && $scope.form[$scope.id];
+					if (formControl) {
+						$scope.options.formControl = formControl;
+						cleanUp();
+					} else if (intervalTime * iterations > maxTime) {
+						formlyUtil.warn('Couldn\'t set the formControl after ' + maxTime + 'ms', $scope);
+						cleanUp();
+					}
+				}, intervalTime);
+				stopWaitingForDestroy = $scope.$on('$destroy', cleanUp);
+
+				function cleanUp() {
+					stopWaitingForDestroy();
+					$interval.cancel(interval);
+				}
+			}
 		}],
 		link: function fieldLink($scope, $element) {
 			var templateOptions = 0;
@@ -119,7 +137,7 @@ angular.module('formly.render')
 			templateOptions += $scope.options.type ? 1 : 0;
 			templateOptions += $scope.options.templateUrl ? 1 : 0;
 			if (templateOptions === 0) {
-				warn('Formly Warning: template type \'' + $scope.options.type + '\' not supported. On element:', $element);
+				formlyUtil.warn('template type \'' + $scope.options.type + '\' not supported. On element:', $element);
 				return;
 			} else if (templateOptions > 1) {
 				formlyUtil.throwErrorWithField('You must only provide a type, template, or templateUrl for a field', $scope.options);
@@ -135,7 +153,7 @@ angular.module('formly.render')
 					}).then(function(response) {
 						setElementTemplate(response.data);
 					}, function(error) {
-						warn('Formly Warning: Problem loading template for ' + templateUrl, error);
+						formlyUtil.warn('Problem loading template for ' + templateUrl, error);
 					});
 				}
 			}
@@ -145,17 +163,12 @@ angular.module('formly.render')
 			}
 		}
 	};
-
-	function warn() {
-		if (!formlyConfig.disableWarnings) {
-			console.warn.apply(console, arguments);
-		}
-	}
 }]);
 
 angular.module('formly.render')
 .directive('formlyForm', function formlyForm() {
 	'use strict';
+	var currentFormId = 1;
 	return {
 		restrict: 'E',
 		templateUrl: 'directives/formly-form.html',
@@ -163,20 +176,11 @@ angular.module('formly.render')
 		transclude: true,
 		scope: {
 			fields: '=',
-			options: '=?',
 			result: '=',
-			formOnParentScope: '=name'
+			form: '=?'
 		},
-		compile: function () {
-			return {
-				post: function (scope, ele, attr) {
-					//Post gets called after angular has created the FormController
-					//Now pass the FormController back up to the parent scope
-					scope.formOnParentScope = scope.$eval(attr.name);
-				}
-			};
-		},
-		controller: ["$scope", "$timeout", "formlyUtil", "$interval", function($scope, $timeout, formlyUtil, $interval) {
+		controller: ["$scope", "formlyUtil", function($scope, formlyUtil) {
+			$scope.formId = 'formly_' + currentFormId++;
 			
 			angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
 
@@ -187,22 +191,6 @@ angular.module('formly.render')
 					field.runExpressions && field.runExpressions(newResult);
 				});
 			}, true);
-
-			// listen for formly-dynamic-name fields to notify that the field name has been set and angular has put the field on the form
-			$scope.$on('formly-dynamic-name-update', function(e) {
-				e.stopPropagation();
-				if (!$scope.formOnParentScope) {
-					return;
-				}
-				$timeout(function() {
-					angular.forEach($scope.fields, function(field) {
-						var formField = $scope.formOnParentScope[field.key];
-						if (formField) {
-							field.formField = formField;
-						}
-					});
-				}); // next tick, give angular an event loop to finish compiling
-			});
 
 			function setupWatchers(field, index) {
 				if (!angular.isDefined(field.watcher)) {
@@ -297,10 +285,13 @@ angular.module('formly.render')
 	
 });
 angular.module('formly.render')
-.factory('formlyUtil', function() {
+.factory('formlyUtil', ["formlyConfig", function(formlyConfig) {
+  'use strict';
 	return {
 		throwErrorWithField: throwErrorWithField,
-		formlyEval: formlyEval
+		formlyEval: formlyEval,
+		warn: warn,
+		getFieldId: getFieldId
 	};
 
 	function throwErrorWithField(message, field) {
@@ -317,12 +308,32 @@ angular.module('formly.render')
 			});
 		}
 	}
-});
+
+	function warn() {
+		if (!formlyConfig.disableWarnings) {
+			var args = Array.prototype.slice.call(arguments);
+			args.unshift('Formly Warning:');
+			console.warn.apply(console, args);
+		}
+	}
+
+	function getFieldId(formId, options, index) {
+		var type = options.type;
+		if (!type && options.template) {
+			type = 'template';
+		} else if (!type && options.templateUrl) {
+			type = 'templateUrl';
+		}
+
+		return [formId, type, options.key, index].join('_');
+	}
+
+}]);
 angular.module('formly.render').run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('directives/formly-form.html',
-    "<ng-form class=formly role=form><formly-field ng-repeat=\"field in fields\" class=formly-field options=field form-result=result fields=fields form=formOnParentScope form-id=options.uniqueFormId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></ng-form>"
+    "<ng-form class=formly name=form role=form><formly-field ng-repeat=\"field in fields\" class=formly-field options=field result=result fields=fields form=form form-id=formId ng-if=!field.hide index=$index></formly-field><div ng-transclude></div></ng-form>"
   );
 
 }]);

@@ -3,6 +3,7 @@
 		<input type="checkbox"
 			   ng-required="options.required"
 			   ng-disabled="options.disabled"
+			   formly-dynamic-name="id"
 			   ng-model="result[options.key || index]">
 		Custom field of type "checkbox" 
 		{{options.label || 'Checkbox'}}

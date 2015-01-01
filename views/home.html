@@ -39,7 +39,7 @@
 					          rows="15">
 					</textarea>
 				</div>
-				<div source="toPrettyJSON(formFields, 4)"
+				<div source="formFieldsStr"
 				     ng-hide="editJSON"
 				     hljs>
 				</div>
@@ -48,10 +48,9 @@
 		<div class="col-sm-4 col-md-4 col-lg-4">
 
 			<h3>Form</h3>
-			<formly-form name="myFormName"
+			<formly-form form="myFormName"
 			             result="formData"
 			             fields="formFields"
-			             options="formOptions"
 			             ng-submit="onSubmit()">
 				<button type="submit"
 				        class="btn btn-primary also">
@@ -60,10 +59,9 @@
 			</formly-form>
 			<br />
 			<br />
-			<formly-form name="hiddenFormlyForm"
+			<formly-form form="hiddenFormlyForm"
 			             result="hiddenFormData"
-			             fields="hiddenFormFields"
-			             options="hiddenFormOptions">
+			             fields="hiddenFormFields">
 			</formly-form>
 		</div>
 		<div class="col-sm-4 col-md-4 col-lg-4">
@@ -105,10 +103,6 @@
 				<tr>
 					<td>$invalid</td>
 					<td>{{myFormName.$invalid}}</td>
-				</tr>
-				<tr>
-					<td>$error</td>
-					<td>{{myFormName.$error}}</td>
 				</tr>
 				</tbody>
 
