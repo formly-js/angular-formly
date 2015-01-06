@@ -55,35 +55,35 @@ You can add a formly-form in your HTML templates as shown below.
 
 Example data as it would be set in the controller
 ```javascript
-	$scope.formData = {};
-	$scope.formFields = [
-		{
-			//the key to be used in the model values {... "username": "johndoe" ... }
-			key: 'username',
+$scope.formData = {};
+$scope.formFields = [
+	{
+		//the key to be used in the model values {... "username": "johndoe" ... }
+		key: 'username',
 
-			type: 'text',
-			label: 'Username',
-			placeholder: 'johndoe',
-			required: true,
-			disabled: false, //default: false
-			description: 'Descriptive text'
-		},
-		{
-			key: 'password',
-			type: 'password',
-			label: 'Password',
-			required: true,
-			disabled: false, //default: false
-			expressionProperties: {
-				hide: '!model.username' // hide when username is blank
-			}
+		type: 'text',
+		label: 'Username',
+		placeholder: 'johndoe',
+		required: true,
+		disabled: false, //default: false
+		description: 'Descriptive text'
+	},
+	{
+		key: 'password',
+		type: 'password',
+		label: 'Password',
+		required: true,
+		disabled: false, //default: false
+		expressionProperties: {
+			hide: '!model.username' // hide when username is blank
 		}
+	}
 
-	];
+];
 
-	$scope.onSubmit = function() {
-		console.log('form submitted:', $scope.formData);
-	};
+$scope.onSubmit = function() {
+	console.log('form submitted:', $scope.formData);
+};
 ```
 ### Creating Form Fields
 When constructing fields use the options below to customize each field object. You must set at least a `type`, `template`, or `templateUrl`.
