@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git://github.com/formly-js/angular-formly.git"
   },
-  "main": "dist/formly.min.js",
+  "main": "dist/formly.js",
   "licenses": [
     {
       "type": "MIT",
