@@ -1,0 +1,18 @@
+<div class="form-group" ng-class="{'has-error': options.formField.$invalid}">
+	<div>Look mah! Custom Templates!</div>
+	<label for="{{id}}">
+		{{result[options.nameKey] ? result[options.nameKey] + ',' : ''}} {{options.label || 'Text'}}
+		{{options.required ? '*' : ''}}
+	</label>
+	<div>{{result[options.key || index]}}</div>
+    <div class="help-block" ng-show="options.formField.$error.notYes">Why not? (type "yes")</div>
+	<input type="text"
+		   class="form-control"
+		   id="{{id}}"
+           formly-dynamic-name="options.key"
+           formly-custom-validation="options.validators"
+		   placeholder="{{options.placeholder}}"
+		   ng-required="options.required"
+		   ng-disabled="options.disabled"
+		   ng-model="result[options.key || index]">
+</div>

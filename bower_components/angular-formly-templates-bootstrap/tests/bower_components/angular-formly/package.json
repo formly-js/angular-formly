@@ -1,0 +1,40 @@
+{
+  "name": "angular-formly",
+  "version": "1.0.0",
+  "author": "Astrism <astrisms@gmail.com>",
+  "homepage": "http://formly-js.github.io/angular-formly/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/formly-js/angular-formly.git"
+  },
+  "main": "dist/formly.min.js",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://raw.githubusercontent.com/formly-js/angular-formly/master/LICENSE"
+    }
+  ],
+  "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
+  "devDependencies": {
+    "bower": "1.2.7",
+    "connect-livereload": "~0.4.0",
+    "grunt": "~0.4.1",
+    "grunt-angular-templates": "~0.5.1",
+    "grunt-bower-task": "~0.3.4",
+    "grunt-cli": "~0.1.11",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-connect": "~0.6.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-uglify": "~0.3.2",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-gh-pages": "~0.9.0",
+    "grunt-mocha": "^0.4.11",
+    "grunt-ng-annotate": "^0.3.2",
+    "grunt-ngmin": "0.0.3",
+    "load-grunt-tasks": "^0.6.0",
+    "lodash-node": "^2.4.1",
+    "time-grunt": "^0.4.0"
+  }
+}

@@ -1,0 +1,11 @@
+<form class="formly"
+      role="form">
+	<formly-field ng-repeat="field in fields"
+	              options="field"
+	              form-result="result"
+	              form-id="options.uniqueFormId"
+	              ng-if="!field.hide"
+	              index="$index">
+	</formly-field>
+	<div ng-transclude></div>
+</form>

@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Angular Formly Tests</title>
+    <link rel="stylesheet" href="bower_components/mocha/mocha.css" />
+  </head>
+  <body>
+    <div id="mocha">
+      <h1>Angular Formly Tests</h1>
+      <div style="font-size:11px;margin-left:10px;">
+        <div>Click <a href="../">here</a> to go back to the demo.</div>
+        <div>Click <a href="https://github.com/formly-js/angular-formly">here</a> to go to the repository.</div>
+      </div>
+    </div>
+    <div id="messages"></div>
+    <div id="fixtures"></div>
+    
+    <script src="bower_components/mocha/mocha.js"></script>
+    <script src="bower_components/chai/chai.js"></script>
+    <script>
+      mocha.setup('bdd');
+      mocha.reporter('html');
+    </script>
+
+    <script src="bower_components/angular/angular.js"></script>
+
+    <!-- Library files -->
+    <script src="src/common/modules/formly.js"></script>
+    <script src="src/common/modules/formly-render.js"></script>
+    <script src="src/common/directives/formly-form.js"></script>
+    <script src="src/common/directives/formly-field.js"></script>
+    <script src="src/common/providers/formly-config.js"></script>
+
+    <!-- Tests -->
+    <script src="src/common/directives/formly-formSpec.js"></script>
+    <script src="src/common/directives/formly-fieldSpec.js"></script>
+    <script src="src/common/providers/formly-configSpec.js"></script>
+
+    <script>
+      // Only tests run in real browser, injected script run if options.run == true
+      if (navigator.userAgent.indexOf('PhantomJS') < 0) {
+        mocha.run();
+      }
+    </script>
+  </body>
+</html>

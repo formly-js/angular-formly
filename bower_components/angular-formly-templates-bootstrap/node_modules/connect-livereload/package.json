@@ -1,0 +1,62 @@
+{
+  "name": "connect-livereload",
+  "description": "connect middleware for adding the livereload script to the response",
+  "version": "0.4.1",
+  "author": {
+    "name": "Andi Neck",
+    "email": "andi.neck@intesso.com"
+  },
+  "contributors": [
+    {
+      "name": "Andi Neck",
+      "email": "andi.neck@intesso.com"
+    }
+  ],
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "express": "~3.2.2",
+    "supertest": "~0.6.0",
+    "mocha": "~1.9.0"
+  },
+  "keywords": [
+    "connect",
+    "livereload",
+    "live-reload"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/intesso/connect-livereload"
+  },
+  "main": "index",
+  "engines": {
+    "node": "*"
+  },
+  "gitHead": "cac15c971bd8786b2564a1066b6a99bb268cba38",
+  "bugs": {
+    "url": "https://github.com/intesso/connect-livereload/issues"
+  },
+  "homepage": "https://github.com/intesso/connect-livereload",
+  "_id": "connect-livereload@0.4.1",
+  "_shasum": "0f8a1a816bc9baffae4637ccea917462fe35917a",
+  "_from": "connect-livereload@>=0.4.0 <0.5.0",
+  "_npmVersion": "1.4.23",
+  "_npmUser": {
+    "name": "andineck",
+    "email": "andi.neck@intesso.com"
+  },
+  "maintainers": [
+    {
+      "name": "andineck",
+      "email": "andi.neck@intesso.com"
+    }
+  ],
+  "dist": {
+    "shasum": "0f8a1a816bc9baffae4637ccea917462fe35917a",
+    "tarball": "http://registry.npmjs.org/connect-livereload/-/connect-livereload-0.4.1.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/connect-livereload/-/connect-livereload-0.4.1.tgz"
+}

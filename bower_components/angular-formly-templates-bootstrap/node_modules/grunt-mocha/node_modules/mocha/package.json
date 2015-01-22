@@ -1,0 +1,79 @@
+{
+  "name": "mocha",
+  "version": "1.18.2",
+  "description": "simple, flexible, fun test framework",
+  "keywords": [
+    "mocha",
+    "test",
+    "bdd",
+    "tdd",
+    "tap"
+  ],
+  "author": {
+    "name": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/visionmedia/mocha.git"
+  },
+  "main": "./index",
+  "bin": {
+    "mocha": "./bin/mocha",
+    "_mocha": "./bin/_mocha"
+  },
+  "engines": {
+    "node": ">= 0.4.x"
+  },
+  "scripts": {
+    "test": "make test-all"
+  },
+  "dependencies": {
+    "commander": "2.0.0",
+    "growl": "1.7.x",
+    "jade": "0.26.3",
+    "diff": "1.0.7",
+    "debug": "*",
+    "mkdirp": "0.3.5",
+    "glob": "3.2.3"
+  },
+  "devDependencies": {
+    "should": ">= 2.0.x",
+    "coffee-script": "1.2"
+  },
+  "files": [
+    "bin",
+    "images",
+    "lib",
+    "index.js",
+    "mocha.css",
+    "mocha.js"
+  ],
+  "bugs": {
+    "url": "https://github.com/visionmedia/mocha/issues"
+  },
+  "_id": "mocha@1.18.2",
+  "dist": {
+    "shasum": "800848f8f7884c61eefcfa2a27304ba9e5446d0b",
+    "tarball": "http://registry.npmjs.org/mocha/-/mocha-1.18.2.tgz"
+  },
+  "_from": "mocha@>=1.18.0 <1.19.0",
+  "_npmVersion": "1.3.11",
+  "_npmUser": {
+    "name": "travisjeffery",
+    "email": "tj@travisjeffery.com"
+  },
+  "maintainers": [
+    {
+      "name": "tjholowaychuk",
+      "email": "tj@vision-media.ca"
+    },
+    {
+      "name": "travisjeffery",
+      "email": "tj@travisjeffery.com"
+    }
+  ],
+  "directories": {},
+  "_shasum": "800848f8f7884c61eefcfa2a27304ba9e5446d0b",
+  "_resolved": "https://registry.npmjs.org/mocha/-/mocha-1.18.2.tgz"
+}

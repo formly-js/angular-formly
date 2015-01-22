@@ -1,13 +1,13 @@
 {
   "name": "angular-formly-templates-bootstrap",
-  "version": "0.0.2",
+  "version": "2.0.0",
   "author": "Astrism <astrisms@gmail.com>",
   "homepage": "http://formly-js.github.io/angular-formly-templates-bootstrap/",
   "repository": {
     "type": "git",
     "url": "git://github.com/formly-js/angular-formly-templates-bootstrap.git"
   },
-  "main": "dist/angular-formly-templates-bootstrap.min.js",
+  "main": "dist/angular-formly-templates-bootstrap.js",
   "licenses": [
     {
       "type": "MIT",
@@ -33,6 +33,7 @@
     "grunt-mocha": "^0.4.11",
     "grunt-ng-annotate": "^0.3.2",
     "grunt-ngmin": "0.0.3",
+    "grunt-umd": "^2.2.1",
     "load-grunt-tasks": "^0.6.0",
     "lodash-node": "^2.4.1",
     "time-grunt": "^0.4.0"

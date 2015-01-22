@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Formly for Angular</title>
+
+		<!-- build:css css/style.css -->
+		<link rel="stylesheet"
+		      href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet"
+		      href="bower_components/highlightjs/styles/default.css">
+		<link rel="stylesheet"
+		      href="main.css">
+		<!-- endbuild -->
+	</head>
+	<body ng-app="app">
+		<div class="loading"
+		     ng-show="isViewLoading">
+			<div class="content">
+				Loading...
+			</div>
+		 </div>
+
+		<div ui-view
+		     class="view">
+		</div>
+
+		<div class="footer">
+			<div class="container">
+				<a href="https://github.com/formly-js/angular-formly">
+					See the project on GitHub
+				</a>
+			</div>
+		</div>
+
+		<script src="bower_components/angular/angular.js"></script>
+		<script src="bower_components/angular-highlightjs/angular-highlightjs.min.js"></script>
+		<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+		<script src="bower_components/highlightjs/highlight.pack.js"></script>
+		<script src="app.js"></script>
+		<script src="views/home.js"></script>
+		<script src="views/custom-field.js"></script>
+
+		<script src="dist/formly.js"></script>
+		<script src="bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.min.js"></script>
+
+		<script>
+		// make errors longer...
+		window.onerror = function (errorMsg, url, lineNumber, columnNumber, errorObject) {
+			if (/<omitted>/.test(errorMsg)) {
+				console.error('Error: ' + errorObject ? errorObject.message : errorMsg);
+			}
+		};
+		</script>
+	</body>
+</html>

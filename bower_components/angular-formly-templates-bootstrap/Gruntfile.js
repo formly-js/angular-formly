@@ -16,28 +16,8 @@ module.exports = function(grunt) {
 	var config = {
 		pkg: grunt.file.readJSON('package.json'),
 		formlyConfig: {
-			hostname: 'localhost', // change to 0.0.0.0 to listen on all connections
 			base: 'src',
-			demo: 'demo',
-			dist: 'dist',
-			port: 4000,
-			livereloadport: 35701
-		},
-		connect: {
-			dev: {
-				options: {
-					hostname: '<%= formlyConfig.hostname %>',
-					port: '<%= formlyConfig.port %>',
-					base: '<%= formlyConfig.demo %>',
-					livereload: '<%= formlyConfig.livereloadport %>'
-				}
-			}
-		},
-		'gh-pages': {
-			options: {
-				base: '<%= formlyConfig.demo %>'
-			},
-			src: ['**']
+			dist: 'dist'
 		},
 		clean: {
 			tmp: '.tmp/**/*',
@@ -55,12 +35,6 @@ module.exports = function(grunt) {
 			}
 		},
 		watch: {
-			livereload: {
-				files: ['<%= formlyConfig.dist %>/**/*.{js,html}', '<%= formlyConfig.demo %>/**/*.{js,css,html}'],
-				options: {
-					livereload: '<%= formlyConfig.livereloadport %>'
-				}
-			},
 			build: {
 				files: ['<%= formlyConfig.base %>/**/*.{js,html}'],
 				tasks: ['build']
@@ -84,13 +58,13 @@ module.exports = function(grunt) {
 				src: '**/built/**/*.*',
 				dest: 'dist/',
 				flatten: true,
-				filter: 'isFile',
+				filter: 'isFile'
 			}
 		},
 		ngtemplates: {
 			default: {
 				options: {
-					module: 'formly.render',
+					module: 'formlyBootstrap',
 					append: true,
 					htmlmin: {
 						collapseBooleanAttributes: true,
@@ -133,15 +107,20 @@ module.exports = function(grunt) {
 					sourceMap: true
 				}
 			}
-		}
+		},
+    umd: {
+      all: {
+        options: {
+          src: concatFile,
+          template: __dirname + '/umd.hbs',
+          objectToExport: '"formlyBootstrap"'
+        }
+      }
+    }
 	};
 
 	// Pass config to grunt
 	grunt.initConfig(config);
-
-	grunt.registerTask('publish', [
-		'gh-pages'
-	]);
 
 	grunt.registerTask('dev', [
 		'build',
@@ -151,12 +130,13 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('build', [
 		'jshint',
-		'mocha',
+		//'mocha',
 		'clean:tmp',
 		'copy:build',
 		'ngtemplates',
 		'concat',
 		'ngAnnotate',
+    'umd:all',
 		'uglify',
 		'clean:dist',
 		'copy:dist'

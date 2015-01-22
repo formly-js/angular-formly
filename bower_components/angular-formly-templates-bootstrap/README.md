@@ -1,3 +1,4 @@
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/formly-js/angular-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/formly-js/angular-formly.svg)](https://travis-ci.org/formly-js/angular-formly)
 [![Coverage Status](https://img.shields.io/coveralls/formly-js/angular-formly.svg)](https://coveralls.io/r/formly-js/angular-formly)
 
@@ -24,7 +25,7 @@ Example text field:
 	</div>
 ```
 
-### Demo : http://formly-js.github.io/angular-formly-templates-bootstrap/
+### Demo : http://formly-js.github.io/angular-formly
 
 ## Dependencies
 - Required to use Formly:
@@ -42,9 +43,13 @@ See `bower.json` and `index.html` in the `master` branch for a full list / more 
 
 - Install Angular-Formly: Bootstrap Templates
  `$ bower install angular-formly-templates-bootstrap --save`
+ or
+ `$ npm install angular-formly-templates-bootstrap --save`
 
 - Include the javascript file in your index.html, Formly comes in the following flavors:
  `<script src="bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.min.js"></script>`
+ or
+ `angular.module('yourModule', [require('angular-formly'), require('angular-formly-templates-bootstrap')]);`
 
 ## Documentation
 
