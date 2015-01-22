@@ -1,2 +1,2 @@
 // Main Formly Module
-angular.module('formly', ['formly.render']);
+angular.module('formly', []);

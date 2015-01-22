@@ -1,4 +1,5 @@
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/formly-js/angular-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/formly-js/angular-formly.svg)](https://travis-ci.org/formly-js/angular-formly)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/formly-js/angular-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/formly-js/angular-formly.svg)](https://travis-ci.org/formly-js/angular-formly)
 [![Coverage Status](https://img.shields.io/coveralls/formly-js/angular-formly.svg)](https://coveralls.io/r/formly-js/angular-formly)
 
 ## Formly
@@ -19,26 +20,31 @@ Formly for Angular is an AngularJS module which has directives to help customize
  - npm
 
 
-See `bower.json` and `index.html` in the `master` branch for a full list / more details
-
 ## Install in your project
-1. Install with Bower  
+1. Install with Bower or npm
  `$ bower install angular-formly --save`
+ or
+ `$ npm install angular-formly --save`
 
 2. Include the javascript file in your index.html, Formly without any form templates. You can create your own or use some of our prebuilt templates which cover basic form types, then extend with your own as needed.
 
  `<script src="bower_components/angular-formly/dist/formly.min.js"></script>`
+ and
+ `angular.module('yourModule', ['formly']);`
 
-  ### Prebuilt Templates
+ or
+ `angular.module('yourModule', [require('angular-formly')]);`
+
+
+### Prebuilt Templates
  - [Vanilla Template](https://github.com/formly-js/angular-formly-templates-vanilla#install-in-your-project): no fancy styling, just plain html
  - [Bootstrap Templates](https://github.com/formly-js/angular-formly-templates-bootstrap#install-in-your-project): bootstrap compatible forms, form-groups, etc.
  - [LumX Templates](https://github.com/formly-js/angular-formly-templates-lumx): LumX compatible components
 
-  ### DIY Templates
-  Regardless of which flavor you use (or if you use no flavor at all), you can create your own templates with `formlyConfigProvider`.
+### DIY Templates
+Regardless of which flavor you use (or if you use no flavor at all), you can create your own templates with `formlyConfigProvider`.
+This is the recommended approach if you want to customize your templates at all.
 
-3. Add 'formly' as a required module to your angular app, usually in `app.js`:  
- `var app = angular.module('app', ['ng', 'ui.router', 'formly']);`
 
 ## Documentation
 
@@ -53,7 +59,7 @@ You can add a formly-form in your HTML templates as shown below.
 <formly-form model="formData" fields="formFields">
 	<button ng-click="onSubmit()">Hello World</button>
 </formly-form>
-```  
+```
 
 Example data as it would be set in the controller
 ```javascript

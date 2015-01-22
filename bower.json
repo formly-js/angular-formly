@@ -1,13 +1,14 @@
 {
   "name": "angular-formly",
-  "version": "0.0.16",
+  "version": "2.0.0",
   "authors": [
     "Astrism <astrisms@gmail.com>"
   ],
-  "main": [
-    "dist/formly.min.js",
-    "dist/formly.min.map"
+  "contributors": [
+    "Astrism <astrisms@gmail.com>",
+    "Kent C. Dodds <kent@doddsfamily.us>"
   ],
+  "main": "dist/formly.js",
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
   "keywords": [
     "AngularJs",
@@ -35,7 +36,7 @@
     "bootstrap": "~3.2.0",
     "chai": "~1.9.1",
     "mocha": "~1.21.4",
-    "angular-formly-templates-bootstrap": "https://github.com/formly-js/angular-formly-templates-bootstrap.git#60550a06b834aa755ab3d8ce6e955ee1a0840dc3"
+    "angular-formly-templates-bootstrap": "~2.0.0"
   },
   "resolutions": {
     "angular": "~1.3.5"

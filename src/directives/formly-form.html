@@ -1,16 +1,16 @@
 <ng-form class="formly"
          name="form"
          role="form">
-	<div formly-field
-		 ng-repeat="field in fields track by $index"
-		 ng-if="!field.hide"
-		 class="formly-field"
-		 options="field"
-		 model="field.model || model"
-		 fields="fields"
-		 form="form"
-		 form-id="formId"
-		 index="$index">
-	</div>
-	<div ng-transclude></div>
+  <div formly-field
+       ng-repeat="field in fields track by $index"
+       ng-if="!field.hide"
+       class="formly-field"
+       options="field"
+       model="field.model || model"
+       fields="fields"
+       form="form"
+       form-id="formId"
+       index="$index">
+  </div>
+  <div ng-transclude></div>
 </ng-form>

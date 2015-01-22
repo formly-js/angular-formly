@@ -1,7 +1,11 @@
 {
   "name": "angular-formly",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "Astrism <astrisms@gmail.com>",
+  "contributors": [
+    "Astrism <astrisms@gmail.com>",
+    "Kent C. Dodds <kent@doddsfamily.us>"
+  ],
   "homepage": "http://formly-js.github.io/angular-formly/",
   "repository": {
     "type": "git",
@@ -15,6 +19,9 @@
     }
   ],
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
+  "dependencies": {
+    "angular": "^1.2.22"
+  },
   "devDependencies": {
     "bower": "1.2.7",
     "connect-livereload": "~0.4.0",
@@ -32,6 +39,7 @@
     "grunt-gh-pages": "~0.9.0",
     "grunt-mocha": "^0.4.11",
     "grunt-ng-annotate": "^0.3.2",
+    "grunt-umd": "^2.2.1",
     "load-grunt-tasks": "^0.6.0",
     "lodash-node": "^2.4.1",
     "time-grunt": "^0.4.0"
