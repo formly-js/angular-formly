@@ -9,9 +9,13 @@ angular.module('formly').directive('formlyForm', function formlyForm() {
     scope: {
       fields: '=',
       model: '=',
-      form: '=?'
+      form: '=?',
+      schema: '=?'
     },
     controller: function ($scope, formlyUtil) {
+      if ($scope.schema && (!$scope.fields || !$scope.fields.length)) {
+        $scope.fields = formlyUtil.generateFieldsFromSchema($scope.schema);
+      }
       $scope.formId = 'formly_' + currentFormId++;
 
       angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields

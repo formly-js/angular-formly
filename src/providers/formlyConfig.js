@@ -9,6 +9,7 @@ angular.module('formly').provider('formlyConfig', function () {
     setTemplateUrl: setTemplateUrl,
     getTemplate: getTemplate,
     setTemplate: setTemplate,
+    schemaValidator: angular.noop,
     disableWarnings: false,
     $get: function formlyConfig() {
       return this;

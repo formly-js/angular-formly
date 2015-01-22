@@ -4,7 +4,8 @@ angular.module('formly').factory('formlyUtil', function (formlyConfig) {
     throwErrorWithField: throwErrorWithField,
     formlyEval: formlyEval,
     warn: warn,
-    getFieldId: getFieldId
+    getFieldId: getFieldId,
+    generateFieldsFromSchema: generateFieldsFromSchema
   };
 
   function throwErrorWithField(message, field) {
@@ -39,6 +40,24 @@ angular.module('formly').factory('formlyUtil', function (formlyConfig) {
     }
 
     return [formId, type, options.key, index].join('_');
+  }
+
+  function generateFieldsFromSchema(schema) {
+    var fields = [];
+    var required = schema.required || [];
+    angular.forEach(schema.properties, function(prop, key) {
+      fields[prop.displayOrder] = generateFieldFromSchema(prop, key, required.indexOf(key));
+    });
+
+    function generateFieldFromSchema(property, key, required) {
+      return {
+        key: key,
+        hide: !property.defaultVisible,
+        label: property.title,
+        description: property.description,
+        placeholder: property.placeholder
+      };
+    }
   }
 
 });
