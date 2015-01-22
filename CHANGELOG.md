@@ -2,6 +2,16 @@ Version numbers correspond to `bower.json` version
 
 # Latest
 
+## Backward compatible changes
+
+None yet
+
+## Internal Changes
+
+None yet
+
+# 2.0.0
+
 ## Backward compatible changes:
 
 - Adding class `formly-field` to the fields to make it easier to select them with css selectors.
