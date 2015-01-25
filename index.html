@@ -1,45 +1,25 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title>Formly for Angular</title>
-
-  <!-- build:css css/style.css -->
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="bower_components/highlightjs/styles/default.css">
-  <link rel="stylesheet" href="main.css">
-  <!-- endbuild -->
+  <title>angular-formly</title>
+  <style>
+    .ng-cloak {display: none;}
+    body {"Helvetica Neue", Helvetica, Arial, sans-serif}
+  </style>
 </head>
-<body ng-app="app">
-<div class="loading"
-     ng-show="isViewLoading">
-  <div class="content">
-    Loading...
-  </div>
+<body>
+<a href="https://github.com/formly-js/angular-formly">
+  <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub">
+</a>
+<div class="loading" ng-if="false" style="text-align:center;color:#777">
+  <h1>Angular Formly is loading...</h1>
 </div>
 
-<div ui-view
-     class="view">
+<div class="ng-cloak">
+  <div ui-view></div>
 </div>
 
-<div class="footer">
-  <div class="container">
-    <a href="https://github.com/formly-js/angular-formly">
-      See the project on GitHub
-    </a>
-  </div>
-</div>
-
-<script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-highlightjs/angular-highlightjs.min.js"></script>
-<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-<script src="bower_components/highlightjs/highlight.pack.js"></script>
-<script src="app.js"></script>
-<script src="ngForm-submit.js"></script>
-<script src="views/home.js"></script>
-<script src="views/custom-field.js"></script>
-
-<script src="dist/formly.js"></script>
-<script src="bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.min.js"></script>
+<script src="bundle.js"></script>
 
 <script>
   // make errors longer...
