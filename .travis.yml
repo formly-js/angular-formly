@@ -6,12 +6,9 @@ branches:
   only:
   - master
 before_script:
-- npm install -g grunt-cli
-- npm install -g bower
 - npm install
-- bower install
 script:
-- grunt build
+- npm run test
 notifications:
   slack:
     secure: V/CXlCkFJ4AKLpyovKdCAa8OeSMcLrSDr5oL3V8FoR1jWuGwcNQQsF+O6qw3VDpjjbmqARUWdnSu0jgB+QJRvCG/CwmqRx4cnkVlMAal2XtxCiCse2uPQJ2mbJv/boFWtzbJgwcYCww0WXSDIhBMNDxkwCqVxn9BpgABgtIi8iw=

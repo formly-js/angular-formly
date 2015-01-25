@@ -4,7 +4,8 @@ Version numbers correspond to `bower.json` version
 
 ## Backward compatible changes
 
-None yet
+- all fields will now have a the `key` value default to the index of the field if it isn't given a value. This makes it much easier to reference the model in templates (instead of `model[options.key || index]` you can now simply do `mode[options.key]`.
+- adding an angular constant called `formlyVersion` that could be useful and stuff.
 
 ## Internal Changes
 

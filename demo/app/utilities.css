@@ -1,0 +1,23 @@
+.\+text-center {
+  text-align: center;
+}
+
+.\+font-size-large {
+  font-size: 1.1em;
+}
+
+.\+font-size-xlarge {
+  font-size: 3.7em;
+}
+
+.\+margin-top-small {
+  margin-top: 20px;
+}
+
+.\+margin-bottom-medium {
+  margin-bottom: 40px;
+}
+
+.\+margin-bottom-large {
+  margin-bottom: 80px;
+}

@@ -1,16 +1,40 @@
 {
-	"browser": true,
-	"devel": true,
-	"esnext": true,
-	"globals": {
-		"app": true,
-		"angular": false
-	},
-	"globalstrict": true,
-	"quotmark": true,
-	"smarttabs": true,
-	"trailing": true,
-	"undef": true,
-	"unused": "vars",
-	"node": false
+  "curly": true,
+  "eqeqeq": true,
+  "bitwise": true,
+  "camelcase": true,
+  "esnext": true,
+  "expr": true,
+  "forin": true,
+  "freeze": true,
+  "immed": true,
+  "indent": 2,
+  "latedef": "nofunc",
+  "newcap": true,
+  "noarg": true,
+  "noempty": true,
+  "nonbsp": true,
+  "quotmark": "single",
+  "undef": true,
+  "unused": "vars",
+  "trailing": true,
+  "maxdepth": 4,
+  "maxstatements": 30,
+  "maxcomplexity": 5,
+  "maxlen": 120,
+  "browser": true,
+  "node": true,
+  "globals": {
+    "angular": true,
+    "ON_TEST": true,
+    "ON_DEV": true,
+    "ON_PROD": true,
+    "VERSION": true,
+
+
+    "describe": true,
+    "it": true,
+    "expect": true,
+    "beforeEach": true
+  }
 }

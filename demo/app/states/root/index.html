@@ -1,0 +1,49 @@
+<div class="container +margin-bottom-large">
+  <div class="row +margin-bottom-medium">
+    <h1 class="+text-center +font-size-xlarge">
+      <a formly-event-navigate="goHome">Angular Formly</a>
+      <br />
+      <small>JSON Powered Forms for AngularJS</small>
+    </h1>
+  </div>
+
+  <hr/>
+
+  <div class="row +margin-bottom-large">
+    <div class="col-md-3">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Filter Examples" ng-model="vm.search" ng-keydown="vm.onSearchEntered($event, vm.search)">
+        <span class="input-group-addon">
+          <i class="glyphicon glyphicon-search"></i>
+        </span>
+      </div>
+      <hr/>
+      <div class="formly-examples">
+        <div class="formly-example" ng-repeat="category in vm.examples track by $index">
+          <strong>{{::category.title}}</strong>
+          <div ng-repeat="example in category.examples | filter:vm.search track by $index">
+            <a formly-event-navigate="exampleSelected(example)" ng-href="#/{{example.slug}}">{{example.title}}</a>
+          </div>
+          <hr/>
+        </div>
+      </div>
+      <div>
+        <a href="https://github.com/formly-js/angular-formly/edit/master/demo/app">Suggest an example</a>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div ui-view></div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <div class="row +text-center">
+    <small>
+      angular-formly was created by the good folks at
+      <a href="http://gonimbly.com/">Nimbly</a>
+      (specifically <a href="https://github.com/astrism">Grant Helton</a>)
+      and is actively maintained by <a href="https://github.com/kentcdodds">Kent C. Dodds</a>.
+    </small>
+  </div>
+</div>

@@ -1,44 +1,47 @@
-angular.module('formly').factory('formlyUtil', function (formlyConfig) {
-  'use strict';
-  return {
-    throwErrorWithField: throwErrorWithField,
-    formlyEval: formlyEval,
-    warn: warn,
-    getFieldId: getFieldId
-  };
+let angular = require('angular-fix');
 
-  function throwErrorWithField(message, field) {
-    throw new Error('Formly Error: ' + message + '. Field definition: ' + angular.toJson(field));
-  }
+module.exports = ngModule => {
+  ngModule.factory('formlyUtil', function (formlyConfig) {
+    return {
+      getFieldError: getFieldError,
+      formlyEval: formlyEval,
+      warn: warn,
+      getFieldId: getFieldId
+    };
 
-  function formlyEval(scope, expression, modelValue, viewValue) {
-    if (angular.isFunction(expression)) {
-      return expression(viewValue, modelValue, scope);
-    } else {
-      return scope.$eval(expression, {
-        $viewValue: viewValue,
-        $modelValue: modelValue
-      });
-    }
-  }
-
-  function warn() {
-    if (!formlyConfig.disableWarnings) {
-      var args = Array.prototype.slice.call(arguments);
-      args.unshift('Formly Warning:');
-      console.warn.apply(console, args);
-    }
-  }
-
-  function getFieldId(formId, options, index) {
-    var type = options.type;
-    if (!type && options.template) {
-      type = 'template';
-    } else if (!type && options.templateUrl) {
-      type = 'templateUrl';
+    function getFieldError(message, field) {
+      return new Error('Formly Error: ' + message + '. Field definition: ' + angular.toJson(field));
     }
 
-    return [formId, type, options.key, index].join('_');
-  }
+    function formlyEval(scope, expression, modelValue, viewValue) {
+      if (angular.isFunction(expression)) {
+        return expression(viewValue, modelValue, scope);
+      } else {
+        return scope.$eval(expression, {
+          $viewValue: viewValue,
+          $modelValue: modelValue
+        });
+      }
+    }
 
-});
+    function warn() {
+      if (!formlyConfig.disableWarnings) {
+        var args = Array.prototype.slice.call(arguments);
+        args.unshift('Formly Warning:');
+        console.warn.apply(console, args);
+      }
+    }
+
+    function getFieldId(formId, options, index) {
+      var type = options.type;
+      if (!type && options.template) {
+        type = 'template';
+      } else if (!type && options.templateUrl) {
+        type = 'templateUrl';
+      }
+
+      return [formId, type, options.key, index].join('_');
+    }
+
+  });
+};

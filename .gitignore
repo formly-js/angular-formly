@@ -14,10 +14,3 @@ logs
 results
 
 node_modules
-bower_components
-!demo/bower_components
-!tests/bower_components
-*.sublime-workspace
-# build folder
-.grunt
-.tmp
