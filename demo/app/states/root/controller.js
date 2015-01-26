@@ -6,6 +6,7 @@ module.exports = function MainCtrl($location, examples, $filter, stateUtils) {
   vm.$location = $location;
   vm.examples = examples;
   vm.onSearchEntered = onSearchEntered;
+  vm.formlyVersion = VERSION;
   var allTheExamples = [];
 
   angular.forEach(vm.examples, function(category) {

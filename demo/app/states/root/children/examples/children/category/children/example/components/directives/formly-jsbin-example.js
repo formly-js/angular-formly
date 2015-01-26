@@ -7,14 +7,14 @@ module.exports = ngModule => {
     return {
       restrict: 'E',
       scope: {
-        slug: '@'
+        jsbinId: '@'
       },
       link: function(scope, el) {
         el.replaceWith(angular.element(`
           <div class="formly-jsbin-example">
             <iframe width="100%"
                     height="100%"
-                    src="http://jsbin.com/${scope.slug}/embed?output">
+                    src="http://jsbin.com/${scope.jsbinId}/embed?output">
             </iframe>
           </div>
         `));

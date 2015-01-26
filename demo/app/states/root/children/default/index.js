@@ -11,7 +11,7 @@ let ngModule = require('registerModule')(deps);
 
 let bootstrapHtml = require('./bootstrapHtml.html');
 let formlyHtml = require('./formlyHtml.html');
-let formlyJs = require('./formlyJs.js').trim();
+let formlyJs = require('!raw!./formlyJs.js')
 
 module.exports = {
   name: ngModule.name,

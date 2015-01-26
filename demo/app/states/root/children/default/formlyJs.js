@@ -1,4 +1,3 @@
-module.exports = `
 function YourCtrl() {
   var vm = this;
 
@@ -30,4 +29,3 @@ function YourCtrl() {
     }
   ];
 }
-`;

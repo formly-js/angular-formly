@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Astrism <astrisms@gmail.com>",
   "contributors": [
     "Astrism <astrisms@gmail.com>",
@@ -18,6 +18,11 @@
       "url": "https://raw.githubusercontent.com/formly-js/angular-formly/master/LICENSE"
     }
   ],
+  "scripts": {
+    "build:dist": "node node_modules/webpack/bin/webpack.js",
+    "build:prod": "node node_modules/webpack/bin/webpack.js --config webpack.config.minify.js",
+    "build": "npm run build:dist; npm run build:prod"
+  },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
   "dependencies": {
     "angular": "~1.2.22",
@@ -28,8 +33,8 @@
     "6to5": "^2.13.7",
     "6to5-loader": "^2.0.0",
     "deep-extend": "^0.3.2",
-    "gulp": "^3.8.10",
-    "gulp-gh-pages": "^0.4.0",
+    "grunt": "^0.4.5",
+    "grunt-gh-pages": "^0.9.1",
     "jshint": "^2.6.0",
     "jshint-loader": "^0.8.1",
     "lodash-node": "^2.4.1",

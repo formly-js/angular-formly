@@ -3,10 +3,10 @@ var deepExtend = require('deep-extend');
 var fs = require('fs');
 var path = require('path');
 
-var prodMode = process.argv.indexOf('--formly-prod-mode') !== -1;
-var testMode = process.argv.indexOf('--formly-test-mode') !== -1;
-
 var exclude = /node_modules/;
+
+var ngAnnotateLoader = path.join(__dirname, '/loaders/ng-annotate.js');
+
 
 var packageJsonString = fs.readFileSync('package.json', 'utf8');
 var packageJson = JSON.parse(packageJsonString);
@@ -32,6 +32,10 @@ var baseConfig = {
     reasons: true
   },
 
+  externals: {
+    angular: 'angular'
+  },
+
   plugins: [],
 
   resolve: {
@@ -44,7 +48,7 @@ var baseConfig = {
   module: {
     loaders: [
       {test: /\.html$/, loader: 'raw', exclude: exclude},
-      {test: /\.js$/, loader: '6to5!jshint', exclude: exclude}
+      {test: /\.js$/, loader: ngAnnotateLoader + '!6to5!jshint', exclude: exclude}
     ]
   }
 };
@@ -62,14 +66,10 @@ var prodConfig = {
   },
   devtool: 'source-map',
   plugins: [
-    //new ngAnnotatePlugin(), // figure out what this is all about so we can reenable this and uglify
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
-    //new webpack.optimize.UglifyJsPlugin({
-    //  'screw_ie8': true,
-    //  'source_map': 'bundle.min.js'
-    //})
+    new webpack.optimize.UglifyJsPlugin()
   ]
 };
 var envContexts = {
@@ -89,9 +89,7 @@ module.exports = getConfig();
 module.exports.getConfig = getConfig;
 
 function getConfig(context) {
-  if (!context) {
-    context = prodMode ? 'prod' : testMode ? 'test' : 'dev';
-  }
+  context = context || 'dev';
   var configContexts = {
     dev: devConfig,
     prod: prodConfig,

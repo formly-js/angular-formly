@@ -2,7 +2,6 @@ var deps = [
   require('./services'),
   require('./constants'),
   require('./directives'),
-  require('angular-formly'),
   require('angular-ui-router')
 ];
 require('angular-aria') && deps.push('ngAria');

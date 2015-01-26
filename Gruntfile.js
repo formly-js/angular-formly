@@ -1,17 +1,24 @@
-var gulp = require('gulp');
-var deploy = require('gulp-gh-pages');
-var path = require('path');
 var os = require('os');
 var cachDir = path.join(os.tmpdir(), '/formly-gh-pages');
-console.log(cachDir);
 
-gulp.task('deploy', function () {
-  return gulp.src(['./demo/index.html', './demo/bundle.js', './demo/res/**/*'])
-    .pipe(deploy({
-      cacheDir: cachDir,
-      message: 'Update ' + Date.now() + ' ' + getRandomEmoji()
-    }));
-});
+module.exports = function(grunt) {
+
+  grunt.initConfig({
+    'gh-pages': {
+      options: {
+        base: 'demo',
+        clone: cachDir,
+        message: 'Update ' + Date.now() + ' ' + getRandomEmoji()
+      },
+      src: ['index.html', 'bundle.js', 'res/**/*']
+    },
+  });
+
+  grunt.loadNpmTasks('grunt-gh-pages');
+
+  grunt.registerTask('deploy', ['webpackAllTheThings', 'gh-pages']);
+};
+
 
 function getRandomEmoji() {
   var emoji = [
