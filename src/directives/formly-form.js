@@ -62,9 +62,8 @@ module.exports = ngModule => {
               return originalExpression(...args);
             };
             watchExpression.displayName = `Formly Watch Expression for field for ${field.key}`;
-          } else {
-            return watchExpression;
           }
+          return watchExpression;
         }
 
         function getWatchListener(watcher, field, index) {
@@ -78,9 +77,8 @@ module.exports = ngModule => {
               return originalListener(...args);
             };
             watchListener.displayName = `Formly Watch Listener for field for ${field.key}`;
-          } else {
-            return watchListener;
           }
+          return watchListener;
         }
 
         function modifyArgs(watcher, index, ...originalArgs) {
