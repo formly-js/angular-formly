@@ -24,12 +24,11 @@
     "build": "npm run build:dist; npm run build:prod"
   },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
-  "dependencies": {
-    "angular": "~1.2.22",
-    "angular-ui-router": "^0.2.13",
-    "lodash": "^2.4.1"
+  "peerDependencies": {
+    "angular": "~1.2.x"
   },
   "devDependencies": {
+    "lodash": "^2.4.1",
     "6to5": "^2.13.7",
     "6to5-loader": "^2.0.0",
     "deep-extend": "^0.3.2",
