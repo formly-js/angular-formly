@@ -25,7 +25,7 @@
   },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
   "peerDependencies": {
-    "angular": "~1.2.x"
+    "angular": "~1.x"
   },
   "devDependencies": {
     "lodash": "^2.4.1",
