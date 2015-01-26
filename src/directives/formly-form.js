@@ -13,7 +13,7 @@ module.exports = ngModule => {
         model: '=',
         form: '=?'
       },
-      controller: function ($scope, formlyUtil) {
+      controller: function($scope, formlyUtil) {
         $scope.formId = `formly_${currentFormId++}`;
 
         angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
@@ -21,7 +21,7 @@ module.exports = ngModule => {
 
         // watch the model and evaluate watch expressions that depend on it.
         $scope.$watch('model', function onResultUpdate(newResult) {
-          angular.forEach($scope.fields, function (field) {
+          angular.forEach($scope.fields, function(field) {
             /*jshint -W030 */
             field.runExpressions && field.runExpressions(newResult);
           });
@@ -39,9 +39,9 @@ module.exports = ngModule => {
           if (!angular.isArray(watchers)) {
             watchers = [watchers];
           }
-          angular.forEach(watchers, function (watcher) {
+          angular.forEach(watchers, function(watcher) {
             if (!angular.isDefined(watcher.listener)) {
-              formlyUtil.getFieldError('All field watchers must have a listener', field);
+              throw formlyUtil.getFieldError('All field watchers must have a listener', field);
             }
             var watchExpression = getWatchExpression(watcher, field, index);
             var watchListener = getWatchListener(watcher, field, index);
@@ -52,18 +52,19 @@ module.exports = ngModule => {
         }
 
         function getWatchExpression(watcher, field, index) {
-            var watchExpression = watcher.expression || `model['${field.key}']`;
-            if (angular.isFunction(watchExpression)) {
-              // wrap the field's watch expression so we can call it with the field as the first arg
-              // and the stop function as the last arg as a helper
-              var originalExpression = watchExpression;
-              watchExpression = function formlyWatchExpression() {
-                var args = modifyArgs(watcher, index, ...arguments);
-                return originalExpression(...args);
-              };
-              watchExpression.displayName = `Formly Watch Expression for field for ${field.key}`;
-            }
-
+          var watchExpression = watcher.expression || `model['${field.key}']`;
+          if (angular.isFunction(watchExpression)) {
+            // wrap the field's watch expression so we can call it with the field as the first arg
+            // and the stop function as the last arg as a helper
+            var originalExpression = watchExpression;
+            watchExpression = function formlyWatchExpression() {
+              var args = modifyArgs(watcher, index, ...arguments);
+              return originalExpression(...args);
+            };
+            watchExpression.displayName = `Formly Watch Expression for field for ${field.key}`;
+          } else {
+            return watchExpression;
+          }
         }
 
         function getWatchListener(watcher, field, index) {
@@ -77,6 +78,8 @@ module.exports = ngModule => {
               return originalListener(...args);
             };
             watchListener.displayName = `Formly Watch Listener for field for ${field.key}`;
+          } else {
+            return watchListener;
           }
         }
 
