@@ -17,3 +17,4 @@ node_modules
 
 demo/bundle.js
 demo/res
+.grunt

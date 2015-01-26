@@ -1,22 +1,18 @@
-var os = require('os');
-var cachDir = path.join(os.tmpdir(), '/formly-gh-pages');
-
 module.exports = function(grunt) {
 
   grunt.initConfig({
     'gh-pages': {
       options: {
         base: 'demo',
-        clone: cachDir,
         message: 'Update ' + Date.now() + ' ' + getRandomEmoji()
       },
       src: ['index.html', 'bundle.js', 'res/**/*']
-    },
+    }
   });
 
   grunt.loadNpmTasks('grunt-gh-pages');
 
-  grunt.registerTask('deploy', ['webpackAllTheThings', 'gh-pages']);
+  grunt.registerTask('deploy', ['gh-pages']);
 };
 
 
