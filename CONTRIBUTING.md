@@ -11,10 +11,9 @@ If you would like to add functionality, please submit [an issue](https://github.
 When submitting a Pull Request please submit it to the `master` branch.
 
 Please do the following:
-* Follow the existing styles
-** Use the third option here: http://blogs.msdn.com/b/cyrusn/archive/2004/09/14/229474.aspx (Thats how we roll)
-* Update the README with documentation so people can read how your changes work
-* Update the example so people can see how your changes work
+* Follow the existing styles (we have an `.editorconfig` file)
+* Document your changes in the README
+* Create an example that demonstrates your changes so people can see how your changes work
 
 ### Development
 
