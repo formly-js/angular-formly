@@ -1,7 +1,7 @@
 (function() {
   'use strict';
   window.ngFormly.formlyUtils.setTemplates([
-
+    {}
   ]);
 
   var app = angular.module('app', ['formly']);
