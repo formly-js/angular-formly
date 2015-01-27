@@ -2,6 +2,7 @@ let angular = require('angular-fix');
 
 module.exports = ngModule => {
   ngModule.factory('formlyUtil', function (formlyConfig) {
+    var errorsAndWarningsUrlPrefix = 'https://github.com/formly-js/angular-formly/wiki/Errors-and-Warnings#';
     return {
       getFieldError: getFieldError,
       formlyEval: formlyEval,
@@ -9,8 +10,11 @@ module.exports = ngModule => {
       getFieldId: getFieldId
     };
 
-    function getFieldError(message, field) {
-      return new Error('Formly Error: ' + message + '. Field definition: ' + angular.toJson(field));
+    function getFieldError(errorInfoSlug, message, field) {
+      let url = `${errorsAndWarningsUrlPrefix}${errorInfoSlug}`;
+      return new Error(
+        `Formly Error: ${message}. ${url} Field definition: ${angular.toJson(field)}`
+      );
     }
 
     function formlyEval(scope, expression, modelValue, viewValue) {
@@ -27,7 +31,9 @@ module.exports = ngModule => {
     function warn() {
       if (!formlyConfig.disableWarnings) {
         var args = Array.prototype.slice.call(arguments);
+        var warnInfoSlug = args.shift();
         args.unshift('Formly Warning:');
+        args.push(`${errorsAndWarningsUrlPrefix}${warnInfoSlug}`);
         console.warn.apply(console, args);
       }
     }

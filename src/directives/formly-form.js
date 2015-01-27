@@ -41,7 +41,10 @@ module.exports = ngModule => {
           }
           angular.forEach(watchers, function(watcher) {
             if (!angular.isDefined(watcher.listener)) {
-              throw formlyUtil.getFieldError('All field watchers must have a listener', field);
+              throw formlyUtil.getFieldError(
+                'all-field-watchers-must-have-a-listener',
+                'All field watchers must have a listener', field
+              );
             }
             var watchExpression = getWatchExpression(watcher, field, index);
             var watchListener = getWatchListener(watcher, field, index);

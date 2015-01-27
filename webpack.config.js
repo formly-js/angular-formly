@@ -23,7 +23,7 @@ var baseConfig = {
   output: {
     filename: 'formly.js',
     path: __dirname + '/dist',
-    library: 'angularFormlyModuleName',
+    library: 'ngFormly',
     libraryTarget: 'umd'
   },
 

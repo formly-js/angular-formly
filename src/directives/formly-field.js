@@ -82,7 +82,11 @@ module.exports = ngModule => {
               $scope.options.formControl = formControl;
               cleanUp();
             } else if (intervalTime * iterations > maxTime) {
-              formlyUtil.warn(`Couldn't set the formControl after ${maxTime}ms`, $scope);
+              formlyUtil.warn(
+                'couldnt-set-the-formcontrol-after-timems',
+                `Couldn't set the formControl after ${maxTime}ms`,
+                $scope
+              );
               cleanUp();
             }
           }, intervalTime);
@@ -108,16 +112,25 @@ module.exports = ngModule => {
 
     function getTemplate(options) {
       let template = options.template || formlyConfig.getTemplate(options.type);
+      let templateUrl = options.templateUrl || formlyConfig.getTemplateUrl(options.type);
       if (template) {
         return $q.when(template);
-      } else {
-        let templateUrl = options.templateUrl || formlyConfig.getTemplateUrl(options.type);
+      } else if (templateUrl) {
         let httpOptions = {cache: $templateCache};
         return $http.get(templateUrl, httpOptions).then(function (response) {
           return response.data;
         }).catch(function (error) {
-          formlyUtil.warn('Problem loading template for ' + templateUrl, error);
+          formlyUtil.warn(
+            'problem-loading-template-for-templateurl',
+            'Problem loading template for ' + templateUrl,
+            error
+          );
         });
+      } else {
+        throw formlyUtil.getFieldError(
+          'template-type-type-not-supported',
+          `template type '${options.type}' not supported. On element:`, options
+        );
       }
     }
 
@@ -125,10 +138,12 @@ module.exports = ngModule => {
       var templateOptions = getTemplateOptionsCount(options);
       if (templateOptions === 0) {
         throw formlyUtil.getFieldError(
-          `template type '${options.type}' not supported. On element:`, options
+          'you-must-provide-one-of-type-template-or-templateurl-for-a-field',
+          'You must provide one of type, template, or templateUrl for a field', options
         );
       } else if (templateOptions > 1) {
         throw formlyUtil.getFieldError(
+          'you-must-only-provide-a-type-template-or-templateurl-for-a-field',
           'You must only provide a type, template, or templateUrl for a field', options
         );
       }
