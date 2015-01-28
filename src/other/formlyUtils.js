@@ -1,8 +1,7 @@
 module.exports = {
-  setTemplates: setTemplates
+  createDirectives: createDirectives
 };
 
-function setTemplates(templates) {
+function createDirectives(templates) {
   console.log(templates);
 }
-

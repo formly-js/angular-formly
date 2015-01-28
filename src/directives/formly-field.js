@@ -3,9 +3,9 @@ let angular = require('angular-fix');
 module.exports = ngModule => {
   ngModule.directive('formlyField', formlyField);
 
-  formlyField.test = ON_TEST ? require('./formlyField.test')(ngModule) : null;
+  formlyField.tests = ON_TEST ? require('./formly-field.test')(ngModule) : null;
 
-  function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyUtil) {
+  function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyUtil, formlyUsability, formlyWarn) {
     return {
       restrict: 'AE',
       transclude: true,
@@ -72,7 +72,7 @@ module.exports = ngModule => {
           var maxTime = 2000;
           var intervalTime = 5;
           var iterations = 0;
-          var interval = $interval(function () {
+          var interval = $interval(function() {
             iterations++;
             if (!angular.isDefined($scope.options.key)) {
               return cleanUp();
@@ -82,7 +82,7 @@ module.exports = ngModule => {
               $scope.options.formControl = formControl;
               cleanUp();
             } else if (intervalTime * iterations > maxTime) {
-              formlyUtil.warn(
+              formlyWarn(
                 'couldnt-set-the-formcontrol-after-timems',
                 `Couldn't set the formControl after ${maxTime}ms`,
                 $scope
@@ -100,10 +100,12 @@ module.exports = ngModule => {
       },
       link: function fieldLink(scope, el) {
         apiCheck(scope.options);
-        getTemplate(scope.options).then(setElementTemplate);
+        getTemplate(scope.options)
+          .then(transcludeInWrapper(scope.options))
+          .then(setElementTemplate);
 
-        function setElementTemplate(template) {
-          el.html(template);
+        function setElementTemplate(templateEl) {
+          el.html(templateEl.html());
           $compile(el.contents())(scope);
         }
       }
@@ -117,32 +119,85 @@ module.exports = ngModule => {
         return $q.when(template);
       } else if (templateUrl) {
         let httpOptions = {cache: $templateCache};
-        return $http.get(templateUrl, httpOptions).then(function (response) {
+        return $http.get(templateUrl, httpOptions).then(function(response) {
           return response.data;
-        }).catch(function (error) {
-          formlyUtil.warn(
+        }).catch(function(error) {
+          formlyWarn(
             'problem-loading-template-for-templateurl',
             'Problem loading template for ' + templateUrl,
             error
           );
         });
       } else {
-        throw formlyUtil.getFieldError(
+        throw formlyUsability.getFieldError(
           'template-type-type-not-supported',
           `template type '${options.type}' not supported. On element:`, options
         );
       }
     }
 
+    function transcludeInWrapper(options) {
+      let templateWrapper = getTemplateWrapperOption(options);
+
+      return function transcludeTemplate(template) {
+        if (!templateWrapper) {
+          return $q.when(angular.element(template));
+        }
+        formlyUsability.checkWrapper(templateWrapper);
+        if (templateWrapper.template) {
+          formlyUsability.checkWrapperTemplate(templateWrapper.template, templateWrapper);
+          return $q.when(doTransclusion(templateWrapper.template));
+        } else {
+          let httpOptions = {cache: $templateCache};
+          return $http.get(templateWrapper.url, httpOptions).then(function(response) {
+            let wrapper = response.data;
+            formlyUsability.checkWrapperTemplate(wrapper, templateWrapper);
+            return doTransclusion(wrapper);
+          }).catch(function(error) {
+            formlyWarn(
+              'proplem-loading-template-for-wrapper',
+              'Problem loading template for wrapper' + JSON.stringify(templateWrapper),
+              error
+            );
+          });
+        }
+
+        function doTransclusion(wrapper) {
+          let wrapperEl = angular.element(wrapper);
+          let transcludeEl = wrapperEl.find('formly-transclude');
+          transcludeEl.replaceWith(template);
+          return wrapperEl;
+        }
+      };
+    }
+
+    function getTemplateWrapperOption(options) {
+      /* jshint maxcomplexity:6 */
+      let templateOption = options.wrapper;
+      // explicit null means no wrapper
+      if (templateOption === null) {
+        return '';
+      }
+      var templateWrapper = templateOption;
+      // nothing specified means use the default wrapper
+      if (!templateOption) {
+        templateWrapper = formlyConfig.getTemplateWrapper();
+      } else if (typeof templateOption === 'string') {
+        // string means it's a type
+        templateWrapper = formlyConfig.getTemplateWrapper(templateOption);
+      }
+      return templateWrapper;
+    }
+
     function apiCheck(options) {
       var templateOptions = getTemplateOptionsCount(options);
       if (templateOptions === 0) {
-        throw formlyUtil.getFieldError(
+        throw formlyUsability.getFieldError(
           'you-must-provide-one-of-type-template-or-templateurl-for-a-field',
           'You must provide one of type, template, or templateUrl for a field', options
         );
       } else if (templateOptions > 1) {
-        throw formlyUtil.getFieldError(
+        throw formlyUsability.getFieldError(
           'you-must-only-provide-a-type-template-or-templateurl-for-a-field',
           'You must only provide a type, template, or templateUrl for a field', options
         );

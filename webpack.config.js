@@ -19,13 +19,15 @@ var baseEnvVars = {
 };
 
 var baseConfig = {
-  entry: './src',
+  context: __dirname + '/src',
+  entry: './index.js',
   output: {
     filename: 'formly.js',
     path: __dirname + '/dist',
     library: 'ngFormly',
     libraryTarget: 'umd'
   },
+
 
   stats: {
     colors: true,

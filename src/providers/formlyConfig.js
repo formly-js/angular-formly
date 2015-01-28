@@ -1,10 +1,14 @@
 module.exports = ngModule => {
-  ngModule.provider('formlyConfig', function() {
+  ngModule.provider('formlyConfig', formlyConfig);
+
+  formlyConfig.tests = ON_TEST ? require('./formlyConfig.test')(ngModule) : null;
+
+  function formlyConfig(formlyUsabilityProvider) {
 
     var templateUrlMap = {};
     var templateMap = {};
     var templateWrappersMap = {};
-    var templateWrapperName = 'default';
+    var defaultTemplateWrapperName = 'default';
 
     angular.extend(this, {
       getTemplateUrl: getTemplateUrl,
@@ -14,9 +18,7 @@ module.exports = ngModule => {
       setTemplateWrapper: setTemplateWrapper,
       getTemplateWrapper: getTemplateWrapper,
       disableWarnings: false,
-      $get: function formlyConfig() {
-        return this;
-      }
+      $get: () => this
     });
 
     function setTemplateUrl(name, templateUrl) {
@@ -47,18 +49,32 @@ module.exports = ngModule => {
       return templateMap[type];
     }
 
-    function setTemplateWrapper({name, template, isUrl}) {
-      if (!template) {
-        template = name;
-        name = templateWrapperName;
+    function setTemplateWrapper(optionsNameOrTemplate, templateOrUrl, isUrl) {
+      if (!this.disableWarnings) {
+        console.warn('setTemplateWrapper is still experimental. The api may change. Use at your own risk');
       }
-      templateWrappersMap[name] = {template, isUrl};
+      if (typeof optionsNameOrTemplate === 'string') {
+        if (!templateOrUrl) {
+          isUrl = templateOrUrl;
+          templateOrUrl = optionsNameOrTemplate;
+          optionsNameOrTemplate = defaultTemplateWrapperName;
+        }
+        templateWrappersMap[optionsNameOrTemplate] = {[isUrl ? 'url' : 'template']: templateOrUrl};
+      } else {
+        angular.forEach(optionsNameOrTemplate, function(options, name) {
+          formlyUsabilityProvider.checkWrapper(options);
+          if (options.template) {
+            formlyUsabilityProvider.checkWrapperTemplate(options.template, options);
+          }
+          setTemplateWrapper(name, options.template || options.url, !!options.url);
+        });
+      }
     }
 
     function getTemplateWrapper(name) {
-      return templateWrappersMap[name || templateWrapperName];
+      return templateWrappersMap[name || defaultTemplateWrapperName];
     }
 
 
-  });
+  }
 };

@@ -13,7 +13,7 @@ module.exports = ngModule => {
         model: '=',
         form: '=?'
       },
-      controller: function($scope, formlyUtil) {
+      controller: function($scope, formlyUsability) {
         $scope.formId = `formly_${currentFormId++}`;
 
         angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
@@ -41,7 +41,7 @@ module.exports = ngModule => {
           }
           angular.forEach(watchers, function(watcher) {
             if (!angular.isDefined(watcher.listener)) {
-              throw formlyUtil.getFieldError(
+              throw formlyUsability.getFieldError(
                 'all-field-watchers-must-have-a-listener',
                 'All field watchers must have a listener', field
               );
