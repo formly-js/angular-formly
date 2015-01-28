@@ -8,7 +8,7 @@ branches:
 before_script:
 - npm install
 script:
-- npm run test
+- npm run test:ci
 notifications:
   slack:
     secure: V/CXlCkFJ4AKLpyovKdCAa8OeSMcLrSDr5oL3V8FoR1jWuGwcNQQsF+O6qw3VDpjjbmqARUWdnSu0jgB+QJRvCG/CwmqRx4cnkVlMAal2XtxCiCse2uPQJ2mbJv/boFWtzbJgwcYCww0WXSDIhBMNDxkwCqVxn9BpgABgtIi8iw=

@@ -22,7 +22,10 @@
     "build:dist": "node node_modules/webpack/bin/webpack.js",
     "build:prod": "node node_modules/webpack/bin/webpack.js --config webpack.config.minify.js",
     "build": "npm run build:dist; npm run build:prod",
-    "test": "node node_modules/karma/bin/karma start karma.conf.js"
+    "test": "node node_modules/karma/bin/karma start karma.conf.js",
+    "test:ci": "node node_modules/karma/bin/karma start karma.conf.ci.js",
+    "watch": "node node_modules/webpack/bin/webpack.js --watch",
+    "start": "npm run watch & npm run test"
   },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
   "peerDependencies": {
@@ -41,6 +44,7 @@
     "karma": "^0.12.31",
     "karma-chai-sinon": "^0.1.4",
     "karma-chrome-launcher": "^0.1.7",
+    "karma-firefox-launcher": "^0.1.4",
     "karma-mocha": "^0.1.10",
     "karma-webpack": "^1.5.0",
     "lodash": "^2.4.1",

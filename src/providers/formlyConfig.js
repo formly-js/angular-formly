@@ -36,6 +36,11 @@ module.exports = ngModule => {
     }
 
     function setTemplate(name, template) {
+      if (!name) {
+        throw formlyUsabilityProvider.getFormlyError(
+          null, `You must provide a name for all templates. You provided: ${JSON.stringify(name)}`
+        );
+      }
       if (typeof name === 'string') {
         templateMap[name] = template;
       } else {

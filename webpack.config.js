@@ -59,7 +59,6 @@ var devConfig = {
   devtool: 'inline-source-map'
 };
 
-var testConfig = deepExtend({}, devConfig);
 
 var prodConfig = {
   output: {
@@ -71,9 +70,14 @@ var prodConfig = {
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.optimize.UglifyJsPlugin()
+    new webpack.optimize.UglifyJsPlugin({
+      exclude: /\.test\.js$/
+    })
   ]
 };
+
+var testConfig = deepExtend({}, prodConfig);
+
 var envContexts = {
   dev: {
     ON_DEV: true

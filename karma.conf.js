@@ -9,10 +9,10 @@ module.exports.getConfig = getConfig;
 
 function getConfig(context) {
   context = context || 'dev';
-  var prod = context === 'prod';
+  var ci = context === 'ci';
 
   var testConfig = deepExtend({}, webpackConfig, {
-    watch: !prod,
+    watch: !ci,
     entry: './index.test.js'
   });
   delete testConfig.externals.angular; // need angular in test context
@@ -57,23 +57,26 @@ function getConfig(context) {
 
 
       // enable / disable watching file and executing tests whenever any file changes
-      autoWatch: !prod,
+      autoWatch: !ci,
 
 
       // start these browsers
       // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-      browsers: ['Chrome'],
+      browsers: ci ? ['Firefox'] : ['Chrome'],
 
 
       // Continuous Integration mode
       // if true, Karma captures browsers, runs the tests and exits
-      singleRun: prod,
+      singleRun: ci,
+
+      browserNoActivityTimeout: 180000,
 
       plugins: [
         require('karma-webpack'),
         'karma-mocha',
         'karma-chai-sinon',
-        'karma-chrome-launcher'
+        'karma-chrome-launcher',
+        'karma-firefox-launcher'
       ]
     });
   };
