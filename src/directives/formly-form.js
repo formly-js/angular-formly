@@ -1,7 +1,11 @@
 let angular = require('angular-fix');
 
 module.exports = ngModule => {
-  ngModule.directive('formlyForm', function formlyForm() {
+  ngModule.directive('formlyForm', formlyForm);
+
+  formlyForm.tests = ON_TEST ? require('./formly-form.test')(ngModule) : null;
+
+  function formlyForm() {
     var currentFormId = 1;
     return {
       restrict: 'E',
@@ -89,5 +93,5 @@ module.exports = ngModule => {
         }
       }
     };
-  });
+  }
 };

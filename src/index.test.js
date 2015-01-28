@@ -1,10 +1,5 @@
 let ngModuleName = 'formly';
-let angular = require('angular');
-if (angular.version) {
-  window.angular = angular;
-} else {
-  angular = window.angular;
-}
+let angular = require('./angular-fix');
 require('angular-mocks/angular-mocks');
 let ngModule = angular.module(ngModuleName, []);
 
