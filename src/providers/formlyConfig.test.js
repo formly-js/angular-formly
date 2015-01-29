@@ -107,9 +107,15 @@ module.exports = ngModule => {
         });
 
         it('should warn when attempting to override a template wrapper', function() {
+          var originalWarn = console.warn;
+          var calledArgs;
+          console.warn = function() {
+            calledArgs = arguments;
+          };
           setterFn({template});
           setterFn({template});
-          expect($log.warn.logs[0]).to.match(/overwrite/);
+          expect(calledArgs[0]).to.match(/overwrite/);
+          console.warn = originalWarn;
         });
       });
 

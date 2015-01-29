@@ -12,7 +12,6 @@ module.exports = ngModule => {
     var templateWrappersMap = {};
     var defaultTemplateWrapperName = 'default';
     var _this = this;
-    var $log;
 
     angular.extend(this, {
       getTemplateUrl: getTemplateUrl,
@@ -23,10 +22,7 @@ module.exports = ngModule => {
       getTemplateWrapper: getTemplateWrapper,
       getTemplateWrapperByType: getTemplateWrapperByType,
       disableWarnings: false,
-      $get: ['$log', (log) => {
-        $log = log;
-        return this;
-      }]
+      $get: () => this
     });
 
     function setTemplateUrl(name, templateUrl) {
@@ -138,7 +134,7 @@ module.exports = ngModule => {
 
     function checkOverwrite(property, object, newValue, objectName) {
       if (!_this.disableWarnings && object.hasOwnProperty(property)) {
-        $log.warn([
+        console.warn([
           `Attempting to overwrite ${property} on ${objectName} which is currently`,
           `${JSON.stringify(object[property])} with ${JSON.stringify(newValue)}`
         ].join(' '));
