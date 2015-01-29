@@ -31,32 +31,32 @@ module.exports = ngModule => {
 
           it('can be a string without a name', function() {
             setterFn(template);
-            expect(getterFn()).to.eql({name: 'default', template});
+            expect(getterFn()).to.eql({name: 'default', template, types: []});
           });
 
           it('can be a string with a name', function() {
             setterFn(template, name);
-            expect(getterFn(name)).to.eql({name, template});
+            expect(getterFn(name)).to.eql({name, template, types: []});
           });
 
           it('can be an object with a template', function() {
             setterFn({template});
-            expect(getterFn()).to.eql({name: 'default', template});
+            expect(getterFn()).to.eql({name: 'default', template, types: []});
           });
 
           it('can be an object with a template and a name', function() {
             setterFn({template, name});
-            expect(getterFn(name)).to.eql({name, template});
+            expect(getterFn(name)).to.eql({name, template, types: []});
           });
 
           it('can be an object with a url', function() {
             setterFn({url});
-            expect(getterFn()).to.eql({name: 'default', url});
+            expect(getterFn()).to.eql({name: 'default', url, types: []});
           });
 
           it('can be an object with a url and a name', function() {
             setterFn({name, url});
-            expect(getterFn(name)).to.eql({name, url});
+            expect(getterFn(name)).to.eql({name, url, types: []});
           });
 
           it('can be an array of objects with names, urls, and/or templates', function() {
@@ -65,19 +65,19 @@ module.exports = ngModule => {
               {name, template},
               {name: name2, template: template2}
             ]);
-            expect(getterFn()).to.eql({url, name: 'default'});
-            expect(getterFn(name)).to.eql({template, name});
-            expect(getterFn(name2)).to.eql({template: template2, name: name2});
+            expect(getterFn()).to.eql({url, name: 'default', types: []});
+            expect(getterFn(name)).to.eql({template, name, types: []});
+            expect(getterFn(name2)).to.eql({template: template2, name: name2, types: []});
           });
 
-          it('can specify types as a string', function() {
+          it('can specify types as a string (using types as the name when not specified)', function() {
             setterFn({types: typesString, template});
-            expect(getterFn()).to.eql({template, name: 'default', types: [typesString]});
+            expect(getterFn(typesString)).to.eql({template, name: typesString, types: [typesString]});
           });
 
-          it('can specify types as an array', function() {
+          it('can specify types as an array (using types as the name when not specified)', function() {
             setterFn({types, template});
-            expect(getterFn()).to.eql({template, name: 'default', types});
+            expect(getterFn(types.join(' '))).to.eql({template, name: types.join(' '), types});
           });
         });
       });
@@ -96,6 +96,16 @@ module.exports = ngModule => {
           expect(() => setterFn({template: 'no formly-transclude'})).to.throw(error);
         });
 
+        it('should throw an error when specifying a type that already exists on another template wrapper', function() {
+          var error = /types.*?already.*?specified/;
+          expect(() => setterFn({template, types}) && setterFn({url, types: types[0]})).to.throw(error);
+        });
+
+        it('should throw an error when specifying an array type where not all items are strings', function() {
+          var error = /types.*?string.*?array.*?strings/;
+          expect(() => setterFn({template, types: ['hi', 2, false, 'cool']})).to.throw(error);
+        });
+
         it('should warn when attempting to override a template wrapper', function() {
           setterFn({template});
           setterFn({template});
@@ -103,6 +113,25 @@ module.exports = ngModule => {
         });
       });
 
+    });
+
+
+    describe('getTemplateWrapperByType', function() {
+      var getterFn, setterFn;
+      var types = ['input', 'checkbox'];
+      var url = '/path/to/file.html';
+      beforeEach(inject(function(formlyConfig) {
+        setterFn = formlyConfig.setTemplateWrapper;
+        getterFn = formlyConfig.getTemplateWrapperByType;
+      }));
+
+      describe('＼(＾O＾)／ path', function() {
+        it('should return a template wrapper that has the same type', function() {
+          var option = setterFn({url, types});
+          expect(getterFn(types[0])).to.equal(option);
+        });
+
+      });
     });
 
     function testGetterSetters(getter, setter) {

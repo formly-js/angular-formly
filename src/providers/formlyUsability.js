@@ -47,9 +47,10 @@ module.exports = ngModule => {
     }
 
     function checkWrapperTemplate(template, additionalInfo) {
-      if (template.indexOf('<formly-transclude></formly-transclude>') === -1) {
+      var formlyTransclude = '<formly-transclude></formly-transclude>';
+      if (template.indexOf(formlyTransclude) === -1) {
         throw getFormlyError(
-          'Template wrapper templates must use "<formly-transclude></formly-transclude>" somewhere in them. ' +
+          `Template wrapper templates must use "${formlyTransclude}" somewhere in them. ` +
           `This one does not have "<formly-transclude></formly-transclude>" in it: ${template}` + '\n' +
           `Additional information: ${JSON.stringify(additionalInfo)}`
         );

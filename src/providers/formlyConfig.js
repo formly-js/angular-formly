@@ -21,6 +21,7 @@ module.exports = ngModule => {
       setTemplate: setTemplate,
       setTemplateWrapper: setTemplateWrapper,
       getTemplateWrapper: getTemplateWrapper,
+      getTemplateWrapperByType: getTemplateWrapperByType,
       disableWarnings: false,
       $get: ['$log', (log) => {
         $log = log;
@@ -79,15 +80,12 @@ module.exports = ngModule => {
     }
 
     function setTemplateWrapper(options, name) {
-      /* jshint maxcomplexity:7 */
       if (angular.isArray(options)) {
         return options.map(setTemplateWrapper);
       } else if (angular.isObject(options)) {
-        options.name = options.name || name || defaultTemplateWrapperName;
+        options.types = getOptionsTypes(options);
+        options.name = getOptionsName(options, name);
         checkTemplateWrapperAPI(options);
-        if (angular.isString(options.types)) {
-          options.types = [options.types];
-        }
         templateWrappersMap[options.name] = options;
         return options;
       } else if (angular.isString(options)) {
@@ -98,16 +96,43 @@ module.exports = ngModule => {
       }
     }
 
+    function getOptionsTypes(options) {
+      if (angular.isString(options.types)) {
+        return [options.types];
+      }
+      if (!angular.isDefined(options.types)) {
+        return [];
+      } else {
+        return options.types;
+      }
+    }
+
+    function getOptionsName(options, name) {
+      return options.name || name || options.types.join(' ') || defaultTemplateWrapperName;
+    }
+
     function checkTemplateWrapperAPI(options) {
       formlyUsabilityProvider.checkWrapper(options);
       if (options.template) {
         formlyUsabilityProvider.checkWrapperTemplate(options.template, options);
       }
       checkOverwrite(options.name, templateWrappersMap, options, 'templateWrappers');
-      if (angular.isDefined(options.types) && (!angular.isArray(options.types) && !angular.isString(options.types))) {
+      checkTemplateWrapperTypes(options);
+    }
+
+    function checkTemplateWrapperTypes(options) {
+      let shouldThrow = !angular.isArray(options.types) || !options.types.every(angular.isString);
+      if (shouldThrow) {
         throw formlyUsabilityProvider.getFormlyError(
           `Attempted to create a template wrapper with types that is not a string or an array of strings`
         );
+      }
+      let wrapperWithSameType = options.types.some(getTemplateWrapperByType);
+      if (wrapperWithSameType) {
+        throw formlyUsabilityProvider.getFormlyError([
+          `Attempted to create a template wrapper with types that have already been specified for another template.`,
+          `Original wrapper: ${JSON.stringify(wrapperWithSameType)}, you specified: ${JSON.stringify(options)}`
+        ].join(' '));
       }
     }
 
@@ -122,6 +147,16 @@ module.exports = ngModule => {
 
     function getTemplateWrapper(name) {
       return templateWrappersMap[name || defaultTemplateWrapperName];
+    }
+
+    function getTemplateWrapperByType(type) {
+      for (var name in templateWrappersMap) {
+        if (templateWrappersMap.hasOwnProperty(name)) {
+          if (templateWrappersMap[name].types && templateWrappersMap[name].types.indexOf(type) !== -1) {
+            return templateWrappersMap[name];
+          }
+        }
+      }
     }
 
 

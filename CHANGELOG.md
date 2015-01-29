@@ -1,15 +1,16 @@
 Version numbers correspond to `bower.json` version
 
-# Latest
+# 3.0.0 (Unpublished)
 
-## Backward compatible changes
+## Backward compatible changes and new features
 
 - all fields will now have a the `key` value default to the index of the field if it isn't given a value. This makes it much easier to reference the model in templates (instead of `model[options.key || index]` you can now simply do `mode[options.key]`.
 - adding an angular constant called `formlyVersion` that could be useful and stuff.
+- new feature: **Template Wrappers** are useful for templates that share many of the same things (like validation with ng-messages or labels). See README and tests for documentation
 
 ## Breaking changes:
 
-- in order to support `formlyUtils`, formly now exports an object instead of simply the name of the module. This is a breaking change because if you were doing `angular.module('yourModule', [require('angular-formly')]);` you will now have to change it to do `angular.module('yourModule', [require('angular-formly').ngModuleName]);`.
+- now throwing errors throughout the api to validate it is being used appropriately
 
 ## Internal Changes
 

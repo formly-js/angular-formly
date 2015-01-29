@@ -9,19 +9,32 @@
 
   var app = angular.module('app', ['formly'], function(formlyConfigProvider) {
     formlyConfigProvider.setTemplate({
-      whatever: '<pre>{{options | json}}</pre>'
+      whatever: '<pre>{{options | json}}</pre>',
+      myType: '<input name="{{::id}}" ng-model="model[options.key]">'
     });
     formlyConfigProvider.setTemplateWrapper([
-      '<span>',
+      '<div>',
         '<label for="{{::id}}">{{options.label}}</label>',
         '<formly-transclude></formly-transclude>',
         'This is after! Good for ng-messages!',
-      '</span>'
+      '</div>'
     ].join(' '));
+    formlyConfigProvider.setTemplateWrapper({
+      types: 'myType',
+      template: [
+        '<div class="my-type">',
+          '<div>This is my own type wrapper!</div>',
+          '<formly-transclude></formly-transclude>',
+          '<div>this is after on my own type: {{model[options.key]}}</div>',
+        '</div>'
+      ].join(' ')
+    });
   });
 
   app.controller('MainCtrl', function MainCtrl() {
     var vm = this;
+
+    vm.user = {};
 
     vm.fields = [
       {
@@ -29,6 +42,11 @@
         type: 'whatever',
         key: 'mine',
         noFormControl: true
+      },
+      {
+        label: 'My Type',
+        type: 'myType',
+        key: 'myKey'
       }
     ];
   });

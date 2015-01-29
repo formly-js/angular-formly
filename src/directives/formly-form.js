@@ -5,7 +5,7 @@ module.exports = ngModule => {
 
   formlyForm.tests = ON_TEST ? require('./formly-form.test')(ngModule) : null;
 
-  function formlyForm() {
+  function formlyForm(formlyUsability) {
     var currentFormId = 1;
     return {
       restrict: 'E',
@@ -14,10 +14,10 @@ module.exports = ngModule => {
       transclude: true,
       scope: {
         fields: '=',
-        model: '=',
+        model: '=?', // we'll do our own warning to help with migrations
         form: '=?'
       },
-      controller: function($scope, formlyUsability) {
+      controller: function($scope) {
         $scope.formId = `formly_${currentFormId++}`;
 
         angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
@@ -90,6 +90,23 @@ module.exports = ngModule => {
 
         function modifyArgs(watcher, index, ...originalArgs) {
           return [$scope.fields[index], ...originalArgs, watcher.stopWatching];
+        }
+      },
+      link: function(scope, el, attrs) {
+        if (attrs.hasOwnProperty('result')) {
+          throw formlyUsability.getFormlyError(
+            'The "result" attribute on a formly-form is no longer valid. Use "model" instead'
+          );
+        }
+        if (attrs.name !== 'form') { // then they specified their own name
+          throw formlyUsability.getFormlyError(
+            'The "name" attribute on a formly-form is no longer valid. Use "form" instead'
+          );
+        }
+        if (!attrs.hasOwnProperty('model') || !scope.model) {
+          throw formlyUsability.getFormlyError(
+            'The "model" attribute is required on a formly-form.'
+          );
         }
       }
     };

@@ -179,9 +179,9 @@ module.exports = ngModule => {
         return '';
       }
       var templateWrapper = templateOption;
-      // nothing specified means use the default wrapper
+      // nothing specified means use the default wrapper for the type
       if (!templateOption) {
-        templateWrapper = formlyConfig.getTemplateWrapper();
+        templateWrapper = formlyConfig.getTemplateWrapperByType(options.type) || formlyConfig.getTemplateWrapper();
       } else if (typeof templateOption === 'string') {
         // string means it's a type
         templateWrapper = formlyConfig.getTemplateWrapper(templateOption);

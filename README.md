@@ -238,6 +238,39 @@ formlyConfigProvider.getTemplateUrl('radio') === 'views/custom-formly-radio.html
 
 Work pretty much the same as the their url counterparts, except they accept an actual template string rather than a url.
 
+##### setTemplateWrapper, getTemplateWrapper, & getTemplateWrapperByType
+
+Allows you to set a template for your formly templates. You can have a default (used by all templates), named template wrappers, and typed template wrappers (used by fields with the specified type). All template wrappers must follow these rules
+ - Use `<formly-transclude></formly-transclude>` in them to specify where the field template should be placed.
+ - Have at least one, and only one of `url` or `template`
+ - Not override another by name or type
+
+For example:
+
+```javascript
+// simple argument api
+formlyConfigProvider.setTemplateWrapper('<div>This is the default because <formly-transclude></formly-transclude> there is no name specified</div>');
+formlyConfigProvider.setTemplateWrapper('<div>This is not the default because <formly-transclude></formly-transclude> there is a name specified</div>', 'theName');
+
+// object api
+formlyConfigProvider.setTemplateWrapper({
+  name: 'inputWrapper', // optional. Defaults to name || types.join(' ') || 'default'
+  template: 'the template with <formly-transclude></formly-transclude> in it', // must have this OR url
+  url: 'path/to/template.html', // the resulting template MUST have <formly-transclude></formly-transclude> in it and must have url OR template (not both)
+  types: 'stringOrArray' // this can be a string or an array of strings that map to types specified by setTemplate and setTemplateUrl
+});
+
+// array api
+formlyConfigProvider.setTemplateWrapper([
+  { /* same configuration as the object api */ },
+  { /* same configuration as the object api */ },
+  { /* same configuration as the object api */ },
+  { /* same configuration as the object api */ }
+]);
+```
+
+See [the website](https://formly-js.github.io/angular-formly/) for examples on usage
+
 ##### disableWarnings
 
 Formly gives some useful warnings when you attempt to use a template that doesn't exist or there's a problem loading a template. You can disable these warnings via `formlyConfigProvider.disableWarnings = true`
