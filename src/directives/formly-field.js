@@ -105,11 +105,16 @@ module.exports = ngModule => {
           .then(setElementTemplate);
 
         function setElementTemplate(templateEl) {
-          el.html(templateEl.html());
+          el.html(asHtml(templateEl));
           $compile(el.contents())(scope);
         }
       }
     };
+
+    function asHtml(el) {
+      var wrapper = angular.element('<a></a>');
+      return wrapper.append(el).html();
+    }
 
 
     function getTemplate(options) {
