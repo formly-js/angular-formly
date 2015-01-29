@@ -28,6 +28,9 @@ module.exports = ngModule => {
     }
 
     function checkWrapper(wrapper) {
+      if (angular.isString(wrapper)) {
+        return;
+      }
       if (wrapper.template && wrapper.url) {
         throw getFormlyError(
           null,

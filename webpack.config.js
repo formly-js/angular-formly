@@ -71,7 +71,10 @@ var prodConfig = {
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.optimize.UglifyJsPlugin({
-      exclude: /\.test\.js$/
+      exclude: /\.test\.js$/,
+      compress: {
+        warnings: false
+      }
     })
   ]
 };

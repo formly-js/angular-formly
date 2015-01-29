@@ -1,3 +1,5 @@
+let angular = require('angular-fix');
+
 module.exports = ngModule => {
   ngModule.provider('formlyConfig', formlyConfig);
 
@@ -22,6 +24,7 @@ module.exports = ngModule => {
     });
 
     function setTemplateUrl(name, templateUrl) {
+      validateSetterApi(name, templateUrl, false, arguments);
       if (typeof name === 'string') {
         templateUrlMap[name] = templateUrl;
       } else {
@@ -36,11 +39,7 @@ module.exports = ngModule => {
     }
 
     function setTemplate(name, template) {
-      if (!name) {
-        throw formlyUsabilityProvider.getFormlyError(
-          null, `You must provide a name for all templates. You provided: ${JSON.stringify(name)}`
-        );
-      }
+      validateSetterApi(name, template, false, arguments);
       if (typeof name === 'string') {
         templateMap[name] = template;
       } else {
@@ -54,25 +53,50 @@ module.exports = ngModule => {
       return templateMap[type];
     }
 
-    function setTemplateWrapper(optionsNameOrTemplate, templateOrUrl, isUrl) {
-      if (!this.disableWarnings) {
-        console.warn('setTemplateWrapper is still experimental. The api may change. Use at your own risk');
+    function validateSetterApi(name, templateOrUrl, isUrl, args) {
+      var templatesName = isUrl ? 'templateUrls' : 'templates';
+      if (angular.isObject(name)) {
+        return;
       }
-      if (typeof optionsNameOrTemplate === 'string') {
-        if (!templateOrUrl) {
+      if (!angular.isString(name)) {
+        throw formlyUsabilityProvider.getFormlyError(
+          null,
+          `You must provide a name for all ${templatesName}. You provided: ${JSON.stringify(args)}`
+        );
+      } else if (!angular.isString(templateOrUrl)) {
+        throw formlyUsabilityProvider.getFormlyError(
+          null,
+          `You must provide a string for all ${templatesName}. You provided: ${JSON.stringify(args)}`
+        );
+      }
+    }
+
+    function setTemplateWrapper(optionsNameTemplateOrUrl, templateOrUrl, isUrl) {
+      if (angular.isString(optionsNameTemplateOrUrl)) {
+        if (templateWrapperUsingSimpleApi()) {
           isUrl = templateOrUrl;
-          templateOrUrl = optionsNameOrTemplate;
-          optionsNameOrTemplate = defaultTemplateWrapperName;
+          templateOrUrl = optionsNameTemplateOrUrl;
+          optionsNameTemplateOrUrl = defaultTemplateWrapperName;
         }
-        templateWrappersMap[optionsNameOrTemplate] = {[isUrl ? 'url' : 'template']: templateOrUrl};
+        var options = templateWrappersMap[optionsNameTemplateOrUrl] = {
+          [isUrl ? 'url' : 'template']: templateOrUrl, name: optionsNameTemplateOrUrl
+        };
+        if (!isUrl) {
+          formlyUsabilityProvider.checkWrapperTemplate(options.template, options);
+        }
       } else {
-        angular.forEach(optionsNameOrTemplate, function(options, name) {
+        setTemplateWrapperWithObject();
+      }
+
+      function setTemplateWrapperWithObject() {
+        angular.forEach(optionsNameTemplateOrUrl, function(options, name) {
           formlyUsabilityProvider.checkWrapper(options);
-          if (options.template) {
-            formlyUsabilityProvider.checkWrapperTemplate(options.template, options);
-          }
-          setTemplateWrapper(name, options.template || options.url, !!options.url);
+          setTemplateWrapper(name, options.template || options.url || options, !!options.url);
         });
+      }
+
+      function templateWrapperUsingSimpleApi() {
+        return !angular.isDefined(templateOrUrl) || (typeof templateOrUrl === 'boolean' && !angular.isDefined(isUrl));
       }
     }
 
