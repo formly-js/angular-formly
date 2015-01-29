@@ -22,6 +22,11 @@ module.exports = [
         title: 'Creating Custom Templates',
         slug: 'custom-templates',
         jsbinId: 'xekali'
+      },
+      {
+        title: 'Template Wrappers',
+        slug: 'template-wrappers',
+        jsbinId: 'gomoro'
       }
     ]
   }
