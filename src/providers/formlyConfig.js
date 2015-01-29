@@ -11,6 +11,8 @@ module.exports = ngModule => {
     var templateMap = {};
     var templateWrappersMap = {};
     var defaultTemplateWrapperName = 'default';
+    var _this = this;
+    var $log;
 
     angular.extend(this, {
       getTemplateUrl: getTemplateUrl,
@@ -20,12 +22,16 @@ module.exports = ngModule => {
       setTemplateWrapper: setTemplateWrapper,
       getTemplateWrapper: getTemplateWrapper,
       disableWarnings: false,
-      $get: () => this
+      $get: ['$log', (log) => {
+        $log = log;
+        return this;
+      }]
     });
 
     function setTemplateUrl(name, templateUrl) {
       validateSetterApi(name, templateUrl, false, arguments);
       if (typeof name === 'string') {
+        checkOverwrite(name, templateUrlMap, templateUrl, 'templateUrls');
         templateUrlMap[name] = templateUrl;
       } else {
         angular.forEach(name, function(templateUrl, name) {
@@ -41,6 +47,7 @@ module.exports = ngModule => {
     function setTemplate(name, template) {
       validateSetterApi(name, template, false, arguments);
       if (typeof name === 'string') {
+        checkOverwrite(name, templateMap, template, 'templates');
         templateMap[name] = template;
       } else {
         angular.forEach(name, function(template, name) {
@@ -71,32 +78,45 @@ module.exports = ngModule => {
       }
     }
 
-    function setTemplateWrapper(optionsNameTemplateOrUrl, templateOrUrl, isUrl) {
-      if (angular.isString(optionsNameTemplateOrUrl)) {
-        if (templateWrapperUsingSimpleApi()) {
-          isUrl = templateOrUrl;
-          templateOrUrl = optionsNameTemplateOrUrl;
-          optionsNameTemplateOrUrl = defaultTemplateWrapperName;
+    function setTemplateWrapper(options, name) {
+      /* jshint maxcomplexity:7 */
+      if (angular.isArray(options)) {
+        return options.map(setTemplateWrapper);
+      } else if (angular.isObject(options)) {
+        options.name = options.name || name || defaultTemplateWrapperName;
+        checkTemplateWrapperAPI(options);
+        if (angular.isString(options.types)) {
+          options.types = [options.types];
         }
-        var options = templateWrappersMap[optionsNameTemplateOrUrl] = {
-          [isUrl ? 'url' : 'template']: templateOrUrl, name: optionsNameTemplateOrUrl
-        };
-        if (!isUrl) {
-          formlyUsabilityProvider.checkWrapperTemplate(options.template, options);
-        }
-      } else {
-        setTemplateWrapperWithObject();
-      }
-
-      function setTemplateWrapperWithObject() {
-        angular.forEach(optionsNameTemplateOrUrl, function(options, name) {
-          formlyUsabilityProvider.checkWrapper(options);
-          setTemplateWrapper(name, options.template || options.url || options, !!options.url);
+        templateWrappersMap[options.name] = options;
+        return options;
+      } else if (angular.isString(options)) {
+        return setTemplateWrapper({
+          template: options,
+          name
         });
       }
+    }
 
-      function templateWrapperUsingSimpleApi() {
-        return !angular.isDefined(templateOrUrl) || (typeof templateOrUrl === 'boolean' && !angular.isDefined(isUrl));
+    function checkTemplateWrapperAPI(options) {
+      formlyUsabilityProvider.checkWrapper(options);
+      if (options.template) {
+        formlyUsabilityProvider.checkWrapperTemplate(options.template, options);
+      }
+      checkOverwrite(options.name, templateWrappersMap, options, 'templateWrappers');
+      if (angular.isDefined(options.types) && (!angular.isArray(options.types) && !angular.isString(options.types))) {
+        throw formlyUsabilityProvider.getFormlyError(
+          `Attempted to create a template wrapper with types that is not a string or an array of strings`
+        );
+      }
+    }
+
+    function checkOverwrite(property, object, newValue, objectName) {
+      if (!_this.disableWarnings && object.hasOwnProperty(property)) {
+        $log.warn([
+          `Attempting to overwrite ${property} on ${objectName} which is currently`,
+          `${JSON.stringify(object[property])} with ${JSON.stringify(newValue)}`
+        ].join(' '));
       }
     }
 
