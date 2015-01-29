@@ -19,6 +19,11 @@ module.exports = [
     name: 'intro',
     examples: [
       {
+        title: 'Introduction Example',
+        slug: 'introduction',
+        jsbinId: 'kunaho'
+      },
+      {
         title: 'Creating Custom Templates',
         slug: 'custom-templates',
         jsbinId: 'xekali'
