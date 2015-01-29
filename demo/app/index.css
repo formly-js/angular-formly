@@ -1,0 +1,20 @@
+html, body {
+  height: 100%;
+}
+#root-view {
+  min-height: 100%;
+  /* equal to footer height */
+  margin-bottom: -50px;
+}
+#root-view:after {
+  content: "";
+  display: block;
+}
+#footer, #root-view:after {
+  height: 50px;
+}
+#footer {
+  width: 100%;
+  padding: 16px;
+  background-color: #f5f5f5;
+}
