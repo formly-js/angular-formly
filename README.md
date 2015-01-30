@@ -37,6 +37,9 @@ Formly for Angular is an AngularJS module which has directives to help customize
 
 
 ### Prebuilt Templates
+
+While it is recommended to create your own templates for ultimate customization and flexibility, there are prebuilt templates you can use:
+
  - [Vanilla Template](https://github.com/formly-js/angular-formly-templates-vanilla#install-in-your-project): no fancy styling, just plain html
  - [Bootstrap Templates](https://github.com/formly-js/angular-formly-templates-bootstrap#install-in-your-project): bootstrap compatible forms, form-groups, etc.
  - [LumX Templates](https://github.com/formly-js/angular-formly-templates-lumx): LumX compatible components
