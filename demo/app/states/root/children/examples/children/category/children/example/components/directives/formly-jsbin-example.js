@@ -14,7 +14,7 @@ module.exports = ngModule => {
           <div class="formly-jsbin-example">
             <iframe width="100%"
                     height="100%"
-                    src="http://jsbin.com/${scope.jsbinId}/embed?output">
+                    src="https://jsbin.com/${scope.jsbinId}/embed?output">
             </iframe>
           </div>
         `));
