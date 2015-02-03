@@ -18,6 +18,7 @@ module.exports = ngModule => {
         form: '=?'
       },
       controller: function fieldController($scope, $interval) {
+        apiCheck($scope.options);
         // set field id to link labels and fields
         $scope.id = formlyUtil.getFieldId($scope.formId, $scope.options, $scope.index);
 
@@ -99,8 +100,7 @@ module.exports = ngModule => {
         }
       },
       link: function fieldLink(scope, el) {
-        apiCheck(scope.options);
-        getTemplate(scope.options)
+        getFieldTemplate(scope.options)
           .then(transcludeInWrapper(scope.options))
           .then(setElementTemplate);
 
@@ -116,82 +116,91 @@ module.exports = ngModule => {
       return wrapper.append(el).html();
     }
 
-
-    function getTemplate(options) {
-      let template = options.template || formlyConfig.getTemplate(options.type);
-      let templateUrl = options.templateUrl || formlyConfig.getTemplateUrl(options.type);
-      if (template) {
-        return $q.when(template);
-      } else if (templateUrl) {
-        let httpOptions = {cache: $templateCache};
-        return $http.get(templateUrl, httpOptions).then(function(response) {
-          return response.data;
-        }).catch(function(error) {
-          formlyWarn(
-            'problem-loading-template-for-templateurl',
-            'Problem loading template for ' + templateUrl,
-            error
-          );
-        });
-      } else {
+    function getFieldTemplate(options) {
+      let type = formlyConfig.getType(options.type);
+      let template = options.template || type.template;
+      let templateUrl = options.templateUrl || type.templateUrl;
+      if (!template && !templateUrl) {
         throw formlyUsability.getFieldError(
           'template-type-type-not-supported',
           `template type '${options.type}' not supported. On element:`, options
         );
       }
+      return getTemplate(template || templateUrl, !template);
+    }
+
+
+    function getTemplate(template, isUrl) {
+      if (template) {
+        return $q.when(template);
+      } else if (isUrl) {
+        let httpOptions = {cache: $templateCache};
+        return $http.get(template, httpOptions).then(function(response) {
+          return response.data;
+        }).catch(function(error) {
+          formlyWarn(
+            'problem-loading-template-for-templateurl',
+            'Problem loading template for ' + template,
+            error
+          );
+        });
+      }
     }
 
     function transcludeInWrapper(options) {
-      let templateWrapper = getTemplateWrapperOption(options);
+      let wrapper = getWrapperOption(options);
 
       return function transcludeTemplate(template) {
-        if (!templateWrapper) {
+        if (!wrapper) {
           return $q.when(angular.element(template));
-        }
-        formlyUsability.checkWrapper(templateWrapper);
-        if (templateWrapper.template) {
-          formlyUsability.checkWrapperTemplate(templateWrapper.template, templateWrapper);
-          return $q.when(doTransclusion(templateWrapper.template));
+        } else if (angular.isArray(wrapper)) {
+          let promises = wrapper.map(w => getTemplate(w.template || w.templateUrl, !w.template));
+          return $q.all(promises).then(wrappers => {
+            wrappers.reverse(); // wrapper 0 is wrapped in wrapper 1 and so on...
+            let totalWrapper = wrappers.shift();
+            angular.forEach(wrappers, wrapper => {
+              totalWrapper = doTransclusion(totalWrapper, wrapper);
+            });
+            return doTransclusion(totalWrapper, template);
+          });
         } else {
-          let httpOptions = {cache: $templateCache};
-          return $http.get(templateWrapper.url, httpOptions).then(function(response) {
-            let wrapper = response.data;
-            formlyUsability.checkWrapperTemplate(wrapper, templateWrapper);
-            return doTransclusion(wrapper);
-          }).catch(function(error) {
-            formlyWarn(
-              'proplem-loading-template-for-wrapper',
-              'Problem loading template for wrapper' + JSON.stringify(templateWrapper),
-              error
-            );
+          formlyUsability.checkWrapper(wrapper);
+          let t = wrapper.template || wrapper.templateUrl;
+          return getTemplate(t, !wrapper.template).then(function(wrapperTemplate) {
+            formlyUsability.checkWrapperTemplate(wrapperTemplate, wrapper);
+            return doTransclusion(wrapperTemplate, template);
           });
         }
 
-        function doTransclusion(wrapper) {
-          let wrapperEl = angular.element(wrapper);
-          let transcludeEl = wrapperEl.find('formly-transclude');
-          transcludeEl.replaceWith(template);
-          return wrapperEl;
-        }
       };
     }
 
-    function getTemplateWrapperOption(options) {
+    function doTransclusion(wrapper, template) {
+      let wrapperEl = angular.element(wrapper);
+      let transcludeEl = wrapperEl.find('formly-transclude');
+      transcludeEl.replaceWith(template);
+      return wrapperEl;
+    }
+
+    function getWrapperOption(options) {
       /* jshint maxcomplexity:6 */
       let templateOption = options.wrapper;
       // explicit null means no wrapper
       if (templateOption === null) {
         return '';
       }
-      var templateWrapper = templateOption;
+      var wrapper = templateOption;
       // nothing specified means use the default wrapper for the type
       if (!templateOption) {
-        templateWrapper = formlyConfig.getTemplateWrapperByType(options.type) || formlyConfig.getTemplateWrapper();
-      } else if (typeof templateOption === 'string') {
+        wrapper = formlyConfig.getWrapperByType(options.type) || formlyConfig.getWrapper();
+      } else if (angular.isString(templateOption)) {
         // string means it's a type
-        templateWrapper = formlyConfig.getTemplateWrapper(templateOption);
+        wrapper = formlyConfig.getWrapper(templateOption);
+      } else if (angular.isArray(templateOption)) {
+        // array means wrap the wrappers
+        wrapper = templateOption.map(wrapperName => formlyConfig.getWrapper(wrapperName));
       }
-      return templateWrapper;
+      return wrapper;
     }
 
     function apiCheck(options) {
@@ -205,6 +214,20 @@ module.exports = ngModule => {
         throw formlyUsability.getFieldError(
           'you-must-only-provide-a-type-template-or-templateurl-for-a-field',
           'You must only provide a type, template, or templateUrl for a field', options
+        );
+      }
+
+      // check that only allowed properties are provided
+      var allowedProperties = [
+        'type', 'template', 'templateUrl', 'key', 'model',
+        'expressionProperties', 'data', 'templateOptions',
+        'wrapper', 'modelOptions', 'watcher', 'validators'
+      ];
+      var extraProps = Object.keys(options).filter(prop => allowedProperties.indexOf(prop) === -1);
+      if (extraProps.length) {
+        throw formlyUsability.getFieldError(
+          `You have specified field properties that are not allowed: ${JSON.stringify(extraProps.join(', '))}`,
+          options
         );
       }
 

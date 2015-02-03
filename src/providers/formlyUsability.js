@@ -12,6 +12,11 @@ module.exports = ngModule => {
     });
 
     function getFieldError(errorInfoSlug, message, field) {
+      if (arguments.length < 3) {
+        field = message;
+        message = errorInfoSlug;
+        errorInfoSlug = null;
+      }
       return new Error(getErrorMessage(errorInfoSlug, message) + ` Field definition: ${angular.toJson(field)}`);
     }
 

@@ -9,33 +9,44 @@ module.exports = ngModule => {
     describe('with template wrapper', function() {
       var scope, template;
       beforeEach(inject(function(formlyConfig, $rootScope) {
-        formlyConfig.setTemplateWrapper({
-          template: `
-            <div class="my-template-wrapper">
-              <label for="{{::id}}">{{options.label}}</label>
-              <formly-transclude></formly-transclude>
-              <div>
-                Some sweet post-text stuff
+        formlyConfig.setWrapper([
+          {
+            types: 'text',
+            template: `
+              <div class="my-template-wrapper">
+                <label for="{{::id}}">{{options.label}}</label>
+                <formly-transclude></formly-transclude>
               </div>
-            </div>
-          `,
-          types: 'text'
-        });
-        formlyConfig.setTemplate({
-          text: `
-            <input name="{{::id}}" ng-model="model[options.key]" />
-          `
+            `
+          },
+          {
+            types: 'other',
+            template: `
+              <div class="my-other-template-wrapper">
+                <formly-transclude></formly-transclude>
+                <div>
+                  This is great for ng-messages
+                </div>
+              </div>
+            `
+          }
+        ]);
+        formlyConfig.setType({
+          type: 'text', template: `<input name="{{::id}}" ng-model="model[options.key]" />`
         });
         scope = $rootScope.$new();
         scope.model = {};
         template = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
       }));
+
       it('should take the entire wrapper, not just the contents of the wrapper', function() {
         scope.fields = [
           {
             type: 'text',
-            label: 'Text input',
-            key: 'text'
+            key: 'text',
+            templateOptions: {
+              label: 'Text input'
+            }
           }
         ];
         var el = $compile(angular.element(template))(scope);
@@ -43,6 +54,47 @@ module.exports = ngModule => {
         expect(el[0].querySelector('.my-template-wrapper')).to.exist;
       });
 
+      it('should wrap arrays of wrappers', () => {
+        scope.fields = [
+          {
+            type: 'text',
+            key: 'text',
+            wrapper: ['text', 'other'],
+            templateOptions: {
+              label: 'Text input'
+            }
+          }
+        ];
+        var el = $compile(angular.element(template))(scope);
+        scope.$digest();
+        var outerEl = el[0].querySelector('.my-other-template-wrapper');
+        expect(outerEl).to.exist;
+        expect(outerEl.querySelector('.my-template-wrapper')).to.exist;
+      });
+
+    });
+
+    describe('extra properties', () => {
+      var scope, template;
+      beforeEach(inject(function(formlyConfig, $rootScope) {
+        formlyConfig.setType({
+          type: 'text', template: `<input name="{{::id}}" ng-model="model[options.key]" />`
+        });
+        scope = $rootScope.$new();
+        scope.model = {};
+        template = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
+      }));
+
+      it('should throw errors when a field has extra properties', () => {
+        scope.fields = [
+          {
+            type: 'text',
+            extraProp: 'whatever'
+          }
+        ];
+        $compile(angular.element(template))(scope);
+        expect(() => scope.$digest()).to.throw(/properties.*not.*allowed.*extraProp/);
+      });
     });
   });
 };

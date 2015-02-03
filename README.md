@@ -162,8 +162,22 @@ template: '<hr />'
 >`undefined`
 
 ---
+##### templateOptions (*)
+>`templateOptions` is reserved for the templates. Any template-specific options go in here. Look at your specific template implementation to know the options required for this.
+
+###### Default
+>`undefined`
+
+---
+##### wrapper (string|array of strings)
+>`wrapper` makes reference to `setWrapper` in the formlyConfigProvider. It is expected to be the name of the wrapper specified there. The formly field will be wrapped by the first wrapper, then the second, then the third, etc.
+
+###### Default
+>`undefined`
+
+---
 ##### modelOptions (object)
->`modelOptions` is used to make your templates easier to work with. Noramlly, you would have to do this in each of your templates: `ng-model="model[options.key || index]"`. However, if you like, you can take advantage of `ng-model-options` via the `modelOptions` property. This will allow you to do `ng-model="value" ng-model-options="options.modelOptions"` not necessarily less verbose, but a little easier to understand. To accomplish this, each `formly-field` adds a `value` function on the scope. It is a traditional getter/setter for you to use in your templates. For more information on ng-model-options, see [these](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-getters-and-setters) [egghead](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-updateon-and-debounce) [lessons](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ngmodeloptions-allows-you-to-set-a-timezone-on-your-model).
+>`modelOptions` is used to make your templates easier to work with. Normally, you would have to do this in each of your templates: `ng-model="model[options.key || index]"`. However, if you like, you can take advantage of `ng-model-options` via the `modelOptions` property. This will allow you to do `ng-model="value" ng-model-options="options.modelOptions"` not necessarily less verbose, but a little easier to understand. To accomplish this, each `formly-field` adds a `value` function on the scope. It is a traditional getter/setter for you to use in your templates. For more information on ng-model-options, see [these](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-getters-and-setters) [egghead](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-updateon-and-debounce) [lessons](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ngmodeloptions-allows-you-to-set-a-timezone-on-your-model).
 
 ##### Default
 >`{ getterSetter: true, allowInvalid: true }`
@@ -212,36 +226,43 @@ You can also specify custom validation in your JSON. See the field called `valid
 
 You can configure formly to use custom templates for specified types (your own "text" template) by injecting the `formlyConfigProvider` in your app's `config` function. The `formlyConfigProvider` has the following functions:
 
-##### setTemplateUrl
+##### setType
 
-Allows you to set a template
+Allows you to specify a custom type
 
 ```javascript
-formlyConfigProvider.setTemplateUrl('radio', 'views/custom-formly-radio.html');
-formlyConfigProvider.setTemplateUrl('checkbox', 'views/custom-formly-checkbox.html');
+// object api (single type with a template)
+formlyConfig.setType({
+  name: 'input',
+  template: '<input ng-model="[options.key]" />'
+});
+// with a templateUrl
+formlyConfig.setType({
+  name: 'checkbox',
+  templateUrl: 'custom-formly-fields-checkbox.html'
+});
 
-// the same can be accomplished with
+// array api (multiple types)
+formlyConfig.setType([
+  {
+    name: 'radio',
+    templateUrl: 'custom-formly-fields-radio.html'
+  },
+  {
+    name: 'button',
+    templateUrl: '<button ng-click="options.templateOptions">{{options.label</button>'
+  }
+]);
 
-formlyConfigProvider.setTemplateUrl({
-	radio: 'views/custom-formly-radio.html',
-	checkbox: 'views/custom-formly-checkbox.html'
+// also, you can specify wrappers for a type
+formlyConfig.setType({
+  name: 'select',
+  templateUrl: 'custom-formly-fields-select.html',
+  wrapper: ['inner', 'outer', 'evenOuterOuter']
 });
 ```
 
-##### getTemplateUrl
-
-Allows you to get the template
-
-```javascript
-formlyConfigProvider.setTemplateUrl('radio', 'views/custom-formly-radio.html');
-formlyConfigProvider.getTemplateUrl('radio') === 'views/custom-formly-radio.html'; // true
-```
-
-##### setTemplate & getTemplate
-
-Work pretty much the same as the their url counterparts, except they accept an actual template string rather than a url.
-
-##### setTemplateWrapper, getTemplateWrapper, & getTemplateWrapperByType
+##### setWrapper, getWrapper, & getWrapperByType
 
 Allows you to set a template for your formly templates. You can have a default (used by all templates), named template wrappers, and typed template wrappers (used by fields with the specified type). All template wrappers must follow these rules
  - Use `<formly-transclude></formly-transclude>` in them to specify where the field template should be placed.
@@ -252,11 +273,11 @@ For example:
 
 ```javascript
 // simple argument api
-formlyConfigProvider.setTemplateWrapper('<div>This is the default because <formly-transclude></formly-transclude> there is no name specified</div>');
-formlyConfigProvider.setTemplateWrapper('<div>This is not the default because <formly-transclude></formly-transclude> there is a name specified</div>', 'theName');
+formlyConfigProvider.setWrapper('<div>This is the default because <formly-transclude></formly-transclude> there is no name specified</div>');
+formlyConfigProvider.setWrapper('<div>This is not the default because <formly-transclude></formly-transclude> there is a name specified</div>', 'theName');
 
 // object api
-formlyConfigProvider.setTemplateWrapper({
+formlyConfigProvider.setWrapper({
   name: 'inputWrapper', // optional. Defaults to name || types.join(' ') || 'default'
   template: 'the template with <formly-transclude></formly-transclude> in it', // must have this OR url
   url: 'path/to/template.html', // the resulting template MUST have <formly-transclude></formly-transclude> in it and must have url OR template (not both)
@@ -264,7 +285,7 @@ formlyConfigProvider.setTemplateWrapper({
 });
 
 // array api
-formlyConfigProvider.setTemplateWrapper([
+formlyConfigProvider.setWrapper([
   { /* same configuration as the object api */ },
   { /* same configuration as the object api */ },
   { /* same configuration as the object api */ },

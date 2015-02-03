@@ -7,10 +7,12 @@ Version numbers correspond to `bower.json` version
 - all fields will now have a the `key` value default to the index of the field if it isn't given a value. This makes it much easier to reference the model in templates (instead of `model[options.key || index]` you can now simply do `mode[options.key]`.
 - adding an angular constant called `formlyVersion` that could be useful and stuff.
 - new feature: **Template Wrappers** are useful for templates that share many of the same things (like validation with ng-messages or labels). See README and tests for documentation
+- new feature: **formlyConfig.setType** allows you to specify a type that has a `name`, `template` OR `templateUrl`, and `wrapper(s)`.
 
 ## Breaking changes:
 
-- now throwing errors throughout the api to validate it is being used appropriately
+- now throwing errors throughout the api to validate it is being used appropriately. Any properties specified on a formly field that are not explicitly part of the api will result in an error thrown. Use `data` or `templateOptions` for custom field values.
+- removing `setTemplate` and `setTemplateUrl` in favor of the new `setType` api.
 
 ## Internal Changes
 

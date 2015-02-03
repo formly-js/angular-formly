@@ -7,85 +7,63 @@ module.exports = ngModule => {
 
   function formlyConfig(formlyUsabilityProvider) {
 
-    var templateUrlMap = {};
-    var templateMap = {};
+    var typeMap = {};
     var templateWrappersMap = {};
-    var defaultTemplateWrapperName = 'default';
+    var defaultWrapperName = 'default';
     var _this = this;
+    var getError = formlyUsabilityProvider.getFormlyError;
 
     angular.extend(this, {
-      getTemplateUrl: getTemplateUrl,
-      setTemplateUrl: setTemplateUrl,
-      getTemplate: getTemplate,
-      setTemplate: setTemplate,
-      setTemplateWrapper: setTemplateWrapper,
-      getTemplateWrapper: getTemplateWrapper,
-      getTemplateWrapperByType: getTemplateWrapperByType,
+      setType: setType,
+      getType: getType,
+      setWrapper: setWrapper,
+      getWrapper: getWrapper,
+      getWrapperByType: getWrapperByType,
       disableWarnings: false,
       $get: () => this
     });
 
-    function setTemplateUrl(name, templateUrl) {
-      validateSetterApi(name, templateUrl, false, arguments);
-      if (typeof name === 'string') {
-        checkOverwrite(name, templateUrlMap, templateUrl, 'templateUrls');
-        templateUrlMap[name] = templateUrl;
-      } else {
-        angular.forEach(name, function(templateUrl, name) {
-          setTemplateUrl(name, templateUrl);
-        });
-      }
-    }
-
-    function getTemplateUrl(type) {
-      return templateUrlMap[type];
-    }
-
-    function setTemplate(name, template) {
-      validateSetterApi(name, template, false, arguments);
-      if (typeof name === 'string') {
-        checkOverwrite(name, templateMap, template, 'templates');
-        templateMap[name] = template;
-      } else {
-        angular.forEach(name, function(template, name) {
-          setTemplate(name, template);
-        });
-      }
-    }
-
-    function getTemplate(type) {
-      return templateMap[type];
-    }
-
-    function validateSetterApi(name, templateOrUrl, isUrl, args) {
-      var templatesName = isUrl ? 'templateUrls' : 'templates';
-      if (angular.isObject(name)) {
-        return;
-      }
-      if (!angular.isString(name)) {
-        throw formlyUsabilityProvider.getFormlyError(
-          null,
-          `You must provide a name for all ${templatesName}. You provided: ${JSON.stringify(args)}`
-        );
-      } else if (!angular.isString(templateOrUrl)) {
-        throw formlyUsabilityProvider.getFormlyError(
-          null,
-          `You must provide a string for all ${templatesName}. You provided: ${JSON.stringify(args)}`
-        );
-      }
-    }
-
-    function setTemplateWrapper(options, name) {
+    function setType(options) {
       if (angular.isArray(options)) {
-        return options.map(setTemplateWrapper);
+        angular.forEach(options, setType);
+      } else if (angular.isObject(options)) {
+        checkType(options);
+        typeMap[options.type] = options;
+      } else {
+        throw getError(`You must provide an object or array for setType. You provided: ${JSON.stringify(arguments)}`);
+      }
+    }
+
+    function getType(type) {
+      return typeMap[type];
+    }
+
+    function checkType(options) {
+      if (!options.type) {
+        throw getError(`You must provide a type for setType. You provided: ${JSON.stringify(arguments)}`);
+      } else if (!options.template && !options.templateUrl) {
+        throw getError(
+          `You must provide a template OR templateUrl for setType. You provided neither: ${JSON.stringify(arguments)}`
+        );
+      } else if (options.template && options.templateUrl) {
+        throw getError(
+          `You must provide a template OR templateUrl for setType. You provided both: ${JSON.stringify(arguments)}`
+        );
+      }
+      checkOverwrite(options.type, typeMap, options, 'types');
+    }
+
+    function setWrapper(options, name) {
+      if (angular.isArray(options)) {
+        return options.map(wrapperOptions => setWrapper(wrapperOptions));
       } else if (angular.isObject(options)) {
         options.types = getOptionsTypes(options);
         options.name = getOptionsName(options, name);
-        checkTemplateWrapperAPI(options);
+        checkWrapperAPI(options);
         templateWrappersMap[options.name] = options;
         return options;
       } else if (angular.isString(options)) {
-        return setTemplateWrapper({
+        return setWrapper({
           template: options,
           name
         });
@@ -104,28 +82,26 @@ module.exports = ngModule => {
     }
 
     function getOptionsName(options, name) {
-      return options.name || name || options.types.join(' ') || defaultTemplateWrapperName;
+      return options.name || name || options.types.join(' ') || defaultWrapperName;
     }
 
-    function checkTemplateWrapperAPI(options) {
+    function checkWrapperAPI(options) {
       formlyUsabilityProvider.checkWrapper(options);
       if (options.template) {
         formlyUsabilityProvider.checkWrapperTemplate(options.template, options);
       }
       checkOverwrite(options.name, templateWrappersMap, options, 'templateWrappers');
-      checkTemplateWrapperTypes(options);
+      checkWrapperTypes(options);
     }
 
-    function checkTemplateWrapperTypes(options) {
+    function checkWrapperTypes(options) {
       let shouldThrow = !angular.isArray(options.types) || !options.types.every(angular.isString);
       if (shouldThrow) {
-        throw formlyUsabilityProvider.getFormlyError(
-          `Attempted to create a template wrapper with types that is not a string or an array of strings`
-        );
+        throw getError(`Attempted to create a template wrapper with types that is not a string or an array of strings`);
       }
-      let wrapperWithSameType = options.types.some(getTemplateWrapperByType);
+      let wrapperWithSameType = options.types.some(getWrapperByType);
       if (wrapperWithSameType) {
-        throw formlyUsabilityProvider.getFormlyError([
+        throw getError([
           `Attempted to create a template wrapper with types that have already been specified for another template.`,
           `Original wrapper: ${JSON.stringify(wrapperWithSameType)}, you specified: ${JSON.stringify(options)}`
         ].join(' '));
@@ -133,25 +109,31 @@ module.exports = ngModule => {
     }
 
     function checkOverwrite(property, object, newValue, objectName) {
-      if (!_this.disableWarnings && object.hasOwnProperty(property)) {
-        console.warn([
+      if (object.hasOwnProperty(property)) {
+        warn([
           `Attempting to overwrite ${property} on ${objectName} which is currently`,
           `${JSON.stringify(object[property])} with ${JSON.stringify(newValue)}`
         ].join(' '));
       }
     }
 
-    function getTemplateWrapper(name) {
-      return templateWrappersMap[name || defaultTemplateWrapperName];
+    function getWrapper(name) {
+      return templateWrappersMap[name || defaultWrapperName];
     }
 
-    function getTemplateWrapperByType(type) {
+    function getWrapperByType(type) {
       for (var name in templateWrappersMap) {
         if (templateWrappersMap.hasOwnProperty(name)) {
           if (templateWrappersMap[name].types && templateWrappersMap[name].types.indexOf(type) !== -1) {
             return templateWrappersMap[name];
           }
         }
+      }
+    }
+
+    function warn() {
+      if (!_this.disableWarnings) {
+        console.warn(...arguments);
       }
     }
 
