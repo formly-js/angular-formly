@@ -266,7 +266,7 @@ formlyConfig.setType({
 
 Allows you to set a template for your formly templates. You can have a default (used by all templates), named template wrappers, and typed template wrappers (used by fields with the specified type). All template wrappers must follow these rules
  - Use `<formly-transclude></formly-transclude>` in them to specify where the field template should be placed.
- - Have at least one, and only one of `url` or `template`
+ - Have at least one, and only one of `templateUrl` or `template`
  - Not override another by name or type
 
 For example:
@@ -279,8 +279,8 @@ formlyConfigProvider.setWrapper('<div>This is not the default because <formly-tr
 // object api
 formlyConfigProvider.setWrapper({
   name: 'inputWrapper', // optional. Defaults to name || types.join(' ') || 'default'
-  template: 'the template with <formly-transclude></formly-transclude> in it', // must have this OR url
-  url: 'path/to/template.html', // the resulting template MUST have <formly-transclude></formly-transclude> in it and must have url OR template (not both)
+  template: 'the template with <formly-transclude></formly-transclude> in it', // must have this OR templateUrl
+  templateUrl: 'path/to/template.html', // the resulting template MUST have <formly-transclude></formly-transclude> in it and must have templateUrl OR template (not both)
   types: 'stringOrArray' // this can be a string or an array of strings that map to types specified by setTemplate and setTemplateUrl
 });
 

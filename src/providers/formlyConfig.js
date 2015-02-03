@@ -50,7 +50,11 @@ module.exports = ngModule => {
           `You must provide a template OR templateUrl for setType. You provided both: ${JSON.stringify(arguments)}`
         );
       }
-      checkOverwrite(options.type, typeMap, options, 'types');
+      if (!options.overwriteOk) {
+        checkOverwrite(options.type, typeMap, options, 'types');
+      } else {
+        delete options.overwriteOk;
+      }
     }
 
     function setWrapper(options, name) {
@@ -90,7 +94,11 @@ module.exports = ngModule => {
       if (options.template) {
         formlyUsabilityProvider.checkWrapperTemplate(options.template, options);
       }
-      checkOverwrite(options.name, templateWrappersMap, options, 'templateWrappers');
+      if (!options.overwriteOk) {
+        checkOverwrite(options.name, templateWrappersMap, options, 'templateWrappers');
+      } else {
+        delete options.overwriteOk;
+      }
       checkWrapperTypes(options);
     }
 
@@ -112,7 +120,8 @@ module.exports = ngModule => {
       if (object.hasOwnProperty(property)) {
         warn([
           `Attempting to overwrite ${property} on ${objectName} which is currently`,
-          `${JSON.stringify(object[property])} with ${JSON.stringify(newValue)}`
+          `${JSON.stringify(object[property])} with ${JSON.stringify(newValue)}`,
+          `To supress this warning, specify the property "overwriteOk: true"`
         ].join(' '));
       }
     }
