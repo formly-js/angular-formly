@@ -19,6 +19,8 @@ module.exports = ngModule => {
       setWrapper: setWrapper,
       getWrapper: getWrapper,
       getWrapperByType: getWrapperByType,
+      removeWrapperByName: removeWrapperByName,
+      removeWrappersForType: removeWrappersForType,
       disableWarnings: false,
       $get: () => this
     });
@@ -107,13 +109,6 @@ module.exports = ngModule => {
       if (shouldThrow) {
         throw getError(`Attempted to create a template wrapper with types that is not a string or an array of strings`);
       }
-      let wrapperWithSameType = options.types.some(getWrapperByType);
-      if (wrapperWithSameType) {
-        throw getError([
-          `Attempted to create a template wrapper with types that have already been specified for another template.`,
-          `Original wrapper: ${JSON.stringify(wrapperWithSameType)}, you specified: ${JSON.stringify(options)}`
-        ].join(' '));
-      }
     }
 
     function checkOverwrite(property, object, newValue, objectName) {
@@ -131,12 +126,39 @@ module.exports = ngModule => {
     }
 
     function getWrapperByType(type) {
+      /* jshint maxcomplexity:6 */
+      var wrappers = [];
       for (var name in templateWrappersMap) {
         if (templateWrappersMap.hasOwnProperty(name)) {
           if (templateWrappersMap[name].types && templateWrappersMap[name].types.indexOf(type) !== -1) {
-            return templateWrappersMap[name];
+            wrappers.push(templateWrappersMap[name]);
           }
         }
+      }
+      if (wrappers.length === 1) {
+        return wrappers[0];
+      } else if (wrappers.length > 1) {
+        return wrappers;
+      }
+      // otherwise nothing
+    }
+
+    function removeWrapperByName(name) {
+      var wrapper = templateWrappersMap[name];
+      delete templateWrappersMap[name];
+      return wrapper;
+    }
+
+    function removeWrappersForType(type) {
+      var wrappers = getWrapperByType(type);
+      if (!wrappers) {
+        return;
+      }
+      if (!angular.isArray(wrappers)) {
+        return removeWrapperByName(wrappers.name);
+      } else {
+        wrappers.forEach((wrapper) => removeWrapperByName(wrapper.name));
+        return wrappers;
       }
     }
 

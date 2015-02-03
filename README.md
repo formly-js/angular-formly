@@ -262,7 +262,7 @@ formlyConfig.setType({
 });
 ```
 
-##### setWrapper, getWrapper, & getWrapperByType
+##### setWrapper, getWrapper, getWrapperByType, removeWrapperByName, & removeWrappersForType
 
 Allows you to set a template for your formly templates. You can have a default (used by all templates), named template wrappers, and typed template wrappers (used by fields with the specified type). All template wrappers must follow these rules
  - Use `<formly-transclude></formly-transclude>` in them to specify where the field template should be placed.
@@ -292,6 +292,17 @@ formlyConfigProvider.setWrapper([
   { /* same configuration as the object api */ }
 ]);
 ```
+
+`removeWrapperByName` and `removeWrappersForType` are helpful if you're using a template library but want to customize your own wrappers. The api is simple:
+
+```javascript
+formlyConfigProvider.removeWrapperByName('inputWrapper'); // removes the wrapper that's called 'inputWrapper'
+formlyConfigProvider.removeWrappersForType('select'); // removes all wrappers that apply to the type of 'select'
+```
+
+Also, note, that if you want to remove the default wrapper, this is done by passing `'default'` to the `removeWrapperByName` function.
+
+Another note, you can instead override wrappers (and types as well) without a warning if you specify an `overwriteOk: true` property.
 
 See [the website](https://formly-js.github.io/angular-formly/) for examples on usage
 
