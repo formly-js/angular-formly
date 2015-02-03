@@ -1,3 +1,6 @@
+if (window.location.protocol !== 'http:') {
+  window.location.protocol = 'http'; // because not everyone who contributes examples has a paid jsbin account
+}
 require('angular');
 require('bootstrap/dist/css/bootstrap.css');
 require('./utilities.css');
