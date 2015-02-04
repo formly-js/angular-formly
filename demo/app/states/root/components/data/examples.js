@@ -27,6 +27,17 @@ module.exports = [
         title: 'Creating Custom Templates',
         slug: 'custom-templates',
         jsbinId: 'xekali'
+      }
+    ]
+  },
+  {
+    title: 'Advanced',
+    name: 'advanced',
+    examples: [
+      {
+        title: 'Custom Validators',
+        slug: 'validators',
+        jsbinId: 'gomoro'
       },
       {
         title: 'Template Wrappers',
