@@ -25,7 +25,7 @@
         <div class="formly-example" ng-repeat="category in vm.examples track by $index">
           <strong>{{::category.title}}</strong>
           <div ng-repeat="example in category.examples | filter:vm.search track by $index">
-            <a formly-event-navigate="exampleSelected(example)" ng-href="#/{{example.jsbinId}}">{{example.title}}</a>
+            <a class="example-link" formly-event-navigate="exampleSelected(example)" ng-class="vm.exampleClass(example)">{{example.title}}</a>
           </div>
           <hr/>
         </div>

@@ -24,3 +24,10 @@
   position: absolute;
   opacity: 0;
 }
+.formly-examples .example-link {
+  transition: color .3s;
+}
+
+.formly-examples .example-link.active {
+  color: #B52E31;
+}

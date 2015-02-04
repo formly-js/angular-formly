@@ -9,6 +9,8 @@ module.exports = function MainCtrl($location, examples, $filter, stateUtils) {
   vm.formlyVersion = VERSION;
   var allTheExamples = [];
 
+  vm.exampleClass = exampleClass;
+
   angular.forEach(vm.examples, function(category) {
     allTheExamples = allTheExamples.concat(category.examples);
   });
@@ -21,5 +23,11 @@ module.exports = function MainCtrl($location, examples, $filter, stateUtils) {
         vm.search = null;
       }
     }
+  }
+
+  function exampleClass(example) {
+    return {
+      active: stateUtils.includesEvent('exampleSelected', example)
+    };
   }
 };

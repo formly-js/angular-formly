@@ -9,6 +9,7 @@ let stateUtils = module.exports = {
   getStates: getStates,
   eventNavigate: eventNavigate,
   eventHref: eventHref,
+  includesEvent: includesEvent,
   includes: includes
 };
 
@@ -126,6 +127,11 @@ function eventHref(event, params, options) {
   let state = getStateForEvent(event);
   let $state = internal.$injector.get('$state');
   return $state.href(state.name, params, options);
+}
+
+function includesEvent(event, params, options) {
+  var href = eventHref(...arguments);
+  return includes(href.substr(1)); // get the # off the url
 }
 
 function includes(urlPartial) {
