@@ -141,6 +141,13 @@ template: '<hr />'
 >`undefined`
 
 ---
+##### hide (boolean)
+>Whether to hide the field (uses `ng-if`)
+
+###### Default
+>`undefined`
+
+---
 ##### model (object)
 >By default, the `model` passed to the `formly-field` directive is the same as the `model` passed to the `formly-form`. However, if the field has a `model` specified, then the specified `model` is used for that field (and that field only). Also, a deep watch is added to the `formly-field` directive's scope to run the `expressionProperties` when the specified `model` changes.
 
@@ -257,7 +264,7 @@ formlyConfig.setType({
   templateUrl: 'custom-formly-fields-checkbox.html'
 });
 
-// array api (multiple types)
+// array api (multiple types)hi
 formlyConfig.setType([
   {
     name: 'radio',

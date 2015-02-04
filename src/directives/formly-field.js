@@ -235,7 +235,7 @@ module.exports = ngModule => {
         'type', 'template', 'templateUrl', 'key', 'model',
         'expressionProperties', 'data', 'templateOptions',
         'wrapper', 'modelOptions', 'watcher', 'validators',
-        'noFormControl'
+        'noFormControl', 'hide'
       ];
       var extraProps = Object.keys(options).filter(prop => allowedProperties.indexOf(prop) === -1);
       if (extraProps.length) {
