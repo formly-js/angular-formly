@@ -223,7 +223,7 @@ $scope.$watch(function expression(field, theScope, stop) {}, function listener(f
 
 ---
 ##### validators (object)
->`validators` is an object where the keys are the name of the validity (to be passed to `$setValidity`) and the values are functions or expressions which returns true if it is valid. Templates can pass this option to the `formly-custom-validation` directive which will add a parser (or validator, see note) to the `ngModel` controller of the field. The validator can be a function or string expression and will be evaluated using `formlyEval` from `formlyUtils` see below for more information. **Note:** Formly will utilize the `$validators` pipeline (introduced in angular 1.3) if available, otherwise it will fallback to `$parsers`. If you are using angular 1.3, formly will automatically use the `$asyncValidators` pipeline if your validator is a function (and wrap it in `$q.when` so you don't need to worry about returning a promise if that doesn't make sense for your validator). Note, in this case, all the normal $asyncValidators rules apply. To fail the validation, reject the promise.
+>`validators` is an object where the keys are the name of the validity (to be passed to `$setValidity`) and the values are functions or expressions which returns true if it is valid. Templates can pass this option to the `formly-custom-validation` directive which will add a parser (or validator, see note) to the `ngModel` controller of the field. The validator can be a function or string expression and will be evaluated using `formlyEval` from `formlyUtils` see below for more information. **Note:** Formly will utilize the `$validators` pipeline (introduced in angular 1.3) if available, otherwise it will fallback to `$parsers`. If you are using angular 1.3, formly will automatically use the `$asyncValidators` pipeline if your validator is a function (and wrap it in `$q.when` so you don't need to worry about returning a promise if that doesn't make sense for your validator). Note, in this case, all the normal $asyncValidators rules apply. To fail the validation, reject the promise. Also, note the performance implications when you mix sync and non-sync validators: https://github.com/angular/angular.js/issues/10955 (not a problem if your validators are not actually costing resources, or if you make the sync validators strings instead of functions).
 
 ###### Default
 >`undefined`
@@ -343,6 +343,14 @@ There are four places where you can put expressions. The context in which these 
 1) watcher - expression and listener can be functions or expression strings. This is a regular angular `$watch` (depending on the specified `type`) function and it is created on the `formly-form` scope, despite being applied to a specific field. This allows the expressions to run even if the field's scope has been destroyed (via an ng-if like when the field is hidden). The function signature differs from a normal `$watch` however. See above for more details.
 
 2) expressionProperties & validators - these expressions can be functions or expression strings. If it's a function, it's invoked with the arguments `$viewValue`, `$modelValue`, and `scope`. The scope in this case, is the field's scope. If it's an expression string, it is evaluated using `$scope.$eval` with a locals object that has `$viewValue` and `$modelValue` (however, in the case of `expressionProperties`, `$viewValue` will simply be the `$modelValue` because they don't have a hook into the `ngModelController` but we want to keep the api consistent).
+
+## Custom Templates
+
+You have a lot of freedom when it comes to writing templates. You don't even need to use the `model` which means that you can have fields that are just part of the look and feel of your form. Formly also provides you with the following directives to help you in your templates:
+
+ - formly-custom-validation
+ - formly-dynamic-name (useful if you want to support pre 1.3, otherwise, just use `name="{{::id}}"`)
+ - formly-focus
 
 ## Roadmap
 

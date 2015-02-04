@@ -7,6 +7,7 @@
 - new feature: **Template Wrappers** are useful for templates that share many of the same things (like validation with ng-messages or labels). See README and tests for documentation
 - new feature: **formlyConfig.setType** allows you to specify a type that has a `name`, `template` OR `templateUrl`, and `wrapper(s)`.
 - `expressionProperties` can now accept promises! :D Thanks @djsmith42!
+- `formly-focus` new directive that allows you to easily add focus to a focusable element. This is for your templates primarily.
 
 ## Breaking changes:
 
