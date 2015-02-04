@@ -156,7 +156,7 @@ template: '<hr />'
 
 ---
 ##### expressionProperties (object)
->`expressionProperties` is an object where the key is a property to be set on the main field config (can be an angular expression) and the value is an expression used to assign that property. The expression can be a function or string expression and will be evaluated using `formlyEval` from `formlyUtils` see below for more information.
+>`expressionProperties` is an object where the key is a property to be set on the main field config (can be an angular expression) and the value is an expression used to assign that property. The expression can be a function or string expression and will be evaluated using `formlyEval` from `formlyUtils` see below for more information. The returned value is wrapped in `$q.when` so you can return a promise from your function :-)
 
 For example:
 

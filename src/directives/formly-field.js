@@ -48,7 +48,10 @@ module.exports = ngModule => {
           var currentValue = valueGetterSetter();
           angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
             var setter = $parse(prop).assign;
-            setter(field, formlyUtil.formlyEval($scope, expression, currentValue));
+            var promise = $q.when(formlyUtil.formlyEval($scope, expression, currentValue));
+            promise.then(function(value) {
+              setter(field, value);
+            });
           });
         }
 

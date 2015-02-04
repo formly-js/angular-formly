@@ -6,6 +6,7 @@
 - adding an angular constant called `formlyVersion` that could be useful and stuff.
 - new feature: **Template Wrappers** are useful for templates that share many of the same things (like validation with ng-messages or labels). See README and tests for documentation
 - new feature: **formlyConfig.setType** allows you to specify a type that has a `name`, `template` OR `templateUrl`, and `wrapper(s)`.
+- `expressionProperties` can now accept promises! :D Thanks @djsmith42!
 
 ## Breaking changes:
 
