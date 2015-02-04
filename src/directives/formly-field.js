@@ -17,7 +17,7 @@ module.exports = ngModule => {
         fields: '=?',
         form: '=?'
       },
-      controller: function fieldController($scope, $interval) {
+      controller: function fieldController($scope, $interval, $parse) {
         apiCheck($scope.options);
         // set field id to link labels and fields
         $scope.id = formlyUtil.getFieldId($scope.formId, $scope.options, $scope.index);
@@ -47,14 +47,8 @@ module.exports = ngModule => {
           var field = $scope.options;
           var currentValue = valueGetterSetter();
           angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
-            if (prop !== 'data') {
-              field[prop] = formlyUtil.formlyEval($scope, expression, currentValue);
-            } else {
-              field.data = field.data || {};
-              angular.forEach(field.expressionProperties.data, function runExpression(dataExpression, dataProp) {
-                field.data[dataProp] = formlyUtil.formlyEval($scope, dataExpression, currentValue);
-              });
-            }
+            var setter = $parse(prop).assign;
+            setter(field, formlyUtil.formlyEval($scope, expression, currentValue));
           });
         }
 
@@ -118,8 +112,8 @@ module.exports = ngModule => {
 
     function getFieldTemplate(options) {
       let type = formlyConfig.getType(options.type);
-      let template = options.template || type.template;
-      let templateUrl = options.templateUrl || type.templateUrl;
+      let template = options.template || type && type.template;
+      let templateUrl = options.templateUrl || type && type.templateUrl;
       if (!template && !templateUrl) {
         throw formlyUsability.getFieldError(
           'template-type-type-not-supported',
@@ -131,9 +125,9 @@ module.exports = ngModule => {
 
 
     function getTemplate(template, isUrl) {
-      if (template) {
+      if (!isUrl) {
         return $q.when(template);
-      } else if (isUrl) {
+      } else {
         let httpOptions = {cache: $templateCache};
         return $http.get(template, httpOptions).then(function(response) {
           return response.data;
@@ -154,12 +148,16 @@ module.exports = ngModule => {
         if (!wrapper) {
           return $q.when(angular.element(template));
         } else if (angular.isArray(wrapper)) {
+          wrapper.forEach(formlyUsability.checkWrapper);
           let promises = wrapper.map(w => getTemplate(w.template || w.templateUrl, !w.template));
-          return $q.all(promises).then(wrappers => {
-            wrappers.reverse(); // wrapper 0 is wrapped in wrapper 1 and so on...
-            let totalWrapper = wrappers.shift();
-            angular.forEach(wrappers, wrapper => {
-              totalWrapper = doTransclusion(totalWrapper, wrapper);
+          return $q.all(promises).then(wrappersTemplates => {
+            wrappersTemplates.forEach((wrapperTemplate, index) => {
+              formlyUsability.checkWrapperTemplate(wrapperTemplate, wrapper[index]);
+            });
+            wrappersTemplates.reverse(); // wrapper 0 is wrapped in wrapper 1 and so on...
+            let totalWrapper = wrappersTemplates.shift();
+            wrappersTemplates.forEach(wrapperTemplate => {
+              totalWrapper = doTransclusion(totalWrapper, wrapperTemplate);
             });
             return doTransclusion(totalWrapper, template);
           });
@@ -183,7 +181,7 @@ module.exports = ngModule => {
     }
 
     function getWrapperOption(options) {
-      /* jshint maxcomplexity:6 */
+      /* jshint maxcomplexity:9 */
       let templateOption = options.wrapper;
       // explicit null means no wrapper
       if (templateOption === null) {
@@ -192,7 +190,7 @@ module.exports = ngModule => {
       var wrapper = templateOption;
       // nothing specified means use the default wrapper for the type
       if (!templateOption) {
-        wrapper = formlyConfig.getWrapperByType(options.type) || formlyConfig.getWrapper();
+        wrapper = formlyConfig.getWrapperByType(options.type);
       } else if (angular.isString(templateOption)) {
         // string means it's a type
         wrapper = formlyConfig.getWrapper(templateOption);
@@ -200,7 +198,22 @@ module.exports = ngModule => {
         // array means wrap the wrappers
         wrapper = templateOption.map(wrapperName => formlyConfig.getWrapper(wrapperName));
       }
-      return wrapper;
+      wrapper = arrayify(wrapper);
+      var defaultWrapper = formlyConfig.getWrapper();
+      var type = formlyConfig.getType(options.type);
+      if (type && type.wrapper) {
+        let typeWrappers = arrayify(type.wrapper).map(formlyConfig.getWrapper);
+        wrapper = wrapper.concat(typeWrappers);
+      }
+      if (defaultWrapper) {
+        wrapper.push(defaultWrapper);
+      }
+      if (wrapper.length > 1) {
+        return wrapper;
+      } else if (wrapper.length === 1) {
+        return wrapper[0];
+      }
+      // otherwise return nothing
     }
 
     function apiCheck(options) {
@@ -221,7 +234,8 @@ module.exports = ngModule => {
       var allowedProperties = [
         'type', 'template', 'templateUrl', 'key', 'model',
         'expressionProperties', 'data', 'templateOptions',
-        'wrapper', 'modelOptions', 'watcher', 'validators'
+        'wrapper', 'modelOptions', 'watcher', 'validators',
+        'noFormControl'
       ];
       var extraProps = Object.keys(options).filter(prop => allowedProperties.indexOf(prop) === -1);
       if (extraProps.length) {
@@ -239,5 +253,14 @@ module.exports = ngModule => {
         return templateOptions;
       }
     }
+  }
+
+  function arrayify(obj) {
+    if (obj && !angular.isArray(obj)) {
+      obj = [obj];
+    } else if (!obj) {
+      obj = [];
+    }
+    return obj;
   }
 };

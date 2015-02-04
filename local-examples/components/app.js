@@ -1,34 +1,8 @@
 (function() {
   'use strict';
 
-  //window.ngFormly.formlyUtils.createDirectives([
-  //  {
-  //
-  //  }
-  //]);
-
-  var app = angular.module('app', ['formly'], function(formlyConfigProvider) {
-    formlyConfigProvider.setTemplate({
-      whatever: '<pre>{{options | json}}</pre>',
-      myType: '<input name="{{::id}}" ng-model="model[options.key]">'
-    });
-    formlyConfigProvider.setTemplateWrapper([
-      '<div>',
-        '<label for="{{::id}}">{{options.label}}</label>',
-        '<formly-transclude></formly-transclude>',
-        'This is after! Good for ng-messages!',
-      '</div>'
-    ].join(' '));
-    formlyConfigProvider.setTemplateWrapper({
-      types: 'myType',
-      template: [
-        '<div class="my-type">',
-          '<div>This is my own type wrapper!</div>',
-          '<formly-transclude></formly-transclude>',
-          '<div>this is after on my own type: {{model[options.key]}}</div>',
-        '</div>'
-      ].join(' ')
-    });
+  var app = angular.module('app', ['formly', 'formlyBootstrap'], function(formlyConfigProvider) {
+  //var app = angular.module('app', ['formly', 'formlyVanilla'], function(formlyConfigProvider) {
   });
 
   app.controller('MainCtrl', function MainCtrl() {
@@ -38,51 +12,77 @@
 
     vm.fields = [
       {
-        label: 'My Label',
-        type: 'whatever',
+        type: 'checkbox',
         key: 'mine',
-        noFormControl: true
+        templateOptions: {
+          label: 'My Label',
+          description: 'This is an awesome description for a checkbox!',
+          required: true
+        }
       },
       {
-        label: 'My Type',
-        type: 'myType',
-        key: 'myKey'
+        type: 'input',
+        key: 'myKey',
+        templateOptions: {
+          label: 'My Input',
+          description: 'This is an awesome description',
+          required: true
+        },
+        validators: {
+          maxlength: '$viewValue.length > 4'
+        },
+        expressionProperties: {
+          'templateOptions.disabled': 'model.mine',
+          'templateOptions.required': 'model.mySelect === "coolio2"'
+        }
+      },
+      {
+        type: 'select',
+        key: 'mySelect',
+        templateOptions: {
+          label: 'Choose something!',
+          options: [
+            {},
+            {name: 'item 1', value: 'coolio'},
+            {name: 'item 2', value: 'coolio2'},
+            {name: 'item 3', value: 'coolio3'}
+          ]
+        }
+      },
+      {
+        type: 'textarea',
+        key: 'coolTextarea',
+        templateOptions: {
+          label: 'Type stuff',
+          placeholder: 'Way fun',
+          cols: 15,
+          rows: 12
+        }
+      },
+      {
+        type: 'radio',
+        key: 'myRadios',
+        templateOptions: {
+          label: 'Cool Radios',
+          options: [
+            {name: 'item 1', value: 'coolio'},
+            {name: 'item 2', value: 'coolio2'},
+            {name: 'item 3', value: 'coolio3'}
+          ],
+          description: 'Click one!'
+        }
+      },
+      {
+        type: 'number',
+        key: 'aNumber',
+        templateOptions: {
+          label: 'Number stuff',
+          max: 10,
+          min: -10,
+          placeholder: '10 is the max, -10 is the min...'
+        }
       }
     ];
   });
-  /*
-
-  function getDirectiveWrapper(innerTemplate) {
-    var formControl = 'options.formControl';
-    var invalid = formControl + '.$invalid';
-    var touched = formControl + '.$touched';
-    var ors = [
-      touched,
-      'options.showError',
-      '$eval(options.data.showErrorExpression)'
-    ].join(' || ');
-    var errorExistsAndShouldBeVisible = [
-      invalid,
-      '(' + ors + ')',
-      '!options.data.hideError',
-      '!$eval(options.data.hideErrorExpression)'
-    ].join(' && ');
-    var ngClass = '{\'has-error\':' + errorExistsAndShouldBeVisible + '}';
-    return [
-      '<div ng-init="options.data.ngInit(options, model, index, form)" ng-class="' + ngClass + '">',
-      '<div>',
-      '<div ng-if="options.data.loading.$$state.status === 0">Loading...</div>',
-      '<div ng-if="options.data.loading.$$state.status !== 0">' + innerTemplate + '</div>',
-      '</div>',
-      '<div az-form-messages="options.formControl"',
-      'options="options"',
-      'show-messages="' + errorExistsAndShouldBeVisible + '"></div>',
-      '<div ng-if="::options.description" class="text-muted" style="margin-top:16px;">',
-      '{{::options.description}}',
-      '</div>',
-      '</div>'
-    ].join(' ');
-  }
-  */
 
 })();

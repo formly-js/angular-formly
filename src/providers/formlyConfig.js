@@ -30,19 +30,19 @@ module.exports = ngModule => {
         angular.forEach(options, setType);
       } else if (angular.isObject(options)) {
         checkType(options);
-        typeMap[options.type] = options;
+        typeMap[options.name] = options;
       } else {
         throw getError(`You must provide an object or array for setType. You provided: ${JSON.stringify(arguments)}`);
       }
     }
 
-    function getType(type) {
-      return typeMap[type];
+    function getType(name) {
+      return typeMap[name];
     }
 
     function checkType(options) {
-      if (!options.type) {
-        throw getError(`You must provide a type for setType. You provided: ${JSON.stringify(arguments)}`);
+      if (!options.name) {
+        throw getError(`You must provide a name for setType. You provided: ${JSON.stringify(arguments)}`);
       } else if (!options.template && !options.templateUrl) {
         throw getError(
           `You must provide a template OR templateUrl for setType. You provided neither: ${JSON.stringify(arguments)}`
@@ -53,7 +53,7 @@ module.exports = ngModule => {
         );
       }
       if (!options.overwriteOk) {
-        checkOverwrite(options.type, typeMap, options, 'types');
+        checkOverwrite(options.name, typeMap, options, 'types');
       } else {
         delete options.overwriteOk;
       }

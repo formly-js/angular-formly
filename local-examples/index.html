@@ -3,13 +3,25 @@
 <head lang="en">
   <meta charset="UTF-8">
   <title>Manual tests for formly</title>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
 </head>
 <body ng-app="app" ng-controller="MainCtrl as vm">
+<div class="jumbotron" style="text-align:center;">
+  <h1>Manual tests for formly</h1>
+</div>
+<div class="container">
+  <formly-form model="vm.user" fields="vm.fields" form="vm.form"></formly-form>
 
-<formly-form model="vm.user" fields="vm.fields"></formly-form>
+  <h1>User</h1>
+  <pre>{{vm.user | json}}</pre>
+  <h1>Form</h1>
+  <pre>{{vm.form | json}}</pre>
+</div>
 
 <script src="angular/angular.js"></script>
 <script src="dist/formly.js"></script>
+<!--<script src="formly-templates/angular-formly-templates-vanilla.js"></script>-->
+<script src="formly-templates/angular-formly-templates-bootstrap.js"></script>
 <script src="components/app.js"></script>
 </body>
 </html>

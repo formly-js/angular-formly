@@ -32,7 +32,7 @@ module.exports = ngModule => {
           }
         ]);
         formlyConfig.setType({
-          type: 'text', template: `<input name="{{::id}}" ng-model="model[options.key]" />`
+          name: 'text', template: `<input name="{{::id}}" ng-model="model[options.key]" />`
         });
         scope = $rootScope.$new();
         scope.model = {};
@@ -78,7 +78,7 @@ module.exports = ngModule => {
       var scope, template;
       beforeEach(inject(function(formlyConfig, $rootScope) {
         formlyConfig.setType({
-          type: 'text', template: `<input name="{{::id}}" ng-model="model[options.key]" />`
+          name: 'text', template: `<input name="{{::id}}" ng-model="model[options.key]" />`
         });
         scope = $rootScope.$new();
         scope.model = {};

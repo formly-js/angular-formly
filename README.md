@@ -149,7 +149,22 @@ template: '<hr />'
 
 ---
 ##### expressionProperties (object)
->`expressionProperties` is an object where the key is a property to be set on the main field config and the value is an expression used to assign that property. One special case is `data` which is an object that behaves the same as `expressionProperties` except the value is assigned to `field.data` rather than just `field`. The expression can be a function or string expression and will be evaluated using `formlyEval` from `formlyUtils` see below for more information.
+>`expressionProperties` is an object where the key is a property to be set on the main field config (can be an angular expression) and the value is an expression used to assign that property. The expression can be a function or string expression and will be evaluated using `formlyEval` from `formlyUtils` see below for more information.
+
+For example:
+
+```javascript
+vm.fields = [
+  {
+    key: 'myThing',
+    type: 'someType',
+    expressionProperties: {
+      'templateOptions.label': '$viewValue', // this would make the label change to what the user has typed
+      'data.someproperty.somethingdeeper.whateveryouwant': 'model.myThing.length > 5' // this would set that property on data to be whether or not the model's myThing value has a length greater than 5
+    }
+  }
+];
+```
 
 ###### Default
 >`undefined`

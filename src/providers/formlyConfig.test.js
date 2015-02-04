@@ -113,7 +113,7 @@ module.exports = ngModule => {
 
     describe('setType/getType', () => {
       var getterFn, setterFn;
-      var type = 'input';
+      var name = 'input';
       var template = '<input type="{{options.inputType}}" />';
       var templateUrl = '/input.html';
       var wrapper = 'input';
@@ -125,32 +125,32 @@ module.exports = ngModule => {
 
       describe('＼(＾O＾)／ path', () => {
         it('should accept an object with a name and a template', () => {
-          setterFn({type, template});
-          expect(getterFn(type).template).to.equal(template);
+          setterFn({name, template});
+          expect(getterFn(name).template).to.equal(template);
         });
 
         it('should accept an object with a name and a templateUrl', () => {
-          setterFn({type, templateUrl});
-          expect(getterFn(type).templateUrl).to.equal(templateUrl);
+          setterFn({name, templateUrl});
+          expect(getterFn(name).templateUrl).to.equal(templateUrl);
         });
 
         it('should accept an array of objects', () => {
           setterFn([
-            {type, template},
-            {type: 'type2', templateUrl}
+            {name, template},
+            {name: 'type2', templateUrl}
           ]);
-          expect(getterFn(type).template).to.equal(template);
+          expect(getterFn(name).template).to.equal(template);
           expect(getterFn('type2').templateUrl).to.equal(templateUrl);
         });
 
         it('should allow you to set a wrapper as a string', () => {
-          setterFn({type, template, wrapper});
-          expect(getterFn(type).wrapper).to.equal(wrapper);
+          setterFn({name, template, wrapper});
+          expect(getterFn(name).wrapper).to.equal(wrapper);
         });
 
         it('should allow you to set a wrapper as an array', () => {
-          setterFn({type, template, wrapper: [wrapper, wrapper2]});
-          expect(getterFn(type).wrapper).to.eql([wrapper, wrapper2]);
+          setterFn({name, template, wrapper: [wrapper, wrapper2]});
+          expect(getterFn(name).wrapper).to.eql([wrapper, wrapper2]);
         });
       });
 
@@ -163,20 +163,20 @@ module.exports = ngModule => {
 
         it(`should throw an error when there is not a specified template or templateUrl`, () => {
           expect(() => setterFn([
-            {type, template},
-            {type: 'type2', foo:'bar'}
+            {name, template},
+            {name: 'type2', foo:'bar'}
           ])).to.throw(/must.*provide.*template.*templateUrl/);
-          expect(() => setterFn({type})).to.throw(/must.*provide.*template.*templateUrl/);
+          expect(() => setterFn({name})).to.throw(/must.*provide.*template.*templateUrl/);
         });
 
-        it('should throw an error when a type is not provided', () => {
-          expect(() => setterFn({templateUrl})).to.throw(/must.*provide.*type/);
+        it('should throw an error when a name is not provided', () => {
+          expect(() => setterFn({templateUrl})).to.throw(/must.*provide.*name/);
         });
 
         it('should warn when attempting to override a type', () => {
           shouldWarn(/overwrite/, function() {
-            setterFn({type, template});
-            setterFn({type, template});
+            setterFn({name, template});
+            setterFn({name, template});
           });
         });
       });
