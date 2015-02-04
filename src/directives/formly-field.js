@@ -235,7 +235,9 @@ module.exports = ngModule => {
         'type', 'template', 'templateUrl', 'key', 'model',
         'expressionProperties', 'data', 'templateOptions',
         'wrapper', 'modelOptions', 'watcher', 'validators',
-        'noFormControl', 'hide'
+        'noFormControl', 'hide',
+        // these are things that are allowed only because we create them for the user
+        'value', 'runExpressions'
       ];
       var extraProps = Object.keys(options).filter(prop => allowedProperties.indexOf(prop) === -1);
       if (extraProps.length) {
