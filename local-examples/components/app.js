@@ -5,7 +5,7 @@
   //var app = angular.module('app', ['formly', 'formlyVanilla'], function(formlyConfigProvider) {
   });
 
-  app.controller('MainCtrl', function MainCtrl() {
+  app.controller('MainCtrl', function MainCtrl($timeout, $q) {
     var vm = this;
 
     vm.user = {};
@@ -80,6 +80,23 @@
           max: 10,
           min: -10,
           placeholder: '10 is the max, -10 is the min...'
+        }
+      },
+      {
+        type: 'input',
+        key: 'email',
+        validators: {
+          specialEmail: function(modelValue, viewValue) {
+            return $timeout(function() {
+              var fn = (modelValue || viewValue) === 'a@b.c' ? $q.when : $q.reject;
+              return fn();
+            }, 2000);
+          }
+        },
+        templateOptions: {
+          type: 'email',
+          placeholder: 'Type a@b.c if you want to be valid',
+          label: 'Special Email address'
         }
       }
     ];

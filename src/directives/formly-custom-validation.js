@@ -1,5 +1,5 @@
 module.exports = ngModule => {
-  ngModule.directive('formlyCustomValidation', function (formlyUtil) {
+  ngModule.directive('formlyCustomValidation', function (formlyUtil, $q) {
 
     return {
       require: 'ngModel',
@@ -13,9 +13,15 @@ module.exports = ngModule => {
         var hasValidators = ctrl.hasOwnProperty('$validators');
         angular.forEach(validators, function (validator, name) {
           if (hasValidators) {
-            var validatorCollection = validator.isAsync ? '$asyncValidators' : '$validators';
+            var isPossiblyAsync = !angular.isString(validator);
+            var validatorCollection = isPossiblyAsync ? '$asyncValidators' : '$validators';
             ctrl[validatorCollection][name] = function (modelValue, viewValue) {
-              return formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
+              var value = formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
+              if (isPossiblyAsync) {
+                return isPromiseLike(value) ? value : value ? $q.when(value) : $q.reject(value);
+              } else {
+                return value;
+              }
             };
           } else {
             ctrl.$parsers.unshift(function (viewValue) {
@@ -27,5 +33,8 @@ module.exports = ngModule => {
         });
       }
     };
+    function isPromiseLike(obj) {
+      return obj && angular.isFunction(obj.then);
+    }
   });
 };

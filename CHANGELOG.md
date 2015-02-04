@@ -17,6 +17,7 @@
 ## Internal Changes
 
 - Adding links to all errors and warnings. Should hopefully help people resolve issues faster.
+- If you're using angular 1.3.0 and have the ability to use the `validators` pipeline, now all `validators` that are functions (rather than string expressions) run through the `$asyncValidators` pipeline because there is negligible performance implications and it simplifies the validators api because you no longer need to specify isAsync on the function.
 
 # 2.0.0
 
