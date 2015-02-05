@@ -111,6 +111,67 @@ module.exports = ngModule => {
 
     });
 
+    describe('getWrapperByType', () => {
+      var getterFn, setterFn;
+      var types = ['input', 'checkbox'];
+      var types2 = ['input', 'select'];
+      var templateUrl = '/path/to/file.html';
+      beforeEach(inject(function(formlyConfig) {
+        setterFn = formlyConfig.setWrapper;
+        getterFn = formlyConfig.getWrapperByType;
+      }));
+
+      describe('＼(＾O＾)／ path', () => {
+        it('should return a template wrapper that has the same type', () => {
+          var option = setterFn({templateUrl, types});
+          expect(getterFn(types[0])).to.equal(option);
+        });
+
+        it('should return an array when multiple wrappers have the same time', () => {
+          setterFn({templateUrl, types});
+          setterFn({templateUrl, types: types2});
+          var inputWrappers = getterFn('input');
+          expect(inputWrappers).to.be.instanceOf(Array);
+          expect(inputWrappers).to.have.length(2);
+        });
+
+      });
+    });
+
+    describe('removeWrapper', () => {
+      var remove, removeForType, setterFn, getterFn, getByTypeFn;
+      var template = '<div>Something <formly-transclude></formly-transclude> cool</div>';
+      var name = 'name';
+      var types = ['input', 'checkbox'];
+      var types2 = ['input', 'something else'];
+      var types3 = ['checkbox', 'something else'];
+      beforeEach(inject((formlyConfig) => {
+        remove = formlyConfig.removeWrapperByName;
+        removeForType = formlyConfig.removeWrappersForType;
+        setterFn = formlyConfig.setWrapper;
+        getterFn = formlyConfig.getWrapper;
+        getByTypeFn = formlyConfig.getWrapperByType;
+      }));
+
+      it('should allow you to remove a wrapper', () => {
+        setterFn(template, name);
+        remove(name);
+        expect(getterFn(name)).to.be.undefined;
+      });
+
+      it('should allow you to remove a wrapper for a type', () => {
+        setterFn({types, template});
+        setterFn({types: types2, template});
+        var checkboxAndSomethingElseWrapper = setterFn({types: types3, template});
+        removeForType('input');
+        expect(getByTypeFn('input')).to.be.undefined;
+        var checkboxWrappers = getByTypeFn('checkbox');
+        expect(checkboxWrappers).to.not.be.instanceOf(Array);
+        expect(checkboxWrappers).to.eq(checkboxAndSomethingElseWrapper);
+      });
+    });
+
+
     describe('setType/getType', () => {
       var getterFn, setterFn;
       var name = 'input';
@@ -182,66 +243,6 @@ module.exports = ngModule => {
       });
     });
 
-
-    describe('getWrapperByType', () => {
-      var getterFn, setterFn;
-      var types = ['input', 'checkbox'];
-      var types2 = ['input', 'select'];
-      var templateUrl = '/path/to/file.html';
-      beforeEach(inject(function(formlyConfig) {
-        setterFn = formlyConfig.setWrapper;
-        getterFn = formlyConfig.getWrapperByType;
-      }));
-
-      describe('＼(＾O＾)／ path', () => {
-        it('should return a template wrapper that has the same type', () => {
-          var option = setterFn({templateUrl, types});
-          expect(getterFn(types[0])).to.equal(option);
-        });
-
-        it('should return an array when multiple wrappers have the same time', () => {
-          setterFn({templateUrl, types});
-          setterFn({templateUrl, types: types2});
-          var inputWrappers = getterFn('input');
-          expect(inputWrappers).to.be.instanceOf(Array);
-          expect(inputWrappers).to.have.length(2);
-        });
-
-      });
-    });
-
-    describe('removeWrapper', () => {
-      var remove, removeForType, setterFn, getterFn, getByTypeFn;
-      var template = '<div>Something <formly-transclude></formly-transclude> cool</div>';
-      var name = 'name';
-      var types = ['input', 'checkbox'];
-      var types2 = ['input', 'something else'];
-      var types3 = ['checkbox', 'something else'];
-      beforeEach(inject((formlyConfig) => {
-        remove = formlyConfig.removeWrapperByName;
-        removeForType = formlyConfig.removeWrappersForType;
-        setterFn = formlyConfig.setWrapper;
-        getterFn = formlyConfig.getWrapper;
-        getByTypeFn = formlyConfig.getWrapperByType;
-      }));
-
-      it('should allow you to remove a wrapper', () => {
-        setterFn(template, name);
-        remove(name);
-        expect(getterFn(name)).to.be.undefined;
-      });
-
-      it('should allow you to remove a wrapper for a type', () => {
-        setterFn({types, template});
-        setterFn({types: types2, template});
-        var checkboxAndSomethingElseWrapper = setterFn({types: types3, template});
-        removeForType('input');
-        expect(getByTypeFn('input')).to.be.undefined;
-        var checkboxWrappers = getByTypeFn('checkbox');
-        expect(checkboxWrappers).to.not.be.instanceOf(Array);
-        expect(checkboxWrappers).to.eq(checkboxAndSomethingElseWrapper);
-      });
-    });
 
     function shouldWarn(match, test) {
       var originalWarn = console.warn;
