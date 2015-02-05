@@ -239,7 +239,7 @@ module.exports = ngModule => {
         expect(getByTypeFn('input')).to.be.undefined;
         var checkboxWrappers = getByTypeFn('checkbox');
         expect(checkboxWrappers).to.not.be.instanceOf(Array);
-        expect(checkboxWrappers).to.eq(checkboxAndSomethingElseWrapper)
+        expect(checkboxWrappers).to.eq(checkboxAndSomethingElseWrapper);
       });
     });
 

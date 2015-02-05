@@ -18,6 +18,7 @@ module.exports = ngModule => {
         form: '=?'
       },
       controller: function($scope) {
+        apiCheck();
         $scope.formId = `formly_${currentFormId++}`;
 
         angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
@@ -91,6 +92,28 @@ module.exports = ngModule => {
         function modifyArgs(watcher, index, ...originalArgs) {
           return [$scope.fields[index], ...originalArgs, watcher.stopWatching];
         }
+
+        function apiCheck() {
+          // check that only allowed properties are provided
+          var allowedProperties = [
+            'type', 'template', 'templateUrl', 'key', 'model',
+            'expressionProperties', 'data', 'templateOptions',
+            'wrapper', 'modelOptions', 'watcher', 'validators',
+            'noFormControl', 'hide'
+          ];
+          $scope.fields.forEach(field => {
+            var extraProps = Object.keys(field).filter(prop => allowedProperties.indexOf(prop) === -1);
+            if (extraProps.length) {
+              throw formlyUsability.getFormlyError(
+                'you-have-specified-field-properties-that-are-not-allowed',
+                `You have specified field properties that are not allowed: ${JSON.stringify(extraProps.join(', '))}`,
+                field
+              );
+            }
+          });
+
+
+        }
       },
       link: function(scope, el, attrs) {
         if (attrs.hasOwnProperty('result')) {
@@ -103,6 +126,7 @@ module.exports = ngModule => {
             'The "name" attribute on a formly-form is no longer valid. Use "form" instead'
           );
         }
+        // enforce the model attribute because we're making it optional to help with migrations
         if (!attrs.hasOwnProperty('model') || !scope.model) {
           throw formlyUsability.getFormlyError(
             'The "model" attribute is required on a formly-form.'

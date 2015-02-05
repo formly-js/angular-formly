@@ -233,23 +233,6 @@ module.exports = ngModule => {
         );
       }
 
-      // check that only allowed properties are provided
-      var allowedProperties = [
-        'type', 'template', 'templateUrl', 'key', 'model',
-        'expressionProperties', 'data', 'templateOptions',
-        'wrapper', 'modelOptions', 'watcher', 'validators',
-        'noFormControl', 'hide',
-        // these are things that are allowed only because we create them for the user
-        'value', 'runExpressions', 'formControl'
-      ];
-      var extraProps = Object.keys(options).filter(prop => allowedProperties.indexOf(prop) === -1);
-      if (extraProps.length) {
-        throw formlyUsability.getFieldError(
-          `You have specified field properties that are not allowed: ${JSON.stringify(extraProps.join(', '))}`,
-          options
-        );
-      }
-
       function getTemplateOptionsCount(options) {
         let templateOptions = 0;
         templateOptions += angular.isDefined(options.template) ? 1 : 0;

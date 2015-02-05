@@ -73,28 +73,5 @@ module.exports = ngModule => {
       });
 
     });
-
-    describe('extra properties', () => {
-      var scope, template;
-      beforeEach(inject(function(formlyConfig, $rootScope) {
-        formlyConfig.setType({
-          name: 'text', template: `<input name="{{::id}}" ng-model="model[options.key]" />`
-        });
-        scope = $rootScope.$new();
-        scope.model = {};
-        template = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
-      }));
-
-      it('should throw errors when a field has extra properties', () => {
-        scope.fields = [
-          {
-            type: 'text',
-            extraProp: 'whatever'
-          }
-        ];
-        $compile(angular.element(template))(scope);
-        expect(() => scope.$digest()).to.throw(/properties.*not.*allowed.*extraProp/);
-      });
-    });
   });
 };

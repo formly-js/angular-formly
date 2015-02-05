@@ -8,10 +8,11 @@
 - new feature: **formlyConfig.setType** allows you to specify a type that has a `name`, `template` OR `templateUrl`, and `wrapper(s)`.
 - `expressionProperties` can now accept promises! :D Thanks @djsmith42!
 - `formly-focus` new directive that allows you to easily add focus to a focusable element. This is for your templates primarily.
+- Any properties specified on a formly field that are not explicitly part of the api will result in an error thrown. Use `data` or `templateOptions` for custom field values.
 
 ## Breaking changes:
 
-- now throwing errors throughout the api to validate it is being used appropriately. Any properties specified on a formly field that are not explicitly part of the api will result in an error thrown. Use `data` or `templateOptions` for custom field values.
+- now throwing errors throughout the api to validate it is being used appropriately.
 - removing `setTemplate` and `setTemplateUrl` in favor of the new `setType` api.
 - `expressionProperties` has been simplified and improved. No longer can you specify a `data` object. Instead you specify an expression that the result of the expression will be assigned to (uses the `$parse` service).
 
