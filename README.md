@@ -339,7 +339,7 @@ See [the website](https://formly-js.github.io/angular-formly/) for examples on u
 
 This allows you to manipulate the template of a specific field. This gives you a great deal of power without sacrificing performance by having bindings which you will never need as well as save repetition in your templates. The api to this feature is as follows:
 
-```
+```javascript
 // note, most of the formlyConfigProvider functions can
 // actually be done in the `run` function as well using `formlyConfig`.
 formlyConfigProvider.templateManipulators.preWrapper.push(function(template, options, scope) {
