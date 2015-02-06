@@ -98,12 +98,35 @@ module.exports = ngModule => {
       },
       link: function fieldLink(scope, el) {
         getFieldTemplate(scope.options)
-          .then(transcludeInWrapper(scope.options))
-          .then(setElementTemplate);
+          .then(runManipulators(formlyConfig.templateManipulators.preWrapper))
+          .then(transcludeInWrappers(scope.options))
+          .then(runManipulators(formlyConfig.templateManipulators.postWrapper))
+          .then(setElementTemplate)
+          .catch(error => {
+            formlyWarn(
+              'There was a problem setting the template for this field ',
+              scope.options,
+              error
+            );
+          });
 
         function setElementTemplate(templateEl) {
           el.html(asHtml(templateEl));
           $compile(el.contents())(scope);
+        }
+
+        function runManipulators(manipulators) {
+          return function runManipulatorsOnTemplate(template) {
+            var chain = $q.when(template);
+            angular.forEach(manipulators, manipulator => {
+              chain = chain.then(template => {
+                return $q.when(manipulator(template, scope.options, scope)).then(newTemplate => {
+                  return newTemplate.length ? asHtml(newTemplate) : newTemplate;
+                });
+              });
+            });
+            return chain;
+          };
         }
       }
     };
@@ -144,7 +167,7 @@ module.exports = ngModule => {
       }
     }
 
-    function transcludeInWrapper(options) {
+    function transcludeInWrappers(options) {
       let wrapper = getWrapperOption(options);
 
       return function transcludeTemplate(template) {
@@ -180,7 +203,7 @@ module.exports = ngModule => {
       let wrapperEl = angular.element(wrapper);
       let transcludeEl = wrapperEl.find('formly-transclude');
       transcludeEl.replaceWith(template);
-      return wrapperEl;
+      return asHtml(wrapperEl);
     }
 
     function getWrapperOption(options) {

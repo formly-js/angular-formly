@@ -9,6 +9,8 @@
 - `expressionProperties` can now accept promises! :D Thanks @djsmith42!
 - `formly-focus` new directive that allows you to easily add focus to a focusable element. This is for your templates primarily.
 - Any properties specified on a formly field that are not explicitly part of the api will result in an error thrown. Use `data` or `templateOptions` for custom field values.
+- **AWESOME** new feature: `formlyConfigProvider.templateManipulators`. This allows you to manipulate templates on a per-field basis prior to them being compiled. This gives you a TON of power over your templates. Game changer I'd say... :-) Currently you have `preWrapper` and `postWrapper` arrays to interact with, but I'm thinking of removing wrappers altogether in favor of this more powerful and more simple api.
+- `ngModelAttrs` new field config option. Allows you to dynamically add attributes to the `ng-model` element of a field's template. Uses `formlyConfigProvider.templateManipulators.preWrapper`
 
 ## Breaking changes:
 

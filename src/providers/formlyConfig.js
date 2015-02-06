@@ -22,6 +22,10 @@ module.exports = ngModule => {
       removeWrapperByName: removeWrapperByName,
       removeWrappersForType: removeWrappersForType,
       disableWarnings: false,
+      templateManipulators: {
+        preWrapper: [ngModelAttrsManipulator],
+        postWrapper: []
+      },
       $get: () => this
     });
 
@@ -159,6 +163,28 @@ module.exports = ngModule => {
       } else {
         wrappers.forEach((wrapper) => removeWrapperByName(wrapper.name));
         return wrappers;
+      }
+    }
+
+    function ngModelAttrsManipulator(template, options, scope) {
+      if (angular.isObject(options.ngModelAttrs)) {
+        var el = angular.element('<a></a>');
+        el.append(template);
+        var modelEls = angular.element(el[0].querySelectorAll('[ng-model]'));
+        if (modelEls) {
+          angular.forEach(options.ngModelAttrs.bound, function(val, attr) {
+            modelEls.attr(attr, 'options.ngModelAttrs.bound[\'' + attr + '\']');
+          });
+          angular.forEach(options.ngModelAttrs.unbound, function(val, attr) {
+            modelEls.attr(attr, scope.$eval(val));
+          });
+          console.log(el.html());
+          return el.html();
+        } else {
+          return template;
+        }
+      } else {
+        return template;
       }
     }
 

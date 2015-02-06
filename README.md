@@ -198,6 +198,13 @@ vm.fields = [
 >`undefined`
 
 ---
+##### ngModelAttrs (object)
+>`ngModelAttrs` is used in an angular-formly created templateManipulator to automatically add attributes to the ng-model element of field templates. There are two properties: `bound` and `unbound`. In both cases, the key is the attribute to add to the `ng-model` element. In the `unbound` case, the value will be evaluated on the field's scope, and assigned to the attribute (not bound). In the `bound` case, the property will be assigned as the value (for example: the value `'ng-pattern': /abc/` would result in: `ng-pattern="options.ngModelAttrs['ng-pattern']"` which, ultimately, would result in `ng-pattern="/abc/"` where `/abc/` is bound to the value of `options.ngModelAttrs['ng-pattern']` and therefore, can be changed via `expressionProperties`.
+
+###### Default
+>`undefined`
+
+---
 ##### modelOptions (object)
 >`modelOptions` is used to make your templates easier to work with. Normally, you would have to do this in each of your templates: `ng-model="model[options.key || index]"`. However, if you like, you can take advantage of `ng-model-options` via the `modelOptions` property. This will allow you to do `ng-model="value" ng-model-options="options.modelOptions"` not necessarily less verbose, but a little easier to understand. To accomplish this, each `formly-field` adds a `value` function on the scope. It is a traditional getter/setter for you to use in your templates. For more information on ng-model-options, see [these](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-getters-and-setters) [egghead](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-updateon-and-debounce) [lessons](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ngmodeloptions-allows-you-to-set-a-timezone-on-your-model).
 
@@ -327,6 +334,10 @@ Also, note, that if you want to remove the default wrapper, this is done by pass
 Another note, you can instead override wrappers (and types as well) without a warning if you specify an `overwriteOk: true` property.
 
 See [the website](https://formly-js.github.io/angular-formly/) for examples on usage
+
+##### templateManipulators
+
+This allows you to manipulate the template of a specific field. This gives you a great deal of power without sacrificing performance by having bindings which you will never need as well as save repetition in your templates.
 
 ##### disableWarnings
 

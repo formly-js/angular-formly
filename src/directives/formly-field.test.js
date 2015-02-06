@@ -73,5 +73,80 @@ module.exports = ngModule => {
       });
 
     });
+
+
+    describe('templateManipulators', () => {
+      testTemplateManipulators(true);
+      testTemplateManipulators(false);
+
+      function testTemplateManipulators(isPre) {
+        describe(isPre ? 'preWrapper' : 'postWrapper', () => {
+          var manipulators, scope;
+          var formTemplate = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
+          var textTemplate = '<input name="{{::id}}" ng-model="model[options.key]">';
+          beforeEach(inject((formlyConfig, $rootScope) => {
+            manipulators = formlyConfig.templateManipulators[isPre ? 'preWrapper' : 'postWrapper'];
+            formlyConfig.setWrapper([
+              {
+                types: 'text',
+                template: '<div class="my-template-wrapper"><formly-transclude></formly-transclude></div>'
+              }
+            ]);
+            formlyConfig.setType({
+              name: 'text', template: textTemplate
+            });
+            scope = $rootScope.$new();
+            scope.model = {};
+            scope.fields = [
+              {type: 'text'}
+            ];
+          }));
+
+          var when = isPre ? 'before' : 'after';
+
+          it(`should call the manipulators when compiling a field ${when} the element is wrapped in wrappers`, () => {
+            var manipulatedTemplate;
+            manipulators.push((templateToManipulate, fieldOptions, scope) => {
+              if (isPre) {
+                expect(textTemplate).to.equal(templateToManipulate);
+              }
+              expect(fieldOptions).to.equal(scope.fields[0]);
+              expect(scope.options).to.equal(fieldOptions);
+              if (isPre) {
+                expect(templateToManipulate).to.not.contain('my-template-wrapper');
+              } else {
+                expect(templateToManipulate).to.contain('my-template-wrapper');
+              }
+              manipulatedTemplate = angular.element(templateToManipulate).addClass('manipulated');
+              return manipulatedTemplate;
+            });
+
+            manipulators.push((templateToManipulate, fieldOptions, scope) => {
+              if (isPre) {
+                expect(asHtml(manipulatedTemplate)).to.equal(templateToManipulate);
+              }
+              expect(fieldOptions).to.equal(scope.fields[0]);
+              expect(scope.options).to.equal(fieldOptions);
+              if (isPre) {
+                expect(templateToManipulate).to.not.contain('my-template-wrapper');
+              } else {
+                expect(templateToManipulate).to.contain('my-template-wrapper');
+              }
+              expect(templateToManipulate).to.contain('manipulated');
+              return angular.element(templateToManipulate).addClass('manipulated-twice');
+            });
+            var el = $compile(angular.element(formTemplate))(scope);
+            scope.$digest();
+            expect(el[0].querySelector('.manipulated')).to.exist;
+            expect(el[0].querySelector('.manipulated-twice')).to.exist;
+
+            function asHtml(el) {
+              return angular.element('<a></a>').append(el).html();
+            }
+          });
+        });
+      }
+    });
+
   });
 };

@@ -2,7 +2,16 @@
   'use strict';
 
   var app = angular.module('app', ['formly', 'formlyBootstrap'], function(formlyConfigProvider) {
-  //var app = angular.module('app', ['formly', 'formlyVanilla'], function(formlyConfigProvider) {
+  });
+
+  app.run(function(formlyConfig, $http, $templateCache) {
+    formlyConfig.templateManipulators.postWrapper.push(function(template) {
+      return $http.get('components/wrapper.html', {
+        cache: $templateCache
+      }).then(function(response) {
+        return response.data.replace('<my-own-transclude></my-own-transclude>', template);
+      });
+    });
   });
 
   app.controller('MainCtrl', function MainCtrl($timeout, $q) {
@@ -23,17 +32,22 @@
       {
         type: 'input',
         key: 'myKey',
+        ngModelAttrs: {
+          bound: {
+            'ng-maxlength': 6,
+            'ng-disabled': false
+          },
+          unbound: {
+            pattern: '"^abcd|^qrst"'
+          }
+        },
         templateOptions: {
           label: 'My Input',
-          description: 'This is an awesome description',
-          required: true
-        },
-        validators: {
-          maxlength: '$viewValue.length > 4'
+          required: true,
+          description: 'This is an awesome description'
         },
         expressionProperties: {
-          'templateOptions.disabled': 'model.mine',
-          'templateOptions.required': 'model.mySelect === "coolio2"'
+          'ngModelAttrs.bound["ng-disabled"]': 'model.mine'
         }
       },
       {

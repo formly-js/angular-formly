@@ -99,7 +99,7 @@ module.exports = ngModule => {
             'type', 'template', 'templateUrl', 'key', 'model',
             'expressionProperties', 'data', 'templateOptions',
             'wrapper', 'modelOptions', 'watcher', 'validators',
-            'noFormControl', 'hide'
+            'noFormControl', 'hide', 'ngModelAttrs'
           ];
           $scope.fields.forEach(field => {
             var extraProps = Object.keys(field).filter(prop => allowedProperties.indexOf(prop) === -1);
