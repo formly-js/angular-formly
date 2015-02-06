@@ -18,7 +18,6 @@ module.exports = ngModule => {
         form: '=?'
       },
       controller: function($scope) {
-        apiCheck();
         $scope.formId = `formly_${currentFormId++}`;
 
         angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
@@ -91,28 +90,6 @@ module.exports = ngModule => {
 
         function modifyArgs(watcher, index, ...originalArgs) {
           return [$scope.fields[index], ...originalArgs, watcher.stopWatching];
-        }
-
-        function apiCheck() {
-          // check that only allowed properties are provided
-          var allowedProperties = [
-            'type', 'template', 'templateUrl', 'key', 'model',
-            'expressionProperties', 'data', 'templateOptions',
-            'wrapper', 'modelOptions', 'watcher', 'validators',
-            'noFormControl', 'hide', 'ngModelAttrs'
-          ];
-          $scope.fields.forEach(field => {
-            var extraProps = Object.keys(field).filter(prop => allowedProperties.indexOf(prop) === -1);
-            if (extraProps.length) {
-              throw formlyUsability.getFormlyError(
-                'you-have-specified-field-properties-that-are-not-allowed',
-                `You have specified field properties that are not allowed: ${JSON.stringify(extraProps.join(', '))}`,
-                field
-              );
-            }
-          });
-
-
         }
       },
       link: function(scope, el, attrs) {

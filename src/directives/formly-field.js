@@ -18,6 +18,7 @@ module.exports = ngModule => {
         form: '=?'
       },
       controller: function fieldController($scope, $interval, $parse) {
+        /* jshint maxcomplexity:6 */
         apiCheck($scope.options);
         // set field id to link labels and fields
         $scope.id = formlyUtil.getFieldId($scope.formId, $scope.options, $scope.index);
@@ -27,7 +28,7 @@ module.exports = ngModule => {
           key: $scope.options.key || $scope.index || 0,
           value: valueGetterSetter,
           runExpressions: runExpressions,
-          modelOptions: {
+          modelOptions: $scope.options.modelOptions || {
             getterSetter: true,
             allowInvalid: true
           }
@@ -256,6 +257,24 @@ module.exports = ngModule => {
         );
       }
 
+      // check that only allowed properties are provided
+      var allowedProperties = [
+        'type', 'template', 'templateUrl', 'key', 'model',
+        'expressionProperties', 'data', 'templateOptions',
+        'wrapper', 'modelOptions', 'watcher', 'validators',
+        'noFormControl', 'hide', 'ngModelAttrs',
+        // things we add to the field after the fact are ok
+        'formControl', 'value', 'runExpressions', ''
+      ];
+      var extraProps = Object.keys(options).filter(prop => allowedProperties.indexOf(prop) === -1);
+      if (extraProps.length) {
+        throw formlyUsability.getFieldError(
+          'you-have-specified-field-properties-that-are-not-allowed',
+          `You have specified field properties that are not allowed: ${JSON.stringify(extraProps.join(', '))}`,
+          options
+        );
+      }
+
       function getTemplateOptionsCount(options) {
         let templateOptions = 0;
         templateOptions += angular.isDefined(options.template) ? 1 : 0;
@@ -264,6 +283,7 @@ module.exports = ngModule => {
         return templateOptions;
       }
     }
+
   }
 
   function arrayify(obj) {
