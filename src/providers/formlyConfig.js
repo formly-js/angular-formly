@@ -178,7 +178,6 @@ module.exports = ngModule => {
           angular.forEach(options.ngModelAttrs.unbound, function(val, attr) {
             modelEls.attr(attr, scope.$eval(val));
           });
-          console.log(el.html());
           return el.html();
         } else {
           return template;
