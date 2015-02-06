@@ -337,7 +337,31 @@ See [the website](https://formly-js.github.io/angular-formly/) for examples on u
 
 ##### templateManipulators
 
-This allows you to manipulate the template of a specific field. This gives you a great deal of power without sacrificing performance by having bindings which you will never need as well as save repetition in your templates.
+This allows you to manipulate the template of a specific field. This gives you a great deal of power without sacrificing performance by having bindings which you will never need as well as save repetition in your templates. The api to this feature is as follows:
+
+```
+// note, most of the formlyConfigProvider functions can
+// actually be done in the `run` function as well using `formlyConfig`.
+formlyConfigProvider.templateManipulators.preWrapper.push(function(template, options, scope) {
+  // determine if you wish to do anything with this template,
+  // manipulated as needed, and return either the old template,
+  // the new template, or a promise that will resolve with the
+  // new template... for example
+  if (options.data.addWarningMessage) {
+    return template + '<div>This is a warning message!!!</div>';
+  } else {
+    return template;
+  }
+});
+
+// or, if you wanted to load a template, you would do it in the
+// run function so you can get $http, and $templateCache, then do:
+formlyConfig.templateManipulators.preWrapper.push(function(template, options, scope) {
+  return $http.get('the/template.html', {cache: $templateCache}).then(function(response) {
+    return response.data.replace('where-the-template-goes', template);
+  });
+});
+```
 
 ##### disableWarnings
 
