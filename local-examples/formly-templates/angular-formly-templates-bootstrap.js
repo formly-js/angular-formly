@@ -1,4 +1,4 @@
-// "formlyBootstrap" version 2.0.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// "formlyBootstrap" version 3.0.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
@@ -17,15 +17,8 @@
 
 angular.module('formlyBootstrap', ['formly'], ["formlyConfigProvider", function configFormlyVanilla(formlyConfigProvider) {
   'use strict';
-  var fields = [
-    'input', 'radio', 'select', 'textarea', 'number'
-  ];
 
   formlyConfigProvider.setWrapper([
-    {
-      name: 'bootstrapDescription',
-      templateUrl: 'wrappers/formly-wrappers-bootstrap-description.html'
-    },
     {
       name: 'bootstrapLabel',
       templateUrl: 'wrappers/formly-wrappers-bootstrap-label.html'
@@ -36,20 +29,67 @@ angular.module('formlyBootstrap', ['formly'], ["formlyConfigProvider", function 
     }
   ]);
 
-  angular.forEach(fields, function(fieldName) {
+  var commonWrappers = ['bootstrapLabel', 'bootstrapHasError'];
+
+  angular.forEach(['radio', 'select'], function(fieldName) {
     formlyConfigProvider.setType({
       name: fieldName,
-      templateUrl: 'fields/formly-field-' + fieldName + '.html',
-      wrapper: ['bootstrapDescription', 'bootstrapLabel', 'bootstrapHasError']
+      templateUrl: getFieldTemplateUrl(fieldName),
+      wrapper: commonWrappers
     });
+  });
+  formlyConfigProvider.setType({
+    name: 'input',
+    template: '<input class="form-control" ng-model="model[options.key]">',
+    wrapper: commonWrappers
+  });
+
+  // textarea has custom defaultOptions
+  formlyConfigProvider.setType({
+    name: 'textarea',
+    template: '<textarea class="form-control" ng-model="model[options.key]"></textarea>',
+    wrapper: commonWrappers,
+    defaultOptions: {
+      data: {
+        ngModelAttributes: {rows: 'rows', cols: 'cols'}
+      }
+    }
   });
 
   // checkbox doesn't have a bootstrapLabel wrapper
   formlyConfigProvider.setType({
     name: 'checkbox',
-    templateUrl: 'fields/formly-field-checkbox.html',
-    wrapper: ['bootstrapDescription', 'bootstrapHasError']
+    templateUrl: getFieldTemplateUrl('checkbox'),
+    wrapper: ['bootstrapHasError']
   });
+
+  formlyConfigProvider.templateManipulators.preWrapper.push(function ariaDescribedBy(template, options, scope) {
+    if (options.templateOptions && angular.isDefined(options.templateOptions.description) &&
+      options.type !== 'radio' && options.type !== 'checkbox') {
+      var el = angular.element('<a></a>');
+      el.append(template);
+      var modelEls = angular.element(el[0].querySelectorAll('[ng-model]'));
+      if (modelEls) {
+        el.append(
+          '<p id="' + scope.id + '_description"' +
+              'class="help-block"' +
+              'ng-if="options.templateOptions.description">' +
+            '{{options.templateOptions.description}}' +
+          '</p>'
+        );
+        modelEls.attr('aria-describedby', scope.id + '_description');
+        return el.html();
+      } else {
+        return template;
+      }
+    } else {
+      return template;
+    }
+  });
+
+  function getFieldTemplateUrl(name) {
+    return 'fields/formly-field-' + name + '.html';
+  }
 
 }]);
 
@@ -57,38 +97,17 @@ angular.module('formlyBootstrap').run(['$templateCache', function($templateCache
   'use strict';
 
   $templateCache.put('fields/formly-field-checkbox.html',
-    "<div class=checkbox><label><input type=checkbox class=formly-field-checkbox id={{id}} formly-dynamic-name=id formly-custom-validation=options.validators aria-describedby={{id}}_description ng-required=options.templateOptions.required ng-disabled=options.templateOptions.disabled ng-model=model[options.key]> {{options.templateOptions.label}} {{options.templateOptions.required ? '*' : ''}}</label></div>"
-  );
-
-
-  $templateCache.put('fields/formly-field-input.html',
-    "<input type={{options.templateOptions.type}} class=form-control id={{id}} formly-dynamic-name=id formly-custom-validation=options.validators placeholder={{options.templateOptions.placeholder}} aria-describedby={{id}}_description ng-required=options.templateOptions.required ng-disabled=options.templateOptions.disabled ng-model=model[options.key]>"
-  );
-
-
-  $templateCache.put('fields/formly-field-number.html',
-    "<input type=number class=form-control id={{id}} formly-dynamic-name=id formly-custom-validation=options.validators placeholder={{options.templateOptions.placeholder}} aria-describedby={{id}}_description ng-required=options.templateOptions.required ng-disabled=options.templateOptions.disabled min={{options.templateOptions.min}} max={{options.templateOptions.max}} ng-model=model[options.key]>"
+    "<div class=checkbox><label><input type=checkbox class=formly-field-checkbox ng-model=model[options.key]> {{options.templateOptions.label}} {{options.templateOptions.required ? '*' : ''}}</label></div>"
   );
 
 
   $templateCache.put('fields/formly-field-radio.html',
-    "<div class=radio-group><div ng-repeat=\"(key, option) in options.templateOptions.options\" class=radio><label><input type=radio formly-dynamic-name=id formly-custom-validation=options.validators id=\"{{id + '_'+ $index}}\" aria-describedby={{id}}_description ng-value=option.value ng-required=options.templateOptions.required ng-model=$parent.model[$parent.options.key]> {{option.name}}</label></div></div>"
+    "<div class=radio-group><div ng-repeat=\"(key, option) in options.templateOptions.options\" class=radio><label><input type=radio id=\"{{id + '_'+ $index}}\" ng-value=option.value ng-model=model[options.key]> {{option.name}}</label></div></div>"
   );
 
 
   $templateCache.put('fields/formly-field-select.html',
-    "<select id={{id}} class=form-control formly-dynamic-name=id formly-custom-validation=options.validators aria-describedby={{id}}_description ng-model=model[options.key] ng-required=options.templateOptions.required ng-disabled=options.templateOptions.disabled ng-options=\"option.value as option.name group by option.group for option in options.templateOptions.options\"></select>"
-  );
-
-
-  $templateCache.put('fields/formly-field-textarea.html',
-    "<textarea id={{id}} class=form-control formly-dynamic-name=id formly-custom-validation=options.validators rows={{options.templateOptions.rows}} cols={{options.templateOptions.cols}} placeholder={{options.templateOptions.placeholder}} aria-describedby={{id}}_description ng-required=options.templateOptions.required ng-disabled=options.templateOptions.disabled ng-model=model[options.key]>\n" +
-    "</textarea>"
-  );
-
-
-  $templateCache.put('wrappers/formly-wrappers-bootstrap-description.html',
-    "<div><formly-transclude></formly-transclude><p id={{id}}_description class=help-block ng-if=options.templateOptions.description>{{options.templateOptions.description}}</p></div>"
+    "<select class=form-control ng-model=model[options.key] ng-options=\"option.value as option.name group by option.group for option in options.templateOptions.options\"></select>"
   );
 
 

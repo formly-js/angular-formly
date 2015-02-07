@@ -181,7 +181,7 @@ module.exports = ngModule => {
         describe(isPre ? 'preWrapper' : 'postWrapper', () => {
           var manipulators, scope;
           var formTemplate = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
-          var textTemplate = '<input name="{{::id}}" ng-model="model[options.key]">';
+          var textTemplate = '<input class="text-template" name="{{::id}}" ng-model="model[options.key]">';
           beforeEach(inject((formlyConfig, $rootScope) => {
             manipulators = formlyConfig.templateManipulators[isPre ? 'preWrapper' : 'postWrapper'];
             formlyConfig.setWrapper([
@@ -206,7 +206,7 @@ module.exports = ngModule => {
             var manipulatedTemplate;
             manipulators.push((templateToManipulate, fieldOptions, scope) => {
               if (isPre) {
-                expect(textTemplate).to.equal(templateToManipulate);
+                expect(templateToManipulate).to.contain('text-template');
               }
               expect(fieldOptions).to.equal(scope.fields[0]);
               expect(scope.options).to.equal(fieldOptions);

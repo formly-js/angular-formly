@@ -1,7 +1,8 @@
 (function() {
   'use strict';
 
-  var app = angular.module('app', ['formly', 'formlyBootstrap'], function(formlyConfigProvider) {
+  var app = angular.module('app', ['formly', 'formlyVanilla'], function(formlyConfigProvider) {
+  //var app = angular.module('app', ['formly', 'formlyBootstrap'], function(formlyConfigProvider) {
   });
 
   app.run(function(formlyConfig, $http, $templateCache) {
@@ -42,9 +43,11 @@
           }
         },
         templateOptions: {
+          placeholder: 'This rocks',
           label: 'My Input',
           required: true,
-          description: 'This is an awesome description'
+          description: 'This is an awesome description',
+          focus: true
         },
         expressionProperties: {
           'ngModelAttrs.bound["ng-disabled"]': 'model.mine'
@@ -74,26 +77,44 @@
         }
       },
       {
+        type: 'textarea',
+        key: 'coolTextarea',
+        templateOptions: {
+          label: 'Type stuff',
+          placeholder: 'Way fun'
+        }
+      },
+      {
         type: 'radio',
         key: 'myRadios',
         templateOptions: {
           label: 'Cool Radios',
+          disabled: true,
           options: [
             {name: 'item 1', value: 'coolio'},
             {name: 'item 2', value: 'coolio2'},
             {name: 'item 3', value: 'coolio3'}
           ],
           description: 'Click one!'
+        },
+        expressionProperties: {
+
         }
       },
       {
-        type: 'number',
+        type: 'input',
         key: 'aNumber',
+        ngModelAttrs: {
+          unbound: {
+            max: '10',
+            min: '-10'
+          }
+        },
         templateOptions: {
+          type: 'number',
           label: 'Number stuff',
-          max: 10,
-          min: -10,
-          placeholder: '10 is the max, -10 is the min...'
+          placeholder: '10 is the max, -10 is the min...',
+          description: null
         }
       },
       {

@@ -384,6 +384,19 @@ formlyConfig.templateManipulators.preWrapper.push(function(template, options, sc
 });
 ```
 
+Note! There is a *built-in* `templateManipulator` that automatically adds attributes to the ng-model element of your templates for you. Here are the things you need to know about it:
+
+- It will never override existing attributes
+- To prevent it from running on your field, simply set `data: {noTouchy: true}` and this template manipulator will skip yours
+- It wont do anything to the template if it can't find any elements with the attribute `ng-model`.
+- It first goes through the `bound` and `unbound` `ngModelAttrs` specified for the field (read more about that above)
+- It adds a `name` and `id` attribute (the `scope.id` for both of them)
+- It adds the `formly-custom-validation` directive if the field has `options.validators`
+- It adds a bunch of `ng-` attributes if the corresponding value is present on `templateOptions` or in `expressionProperties`. You can specify additional `ng-` attributes with the `data.ngModelBoundAttributes` property.
+- It adds a handful of normal html attributes if the corresponding value is present on `templateOptions` or in `expressionProperties`. These will be added as `{{expressions}}`.
+
+This is incredibly powerful because it makes the templates require much less bloat AND it allows you to avoid paying the cost of watchers that you'd never use (like a field that will never be required for example).
+
 ##### disableWarnings
 
 Formly gives some useful warnings when you attempt to use a template that doesn't exist or there's a problem loading a template. You can disable these warnings via `formlyConfigProvider.disableWarnings = true`

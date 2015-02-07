@@ -134,7 +134,7 @@ module.exports = ngModule => {
             angular.forEach(manipulators, manipulator => {
               chain = chain.then(template => {
                 return $q.when(manipulator(template, scope.options, scope)).then(newTemplate => {
-                  return newTemplate.length ? asHtml(newTemplate) : newTemplate;
+                  return angular.isString(newTemplate) ? newTemplate : asHtml(newTemplate);
                 });
               });
             });
@@ -185,7 +185,7 @@ module.exports = ngModule => {
 
       return function transcludeTemplate(template) {
         if (!wrapper) {
-          return $q.when(angular.element(template));
+          return $q.when(template);
         } else if (angular.isArray(wrapper)) {
           wrapper.forEach(formlyUsability.checkWrapper);
           let promises = wrapper.map(w => getTemplate(w.template || w.templateUrl, !w.template));
