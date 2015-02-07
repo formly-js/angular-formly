@@ -1,4 +1,12 @@
-# 3.0.0 (Unpublished)
+# 3.0.2  (Latest)
+
+- Updated README and CHANGELOG
+
+# 3.0.1
+
+- Botched 3.0.0
+
+# 3.0.0
 
 ## Backward compatible changes and new features
 

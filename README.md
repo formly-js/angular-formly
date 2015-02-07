@@ -10,6 +10,10 @@ Formly for Angular is an AngularJS module which has directives to help customize
 <formly-form model="formData" fields="formFields"></formly-form>
 ```
 
+### NOTICE: UPGRADING FROM 2.0 to 3.0?
+
+There were some [significant changes](https://github.com/formly-js/angular-formly/blob/master/CHANGELOG.md) that you'll want to be aware of. In order to upgrade and get all the cool features, you're going to need to change your field configurations. [Here is a tool](http://jsbin.com/ruwoke) that should help make that process easier. Also, if you are not able to update the configuration very easily, see [this issue](https://github.com/formly-js/angular-formly/issues/162) for ideas on how to ease things a little.
+
 ### Demo : http://formly-js.github.io/angular-formly/
 
 ## Dependencies
