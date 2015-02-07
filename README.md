@@ -204,6 +204,14 @@ vm.fields = [
 ###### Default
 >`undefined`
 
+
+---
+##### optionsTypes (string|array of strings)
+>`optionsTypes` allows you to specify extra types to get options from. Duplicate options are overridden in later priority (index `1` will override index `0` properties). Also, these are applied *after* the `type`'s `defaultOptions` and hence will override any duplicates of those properties as well.
+
+###### Default
+>`undefined`
+
 ---
 ##### modelOptions (object)
 >`modelOptions` is used to make your templates easier to work with. Normally, you would have to do this in each of your templates: `ng-model="model[options.key || index]"`. However, if you like, you can take advantage of `ng-model-options` via the `modelOptions` property. This will allow you to do `ng-model="value" ng-model-options="options.modelOptions"` not necessarily less verbose, but a little easier to understand. To accomplish this, each `formly-field` adds a `value` function on the scope. It is a traditional getter/setter for you to use in your templates. For more information on ng-model-options, see [these](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-getters-and-setters) [egghead](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-updateon-and-debounce) [lessons](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ngmodeloptions-allows-you-to-set-a-timezone-on-your-model).
@@ -288,6 +296,19 @@ formlyConfig.setType({
   name: 'select',
   templateUrl: 'custom-formly-fields-select.html',
   wrapper: ['inner', 'outer', 'evenOuterOuter']
+});
+
+// you can also set default options for fields of this type. This can be done with or without a template or templateUrl
+// useful when combined with the field's `optionsTypes` property.
+formlyConfig.setType({
+  name: 'phone',
+  defaultOptions: {
+    ngModelAttrs: {
+      bound: {
+        'ng-pattern': /^1[2-9]\d{2}[2-9]\d{6}$/
+      }
+    }
+  }
 });
 ```
 

@@ -19,6 +19,7 @@ module.exports = ngModule => {
       },
       controller: function fieldController($scope, $interval, $parse) {
         /* jshint maxcomplexity:6 */
+        mergeFieldOptionsWithTypeDefaults($scope.options);
         apiCheck($scope.options);
         // set field id to link labels and fields
         $scope.id = formlyUtil.getFieldId($scope.formId, $scope.options, $scope.index);
@@ -96,6 +97,17 @@ module.exports = ngModule => {
             $interval.cancel(interval);
           }
         }
+
+        function mergeFieldOptionsWithTypeDefaults(options) {
+          var type = formlyConfig.getType(options.type, true, options);
+          if (type && type.defaultOptions) {
+            formlyUtil.reverseDeepMerge(options, type.defaultOptions);
+          }
+          var properOrder = arrayify(options.optionsTypes).reverse(); // so the right things are overridden
+          angular.forEach(properOrder, typeName => {
+            formlyUtil.reverseDeepMerge(options, formlyConfig.getType(typeName, true, options).defaultOptions);
+          });
+        }
       },
       link: function fieldLink(scope, el) {
         getFieldTemplate(scope.options)
@@ -138,7 +150,7 @@ module.exports = ngModule => {
     }
 
     function getFieldTemplate(options) {
-      let type = formlyConfig.getType(options.type);
+      let type = formlyConfig.getType(options.type, true, options);
       let template = options.template || type && type.template;
       let templateUrl = options.templateUrl || type && type.templateUrl;
       if (!template && !templateUrl) {
@@ -227,7 +239,7 @@ module.exports = ngModule => {
       }
       wrapper = arrayify(wrapper);
       var defaultWrapper = formlyConfig.getWrapper();
-      var type = formlyConfig.getType(options.type);
+      var type = formlyConfig.getType(options.type, true, options);
       if (type && type.wrapper) {
         let typeWrappers = arrayify(type.wrapper).map(formlyConfig.getWrapper);
         wrapper = wrapper.concat(typeWrappers);
@@ -262,9 +274,9 @@ module.exports = ngModule => {
         'type', 'template', 'templateUrl', 'key', 'model',
         'expressionProperties', 'data', 'templateOptions',
         'wrapper', 'modelOptions', 'watcher', 'validators',
-        'noFormControl', 'hide', 'ngModelAttrs',
+        'noFormControl', 'hide', 'ngModelAttrs', 'optionsTypes',
         // things we add to the field after the fact are ok
-        'formControl', 'value', 'runExpressions', ''
+        'formControl', 'value', 'runExpressions'
       ];
       var extraProps = Object.keys(options).filter(prop => allowedProperties.indexOf(prop) === -1);
       if (extraProps.length) {

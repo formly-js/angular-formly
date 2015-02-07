@@ -40,20 +40,29 @@ module.exports = ngModule => {
       }
     }
 
-    function getType(name) {
-      return typeMap[name];
+    function getType(name, throwError, errorContext) {
+      var type = typeMap[name];
+      if (!type && throwError === true) {
+        throw getError(
+          `There is no type by the name of "${name}": ${JSON.stringify(errorContext)}`
+        );
+      } else {
+        return type;
+      }
     }
 
     function checkType(options) {
       if (!options.name) {
         throw getError(`You must provide a name for setType. You provided: ${JSON.stringify(arguments)}`);
-      } else if (!options.template && !options.templateUrl) {
+      } else if (!options.defaultOptions && !options.template && !options.templateUrl) {
         throw getError(
-          `You must provide a template OR templateUrl for setType. You provided neither: ${JSON.stringify(arguments)}`
+          `You must provide defaultOptions OR a template OR templateUrl for setType. ` +
+          `You provided none of these: ${JSON.stringify(arguments)}`
         );
       } else if (options.template && options.templateUrl) {
         throw getError(
-          `You must provide a template OR templateUrl for setType. You provided both: ${JSON.stringify(arguments)}`
+          `You must provide at most a template OR templateUrl for setType. ` +
+          `You provided both: ${JSON.stringify(arguments)}`
         );
       }
       if (!options.overwriteOk) {

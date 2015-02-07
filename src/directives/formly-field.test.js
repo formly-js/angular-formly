@@ -76,7 +76,8 @@ module.exports = ngModule => {
 
 
     describe('api check', () => {
-      var scope, template, $compile;
+      var scope, $compile;
+      var template = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
       beforeEach(inject((formlyConfig, $rootScope, _$compile_)  => {
         $compile = _$compile_;
         formlyConfig.setType({
@@ -84,7 +85,6 @@ module.exports = ngModule => {
         });
         scope = $rootScope.$new();
         scope.model = {};
-        template = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
       }));
 
       it('should throw an error when a field has extra properties', () => {
@@ -97,6 +97,78 @@ module.exports = ngModule => {
         $compile(angular.element(template))(scope);
 
         expect(() => scope.$digest()).to.throw(/properties.*not.*allowed.*extraProp/);
+      });
+    });
+
+    describe('default type options', () => {
+      var scope, $compile;
+      var template = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
+      beforeEach(inject((_$compile_, formlyConfig, $rootScope) => {
+        $compile = _$compile_;
+        scope = $rootScope.$new();
+        scope.model = {};
+        formlyConfig.setType({
+          name: 'ipAddress', template: '<input name="{{::id}}" ng-model="model[options.key]" />',
+          defaultOptions: {
+            data: {
+              usingDefaultOptions: true
+            },
+            validators: {
+              ipAddress: function(viewValue, modelValue) {
+                var value = modelValue || viewValue;
+                return /(\d{1,3}\.){3}\d{1,3}/.test(value);
+              }
+            }
+          }
+        });
+
+        formlyConfig.setType({
+          name: 'text', template: '<input name="{{::id}}" ng-model="model[options.key]" />',
+          defaultOptions: {
+            data: {
+              hasPropertiesFromTextType: true
+            }
+          }
+        });
+        formlyConfig.setType({
+          name: 'phone',
+          defaultOptions: {
+            ngModelAttrs: {
+              bound: {
+                'ng-pattern': /^1[2-9]\d{2}[2-9]\d{6}$/
+              }
+            }
+          }
+        });
+        formlyConfig.setType({
+          name: 'required',
+          defaultOptions: {
+            ngModelAttrs: {
+              bound: {
+                'ng-required': true,
+                'ng-pattern': 'overwriting stuff is fun for tests'
+              }
+            }
+          }
+        });
+      }));
+
+      it('should default to the ipAddress type options', () => {
+        var field = {type: 'ipAddress'};
+        scope.fields = [field];
+        $compile(angular.element(template))(scope);
+        scope.$digest();
+        expect(field.data.usingDefaultOptions).to.be.true;
+        expect(field.validators.ipAddress).to.be.a('function');
+      });
+
+      it('should be possible to specify defaultOptions-only types (non-template types)', () => {
+        var field = {type: 'text', optionsTypes: ['phone', 'required']};
+        scope.fields = [field];
+        $compile(angular.element(template))(scope);
+        scope.$digest();
+        expect(field.data.hasPropertiesFromTextType).to.be.true;
+        expect(field.ngModelAttrs.bound['ng-pattern']).to.equal('overwriting stuff is fun for tests');
       });
     });
 
