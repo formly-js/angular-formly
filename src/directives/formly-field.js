@@ -117,6 +117,7 @@ module.exports = ngModule => {
           .then(setElementTemplate)
           .catch(error => {
             formlyWarn(
+              'there-was-a-problem-setting-the-template-for-this-field',
               'There was a problem setting the template for this field ',
               scope.options,
               error
