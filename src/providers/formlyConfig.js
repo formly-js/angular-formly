@@ -41,6 +41,9 @@ module.exports = ngModule => {
     }
 
     function getType(name, throwError, errorContext) {
+      if (!name) {
+        return undefined;
+      }
       var type = typeMap[name];
       if (!type && throwError === true) {
         throw getError(

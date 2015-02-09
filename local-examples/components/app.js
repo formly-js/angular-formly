@@ -3,6 +3,26 @@
 
   //var app = angular.module('app', ['formly', 'formlyVanilla'], function(formlyConfigProvider) {
   var app = angular.module('app', ['formly', 'formlyBootstrap'], function(formlyConfigProvider) {
+    formlyConfigProvider.setType({
+      name: 'custom',
+      template: formlyConfigProvider.getType('input').template,
+      controller: function($scope) {
+        console.log($scope);
+      },
+      link: function(scope, el) {
+        setTimeout(function() {
+          var desc = angular.element(el[0].querySelector('.help-block'));
+          var input = el.find('input');
+          desc.addClass('ng-hide');
+          input.on('focus', function() {
+            desc.removeClass('ng-hide');
+          });
+          input.on('blur', function() {
+            desc.addClass('ng-hide');
+          });
+        });
+      }
+    });
   });
 
   app.run(function(formlyConfig, $http, $templateCache) {
@@ -64,6 +84,20 @@
             {name: 'item 2', value: 'coolio2'},
             {name: 'item 3', value: 'coolio3'}
           ]
+        }
+      },
+      {
+        type: 'custom',
+        key: 'myCustomThing',
+        templateOptions: {
+          label: 'Custom stuff',
+          description: 'This has a link and controller!'
+        },
+        link: function(scope, el) {
+          console.log(scope, el);
+        },
+        controller: function($scope, $log) {
+          $log.info($scope);
         }
       },
       {

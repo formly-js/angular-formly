@@ -209,6 +209,19 @@ vm.fields = [
 ###### Default
 >`undefined`
 
+---
+##### controller (controller function)
+>`controller` is a great way to add custom behavior to a specific field. You can also set the controller to a type as well. It is injectable with the $scope of the field, and anything else you have in your injector.
+
+###### Default
+>`undefined`
+
+---
+##### link (link function)
+>`link` allows you to specify a link function. It is invoked after your template has finished compiling. You are passed the normal arguments for a normal link function.
+
+###### Default
+>`undefined`
 
 ---
 ##### optionsTypes (string|array of strings)
@@ -383,6 +396,19 @@ formlyConfig.setType({
         'ng-pattern': /^1[2-9]\d{2}[2-9]\d{6}$/
       }
     }
+  }
+});
+
+// you also have the option to specify a controller and a link function
+formlyConfig.setType({
+  name: 'uploadButton',
+  controller: function($scope, $upload) {
+    $scope.onUploadClicked = function(file) {
+      return $upload.start(file); // whatever...
+    }
+  },
+  link: function(scope, el) {
+    el.addClass('manipulate-the-dom');
   }
 });
 ```

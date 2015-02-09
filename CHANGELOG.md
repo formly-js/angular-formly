@@ -1,4 +1,10 @@
-# 3.0.3 (Latest)
+# 3.0.4
+
+## Backward compatible changes and new features
+
+- Adding `controller` and `link` functions to both the field types and the field configs. You can now specify specific behaviors for components without the need to create an entire directive for it. Pretty neat huh? :-)
+
+# 3.0.3
 
 ## Backward compatible changes and new features
 

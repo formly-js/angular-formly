@@ -17,8 +17,8 @@ module.exports = ngModule => {
         fields: '=?',
         form: '=?'
       },
-      controller: function fieldController($scope, $interval, $parse) {
-        /* jshint maxcomplexity:6 */
+      controller: function fieldController($scope, $interval, $parse, $controller) {
+        /* jshint maxcomplexity:7 */
         mergeFieldOptionsWithTypeDefaults($scope.options);
         apiCheck($scope.options);
         // set field id to link labels and fields
@@ -34,6 +34,7 @@ module.exports = ngModule => {
             allowInvalid: true
           }
         });
+        var type = $scope.options.type && formlyConfig.getType($scope.options.type);
 
         // initalization
         runExpressions();
@@ -42,6 +43,16 @@ module.exports = ngModule => {
         }
         if ($scope.options.model) {
           $scope.$watch('options.model', runExpressions, true);
+        }
+        if (type && type.controller) {
+          angular.extend(this, $controller(type.controller, {
+            $scope: $scope
+          }));
+        }
+        if ($scope.options.controller) {
+          angular.extend(this, $controller($scope.options.controller, {
+            $scope: $scope
+          }));
         }
 
         // function definitions
@@ -110,6 +121,9 @@ module.exports = ngModule => {
         }
       },
       link: function fieldLink(scope, el) {
+        var type = scope.options.type && formlyConfig.getType(scope.options.type);
+        var args = arguments;
+        var thusly = this;
         getFieldTemplate(scope.options)
           .then(runManipulators(formlyConfig.templateManipulators.preWrapper))
           .then(transcludeInWrappers(scope.options))
@@ -127,6 +141,12 @@ module.exports = ngModule => {
         function setElementTemplate(templateEl) {
           el.html(asHtml(templateEl));
           $compile(el.contents())(scope);
+          if (type && type.link) {
+            type.link.apply(thusly, args);
+          }
+          if (scope.options.link) {
+            scope.options.link.apply(thusly, args);
+          }
         }
 
         function runManipulators(manipulators) {
@@ -276,6 +296,7 @@ module.exports = ngModule => {
         'expressionProperties', 'data', 'templateOptions',
         'wrapper', 'modelOptions', 'watcher', 'validators',
         'noFormControl', 'hide', 'ngModelAttrs', 'optionsTypes',
+        'link', 'controller',
         // things we add to the field after the fact are ok
         'formControl', 'value', 'runExpressions'
       ];

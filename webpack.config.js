@@ -52,10 +52,6 @@ var baseConfig = {
       {test: /\.html$/, loader: 'raw', exclude: exclude},
       {test: /\.js$/, loader: ngAnnotateLoader + '!6to5!jshint', exclude: exclude}
     ]
-  },
-  jshint: {
-    failOnHint: true,
-    emitErrors: true
   }
 };
 
@@ -80,10 +76,15 @@ var prodConfig = {
         warnings: false
       }
     })
-  ]
+  ],
+  jshint: {
+    failOnHint: true,
+    emitErrors: true
+  }
 };
 
 var testConfig = deepExtend({}, prodConfig);
+delete testConfig.jshint;
 
 var envContexts = {
   dev: {

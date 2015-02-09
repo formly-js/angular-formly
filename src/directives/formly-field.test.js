@@ -246,5 +246,77 @@ module.exports = ngModule => {
       }
     });
 
+    describe('type controllers and link functions', () => {
+      var scope, $compile, controllerFn, linkFn;
+      var template = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
+      beforeEach(inject((formlyConfig, $rootScope, _$compile_) => {
+        $compile = _$compile_;
+
+        controllerFn = function($scope) {
+          $scope.setInTypeController = true;
+        };
+
+        linkFn = function(scope, el, attrs) {
+          scope.setInTypeLink = true;
+          scope.el = el;
+          scope.attrs = attrs;
+        };
+
+        formlyConfig.setType({
+          name: 'text',
+          template: `<input name="{{::id}}" ng-model="model[options.key]" />`,
+          controller: ['$scope', controllerFn],
+          link: linkFn
+        });
+        scope = $rootScope.$new();
+        scope.model = {};
+      }));
+      it('should run the controller function of a type', () => {
+        scope.fields = [
+          {type: 'text'}
+        ];
+        var el = $compile(template)(scope);
+        scope.$digest();
+        var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+        expect(fieldEl.isolateScope().setInTypeController).to.be.true;
+      });
+
+      it('should run the link function of a type', () => {
+        scope.fields = [
+          {type: 'text'}
+        ];
+        var el = $compile(template)(scope);
+        scope.$digest();
+        var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+        var fieldScope = fieldEl.isolateScope();
+        expect(fieldScope.setInTypeLink).to.be.true;
+        expect(fieldScope.el[0]).to.equal(fieldEl[0]);
+      });
+
+      it('should run the controller of the specific field', () => {
+        scope.fields = [
+          {template: 'sweet mercy', controller: ['$scope', controllerFn]}
+        ];
+
+        var el = $compile(template)(scope);
+        scope.$digest();
+        var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+        expect(fieldEl.isolateScope().setInTypeController).to.be.true;
+      });
+
+
+      it('should run the link function of a type', () => {
+        scope.fields = [
+          {template: 'sweet mercy', link: linkFn}
+        ];
+        var el = $compile(template)(scope);
+        scope.$digest();
+        var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+        var fieldScope = fieldEl.isolateScope();
+        expect(fieldScope.setInTypeLink).to.be.true;
+        expect(fieldScope.el[0]).to.equal(fieldEl[0]);
+      });
+    });
+
   });
 };
