@@ -10,7 +10,9 @@
   <h1>Manual tests for formly</h1>
 </div>
 <div class="container">
-  <formly-form model="vm.user" fields="vm.fields" form="vm.form"></formly-form>
+  <form name="vm.form">
+    <formly-form model="vm.user" fields="vm.fields" form="vm.form" no-ng-form></formly-form>
+  </form>
 
   <h1>User</h1>
   <pre>{{vm.user | json}}</pre>
@@ -20,8 +22,8 @@
 
 <script src="angular/angular.js"></script>
 <script src="dist/formly.js"></script>
-<script src="formly-templates/angular-formly-templates-vanilla.js"></script>
-<!--<script src="formly-templates/angular-formly-templates-bootstrap.js"></script>-->
+<!--<script src="formly-templates/angular-formly-templates-vanilla.js"></script>-->
+<script src="formly-templates/angular-formly-templates-bootstrap.js"></script>
 <script src="components/app.js"></script>
 </body>
 </html>

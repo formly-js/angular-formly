@@ -1,8 +1,8 @@
 (function() {
   'use strict';
 
-  var app = angular.module('app', ['formly', 'formlyVanilla'], function(formlyConfigProvider) {
-  //var app = angular.module('app', ['formly', 'formlyBootstrap'], function(formlyConfigProvider) {
+  //var app = angular.module('app', ['formly', 'formlyVanilla'], function(formlyConfigProvider) {
+  var app = angular.module('app', ['formly', 'formlyBootstrap'], function(formlyConfigProvider) {
   });
 
   app.run(function(formlyConfig, $http, $templateCache) {

@@ -1,4 +1,10 @@
-# 3.0.2  (Latest)
+# 3.0.3 (Latest)
+
+## Backward compatible changes and new features
+
+- Adding optional `no-ng-form` attribute to the `formly-form`.
+
+# 3.0.2
 
 - Updated README and CHANGELOG
 

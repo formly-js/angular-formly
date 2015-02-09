@@ -100,6 +100,7 @@ $scope.onSubmit = function() {
 	console.log('form submitted:', $scope.formData);
 };
 ```
+
 ### Creating Form Fields
 When constructing fields use the options below to customize each field object. You must set at least a `type`, `template`, or `templateUrl`.
 
@@ -260,6 +261,76 @@ Formly uses angular's built-in validation mechanisms. See the [angular docs](htt
 The form controller is bound to what you specify as the `form` attribute on the `formly-form` directive. Make sure to specify a name on any `ng-model` in your custom templates to ensure that the `formControl` is added to the `options`. If you're using Angular 1.3, the `name` attribute is interpolateable (you can use `{{id}}`). If you are stuck on 1.2.x, you can use the `formly-dynamic-name` directive where the value is an expression which would return the name (so, `formly-dynamic-name="id"`). Formly will add a `formControl` property to the field, and you can reference that in your template with `options.formControl` to get access to properties like `$invalid` or `$error`. See the bootstrap templates for an example.
 
 You can also specify custom validation in your JSON. See the field called `validators` for more information on this. If you wish to leverage this in a custom template, use the `formly-custom-validation` directive and pass `options.validators` to it.
+
+### directives
+
+#### formly-form
+
+This the the main directive you'll use throughout your code. A word of advice, create your own directive that wraps this
+one. This will make any upgrades easier if the api changes at all. If you want an example of how to do this, file an
+issue and I'll demonstrate :-D
+
+The attributes allowed on the directive are as follows:
+
+##### model
+
+The model to be represented by the form.
+
+##### fields
+
+The field configurations for building the form
+
+##### form
+
+The variable to bind the `NgFormController` to.
+
+##### no-ng-form
+
+You will not likely use this often. It requires no value, but its presence will change the `formly-form` directive from
+being replace with an `ng-form` to being a `div`. If you choose this option, make sure to wrap it in your own `ng-form`
+or `form` and provide that with a `name`. Then pass that `name` to the `form` attribute so all the `formControls` of the
+fields will have somewhere to be added to.
+
+#### formly-field
+
+You will not likely need to use this directive, but if you do just know that unless you're using it inside `formly-form`
+you're fields are not going to get all the treatment (like `watchers` for example).
+
+##### options
+
+The field config. Must have a `type` OR `template` OR `templateUrl`. Everything else is optional, but it is limited to
+the options mentioned above. Any extra options will result in an error.
+
+##### model
+
+The model for the field to represent
+
+##### formId
+
+The id of the form, used to generate the id for the field which is used in the `name` (for the `formControl`) and the id
+of the field (useful for a `label`'s `for` attribute)
+
+##### index
+
+The index of the field, used if `key` is not defined on the field.
+
+##### fields
+
+The other fields. As convenience if needed.
+
+##### form
+
+The `NgFormController` that will be used to get and set the `formControl` for the field.
+
+#### formly-custom-validation
+
+This is an attribute directive. The given value should be a `validators` object.
+
+#### formly-focus
+
+This is an attribute directive. It will watch the given value and focus the element when the given value is truthy. You
+can also optionally add a `refocus` attribute and this will cause focus to be returned to the previous element with
+focus when the `formly-focus` value is set to falsey (unless the user has clicked away from the focused element).
 
 ### Global Config
 
