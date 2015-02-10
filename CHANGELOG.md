@@ -1,3 +1,14 @@
+# 3.0.5
+
+## Backward compatible changes and new features
+
+- The `ngModelAttrsManipulator` pre-wrapper `templateManipulator` now adds more invoked attributes (like `ng-blur` etc). More can be specified with `data.ngModelInvokedAttributes`.
+- Adding `options.modelOptions` to the list of things that will be auto-added to the `ng-model` element if it exists. Woot! When `options.modelOptions.getterSetter` is set to true, then it will change the `ng-model` value to `options.value` which is the getter setter every field gets.
+
+## Bug Fixes
+
+- The `ngModelAttrsManipulator` used to simply bind the `ng-click` to the `templateOptions.onClick` which wouldn't actually do anything. The new invoked attributes now actually invokes the expression.
+
 # 3.0.4
 
 ## Backward compatible changes and new features

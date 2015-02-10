@@ -232,7 +232,7 @@ vm.fields = [
 
 ---
 ##### modelOptions (object)
->`modelOptions` is used to make your templates easier to work with. Normally, you would have to do this in each of your templates: `ng-model="model[options.key || index]"`. However, if you like, you can take advantage of `ng-model-options` via the `modelOptions` property. This will allow you to do `ng-model="value" ng-model-options="options.modelOptions"` not necessarily less verbose, but a little easier to understand. To accomplish this, each `formly-field` adds a `value` function on the scope. It is a traditional getter/setter for you to use in your templates. For more information on ng-model-options, see [these](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-getters-and-setters) [egghead](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-updateon-and-debounce) [lessons](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ngmodeloptions-allows-you-to-set-a-timezone-on-your-model).
+>`modelOptions` allows you to take advantage of `ng-model-options` directive. Formly's built-in templateManipulator (see below) will add this attribute to your `ng-model` element automatically if this property exists. Note, if you use the `getter/setter` option, formly's templateManipulator will change the value of `ng-model` to `options.value` which is a getterSetter that formly adds to field options. For more information on ng-model-options, see [these](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-getters-and-setters) [egghead](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-updateon-and-debounce) [lessons](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ngmodeloptions-allows-you-to-set-a-timezone-on-your-model).
 
 ##### Default
 >`{ getterSetter: true, allowInvalid: true }`
@@ -485,7 +485,7 @@ formlyConfig.templateManipulators.preWrapper.push(function(template, options, sc
 });
 ```
 
-Note! There is a *built-in* `templateManipulator` that automatically adds attributes to the ng-model element of your templates for you. Here are the things you need to know about it:
+Note! There is a *built-in* `templateManipulator` that automatically adds attributes to the `ng-model` element(s) of your templates for you. Here are the things you need to know about it:
 
 - It will never override existing attributes
 - To prevent it from running on your field, simply set `data: {noTouchy: true}` and this template manipulator will skip yours
@@ -493,8 +493,10 @@ Note! There is a *built-in* `templateManipulator` that automatically adds attrib
 - It first goes through the `bound` and `unbound` `ngModelAttrs` specified for the field (read more about that above)
 - It adds a `name` and `id` attribute (the `scope.id` for both of them)
 - It adds the `formly-custom-validation` directive if the field has `options.validators`
-- It adds a bunch of `ng-` attributes if the corresponding value is present on `templateOptions` or in `expressionProperties`. You can specify additional `ng-` attributes with the `data.ngModelBoundAttributes` property.
-- It adds a handful of normal html attributes if the corresponding value is present on `templateOptions` or in `expressionProperties`. These will be added as `{{expressions}}`.
+- It adds `ng-model-options` directive if the field has `options.modelOptions`
+- It adds a bunch of `ng-` attributes (like `ng-maxlength`, `ng-required`, etc) if the corresponding value is present on `templateOptions` or referenced in `expressionProperties`. You can specify additional bound attributes with the `data.ngModelBoundAttributes` property
+- It adds a bunch of `ng-` attributes expressions (like `ng-click`, `ng-blur`, `ng-keypress`, etc) if the corresponding value is present on `templateOptions` (prefixed with `on`). If it is a function, it will be invoked like so: `options.templateOptions.onClick(value, options, scope, $event)`. Otherwise, it will be evaluated using `$scope.$eval` (so it can be a normal expression you would put in the attribute yourself). You can specify additional invoked attributes with the `data.ngModelInvokedAttributes` property.
+- It adds a bunch of normal attributes if the corresponding value is present on `templateOptions` or referenced in `expressionProperties`. These will added like so: `{{options.templateOptions.placeholder}}` so they will be bound. You can specify additional expression attributes with the `data.ngModelAttributes` property
 
 This is incredibly powerful because it makes the templates require much less bloat AND it allows you to avoid paying the cost of watchers that you'd never use (like a field that will never be required for example).
 
@@ -512,7 +514,11 @@ There are four places where you can put expressions. The context in which these 
 
 1) watcher - expression and listener can be functions or expression strings. This is a regular angular `$watch` (depending on the specified `type`) function and it is created on the `formly-form` scope, despite being applied to a specific field. This allows the expressions to run even if the field's scope has been destroyed (via an ng-if like when the field is hidden). The function signature differs from a normal `$watch` however. See above for more details.
 
-2) expressionProperties & validators - these expressions can be functions or expression strings. If it's a function, it's invoked with the arguments `$viewValue`, `$modelValue`, and `scope`. The scope in this case, is the field's scope. If it's an expression string, it is evaluated using `$scope.$eval` with a locals object that has `$viewValue` and `$modelValue` (however, in the case of `expressionProperties`, `$viewValue` will simply be the `$modelValue` because they don't have a hook into the `ngModelController` but we want to keep the api consistent).
+2) expressionProperties & validators - these expressions can be functions or expression strings. If it's a function,
+it's invoked with the arguments `$viewValue`, `$modelValue`, and `scope`. The scope in this case, is the field's scope.
+If it's an expression string, it is evaluated using `$scope.$eval` with a locals object that has `$viewValue` and
+`$modelValue` (however, in the case of `expressionProperties`, `$viewValue` will simply be the `$modelValue` because
+they don't have a hook into the `ngModelController` but we want to keep the api consistent).
 
 ## Custom Templates
 
@@ -524,7 +530,7 @@ You have a lot of freedom when it comes to writing templates. You don't even nee
 
 ## Roadmap
 
-- Perhaps integrate with [angular-form-builder](http://kelp404.github.io/angular-form-builder/)
+- See the [issues labeled enhancement](labels/enhancement)
 
 ## Contributing
 

@@ -181,7 +181,7 @@ module.exports = ngModule => {
     function ngModelAttrsManipulator(template, options, scope) {
       /* jshint maxcomplexity:7 */
       var el = angular.element('<a></a>');
-      var data = options.data || {};
+      var data = options.data;
       if (data.noTouchy) {
         return template;
       }
@@ -195,8 +195,14 @@ module.exports = ngModule => {
       addIfNotPresent(modelEls, 'id', scope.id);
       addIfNotPresent(modelEls, 'name', scope.id);
 
-      if (options.validators) {
+      if (angular.isDefined(options.validators)) {
         addIfNotPresent(modelEls, 'formly-custom-validation', 'options.validators');
+      }
+      if (angular.isDefined(options.modelOptions)) {
+        addIfNotPresent(modelEls, 'ng-model-options', 'options.modelOptions');
+        if (options.modelOptions.getterSetter) {
+          modelEls.attr('ng-model', 'options.value');
+        }
       }
       addTemplateOptionsAttrs();
 
@@ -210,11 +216,16 @@ module.exports = ngModule => {
           'ng-required': 'required',
           'ng-pattern': 'pattern',
           'ng-maxlength': 'maxlength',
-          'ng-minlength': 'minlength',
-          'ng-change': 'change',
-          'ng-keydown': 'keydown',
-          'ng-keyup': 'keyup',
-          'ng-keypress': 'keypress'
+          'ng-minlength': 'minlength'
+        });
+        var invokedAttributes = angular.extend(data.ngModelInvokedAttributes || {}, {
+          'ng-change': 'onChange',
+          'ng-keydown': 'onKeydown',
+          'ng-keyup': 'onKeyup',
+          'ng-keypress': 'onKeypress',
+          'ng-click': 'onClick',
+          'ng-focus': 'onFocus',
+          'ng-blur': 'onBlur'
         });
         // attributes are wrapped in curly braces
         var attributes = angular.extend(data.ngModelAttributes || {}, {
@@ -226,8 +237,12 @@ module.exports = ngModule => {
           type: 'type'
         });
 
-        addDefinedAttributes(modelEls, boundAttributes, options, false);
-        addDefinedAttributes(modelEls, attributes, options, true);
+        addDefinedAttributes(modelEls, boundAttributes, options);
+        addDefinedAttributes(modelEls, attributes, options, '{{', '}}');
+        addDefinedAttributes(modelEls, invokedAttributes, options,
+          (val) => angular.isString(val) ? '$eval(' : '',
+          (val) => angular.isString(val) ? ')' : '(model[options.key], options, this, $event)'
+        );
       }
 
       function addNgModelAttrs(ngModelAttrs) {
@@ -240,7 +255,7 @@ module.exports = ngModule => {
         });
       }
 
-      function addDefinedAttributes(els, attrs, options, isExpression) {
+      function addDefinedAttributes(els, attrs, options, prefix = '', suffix = '') {
         /* jshint maxcomplexity:6 */
         var to = options.templateOptions;
         var ep = options.expressionProperties;
@@ -250,12 +265,12 @@ module.exports = ngModule => {
           to = to || {};
           ep = ep || {};
         }
-        var valPrefix = isExpression ? '{{' : '';
-        var valSuffix = isExpression ? '}}' : '';
         angular.forEach(attrs, (val, attrName) => {
           // if it's defined as a property on template options, or if it's an expression property,
           // then we'll add the attribute (and hence the watchers)
           if (angular.isDefined(to[val]) || angular.isDefined(ep['templateOptions.' + val])) {
+            var valPrefix = angular.isFunction(prefix) ? prefix(val) : prefix;
+            var valSuffix = angular.isFunction(suffix) ? suffix(val) : suffix;
             addIfNotPresent(els, `${attrName}`, `${valPrefix}options.templateOptions['${val}']${valSuffix}`);
           }
         });

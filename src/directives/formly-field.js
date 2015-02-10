@@ -18,42 +18,20 @@ module.exports = ngModule => {
         form: '=?'
       },
       controller: function fieldController($scope, $interval, $parse, $controller) {
-        /* jshint maxcomplexity:7 */
-        mergeFieldOptionsWithTypeDefaults($scope.options);
-        apiCheck($scope.options);
+        var opts = $scope.options;
+        var fieldType = opts.type && formlyConfig.getType(opts.type);
+        simplifyLife(opts);
+        mergeFieldOptionsWithTypeDefaults(opts, fieldType);
+        apiCheck(opts);
         // set field id to link labels and fields
-        $scope.id = formlyUtil.getFieldId($scope.formId, $scope.options, $scope.index);
-
-        angular.extend($scope.options, {
-          // attach the key in case the formly-field directive is used directly
-          key: $scope.options.key || $scope.index || 0,
-          value: valueGetterSetter,
-          runExpressions: runExpressions,
-          modelOptions: $scope.options.modelOptions || {
-            getterSetter: true,
-            allowInvalid: true
-          }
-        });
-        var type = $scope.options.type && formlyConfig.getType($scope.options.type);
+        $scope.id = formlyUtil.getFieldId($scope.formId, opts, $scope.index);
 
         // initalization
+        extendOptionsWithDefaults(opts, $scope.index);
         runExpressions();
-        if (!$scope.options.noFormControl) {
-          setFormControl();
-        }
-        if ($scope.options.model) {
-          $scope.$watch('options.model', runExpressions, true);
-        }
-        if (type && type.controller) {
-          angular.extend(this, $controller(type.controller, {
-            $scope: $scope
-          }));
-        }
-        if ($scope.options.controller) {
-          angular.extend(this, $controller($scope.options.controller, {
-            $scope: $scope
-          }));
-        }
+        setFormControl($scope, opts, $interval);
+        addModelWatcher($scope, opts);
+        invokeControllers($scope, opts, fieldType);
 
         // function definitions
         function runExpressions() {
@@ -78,30 +56,70 @@ module.exports = ngModule => {
           return $scope.model[$scope.options.key];
         }
 
-        function setFormControl() {
+        function simplifyLife(options) {
+          // add data and templateOptions as empty objects so you don't have to undefined check everywhere
+          formlyUtil.reverseDeepMerge(options, {
+            data: {},
+            templateOptions: {}
+          });
+        }
+
+        function mergeFieldOptionsWithTypeDefaults(options, type) {
+          if (type) {
+            mergeOptions(options, type.defaultOptions);
+          }
+          var properOrder = arrayify(options.optionsTypes).reverse(); // so the right things are overridden
+          angular.forEach(properOrder, typeName => {
+            mergeOptions(options, formlyConfig.getType(typeName, true, options).defaultOptions);
+          });
+        }
+
+        function mergeOptions(options, extraOptions) {
+          if (extraOptions) {
+            if (angular.isFunction(extraOptions)) {
+              extraOptions = extraOptions(options);
+            }
+            formlyUtil.reverseDeepMerge(options, extraOptions);
+          }
+        }
+
+        function extendOptionsWithDefaults(options, index) {
+          angular.extend(options, {
+            // attach the key in case the formly-field directive is used directly
+            key: options.key || index || 0,
+            value: valueGetterSetter,
+            runExpressions: runExpressions
+          });
+        }
+
+        // initialization functions
+        function setFormControl(scope, options, $interval) {
+          if (options.noFormControl) {
+            return;
+          }
           var stopWaitingForDestroy;
           var maxTime = 2000;
           var intervalTime = 5;
           var iterations = 0;
           var interval = $interval(function() {
             iterations++;
-            if (!angular.isDefined($scope.options.key)) {
+            if (!angular.isDefined(options.key)) {
               return cleanUp();
             }
-            var formControl = $scope.form && $scope.form[$scope.id];
+            var formControl = scope.form && scope.form[scope.id];
             if (formControl) {
-              $scope.options.formControl = formControl;
+              options.formControl = formControl;
               cleanUp();
             } else if (intervalTime * iterations > maxTime) {
               formlyWarn(
                 'couldnt-set-the-formcontrol-after-timems',
                 `Couldn't set the formControl after ${maxTime}ms`,
-                $scope
+                scope
               );
               cleanUp();
             }
           }, intervalTime);
-          stopWaitingForDestroy = $scope.$on('$destroy', cleanUp);
+          stopWaitingForDestroy = scope.$on('$destroy', cleanUp);
 
           function cleanUp() {
             stopWaitingForDestroy();
@@ -109,14 +127,17 @@ module.exports = ngModule => {
           }
         }
 
-        function mergeFieldOptionsWithTypeDefaults(options) {
-          var type = formlyConfig.getType(options.type, true, options);
-          if (type && type.defaultOptions) {
-            formlyUtil.reverseDeepMerge(options, type.defaultOptions);
+        function addModelWatcher(scope, options) {
+          if (options.model) {
+            scope.$watch('options.model', runExpressions, true);
           }
-          var properOrder = arrayify(options.optionsTypes).reverse(); // so the right things are overridden
-          angular.forEach(properOrder, typeName => {
-            formlyUtil.reverseDeepMerge(options, formlyConfig.getType(typeName, true, options).defaultOptions);
+        }
+
+        function invokeControllers(scope, options = {}, type = {}) {
+          angular.forEach([type.controller, options.controller], controller => {
+            if (controller) {
+              $controller(controller, {$scope: scope});
+            }
           });
         }
       },
@@ -234,10 +255,11 @@ module.exports = ngModule => {
     }
 
     function doTransclusion(wrapper, template) {
-      let wrapperEl = angular.element(wrapper);
-      let transcludeEl = wrapperEl.find('formly-transclude');
+      let superWrapper = angular.element('<a></a>'); // this allows people not have to have a single root in wrappers
+      superWrapper.append(wrapper);
+      let transcludeEl = superWrapper.find('formly-transclude');
       transcludeEl.replaceWith(template);
-      return asHtml(wrapperEl);
+      return superWrapper.html();
     }
 
     function getWrapperOption(options) {
