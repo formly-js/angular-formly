@@ -320,7 +320,7 @@ module.exports = ngModule => {
         'noFormControl', 'hide', 'ngModelAttrs', 'optionsTypes',
         'link', 'controller',
         // things we add to the field after the fact are ok
-        'formControl', 'value', 'runExpressions'
+        'validationMessages', 'formControl', 'value', 'runExpressions'
       ];
       var extraProps = Object.keys(options).filter(prop => allowedProperties.indexOf(prop) === -1);
       if (extraProps.length) {

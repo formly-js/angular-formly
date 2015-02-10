@@ -1,3 +1,10 @@
+# 3.0.6
+
+## Backward compatible changes and new features
+
+- Allowing validators to be specified as objects that have `expression` and `messages` on them. This is opening the way for including built-in support for `ng-messages` in the future. For now, templates can support `ng-messages` with this enhanced api. Specifying a validator the old way works just fine.
+- When a validator has a `message` property, a function is added to `options.validationMessages` which will use `formlyUtil.formlyEval` to evaluate the message expression to get the value for the message.
+
 # 3.0.5
 
 ## Backward compatible changes and new features

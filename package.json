@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "author": "Astrism <astrisms@gmail.com>",
   "contributors": [
     "Astrism <astrisms@gmail.com>",
@@ -56,6 +56,7 @@
     "karma-firefox-launcher": "^0.1.4",
     "karma-mocha": "^0.1.10",
     "karma-webpack": "^1.5.0",
+    "loader-utils": "^0.2.6",
     "lodash": "^2.4.1",
     "lodash-node": "^2.4.1",
     "mocha": "^2.1.0",
@@ -63,6 +64,7 @@
     "raw-loader": "^0.5.1",
     "sinon": "^1.12.2",
     "sinon-chai": "^2.6.0",
+    "source-map": "^0.2.0",
     "webpack": "^1.5.3",
     "webpack-dev-server": "^1.7.0"
   }

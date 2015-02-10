@@ -256,7 +256,26 @@ $scope.$watch(function expression(field, theScope, stop) {}, function listener(f
 
 ---
 ##### validators (object)
->`validators` is an object where the keys are the name of the validity (to be passed to `$setValidity`) and the values are functions or expressions which returns true if it is valid. Templates can pass this option to the `formly-custom-validation` directive which will add a parser (or validator, see note) to the `ngModel` controller of the field. The validator can be a function or string expression and will be evaluated using `formlyEval` from `formlyUtils` see below for more information. **Note:** Formly will utilize the `$validators` pipeline (introduced in angular 1.3) if available, otherwise it will fallback to `$parsers`. If you are using angular 1.3, formly will automatically use the `$asyncValidators` pipeline if your validator is a function (and wrap it in `$q.when` so you don't need to worry about returning a promise if that doesn't make sense for your validator). Note, in this case, all the normal $asyncValidators rules apply. To fail the validation, reject the promise. Also, note the performance implications when you mix sync and non-sync validators: https://github.com/angular/angular.js/issues/10955 (not a problem if your validators are not actually costing resources, or if you make the sync validators strings instead of functions).
+>`validators` is an object where the keys are the name of the validity (to be passed to `$setValidity`) and the values
+are functions or expressions which returns true if it is valid. Templates can pass this option to the
+`formly-custom-validation` directive which will add a parser (or validator, see note) to the `ngModel` controller of
+the field. The validator can be a function or string expression and will be evaluated using `formlyEval` from
+`formlyUtils` see below for more information.
+
+>**Note:** Formly will utilize the `$validators` pipeline (introduced in angular 1.3) if available, otherwise it will
+fallback to `$parsers`. If you are using angular 1.3, formly will automatically use the `$asyncValidators` pipeline if
+your validator is a function (and wrap it in `$q.when` so you don't need to worry about returning a promise if that
+doesn't make sense for your validator). Note, in this case, all the normal $asyncValidators rules apply. To fail the
+validation, reject the promise. Also, note the performance implications when you mix sync and non-sync validators:
+https://github.com/angular/angular.js/issues/10955 (not a problem if your validators are not actually costing resources,
+or if you make the sync validators strings instead of functions).
+
+> **NOTE 2**: You can alternatively specify a validator as an object with an `expression` and a `message`. This will
+unify how templates reference messages for when the validator has failed. Also, this should be used only for one-off
+messages (use `ng-messages-include` for generic messages). `message` in this case should be an expression that is
+evaluated in exactly the same way a validator is evaluated. The `formly-custom-validation` directive will then add an
+object to the field options called `validationMessages` which is a map of functions where the key is the validation name
+and the value is a to function which returns the evaluated message.
 
 ###### Default
 >`undefined`
