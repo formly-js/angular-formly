@@ -1,3 +1,18 @@
+# 3.0.7
+
+## Backward compatible changes and new features
+
+- `formly-field` now adds a new object the the field config called `validation` which has a few useful properties: `show` which is specified by the user and `messages` and `errorExistsAndShouldBeVisible` which is set by formly.
+- `formlyConfig` now has `extras.disableNgModelAttrsManipulator` which can be used to disable the `ngModelAttrsManipulator`. Let me know if you want to do this and maybe we can fix the manipulator for your use case.
+
+## Bug Fixes
+
+- `formly-field` `runExpression` now runs inside a `$timeout` to ensure that the value is current
+
+## Breaking changes:
+
+- `formly-form` switching the `no-root-el` attribute for a new attribute called `root-el` which can be used to control the root element of a formly-form. Defaults to an `ng-form` but if you wish, you can change it to a `form` by specifying `root-el="form"` or a `div` by specifying `root-el="div"`. I believe only one person was using this feature, so I decided to not make a major version change for this #politics
+
 # 3.0.6
 
 ## Backward compatible changes and new features

@@ -9,15 +9,14 @@ module.exports = ngModule => {
           return;
         }
         checkValidators(validators);
-        scope.options = scope.options || {};
-        scope.options.validationMessages = {};
+        scope.options.validation.messages = scope.options.validation.messages || {};
 
         // setup watchers and parsers
         var hasValidators = ctrl.hasOwnProperty('$validators');
         angular.forEach(validators, function(validator, name) {
           var message = validator.message;
           if (message) {
-            scope.options.validationMessages[name] = () => {
+            scope.options.validation.messages[name] = () => {
               return formlyUtil.formlyEval(scope, message, ctrl.$modelValue, ctrl.$viewValue);
             };
           }
@@ -63,7 +62,7 @@ module.exports = ngModule => {
       });
       if (Object.keys(validatorsWithExtraProps).length) {
         throw new Error([
-          `Validators are only allowed to have ${allowedProperties.join(', ')}.`,
+          `Validators are only allowed to be functions or objects that have ${allowedProperties.join(', ')}.`,
           `You provided some extra properties: ${JSON.stringify(validatorsWithExtraProps)}`
         ].join(' '));
       }

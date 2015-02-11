@@ -5,7 +5,8 @@ module.exports = ngModule => {
 
   formlyField.tests = ON_TEST ? require('./formly-field.test')(ngModule) : null;
 
-  function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyUtil, formlyUsability, formlyWarn) {
+  function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyValidationMessages,
+                       formlyUtil, formlyUsability, formlyWarn) {
     return {
       restrict: 'AE',
       transclude: true,
@@ -17,7 +18,7 @@ module.exports = ngModule => {
         fields: '=?',
         form: '=?'
       },
-      controller: function fieldController($scope, $interval, $parse, $controller) {
+      controller: function fieldController($scope, $interval, $timeout, $parse, $controller) {
         var opts = $scope.options;
         var fieldType = opts.type && formlyConfig.getType(opts.type);
         simplifyLife(opts);
@@ -31,17 +32,21 @@ module.exports = ngModule => {
         runExpressions();
         setFormControl($scope, opts, $interval);
         addModelWatcher($scope, opts);
+        addShowMessagesWatcher($scope, opts);
+        addValidationMessages(opts);
         invokeControllers($scope, opts, fieldType);
 
         // function definitions
         function runExpressions() {
-          var field = $scope.options;
-          var currentValue = valueGetterSetter();
-          angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
-            var setter = $parse(prop).assign;
-            var promise = $q.when(formlyUtil.formlyEval($scope, expression, currentValue));
-            promise.then(function(value) {
-              setter(field, value);
+          $timeout(function() { // must run on next tick to make sure that the current value is correct.
+            var field = $scope.options;
+            var currentValue = valueGetterSetter();
+            angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
+              var setter = $parse(prop).assign;
+              var promise = $q.when(formlyUtil.formlyEval($scope, expression, currentValue));
+              promise.then(function(value) {
+                setter(field, value);
+              });
             });
           });
         }
@@ -57,10 +62,11 @@ module.exports = ngModule => {
         }
 
         function simplifyLife(options) {
-          // add data and templateOptions as empty objects so you don't have to undefined check everywhere
+          // add a few empty objects (if they don't already exist) so you don't have to undefined check everywhere
           formlyUtil.reverseDeepMerge(options, {
             data: {},
-            templateOptions: {}
+            templateOptions: {},
+            validation: {}
           });
         }
 
@@ -131,6 +137,24 @@ module.exports = ngModule => {
           if (options.model) {
             scope.$watch('options.model', runExpressions, true);
           }
+        }
+
+        function addShowMessagesWatcher(scope, options) {
+          var expression = 'options.formControl.$invalid && (options.formControl.$touched || options.validation.show)';
+          scope.$watch(expression, function(show) {
+            options.validation.errorExistsAndShouldBeVisible = show;
+          });
+        }
+
+        function addValidationMessages(options) {
+          options.validation.messages = options.validation.messages || {};
+          angular.forEach(formlyValidationMessages.messages, function (expression, name) {
+            if (!options.validation.messages[name]) {
+              options.validation.messages[name] = function (viewValue, modelValue, scope) {
+                return formlyUtil.formlyEval(scope, expression, modelValue, viewValue);
+              };
+            }
+          });
         }
 
         function invokeControllers(scope, options = {}, type = {}) {
@@ -226,7 +250,7 @@ module.exports = ngModule => {
       let wrapper = getWrapperOption(options);
 
       return function transcludeTemplate(template) {
-        if (!wrapper) {
+        if (!wrapper.length) {
           return $q.when(template);
         }
 
@@ -304,9 +328,9 @@ module.exports = ngModule => {
         'expressionProperties', 'data', 'templateOptions',
         'wrapper', 'modelOptions', 'watcher', 'validators',
         'noFormControl', 'hide', 'ngModelAttrs', 'optionsTypes',
-        'link', 'controller',
+        'link', 'controller', 'validation',
         // things we add to the field after the fact are ok
-        'validationMessages', 'formControl', 'value', 'runExpressions'
+        'formControl', 'value', 'runExpressions'
       ];
       var extraProps = Object.keys(options).filter(prop => allowedProperties.indexOf(prop) === -1);
       if (extraProps.length) {

@@ -11,7 +11,7 @@ module.exports = ngModule => {
       restrict: 'E',
       template: function(el, attrs) {
         /* jshint -W033 */ // this because jshint is broken I guess...
-        var rootEl = attrs.hasOwnProperty('noNgForm') ? 'div' : 'ng-form';
+        var rootEl = attrs.rootEl || 'ng-form';
         return `
           <${rootEl} class="formly"
                    name="form"

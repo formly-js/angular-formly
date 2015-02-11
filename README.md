@@ -107,12 +107,6 @@ When constructing fields use the options below to customize each field object. Y
 ##### type (string)
 >`type` is the type of field to be rendered. Either type, template, or templateUrl must be set.
 
-###### Default
->`null`
-
-###### Values
-> depends on the template set you're using. See documentation for the specific fieldset you are using.
-
 ---
 ##### template (string)
 >`template` can be set instead of `type` or `templateUrl` to use a custom html template form field. Should be used with one-liners mostly (like a directive). Useful for adding functionality to fields.
@@ -128,36 +122,21 @@ template: '<p>Some text here</p>'
 template: '<hr />'
 ```
 
-###### Default
->`undefined`
-
 ---
 ##### templateUrl (string)
 >`templateUrl` can be set instead of `type` or `template` to use a custom html template form field. Set a path relative to the root of the application. ie `directives/custom-field.html`
-
-###### Default
->`undefined`
 
 ---
 ##### key (string)
 >By default form models are keyed by location in the form array, you can override this by specifying a `key`.
 
-###### Default
->`undefined`
-
 ---
 ##### hide (boolean)
 >Whether to hide the field (uses `ng-if`)
 
-###### Default
->`undefined`
-
 ---
 ##### model (object)
 >By default, the `model` passed to the `formly-field` directive is the same as the `model` passed to the `formly-form`. However, if the field has a `model` specified, then the specified `model` is used for that field (and that field only). Also, a deep watch is added to the `formly-field` directive's scope to run the `expressionProperties` when the specified `model` changes.
-
-###### Default
->`undefined`
 
 ---
 ##### expressionProperties (object)
@@ -178,64 +157,37 @@ vm.fields = [
 ];
 ```
 
-###### Default
->`undefined`
-
 ---
 ##### data (*)
 >`data` is reserved for the developer. You have our guarantee to be able to use this and not worry about future versions of formly overriding your usage and preventing you from upgrading :-)
-
-###### Default
->`undefined`
 
 ---
 ##### templateOptions (*)
 >`templateOptions` is reserved for the templates. Any template-specific options go in here. Look at your specific template implementation to know the options required for this.
 
-###### Default
->`undefined`
-
 ---
 ##### wrapper (string|array of strings)
 >`wrapper` makes reference to `setWrapper` in the formlyConfigProvider. It is expected to be the name of the wrapper specified there. The formly field will be wrapped by the first wrapper, then the second, then the third, etc.
-
-###### Default
->`undefined`
 
 ---
 ##### ngModelAttrs (object)
 >`ngModelAttrs` is used in an angular-formly created templateManipulator to automatically add attributes to the ng-model element of field templates. There are two properties: `bound` and `unbound`. In both cases, the key is the attribute to add to the `ng-model` element. In the `unbound` case, the value will be evaluated on the field's scope, and assigned to the attribute (not bound). In the `bound` case, the property will be assigned as the value (for example: the value `'ng-pattern': /abc/` would result in: `ng-pattern="options.ngModelAttrs['ng-pattern']"` which, ultimately, would result in `ng-pattern="/abc/"` where `/abc/` is bound to the value of `options.ngModelAttrs['ng-pattern']` and therefore, can be changed via `expressionProperties`.
 
-###### Default
->`undefined`
-
 ---
 ##### controller (controller function)
 >`controller` is a great way to add custom behavior to a specific field. You can also set the controller to a type as well. It is injectable with the $scope of the field, and anything else you have in your injector.
-
-###### Default
->`undefined`
 
 ---
 ##### link (link function)
 >`link` allows you to specify a link function. It is invoked after your template has finished compiling. You are passed the normal arguments for a normal link function.
 
-###### Default
->`undefined`
-
 ---
 ##### optionsTypes (string|array of strings)
 >`optionsTypes` allows you to specify extra types to get options from. Duplicate options are overridden in later priority (index `1` will override index `0` properties). Also, these are applied *after* the `type`'s `defaultOptions` and hence will override any duplicates of those properties as well.
 
-###### Default
->`undefined`
-
 ---
 ##### modelOptions (object)
 >`modelOptions` allows you to take advantage of `ng-model-options` directive. Formly's built-in templateManipulator (see below) will add this attribute to your `ng-model` element automatically if this property exists. Note, if you use the `getter/setter` option, formly's templateManipulator will change the value of `ng-model` to `options.value` which is a getterSetter that formly adds to field options. For more information on ng-model-options, see [these](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-getters-and-setters) [egghead](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ng-model-options-updateon-and-debounce) [lessons](https://egghead.io/lessons/angularjs-new-in-angular-1-3-ngmodeloptions-allows-you-to-set-a-timezone-on-your-model).
-
-##### Default
->`{ getterSetter: true, allowInvalid: true }`
 
 ---
 ##### watcher (object|array of watches)
@@ -250,9 +202,6 @@ $scope.$watch(function expression(theScope) {}, function listener(newValue, oldV
 // field watcher
 $scope.$watch(function expression(field, theScope, stop) {}, function listener(field, newValue, oldValue, theScope, stop) {});
 ```
-
-###### Default
->`undefined`
 
 ---
 ##### validators (object)
@@ -277,16 +226,47 @@ evaluated in exactly the same way a validator is evaluated. The `formly-custom-v
 object to the field options called `validationMessages` which is a map of functions where the key is the validation name
 and the value is a to function which returns the evaluated message.
 
-###### Default
->`undefined`
+---
+##### validation (object)
+>`validation` is an object with a few useful properties mostly handy when used in combination with ng-messages
 
-## Other Notes
+>`validation.messages` a map of functions mapped to message names. These messages come from the validators. Invoke
+these and angular-formly will evaluate them using `formlyUtil.formlyEval` (which is how validators themselves are
+evaluated.
 
-### CSS Classes
+>`validation.errorExistsAndShouldBeVisible` a boolean indicating whether an error message should be shown. Because you
+generally only want to show error messages when the user has interacted with a specific field, this value is set to
+true based on this rule: `field invalid && (field touched || validation.show)`
+
+>`validation.show` is a boolean you as the developer can set to specify to force `errorExistsAndShouldBeVisible`
+to be set to true when there are `$errors`. This is useful when you're trying to call the user's attention to some
+fields for some reason.
+
+## Added Properties
+
+Formly will add a few properties to your field config for convenience in templates
+
+### formControl
+
+This is the [NgModelController](https://docs.angularjs.org/api/ng/type/ngModel.NgModelController) for the field. It
+provides you with awesome stuff like `$errors` :-)
+
+### value
+
+This is a getter/setter function for the value that your field is representing. Useful when using `getterSetter: true`
+in the `modelOptions` (in fact, if you don't disable the templateManipulator that comes built-in with formly, it will
+automagically change your field's `ng-model` attribute to use `value`.
+
+### runExpressions
+
+It is not likely that you'll ever want to invoke this function. It simply runs the `expressionProperties` expressions.
+It is used internally and you shouldn't have to use it, but you can if you want to.
+
+## CSS Classes
 
 The resulting form element has the class `formly` and each field has the class `formly-field`.
 
-### Validation
+## Validation
 
 Formly uses angular's built-in validation mechanisms. See the [angular docs](https://docs.angularjs.org/guide/forms) for more information on this. (Note, if you're using Angular 1.3, formly utilizies the new `$validators` and `$asyncValidators` pipelines, otherwise, it falls back to good old `$parsers`. Either way, your API is the same, though you can't do asynchornous validation with 1.2.x).
 
@@ -294,9 +274,9 @@ The form controller is bound to what you specify as the `form` attribute on the 
 
 You can also specify custom validation in your JSON. See the field called `validators` for more information on this. If you wish to leverage this in a custom template, use the `formly-custom-validation` directive and pass `options.validators` to it.
 
-### directives
+## directives
 
-#### formly-form
+### formly-form
 
 This the the main directive you'll use throughout your code. A word of advice, create your own directive that wraps this
 one. This will make any upgrades easier if the api changes at all. If you want an example of how to do this, file an
@@ -304,73 +284,73 @@ issue and I'll demonstrate :-D
 
 The attributes allowed on the directive are as follows:
 
-##### model
+#### model
 
 The model to be represented by the form.
 
-##### fields
+#### fields
 
 The field configurations for building the form
 
-##### form
+#### form
 
 The variable to bind the `NgFormController` to.
 
-##### no-ng-form
+#### root-el
 
-You will not likely use this often. It requires no value, but its presence will change the `formly-form` directive from
-being replace with an `ng-form` to being a `div`. If you choose this option, make sure to wrap it in your own `ng-form`
-or `form` and provide that with a `name`. Then pass that `name` to the `form` attribute so all the `formControls` of the
-fields will have somewhere to be added to.
+You will not likely use this often. The value given will control what is used for the formly-form's root element. It
+defaults to an `ng-form`, but if you want it to use a `form` or a `div` then you would specify `root-el="form"` or
+`root-el="div"` (respectively). If you choose anything except a `form` or `ng-form`, make sure to wrap it in your own
+`ng-form` or `form` and provide that with a `name`. Then pass that `name` to the `form` attribute so all the
+`formControls` of the fields will have somewhere to be added to.
 
-#### formly-field
+### formly-field
 
 You will not likely need to use this directive, but if you do just know that unless you're using it inside `formly-form`
 you're fields are not going to get all the treatment (like `watchers` for example).
 
-##### options
+#### options
 
 The field config. Must have a `type` OR `template` OR `templateUrl`. Everything else is optional, but it is limited to
 the options mentioned above. Any extra options will result in an error.
 
-##### model
+#### model
 
 The model for the field to represent
 
-##### formId
+#### formId
 
 The id of the form, used to generate the id for the field which is used in the `name` (for the `formControl`) and the id
 of the field (useful for a `label`'s `for` attribute)
 
-##### index
+#### index
 
 The index of the field, used if `key` is not defined on the field.
 
-##### fields
+#### fields
 
 The other fields. As convenience if needed.
 
-##### form
+#### form
 
 The `NgFormController` that will be used to get and set the `formControl` for the field.
 
-#### formly-custom-validation
+### formly-custom-validation
 
 This is an attribute directive. The given value should be a `validators` object.
 
-#### formly-focus
+### formly-focus
 
 This is an attribute directive. It will watch the given value and focus the element when the given value is truthy. You
 can also optionally add a `refocus` attribute and this will cause focus to be returned to the previous element with
 focus when the `formly-focus` value is set to falsey (unless the user has clicked away from the focused element).
 
-### Global Config
+## formlyConfigProvider
 
-#### formlyConfigProvider
+This is where you'll be configuring angular-formly to inform it of your templates and other options. You can do most
+things in either the `config` function with the `formlyConfigProvider` or in the `run` function with the `formlyConfig`.
 
-You can configure formly to use custom templates for specified types (your own "text" template) by injecting the `formlyConfigProvider` in your app's `config` function. The `formlyConfigProvider` has the following functions:
-
-##### setType
+### setType
 
 Allows you to specify a custom type
 
@@ -432,7 +412,7 @@ formlyConfig.setType({
 });
 ```
 
-##### setWrapper, getWrapper, getWrapperByType, removeWrapperByName, & removeWrappersForType
+### setWrapper, getWrapper, getWrapperByType, removeWrapperByName, & removeWrappersForType
 
 Allows you to set a template for your formly templates. You can have a default (used by all templates), named template wrappers, and typed template wrappers (used by fields with the specified type). All template wrappers must follow these rules
  - Use `<formly-transclude></formly-transclude>` in them to specify where the field template should be placed.
@@ -476,7 +456,7 @@ Another note, you can instead override wrappers (and types as well) without a wa
 
 See [the website](https://formly-js.github.io/angular-formly/) for examples on usage
 
-##### templateManipulators
+### templateManipulators
 
 This allows you to manipulate the template of a specific field. This gives you a great deal of power without sacrificing performance by having bindings which you will never need as well as save repetition in your templates. The api to this feature is as follows:
 
@@ -504,6 +484,8 @@ formlyConfig.templateManipulators.preWrapper.push(function(template, options, sc
 });
 ```
 
+#### ngModelAttrsTemplateManipulator
+
 Note! There is a *built-in* `templateManipulator` that automatically adds attributes to the `ng-model` element(s) of your templates for you. Here are the things you need to know about it:
 
 - It will never override existing attributes
@@ -519,15 +501,52 @@ Note! There is a *built-in* `templateManipulator` that automatically adds attrib
 
 This is incredibly powerful because it makes the templates require much less bloat AND it allows you to avoid paying the cost of watchers that you'd never use (like a field that will never be required for example).
 
-##### disableWarnings
+This can be disabled globally by setting `formlyConfigProvider.extras.disableNgModelAttrsManipulator = true`
+
+### disableWarnings
 
 Formly gives some useful warnings when you attempt to use a template that doesn't exist or there's a problem loading a template. You can disable these warnings via `formlyConfigProvider.disableWarnings = true`
+
+## formlyValidationMessages
+
+This service allows you to control what messages gets added to each field's `validation.messages` which can ultimately
+be used in an `ng-messages` context to great effect. It has a `messages` property which is what is used to attach the
+`messages` to the field's config. The messages here should be set as angular expressions (or functions) similar to how
+`expressionProperties` or `validators` works. You can always interact with `messages` on your own, but there are two
+helper methods in this service
+
+### addTemplateOptionValueMessage
+
+```javascript
+formlyValidationMessages.addTemplateOptionValueMessage(name, prop, prefix, suffix, alternate);
+// for example
+formlyValidationMessages.addTemplateOptionValueMessage('max', 'max', 'The max value allowed is', '', 'Too big');
+formlyValidationMessages.addTemplateOptionValueMessage('minlength', 'minlength', '', 'is the minimum length', 'Too short');
+formlyValidationMessages.addTemplateOptionValueMessage('pattern', 'patternValidationMessage', '', '', 'Invalid Input');
+
+// the last could be used like so:
+var field = {
+  type: 'whatever',
+  templateOptions: {
+    pattern: /some_crazyPattern/,
+    patternValidationMessage: '"Needs to match " + options.templateOptions.pattern'
+  }
+};
+```
+
+### addStringMessage
+
+```javascript
+formlyValidationMessages.addStringMessage(name, string);
+// for example
+formlyValidationMessages.addStringMessage('required', 'This field is required');
+```
 
 ## Tips and Tricks
 
 Please see [the Wiki](https://github.com/formly-js/angular-formly/wiki) for tips and tricks from the community.
 
-### Expressions
+## Expressions
 
 There are four places where you can put expressions. The context in which these expressions are evaluated is important. There are two different types of context and each is explained below:
 
