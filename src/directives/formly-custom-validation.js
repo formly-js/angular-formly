@@ -50,6 +50,9 @@ module.exports = ngModule => {
       var allowedProperties = ['expression', 'message'];
       var validatorsWithExtraProps = {};
       angular.forEach(validators, (validator, name) => {
+        if (angular.isString(validator)) {
+          return;
+        }
         var extraProps = [];
         angular.forEach(validator, (v, key) => {
           if (allowedProperties.indexOf(key) === -1) {

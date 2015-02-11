@@ -1,3 +1,9 @@
+# 3.0.9
+
+## Bug Fixes
+
+- `validators` api validation was not checking if the validator was a string (as in, an expression) and was throwing an error if it was.
+
 # 3.0.8
 
 ## Bug Fixes
