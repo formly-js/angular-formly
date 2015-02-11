@@ -1,3 +1,9 @@
+# 3.0.8
+
+## Bug Fixes
+
+- `ngModelAttrsManipulator` was not applying the `invokable` attributes properly.
+
 # 3.0.7
 
 ## Backward compatible changes and new features

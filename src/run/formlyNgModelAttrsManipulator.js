@@ -71,8 +71,8 @@ module.exports = ngModule => {
       addDefinedAttributes(modelEls, boundAttributes, options);
       addDefinedAttributes(modelEls, attributes, options, '{{', '}}');
       addDefinedAttributes(modelEls, invokedAttributes, options,
-        (val) => angular.isString(val) ? '$eval(' : '',
-        (val) => angular.isString(val) ? ')' : '(model[options.key], options, this, $event)'
+        (val) => angular.isFunction(val) ? '' : '$eval(',
+        (val) => angular.isFunction(val) ? '(model[options.key], options, this, $event)' : ')'
       );
     }
 
@@ -100,8 +100,8 @@ module.exports = ngModule => {
         // if it's defined as a property on template options, or if it's an expression property,
         // then we'll add the attribute (and hence the watchers)
         if (angular.isDefined(to[val]) || angular.isDefined(ep['templateOptions.' + val])) {
-          var valPrefix = angular.isFunction(prefix) ? prefix(val) : prefix;
-          var valSuffix = angular.isFunction(suffix) ? suffix(val) : suffix;
+          var valPrefix = angular.isFunction(prefix) ? prefix(to[val]) : prefix;
+          var valSuffix = angular.isFunction(suffix) ? suffix(to[val]) : suffix;
           addIfNotPresent(els, `${attrName}`, `${valPrefix}options.templateOptions['${val}']${valSuffix}`);
         }
       });

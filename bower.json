@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "authors": [
     "Astrism <astrisms@gmail.com>"
   ],
@@ -19,14 +19,24 @@
   ],
   "license": "MIT",
   "ignore": [
-    "**/.*",
     "node_modules",
-    "tests"
+    "tests",
+    "demo",
+    "local-examples",
+    "loaders",
+    ".editorconfig",
+    ".gitignore",
+    ".jshintrc",
+    "CONTRIBUTING.md",
+    "Gruntfile.js",
+    "karma.conf.ci.js",
+    "karma.conf.js",
+    "src",
+    "webpack.config.js",
+    "webpack.config.minify.js",
+    "coverage"
   ],
   "dependencies": {
     "angular": "~1.2.22"
-  },
-  "resolutions": {
-    "angular": "~1.3.5"
   }
 }

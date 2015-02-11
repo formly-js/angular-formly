@@ -2,3 +2,14 @@
 node_modules
 demo
 coverage
+local-examples
+.editorconfig
+.gitignore
+.sjhint
+.travis.yml
+CONTRIBUTING.md
+Gruntfile.js
+karma.conf.ci.js
+karma.conf.js
+webpack.config.js
+webpack.config.minify.js
