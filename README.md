@@ -394,7 +394,7 @@ formlyConfig.setType([
   },
   {
     name: 'button',
-    templateUrl: '<button ng-click="options.templateOptions">{{options.label</button>'
+    templateUrl: '<button ng-click="options.templateOptions">{{options.label}}</button>'
   }
 ]);
 
