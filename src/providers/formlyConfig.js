@@ -151,12 +151,7 @@ module.exports = ngModule => {
           }
         }
       }
-      if (wrappers.length === 1) {
-        return wrappers[0];
-      } else if (wrappers.length > 1) {
-        return wrappers;
-      }
-      // otherwise nothing
+      return wrappers;
     }
 
     function removeWrapperByName(name) {

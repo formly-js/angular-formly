@@ -1,6 +1,7 @@
 {
   "name": "angular-formly-demo",
   "version": "1.0.0",
+  "private": true,
   "author": "Kent C. Dodds <kent@doddsfamily.us>",
   "contributors": [
     "Kent C. Dodds <kent@doddsfamily.us>"

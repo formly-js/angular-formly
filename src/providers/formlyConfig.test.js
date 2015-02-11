@@ -124,7 +124,7 @@ module.exports = ngModule => {
       describe('＼(＾O＾)／ path', () => {
         it('should return a template wrapper that has the same type', () => {
           var option = setterFn({templateUrl, types});
-          expect(getterFn(types[0])).to.equal(option);
+          expect(getterFn(types[0])).to.eql([option]);
         });
 
         it('should return an array when multiple wrappers have the same time', () => {
@@ -156,7 +156,7 @@ module.exports = ngModule => {
       it('should allow you to remove a wrapper', () => {
         setterFn(template, name);
         remove(name);
-        expect(getterFn(name)).to.be.undefined;
+        expect(getterFn(name)).to.be.empty;
       });
 
       it('should allow you to remove a wrapper for a type', () => {
@@ -164,10 +164,9 @@ module.exports = ngModule => {
         setterFn({types: types2, template});
         var checkboxAndSomethingElseWrapper = setterFn({types: types3, template});
         removeForType('input');
-        expect(getByTypeFn('input')).to.be.undefined;
+        expect(getByTypeFn('input')).to.be.empty;
         var checkboxWrappers = getByTypeFn('checkbox');
-        expect(checkboxWrappers).to.not.be.instanceOf(Array);
-        expect(checkboxWrappers).to.eq(checkboxAndSomethingElseWrapper);
+        expect(checkboxWrappers).to.eql([checkboxAndSomethingElseWrapper]);
       });
     });
 
