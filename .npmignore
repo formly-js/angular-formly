@@ -5,7 +5,9 @@ coverage
 local-examples
 .editorconfig
 .gitignore
-.sjhint
+.jshint
+.grunt
+loaders
 .travis.yml
 CONTRIBUTING.md
 Gruntfile.js
