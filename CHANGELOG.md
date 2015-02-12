@@ -1,3 +1,9 @@
+# 3.0.10
+
+## Other Changes
+
+- Fixed some mistakes in the README.md
+
 # 3.0.9
 
 ## Bug Fixes
