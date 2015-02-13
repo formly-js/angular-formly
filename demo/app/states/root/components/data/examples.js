@@ -43,6 +43,11 @@ module.exports = [
         title: 'Template Wrappers',
         slug: 'template-wrappers',
         jsbinId: 'gomoro'
+      },
+      {
+        title: 'Custom controller & link',
+        slug: 'custom-controller-and-link',
+        jsbinId: 'gonode'
       }
     ]
   }
