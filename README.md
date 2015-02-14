@@ -215,7 +215,7 @@ in `ng-pattern="/abc/"` where `/abc/` is bound to the value of `options.ngModelA
 be changed via `expressionProperties`.
 
 ---
-##### controller (controller function)
+##### controller (controller name|controller function)
 >`controller` is a great way to add custom behavior to a specific field. You can also set the controller to a type as
 well. It is injectable with the $scope of the field, and anything else you have in your injector.
 
@@ -480,6 +480,41 @@ formlyConfig.setType({
   }
 });
 ```
+
+#### name (string, required)
+
+The name of the template type. You use this in the `type` option of a field.
+
+#### template (string)
+
+The template for the field. This is required if there is no `templateUrl` or `defaultOptions`. Angular-formly will throw
+an error if this is present with a `templateUrl` (but works fine with `defaultOptions`).
+
+#### templateUrl (string)
+
+A url pointing to a template for the field. This is required if there is no `template` or `defaultOptions`.
+Angular-formly will throw an error if this is present with a `template` (but works fine with `defaultOptions`).
+
+#### defaultOptions
+
+Options to be used by default for the field. These are merged with the field options for all fields of this type as well
+as all fields specifying this type as an `optionsTypes`. This is required if there is no `template` or `templateUrl`
+specified. And works fine if supplied in addition to either.
+
+#### wrapper (string|array of strings)
+
+Specify the name of wrappers that you want fields of this type to be wrapped in by default.
+
+#### controller (string|injectable function)
+
+This function will be invoked (using the `$controller` service) at the end of the `formly-field` controller (before the
+field's `controller` if specified). It can inject anything in the `$injector` as well as the `$scope` of the
+`formly-field`. If it is a string, it must be the name of a controller that has been registered with angular.
+
+#### link (function)
+
+This function will be invoked after the `formly-field` link function has been invoked (before the field's `link` if
+specified). It is invoked with all the normal arguments of a regular link function.
 
 ### setWrapper, getWrapper, getWrapperByType, removeWrapperByName, & removeWrappersForType
 

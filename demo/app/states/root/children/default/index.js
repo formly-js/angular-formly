@@ -17,13 +17,34 @@ module.exports = {
   name: ngModule.name,
   url: '',
   template: require('./index.html'),
-  controller: function() {
-    var vm = this;
-    angular.extend(vm, {bootstrapHtml, formlyHtml, formlyJs});
-  },
-  controllerAs: 'vm',
   data: {
     activationEvents: 'goHome'
+  },
+  controllerAs: 'vm',
+  controller: function() {
+    var vm = this;
+    var base  = `https://github.com/formly-js/angular-formly`;
+    angular.extend(vm, {bootstrapHtml, formlyHtml, formlyJs});
+    vm.docs = docs;
+    vm.base = baseWithSuffix;
+    vm.prebuiltTemplates = defaultTemplates([
+      {name: 'Bootstrap'}, {name: 'LumX'}, {name: 'Vanilla HTML', suffix: 'vanilla'}
+    ]);
+    vm.wipTemplates = defaultTemplates([
+      {name: 'angular-material', suffix: 'material'}, {name: 'Ionic'}, {name: 'Foundation'}
+    ]);
+
+    function docs(slug) {
+      return baseWithSuffix(`#${slug.toLowerCase().replace(/ /, '-').replace(/&|#/, '')}`);
+    }
+
+    function baseWithSuffix(suffix) {
+      return `${base}${suffix}`;
+    }
+
+    function defaultTemplates(templates) {
+      return templates.map(item => ({name: item.name, suffix: item.suffix || item.name.toLowerCase()}));
+    }
   }
 };
 
