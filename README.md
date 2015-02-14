@@ -121,6 +121,11 @@ $scope.onSubmit = function() {
 When constructing fields use the options below to customize each field object. You must set at least a `type`,
 `template`, or `templateUrl`.
 
+### Valid field options
+
+You can only specify these properties. Additional properties will result in an error. If you need custom properties, use
+`templateOptions` or `data`.
+
 ##### type (string)
 >`type` is the type of field to be rendered. Either type, template, or templateUrl must be set.
 
@@ -266,7 +271,8 @@ the field. The validator can be a function or string expression and will be eval
 >**Async validation**: All function validators can return true/false/Promise. A validator passes if it returns true or
 a promise that is resolved. A validator fails if it returns false or a promise that is rejected.
 
->**1.2**: Uses the `$parsers` api which doesn't support async validation out of the box. However, formly will keep track
+>**1.2**: Formly defaults to use the `$validators` api, which is only available in angular 1.3. If you are using 1.2,
+then the `$parsers` api is used which doesn't support async validation out of the box. However, formly will keep track
 of the validations for you and ensure that the most recently resolved/rejected promise is what takes priority. Also,
 while the validation is in flight, formly emulates the `$pending` api of 1.3 for your use in 1.2 as well, so you can
 safely use this and upgrade to 1.3 without worrying about the upgrade path for this api. You're welcome :-)
