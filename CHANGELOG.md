@@ -1,3 +1,9 @@
+# 3.0.12
+
+## Other Changes
+
+- 3.0.11 didn't have a full build...
+
 # 3.0.11
 
 ## Backward compatible changes and new features
