@@ -263,15 +263,15 @@ are functions or expressions which returns true if it is valid. Templates can pa
 the field. The validator can be a function or string expression and will be evaluated using `formlyEval` from
 `formlyUtils` see below for more information.
 
->**Note:** Formly will utilize the `$validators` pipeline (introduced in angular 1.3) if available, otherwise it will
-fallback to `$parsers`. If you are using angular 1.3, formly will automatically use the `$asyncValidators` pipeline if
-your validator is a function (and wrap it in `$q.when` so you don't need to worry about returning a promise if that
-doesn't make sense for your validator). Note, in this case, all the normal $asyncValidators rules apply. To fail the
-validation, reject the promise. Also, note the performance implications when you mix sync and non-sync validators:
-https://github.com/angular/angular.js/issues/10955 (not a problem if your validators are not actually costing resources,
-or if you make the sync validators strings instead of functions).
+>**Async validation**: All function validators can return true/false/Promise. A validator passes if it returns true or
+a promise that is resolved. A validator fails if it returns false or a promise that is rejected.
 
-> **NOTE 2**: You can alternatively specify a validator as an object with an `expression` and a `message`. This will
+>**1.2**: Uses the `$parsers` api which doesn't support async validation out of the box. However, formly will keep track
+of the validations for you and ensure that the most recently resolved/rejected promise is what takes priority. Also,
+while the validation is in flight, formly emulates the `$pending` api of 1.3 for your use in 1.2 as well, so you can
+safely use this and upgrade to 1.3 without worrying about the upgrade path for this api. You're welcome :-)
+
+> **NOTE**: You can alternatively specify a validator as an object with an `expression` and a `message`. This will
 unify how templates reference messages for when the validator has failed. Also, this should be used only for one-off
 messages (use `ng-messages-include` for generic messages). `message` in this case should be an expression that is
 evaluated in exactly the same way a validator is evaluated. The `formly-custom-validation` directive will then add an

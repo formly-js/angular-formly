@@ -1,6 +1,9 @@
 module.exports = ngModule => {
-  ngModule.directive('formlyCustomValidation', function(formlyUtil, $q) {
+  ngModule.directive('formlyCustomValidation', formlyCustomValidation);
 
+  formlyCustomValidation.tests = ON_TEST ? require('./formly-custom-validation.test')(ngModule) : null;
+
+  function formlyCustomValidation(formlyUtil, $q) {
     return {
       require: 'ngModel',
       link: function(scope, el, attrs, ctrl) {
@@ -9,10 +12,11 @@ module.exports = ngModule => {
           return;
         }
         checkValidators(validators);
+        let $pendingEmulation = {};
         scope.options.validation.messages = scope.options.validation.messages || {};
 
-        // setup watchers and parsers
-        var hasValidators = ctrl.hasOwnProperty('$validators');
+
+        var useNewValidatorsApi = ctrl.hasOwnProperty('$validators') && !attrs.hasOwnProperty('useParsers');
         angular.forEach(validators, function(validator, name) {
           var message = validator.message;
           if (message) {
@@ -21,8 +25,14 @@ module.exports = ngModule => {
             };
           }
           validator = angular.isObject(validator) ? validator.expression : validator;
-          if (hasValidators) {
-            var isPossiblyAsync = !angular.isString(validator);
+          var isPossiblyAsync = !angular.isString(validator);
+          if (useNewValidatorsApi) {
+            setupWithValidators();
+          } else {
+            setupWithParsers();
+          }
+
+          function setupWithValidators() {
             var validatorCollection = isPossiblyAsync ? '$asyncValidators' : '$validators';
             ctrl[validatorCollection][name] = function(modelValue, viewValue) {
               var value = formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
@@ -32,16 +42,42 @@ module.exports = ngModule => {
                 return value;
               }
             };
-          } else {
+          }
+
+          function setupWithParsers() {
+            let inFlightValidator;
             ctrl.$parsers.unshift(function(viewValue) {
               var isValid = formlyUtil.formlyEval(scope, validator, ctrl.$modelValue, viewValue);
-              ctrl.$setValidity(name, isValid);
+              if (isPromiseLike(isValid)) {
+                $pendingEmulation[name] = true;
+                inFlightValidator = isValid;
+                isValid.then(() => {
+                  if (inFlightValidator === isValid) {
+                    ctrl.$setValidity(name, true);
+                  }
+                }).catch(() => {
+                  if (inFlightValidator === isValid) {
+                    ctrl.$setValidity(name, false);
+                  }
+                }).finally(() => {
+                  ctrl.$pending = $pendingEmulation;
+                  if (Object.keys($pendingEmulation).length === 1) {
+                    delete ctrl.$pending;
+                  } else {
+                    delete $pendingEmulation[name];
+                  }
+                });
+              } else {
+                ctrl.$setValidity(name, isValid);
+              }
+              ctrl.$pending = $pendingEmulation;
               return viewValue;
             });
           }
         });
       }
     };
+
     function isPromiseLike(obj) {
       return obj && angular.isFunction(obj.then);
     }
@@ -70,5 +106,5 @@ module.exports = ngModule => {
         ].join(' '));
       }
     }
-  });
+  }
 };

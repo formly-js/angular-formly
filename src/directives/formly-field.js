@@ -18,7 +18,7 @@ module.exports = ngModule => {
         fields: '=?',
         form: '=?'
       },
-      controller: function fieldController($scope, $interval, $timeout, $parse, $controller) {
+      controller: function fieldController($scope, $timeout, $parse, $controller) {
         var opts = $scope.options;
         var fieldType = opts.type && formlyConfig.getType(opts.type);
         simplifyLife(opts);
@@ -30,7 +30,7 @@ module.exports = ngModule => {
         // initalization
         extendOptionsWithDefaults(opts, $scope.index);
         runExpressions();
-        setFormControl($scope, opts, $interval);
+        setFormControl($scope, opts);
         addModelWatcher($scope, opts);
         addShowMessagesWatcher($scope, opts);
         addValidationMessages(opts);
@@ -99,7 +99,7 @@ module.exports = ngModule => {
         }
 
         // initialization functions
-        function setFormControl(scope, options, $interval) {
+        function setFormControl(scope, options) {
           if (options.noFormControl) {
             return;
           }
@@ -107,7 +107,7 @@ module.exports = ngModule => {
           var maxTime = 2000;
           var intervalTime = 5;
           var iterations = 0;
-          var interval = $interval(function() {
+          var interval = setInterval(function() {
             iterations++;
             if (!angular.isDefined(options.key)) {
               return cleanUp();
@@ -129,7 +129,7 @@ module.exports = ngModule => {
 
           function cleanUp() {
             stopWaitingForDestroy();
-            $interval.cancel(interval);
+            clearInterval(interval);
           }
         }
 

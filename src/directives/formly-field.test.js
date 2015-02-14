@@ -14,7 +14,7 @@ module.exports = ngModule => {
             types: 'text',
             template: `
               <div class="my-template-wrapper">
-                <label for="{{::id}}">{{options.label}}</label>
+                <label for="{{id}}">{{options.label}}</label>
                 <formly-transclude></formly-transclude>
               </div>
             `
@@ -32,7 +32,7 @@ module.exports = ngModule => {
           }
         ]);
         formlyConfig.setType({
-          name: 'text', template: `<input name="{{::id}}" ng-model="model[options.key]" />`
+          name: 'text', template: `<input name="{{id}}" ng-model="model[options.key]" />`
         });
         scope = $rootScope.$new();
         scope.model = {};
@@ -81,7 +81,7 @@ module.exports = ngModule => {
       beforeEach(inject((formlyConfig, $rootScope, _$compile_)  => {
         $compile = _$compile_;
         formlyConfig.setType({
-          name: 'text', template: `<input name="{{::id}}" ng-model="model[options.key]" />`
+          name: 'text', template: `<input name="{{id}}" ng-model="model[options.key]" />`
         });
         scope = $rootScope.$new();
         scope.model = {};
@@ -108,7 +108,7 @@ module.exports = ngModule => {
         scope = $rootScope.$new();
         scope.model = {};
         formlyConfig.setType({
-          name: 'ipAddress', template: '<input name="{{::id}}" ng-model="model[options.key]" />',
+          name: 'ipAddress', template: '<input name="{{id}}" ng-model="model[options.key]" />',
           defaultOptions: {
             data: {
               usingDefaultOptions: true
@@ -123,7 +123,7 @@ module.exports = ngModule => {
         });
 
         formlyConfig.setType({
-          name: 'text', template: '<input name="{{::id}}" ng-model="model[options.key]" />',
+          name: 'text', template: '<input name="{{id}}" ng-model="model[options.key]" />',
           defaultOptions: {
             data: {
               hasPropertiesFromTextType: true
@@ -146,7 +146,7 @@ module.exports = ngModule => {
             ngModelAttrs: {
               bound: {
                 'ng-required': true,
-                'ng-pattern': 'overwriting stuff is fun for tests'
+                'ng-pattern': /overwriting stuff is fun for tests/
               }
             }
           }
@@ -168,7 +168,7 @@ module.exports = ngModule => {
         $compile(angular.element(template))(scope);
         scope.$digest();
         expect(field.data.hasPropertiesFromTextType).to.be.true;
-        expect(field.ngModelAttrs.bound['ng-pattern']).to.equal('overwriting stuff is fun for tests');
+        expect(field.ngModelAttrs.bound['ng-pattern']).to.be.instanceOf(RegExp);
       });
     });
 
@@ -181,7 +181,7 @@ module.exports = ngModule => {
         describe(isPre ? 'preWrapper' : 'postWrapper', () => {
           var manipulators, scope;
           var formTemplate = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
-          var textTemplate = '<input class="text-template" name="{{::id}}" ng-model="model[options.key]">';
+          var textTemplate = '<input class="text-template" name="{{id}}" ng-model="model[options.key]">';
           beforeEach(inject((formlyConfig, $rootScope) => {
             manipulators = formlyConfig.templateManipulators[isPre ? 'preWrapper' : 'postWrapper'];
             formlyConfig.setWrapper([
@@ -264,7 +264,7 @@ module.exports = ngModule => {
 
         formlyConfig.setType({
           name: 'text',
-          template: `<input name="{{::id}}" ng-model="model[options.key]" />`,
+          template: `<input name="{{id}}" ng-model="model[options.key]" />`,
           controller: ['$scope', controllerFn],
           link: linkFn
         });
