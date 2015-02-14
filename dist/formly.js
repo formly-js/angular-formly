@@ -1,4 +1,4 @@
-// angular-formly version 3.0.13 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 3.1.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -409,7 +409,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	
 	module.exports = function (ngModule) {
-	  ngModule.constant("formlyVersion", ("3.0.13"));
+	  ngModule.constant("formlyVersion", ("3.1.0"));
 	};
 
 /***/ },
