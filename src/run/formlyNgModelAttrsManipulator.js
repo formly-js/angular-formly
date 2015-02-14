@@ -21,7 +21,6 @@ module.exports = ngModule => {
     if (!modelEls || !modelEls.length) {
       return template;
     }
-    addNgModelAttrs(options.ngModelAttrs);
 
     addIfNotPresent(modelEls, 'id', scope.id);
     addIfNotPresent(modelEls, 'name', scope.id);
@@ -41,70 +40,88 @@ module.exports = ngModule => {
 
 
     function addTemplateOptionsAttrs() {
-      // if the field has specified values for these, then we want to add the attributes and watch them for changes.
-      var boundAttributes = angular.extend(data.ngModelBoundAttributes || {}, {
-        'ng-disabled': 'disabled',
-        'ng-required': 'required',
-        'ng-pattern': 'pattern',
-        'ng-maxlength': 'maxlength',
-        'ng-minlength': 'minlength'
-      });
-      var invokedAttributes = angular.extend(data.ngModelInvokedAttributes || {}, {
-        'ng-change': 'onChange',
-        'ng-keydown': 'onKeydown',
-        'ng-keyup': 'onKeyup',
-        'ng-keypress': 'onKeypress',
-        'ng-click': 'onClick',
-        'ng-focus': 'onFocus',
-        'ng-blur': 'onBlur'
-      });
-      // attributes are wrapped in curly braces
-      var attributes = angular.extend(data.ngModelAttributes || {}, {
-        'formly-focus': 'focus',
-        placeholder: 'placeholder',
-        min: 'min',
-        max: 'max',
-        tabindex: 'tabindex',
-        type: 'type'
-      });
-
-      addDefinedAttributes(modelEls, boundAttributes, options);
-      addDefinedAttributes(modelEls, attributes, options, '{{', '}}');
-      addDefinedAttributes(modelEls, invokedAttributes, options,
-        (val) => angular.isFunction(val) ? '' : '$eval(',
-        (val) => angular.isFunction(val) ? '(model[options.key], options, this, $event)' : ')'
-      );
-    }
-
-    function addNgModelAttrs(ngModelAttrs) {
-      ngModelAttrs = ngModelAttrs || {};
-      angular.forEach(ngModelAttrs.bound, function(val, attr) {
-        addIfNotPresent(modelEls, attr, `options.ngModelAttrs.bound['${attr}']`);
-      });
-      angular.forEach(ngModelAttrs.unbound, function(val, attr) {
-        addIfNotPresent(modelEls, attr, scope.$eval(val));
-      });
-    }
-
-    function addDefinedAttributes(els, attrs, options, prefix = '', suffix = '') {
-      /* jshint maxcomplexity:6 */
-      var to = options.templateOptions;
-      var ep = options.expressionProperties;
-      if (!to && !ep) {
-        return; // no reason to iterate if these don't exist...
-      } else {
-        to = to || {};
-        ep = ep || {};
+      if (!options.templateOptions && !options.expressionProperties) {
+        // no need to run these if there are no templateOptions or expressionProperties
+        return;
       }
-      angular.forEach(attrs, (val, attrName) => {
-        // if it's defined as a property on template options, or if it's an expression property,
-        // then we'll add the attribute (and hence the watchers)
-        if (angular.isDefined(to[val]) || angular.isDefined(ep['templateOptions.' + val])) {
-          var valPrefix = angular.isFunction(prefix) ? prefix(to[val]) : prefix;
-          var valSuffix = angular.isFunction(suffix) ? suffix(to[val]) : suffix;
-          addIfNotPresent(els, `${attrName}`, `${valPrefix}options.templateOptions['${val}']${valSuffix}`);
+      const to = options.templateOptions || {};
+      const ep = options.expressionProperties || {};
+
+      let ngModelAttributes = getBuiltinAttributes();
+
+      // extend with the user's specifications winning
+      angular.extend(ngModelAttributes, options.ngModelAttrs);
+
+      angular.forEach(ngModelAttributes, (val, name) => {
+        /* jshint maxcomplexity:9 */
+        let attrVal;
+        let attrName;
+        const ref = `options.templateOptions['${name}']`;
+        const toVal = to[name];
+        const epVal = getEpValue(ep, name);
+
+        const inTo = angular.isDefined(toVal);
+        const inEp = angular.isDefined(epVal);
+        if (val.value) {
+          // I realize this looks backwards, but it's right, trust me...
+          attrName = val.value;
+          attrVal = name;
+        } else if (val.expression && inTo) {
+          attrName = val.expression;
+          if (angular.isString(to[name])) {
+            attrVal = `$eval(${ref})`;
+          } else if (angular.isFunction(to[name])) {
+            attrVal = `${ref}(model[options.key], options, this, $event)`;
+          } else {
+            throw new Error(
+              `options.templateOptions.${name} must be a string or function: ${JSON.stringify(options)}`
+            );
+          }
+        } else if (val.bound && inEp) {
+          attrName = val.bound;
+          attrVal = ref;
+        } else if (val.attribute && inEp) {
+          attrName = val.attribute;
+          attrVal = `{{${ref}}}`;
+        } else if (val.attribute && inTo) {
+          attrName = val.attribute;
+          attrVal = toVal;
+        }
+        if (attrName && attrVal) {
+          addIfNotPresent(modelEls, attrName, attrVal);
         }
       });
+    }
+
+    function getBuiltinAttributes() {
+      let ngModelAttributes = {
+        focus: {
+          attribute: 'formly-focus'
+        }
+      };
+      const bothAttributeAndBound = ['required', 'disabled', 'pattern', 'maxlength', 'minlength'];
+      const expressionOnly = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
+      const attributeOnly = ['placeholder', 'min', 'max', 'tabindex', 'type'];
+
+      angular.forEach(bothAttributeAndBound, item => {
+        ngModelAttributes[item] = {attribute: item, bound: 'ng-' + item};
+      });
+
+      angular.forEach(expressionOnly, item => {
+        var propName = 'on' + item.substr(0, 1).toUpperCase() + item.substr(1);
+        ngModelAttributes[propName] = {expression: 'ng-' + item};
+      });
+
+      angular.forEach(attributeOnly, item => {
+        ngModelAttributes[item] = {attribute: item};
+      });
+      return ngModelAttributes;
+    }
+
+    function getEpValue(ep, name) {
+      return ep['templateOptions.' + name] ||
+      ep[`templateOptions['${name}']`] ||
+      ep[`templateOptions["${name}"]`];
     }
 
     function addIfNotPresent(el, attr, val) {

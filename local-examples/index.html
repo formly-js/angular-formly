@@ -3,15 +3,16 @@
 <head lang="en">
   <meta charset="UTF-8">
   <title>Manual tests for formly</title>
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="bootstrap.css"/>
+  <style>.ng-cloak {display: none}</style>
 </head>
 <body ng-app="app" ng-controller="MainCtrl as vm">
 <div class="jumbotron" style="text-align:center;">
   <h1>Manual tests for formly</h1>
 </div>
-<div class="container">
+<div class="container ng-cloak">
   <form name="vm.form">
-    <formly-form model="vm.user" fields="vm.fields" form="vm.form" no-ng-form></formly-form>
+    <formly-form model="vm.user" fields="vm.fields" form="vm.form"></formly-form>
   </form>
 
   <h1>User</h1>

@@ -1,3 +1,9 @@
+# 3.1.0
+
+## Slight breaking changes
+
+- `ngModelAttrs` has had an api change. The new api is complex, but much more powerful and useful. Few are using the original api as it's brand new, so I decided to not make a new major version.
+
 # 3.0.12
 
 ## Other Changes

@@ -53,15 +53,6 @@
       {
         type: 'input',
         key: 'myKey',
-        ngModelAttrs: {
-          bound: {
-            'ng-maxlength': 6,
-            'ng-disabled': false
-          },
-          unbound: {
-            pattern: '"^abcd|^qrst"'
-          }
-        },
         templateOptions: {
           placeholder: 'This rocks',
           label: 'My Input',
@@ -70,7 +61,8 @@
           focus: true
         },
         expressionProperties: {
-          'ngModelAttrs.bound["ng-disabled"]': 'model.mine'
+          'templateOptions.customMaxlength': 'model.mine ? 5 : 8',
+          'templateOptions.tabindex': 'model.mine ? 0 : -1'
         }
       },
       {

@@ -207,12 +207,8 @@ specified there. The formly field will be wrapped by the first wrapper, then the
 ---
 ##### ngModelAttrs (object)
 >`ngModelAttrs` is used in an angular-formly created templateManipulator to automatically add attributes to the ng-model
-element of field templates. There are two properties: `bound` and `unbound`. In both cases, the key is the attribute to
-add to the `ng-model` element. In the `unbound` case, the value will be evaluated on the field's scope, and assigned to
-the attribute (not bound). In the `bound` case, the property will be assigned as the value (for example: the value
-`'ng-pattern': /abc/` would result in: `ng-pattern="options.ngModelAttrs['ng-pattern']"` which, ultimately, would result
-in `ng-pattern="/abc/"` where `/abc/` is bound to the value of `options.ngModelAttrs['ng-pattern']` and therefore, can
-be changed via `expressionProperties`.
+element of field templates. You will likely not use this often. This object is a little complex, but extremely powerful.
+It's best to explain this api via an example. See the bottom for the example of this api.
 
 ---
 ##### controller (controller name|controller function)
@@ -611,27 +607,40 @@ know about it:
 - It will never override existing attributes
 - To prevent it from running on your field, simply set `data: {noTouchy: true}` and this template manipulator will skip
 yours
+- This can be disabled globally by setting `formlyConfigProvider.extras.disableNgModelAttrsManipulator = true`
 - It wont do anything to the template if it can't find any elements with the attribute `ng-model`.
 - It first goes through the `bound` and `unbound` `ngModelAttrs` specified for the field (read more about that above)
 - It adds a `name` and `id` attribute (the `scope.id` for both of them)
 - It adds the `formly-custom-validation` directive if the field has `options.validators`
 - It adds `ng-model-options` directive if the field has `options.modelOptions`
-- It adds a bunch of `ng-` attributes (like `ng-maxlength`, `ng-required`, etc) if the corresponding value is present on
-`templateOptions` or referenced in `expressionProperties`. You can specify additional bound attributes with the
-`data.ngModelBoundAttributes` property
-- It adds a bunch of `ng-` attributes expressions (like `ng-click`, `ng-blur`, `ng-keypress`, etc) if the corresponding
-value is present on `templateOptions` (prefixed with `on`). If it is a function, it will be invoked like so:
-`options.templateOptions.onClick(value, options, scope, $event)`. Otherwise, it will be evaluated using `$scope.$eval`
-(so it can be a normal expression you would put in the attribute yourself). You can specify additional invoked
-attributes with the `data.ngModelInvokedAttributes` property.
-- It adds a bunch of normal attributes if the corresponding value is present on `templateOptions` or referenced in
-`expressionProperties`. These will added like so: `{{options.templateOptions.placeholder}}` so they will be bound. You
-can specify additional expression attributes with the `data.ngModelAttributes` property
+- It utilizes the `ngModelAttrs` api to add a bunch of attributes automagically. This is probably one of the coolest
+things about angular-formly. See below for examples of how to use this.
+
+```javascript
+{
+  templateOptions: {
+    placeholder: 'This will be automagically added',
+    required: true, // will add a required attribute
+    maxlength: 6, // this would add a maxlength attribute, but see expressionProperties
+    onBlur: 'options.data.hasBeenBlurred = true' // this adds ng-blur
+  },
+  expressionProperties: {
+    'templateOptions.maxlength': 'someExpression' // this adds the ng-maxlength attribute
+  }
+}
+```
 
 This is incredibly powerful because it makes the templates require much less bloat AND it allows you to avoid paying the
 cost of watchers that you'd never use (like a field that will never be required for example).
 
-This can be disabled globally by setting `formlyConfigProvider.extras.disableNgModelAttrsManipulator = true`
+Here are the built-in supported attributes
+
+> both attribute or regular attribute -> required, disabled, pattern, maxlength, and minlength
+> attribute only -> placeholder, min, max, tabindex, and type
+> expression types -> onChange, onKeydown, onKeyup, onKeypress, onClick, onFocus, and onBlur
+
+You can add more custom attributes using the `ngModelAttrs` api. It's a little complex, but quite powerful.
+
 
 ### disableWarnings
 
@@ -714,3 +723,150 @@ Please see the [CONTRIBUTING Guidelines](CONTRIBUTING.md).
 
 A special thanks to [Nimbly](http://gonimbly.com) for creating/sponsoring Angular-Formly's development.
 Thanks to [Kent C. Dodds](https://github.com/kentcdodds) for his continued support on the project.
+
+---
+
+# Appendix
+
+## ngModelAttrs example
+
+This api is a little complex. Hopefully these examples will be instructive.
+
+Config like this:
+
+```javascript
+{
+  ngModelAttrs: {
+    myCustomValue: {
+      bound: 'ng-my-custom-value',
+      attribute: 'my-custom-value'
+    }
+  },
+  templateOptions: {
+    myCustomValue: 3
+  }
+}
+```
+
+Would yield something like this:
+
+```html
+<input ng-model="model[options.key]" my-custom-value="3" />
+```
+
+The value is simply placed on the element using the attribute specified in `attribute`.
+
+Whereas if you changed the config to have an expressionProperty like this:
+
+```javascript
+{
+  ngModelAttrs: {
+    myCustomValue: {
+      bound: 'ng-my-custom-value',
+      attribute: 'my-custom-value'
+    }
+  },
+  templateOptions: {
+    myCustomValue: 3
+  },
+  expressionProperties: {
+    'templateOptions.myCustomValue': 'someEvaluationToGetCustomValue'
+  }
+}
+```
+
+Then the output would look like this:
+
+```html
+<input ng-model="model[options.key]" ng-my-custom-value="options.templateOptions['myCustomValue']" />
+```
+
+Because the value of `templateOptions.myCustomValue` can change, it now uses the `bound` version of the attribute.
+However, if there is no `bound` version specified, but it is still an expression property like so:
+
+```javascript
+{
+  ngModelAttrs: {
+    myCustomValue: {
+      attribute: 'my-custom-value'
+    }
+  },
+  templateOptions: {
+    myCustomValue: 3
+  },
+  expressionProperties: {
+    'templateOptions.myCustomValue': 'someEvaluationToGetCustomValue'
+  }
+}
+```
+
+Then the output would look like this:
+
+```html
+<input ng-model="model[options.key]" my-custom-value="{{options.templateOptions['myCustomValue']}}" />
+```
+
+You also have `expression`. For `expression` a config like this:
+
+```javascript
+{
+  ngModelAttrs: {
+    doAction: {
+      expression: 'do-something-awesome'
+    }
+  },
+  templateOptions: {
+    doAction: 'options.data.actionDone = true'
+  }
+}
+```
+
+Would result in output like this:
+
+```html
+<input ng-model="model[options.key]" do-something-awesome="$eval(options.templateOptions['doAction'])" />
+```
+
+However, if the `templateOptions.doAction` is a function instead, like this:
+
+```javascript
+{
+  ngModelAttrs: {
+    doAction: {
+      expression: 'do-something-awesome'
+    }
+  },
+  templateOptions: {
+    doAction: function(value, options, scope, $event) {
+      options.data.actionDone = true;
+    }
+  }
+}
+```
+
+Then the output would look more like this:
+
+```html
+<input ng-model="model[options.key]" do-something-awesome="options.templateOptions['doAction'](model[options.key], options, this, $event)" />
+```
+
+Which allows you to have access to the `value`, `options`, `scope`, and `$event` as you see in the example.
+
+Finally, you can specify the custom attribute as a `value`. In this case, a config like this:
+
+```javascript
+{
+  ngModelAttrs: {
+    '{{options.data.whatever}}': {
+      value: 'my-whatever-attribute'
+    }
+  }
+}
+```
+
+```html
+<input ng-model="model[options.key]" my-whatever-attribute="{{options.data.whatever}}" />
+```
+
+Which gives you the liberty to specify exactly the value you wish for your attribute in the template.
+
