@@ -1,3 +1,9 @@
+# 3.0.11
+
+## Backward compatible changes and new features
+
+- `validators` now supports async validators in 1.2. The API is identical between the two. It also emulates `$pending`.
+
 # 3.0.10
 
 ## Other Changes

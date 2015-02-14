@@ -12,7 +12,6 @@ module.exports = ngModule => {
           return;
         }
         checkValidators(validators);
-        let $pendingEmulation = {};
         scope.options.validation.messages = scope.options.validation.messages || {};
 
 
@@ -49,7 +48,8 @@ module.exports = ngModule => {
             ctrl.$parsers.unshift(function(viewValue) {
               var isValid = formlyUtil.formlyEval(scope, validator, ctrl.$modelValue, viewValue);
               if (isPromiseLike(isValid)) {
-                $pendingEmulation[name] = true;
+                ctrl.$pending = ctrl.$pending || {};
+                ctrl.$pending[name] = true;
                 inFlightValidator = isValid;
                 isValid.then(() => {
                   if (inFlightValidator === isValid) {
@@ -60,17 +60,15 @@ module.exports = ngModule => {
                     ctrl.$setValidity(name, false);
                   }
                 }).finally(() => {
-                  ctrl.$pending = $pendingEmulation;
-                  if (Object.keys($pendingEmulation).length === 1) {
+                  if (Object.keys(ctrl.$pending).length === 1) {
                     delete ctrl.$pending;
                   } else {
-                    delete $pendingEmulation[name];
+                    delete ctrl.$pending[name];
                   }
                 });
               } else {
                 ctrl.$setValidity(name, isValid);
               }
-              ctrl.$pending = $pendingEmulation;
               return viewValue;
             });
           }
