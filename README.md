@@ -495,11 +495,13 @@ an error if this is present with a `templateUrl` (but works fine with `defaultOp
 A url pointing to a template for the field. This is required if there is no `template` or `defaultOptions`.
 Angular-formly will throw an error if this is present with a `template` (but works fine with `defaultOptions`).
 
-#### defaultOptions
+#### defaultOptions (object|function)
 
 Options to be used by default for the field. These are merged with the field options for all fields of this type as well
 as all fields specifying this type as an `optionsTypes`. This is required if there is no `template` or `templateUrl`
-specified. And works fine if supplied in addition to either.
+specified. And works fine if supplied in addition to either. If a function is supplied, it will be passed the options of
+the field and is supposed to return the default options (don't do the merging yourself, just pass what you want to be
+used for the default for this configuration).
 
 #### wrapper (string|array of strings)
 
