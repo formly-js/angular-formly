@@ -50,5 +50,16 @@ module.exports = [
         jsbinId: 'gonode'
       }
     ]
+  },
+  {
+    title: 'Very Advanced',
+    name: 'very-advanced',
+    examples: [
+      {
+        title: 'ngModelAttrs',
+        slug: 'ngModelAttrs',
+        jsbinId: 'biliras'
+      }
+    ]
   }
 ];

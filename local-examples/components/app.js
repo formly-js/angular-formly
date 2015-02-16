@@ -122,25 +122,18 @@
             {name: 'item 3', value: 'coolio3'}
           ],
           description: 'Click one!'
-        },
-        expressionProperties: {
-
         }
       },
       {
         type: 'input',
         key: 'aNumber',
-        ngModelAttrs: {
-          unbound: {
-            max: '10',
-            min: '-10'
-          }
-        },
         templateOptions: {
           type: 'number',
           label: 'Number stuff',
           placeholder: '10 is the max, -10 is the min...',
-          description: null
+          description: null,
+          max: 10,
+          min: -10
         }
       },
       {
