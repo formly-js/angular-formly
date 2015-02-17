@@ -91,25 +91,26 @@ $scope.formFields = [
 	{
 		//the key to be used in the model values {... "username": "johndoe" ... }
 		key: 'username',
-
-		type: 'text',
-		label: 'Username',
-		placeholder: 'johndoe',
-		required: true,
-		disabled: false, //default: false
-		description: 'Descriptive text'
+		type: 'input',
+		templateOptions: {
+			label: 'Username',
+			placeholder: 'johndoe',
+			required: true,
+			description: 'Descriptive text'
+		}
 	},
 	{
 		key: 'password',
-		type: 'password',
-		label: 'Password',
-		required: true,
-		disabled: false, //default: false
+		type: 'input',
+		templateOptions: {
+		  type: 'password',
+  		label: 'Password',
+  		required: true
+		},
 		expressionProperties: {
-			hide: '!model.username' // hide when username is blank
+			'templateOptions.disabled': '!model.username' // disabled when username is blank
 		}
 	}
-
 ];
 
 $scope.onSubmit = function() {
