@@ -88,33 +88,33 @@ Example data as it would be set in the controller
 ```javascript
 $scope.formData = {};
 $scope.formFields = [
-	{
-		//the key to be used in the model values {... "username": "johndoe" ... }
-		key: 'username',
-		type: 'input',
-		templateOptions: {
-			label: 'Username',
-			placeholder: 'johndoe',
-			required: true,
-			description: 'Descriptive text'
-		}
-	},
-	{
-		key: 'password',
-		type: 'input',
-		templateOptions: {
-		  type: 'password',
-  		label: 'Password',
-  		required: true
-		},
-		expressionProperties: {
-			'templateOptions.disabled': '!model.username' // disabled when username is blank
-		}
-	}
+  {
+    //the key to be used in the model values {... "username": "johndoe" ... }
+    key: 'username',
+    type: 'input',
+    templateOptions: {
+      label: 'Username',
+      placeholder: 'johndoe',
+      required: true,
+      description: 'Descriptive text'
+    }
+  },
+  {
+    key: 'password',
+    type: 'input',
+    templateOptions: {
+      type: 'password',
+      label: 'Password',
+      required: true
+    },
+    expressionProperties: {
+      'templateOptions.disabled': '!model.username' // disabled when username is blank
+    }
+  }
 ];
 
 $scope.onSubmit = function() {
-	console.log('form submitted:', $scope.formData);
+  console.log('form submitted:', $scope.formData);
 };
 ```
 
