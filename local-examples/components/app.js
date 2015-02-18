@@ -30,7 +30,8 @@
       return $http.get('components/wrapper.html', {
         cache: $templateCache
       }).then(function(response) {
-        return response.data.replace('<my-own-transclude></my-own-transclude>', template);
+        console.log(template + '{{to | json}}');
+        return response.data.replace('<my-own-transclude></my-own-transclude>', template + '<pre>{{to | json}}</pre>');
       });
     });
   });
