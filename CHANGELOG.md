@@ -1,3 +1,15 @@
+# 3.1.2
+
+## New Features
+
+- `formly-field` now adds a convenience scope variable `to` to scope which is just pointing to `options.templateOptions`. This should make the templates a little more terse (albeit maybe a little less obvious to read).
+
+# 3.1.1
+
+## Bug Fixes
+
+- `expressionProperties` never actually passed the `$viewValue` to be used in the expressions. This was ok because in this context you could just use `$modelValue`, but we want to keep our expressions as consistent as possible so this bug was fixed.
+
 # 3.1.0
 
 ## Slight breaking changes
