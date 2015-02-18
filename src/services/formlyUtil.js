@@ -1,10 +1,12 @@
 var angular = require('angular-fix');
 
 module.exports = ngModule => {
-  ngModule.factory('formlyUtil', function() {
+  ngModule.factory('formlyUtil', formlyUtil);
 
-    var objectPrototype = Object.getPrototypeOf({});
-    var arrayPrototype = Object.getPrototypeOf([]);
+  formlyUtil.tests = ON_TEST ? require('./formlyUtil.test')(ngModule) : null;
+
+  function formlyUtil() {
+
     return {
       formlyEval: formlyEval,
       getFieldId: getFieldId,
@@ -33,39 +35,25 @@ module.exports = ngModule => {
       return [formId, type, options.key, index].join('_');
     }
 
-    function reverseDeepMerge() {
-      var realRes = arguments[0];
-      var res = {};
-      angular.forEach([...arguments].reverse(), function(src) {
-        if (!src) {
+    function reverseDeepMerge(dest) {
+      angular.forEach(arguments, (src, index) => {
+        if (!index) {
           return;
         }
-        angular.forEach(src, function(val, prop) {
-          /* jshint maxcomplexity:7 */
-          if (typeof val === 'object' && val !== null &&
-            (Object.getPrototypeOf(val) === objectPrototype || Object.getPrototypeOf(val) === arrayPrototype)) {
-            var deepRes = res[prop];
-            if (!deepRes && angular.isArray(val)) {
-              deepRes = [];
-            } else if (!deepRes) {
-              deepRes = {};
-            }
-            res[prop] = reverseDeepMerge(deepRes, val);
-          } else if (angular.isDefined(val)) {
-            res[prop] = val;
+        angular.forEach(src, (val, prop) => {
+          if (!angular.isDefined(dest[prop])) {
+            dest[prop] = angular.copy(val);
+          } else if (objAndSameType(dest[prop], val)) {
+            reverseDeepMerge(dest[prop], val);
           }
         });
       });
-      angular.forEach(realRes, function(val, prop) {
-        delete realRes[prop];
-      });
-      angular.forEach(res, function(val, prop) {
-        realRes[prop] = val;
-      });
-      res = realRes;
-      return res;
     }
 
+    function objAndSameType(obj1, obj2) {
+      return angular.isObject(obj1) && angular.isObject(obj2) &&
+        Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2);
+    }
 
-  });
+  }
 };

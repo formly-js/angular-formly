@@ -1,3 +1,7 @@
+# 3.1.4
+
+- `formlyUtil.reverseDeepMerge` fixes. There were issues with `defaultOptions` overriding the specified options. This fixes those issues.
+
 # 3.1.3
 
 ## Bug Fixes
