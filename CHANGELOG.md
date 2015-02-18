@@ -1,3 +1,9 @@
+# 3.1.3
+
+## Bug Fixes
+
+- `formly-field` convenience scope variable `to` got messed up when using `defaultOptions` for types. This version fixes that.
+
 # 3.1.2
 
 ## New Features

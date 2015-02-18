@@ -21,7 +21,7 @@ module.exports = ngModule => {
       controller: function fieldController($scope, $timeout, $parse, $controller) {
         var opts = $scope.options;
         var fieldType = opts.type && formlyConfig.getType(opts.type);
-        simplifyLife($scope, opts);
+        simplifyLife(opts);
         mergeFieldOptionsWithTypeDefaults(opts, fieldType);
         apiCheck(opts);
         // set field id to link labels and fields
@@ -35,6 +35,9 @@ module.exports = ngModule => {
         addShowMessagesWatcher($scope, opts);
         addValidationMessages(opts);
         invokeControllers($scope, opts, fieldType);
+        // simplify things
+        // create $scope.to so template authors can reference to instead of $scope.options.templateOptions
+        $scope.to = $scope.options.templateOptions;
 
         // function definitions
         function runExpressions() {
@@ -61,16 +64,13 @@ module.exports = ngModule => {
           return $scope.model[$scope.options.key];
         }
 
-        function simplifyLife($scope, options) {
+        function simplifyLife(options) {
           // add a few empty objects (if they don't already exist) so you don't have to undefined check everywhere
           formlyUtil.reverseDeepMerge(options, {
             data: {},
             templateOptions: {},
             validation: {}
           });
-
-          // create $scope.to so template authors can reference to instead of $scope.options.templateOptions
-          $scope.to = options.templateOptions;
         }
 
         function mergeFieldOptionsWithTypeDefaults(options, type) {
