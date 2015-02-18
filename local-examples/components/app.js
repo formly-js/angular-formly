@@ -61,6 +61,7 @@
           focus: true
         },
         expressionProperties: {
+          'templateOptions.label': '$viewValue',
           'templateOptions.customMaxlength': 'model.mine ? 5 : 8',
           'templateOptions.tabindex': 'model.mine ? 0 : -1'
         }

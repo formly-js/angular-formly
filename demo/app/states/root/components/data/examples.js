@@ -27,6 +27,11 @@ module.exports = [
         title: 'Creating Custom Templates',
         slug: 'custom-templates',
         jsbinId: 'xekali'
+      },
+      {
+        title: 'Expression Properties',
+        slug: 'expression-properties',
+        jsbinId: 'vupihu'
       }
     ]
   },

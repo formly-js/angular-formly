@@ -13,10 +13,10 @@ module.exports = ngModule => {
 
     function formlyEval(scope, expression, modelValue, viewValue) {
       if (angular.isFunction(expression)) {
-        return expression(viewValue, modelValue, scope);
+        return expression(viewValue || modelValue, modelValue, scope);
       } else {
         return scope.$eval(expression, {
-          $viewValue: viewValue,
+          $viewValue: viewValue || modelValue,
           $modelValue: modelValue
         });
       }
