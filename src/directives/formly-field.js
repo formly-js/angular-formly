@@ -285,7 +285,7 @@ module.exports = ngModule => {
       let wrapper = options.wrapper;
       // explicit null means no wrapper
       if (wrapper === null) {
-        return;
+        return [];
       }
 
       // nothing specified means use the default wrapper for the type

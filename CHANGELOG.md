@@ -1,4 +1,12 @@
+# 3.1.5
+
+## Bug Fixes
+
+- `formly-field` fields were supposed to be able to specify `null` as the `wrapper` property. This was not the case and has been updated (with tests to prevent this from surfacing again).
+
 # 3.1.4
+
+## Bug Fixes
 
 - `formlyUtil.reverseDeepMerge` fixes. There were issues with `defaultOptions` overriding the specified options. This fixes those issues.
 

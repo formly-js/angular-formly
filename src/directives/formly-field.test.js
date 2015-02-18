@@ -72,6 +72,22 @@ module.exports = ngModule => {
         expect(outerEl.querySelector('.my-template-wrapper')).to.exist;
       });
 
+      it(`should allow for specifying null for the wrappers of a field`, () => {
+        scope.fields = [
+          {
+            type: 'text',
+            key: 'text',
+            wrapper: null,
+            templateOptions: {
+              label: 'Text input'
+            }
+          }
+        ];
+        var el = $compile(angular.element(template))(scope);
+        scope.$digest();
+        expect(el[0].querySelector('.my-template-wrapper')).to.not.exist;
+      });
+
     });
 
 
