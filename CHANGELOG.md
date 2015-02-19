@@ -1,3 +1,9 @@
+# 3.1.6
+
+## Bug Fixes
+
+- `formlyNgModelAttrsManipulator` was not allowing specifying the value of `0` because falsiness funniness of JavaScript (－‸ლ)
+
 # 3.1.5
 
 ## Bug Fixes

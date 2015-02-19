@@ -87,7 +87,7 @@ module.exports = ngModule => {
           attrName = val.attribute;
           attrVal = toVal;
         }
-        if (attrName && attrVal) {
+        if (angular.isDefined(attrName) && angular.isDefined(attrVal)) {
           addIfNotPresent(modelEls, attrName, attrVal);
         }
       });
