@@ -56,6 +56,11 @@ module.exports = [
         jsbinId: 'gomoro'
       },
       {
+        title: 'Template Manipulators',
+        slug: 'template-manipulator',
+        jsbinId: 'sokube'
+      },
+      {
         title: 'Custom controller & link',
         slug: 'custom-controller-and-link',
         jsbinId: 'gonode'
