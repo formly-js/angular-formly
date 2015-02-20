@@ -10,6 +10,7 @@ var ngAnnotateLoader = path.join(__dirname, '/loaders/ng-annotate.js');
 
 var packageJsonString = fs.readFileSync('package.json', 'utf8');
 var packageJson = JSON.parse(packageJsonString);
+console.log('building version', packageJson.version);
 
 var baseEnvVars = {
   ON_DEV: false,
@@ -50,7 +51,8 @@ var baseConfig = {
   module: {
     loaders: [
       {test: /\.html$/, loader: 'raw', exclude: exclude},
-      {test: /\.js$/, loader: ngAnnotateLoader + '!6to5!jshint', exclude: exclude}
+      {test: /\.js$/, loader: ngAnnotateLoader + '!6to5!jshint', exclude: exclude},
+      {test: /sinon.*\.js$/, loader: 'imports?define=>false'}
     ]
   }
 };
@@ -83,8 +85,10 @@ var prodConfig = {
   }
 };
 
-var testConfig = deepExtend({}, prodConfig);
+var testCIConfig = deepExtend({}, prodConfig);
+var testConfig = deepExtend({}, devConfig);
 delete testConfig.jshint;
+delete testCIConfig.jshint;
 
 var envContexts = {
   dev: {
@@ -94,6 +98,9 @@ var envContexts = {
     ON_PROD: true
   },
   test: {
+    ON_TEST: true
+  },
+  'test:ci': {
     ON_TEST: true
   }
 };
@@ -107,7 +114,8 @@ function getConfig(context) {
   var configContexts = {
     dev: devConfig,
     prod: prodConfig,
-    test: testConfig
+    test: testConfig,
+    'test:ci': testCIConfig
   };
 
   var resultConfig = deepExtend({}, baseConfig, configContexts[context]);

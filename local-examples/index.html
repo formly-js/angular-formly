@@ -11,14 +11,18 @@
   <h1>Manual tests for formly</h1>
 </div>
 <div class="container ng-cloak">
-  <form name="vm.form">
-    <formly-form model="vm.user" fields="vm.fields" form="vm.form"></formly-form>
+  <form name="vm.realForm">
+    <formly-form model="vm.user" fields="vm.realFields" form="vm.realForm"></formly-form>
   </form>
+  <!--<form name="vm.form">-->
+    <!--<formly-form model="vm.user" fields="vm.fields" form="vm.form"></formly-form>-->
+  <!--</form>-->
 
   <h1>User</h1>
   <pre>{{vm.user | json}}</pre>
   <h1>Form</h1>
-  <pre>{{vm.form | json}}</pre>
+  <pre ng-if="vm.realForm">{{vm.realForm | json}}</pre>
+  <pre ng-if="vm.form">{{vm.form | json}}</pre>
 </div>
 
 <script src="angular/angular.js"></script>

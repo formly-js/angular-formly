@@ -335,14 +335,7 @@ module.exports = ngModule => {
         // things we add to the field after the fact are ok
         'formControl', 'value', 'runExpressions'
       ];
-      var extraProps = Object.keys(options).filter(prop => allowedProperties.indexOf(prop) === -1);
-      if (extraProps.length) {
-        throw formlyUsability.getFieldError(
-          'you-have-specified-field-properties-that-are-not-allowed',
-          `You have specified field properties that are not allowed: ${JSON.stringify(extraProps.join(', '))}`,
-          options
-        );
-      }
+      formlyUsability.checkAllowedProperties(allowedProperties, options);
 
       function getTemplateOptionsCount(options) {
         let templateOptions = 0;

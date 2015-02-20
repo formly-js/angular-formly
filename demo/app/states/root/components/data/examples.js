@@ -24,10 +24,14 @@ module.exports = [
         jsbinId: 'kunaho'
       },
       {
+        title: 'Expression Properties',
+        slug: 'expression-properties',
+        jsbinId: 'vupihu'
+      },
+      {
         title: 'Creating Custom Templates',
         slug: 'custom-templates',
         jsbinId: 'xekali'
-
       },
       {
         title: 'Default Options',
@@ -35,9 +39,9 @@ module.exports = [
         jsbinId: 'medayo'
       },
       {
-        title: 'Expression Properties',
-        slug: 'expression-properties',
-        jsbinId: 'vupihu'
+        title: 'Extending Types',
+        slug: 'extending-types',
+        jsbinId: 'koweni'
       }
     ]
   },

@@ -1,5 +1,4 @@
 // Karma configuration
-var webpackConfig = require('./webpack.config').getConfig('test');
 var deepExtend = require('deep-extend');
 var path = require('path');
 
@@ -11,6 +10,7 @@ function getConfig(context) {
   context = context || 'dev';
   var ci = context === 'ci';
 
+  var webpackConfig = require('./webpack.config').getConfig(ci ? 'test:ci' : 'test');
   var testConfig = deepExtend({}, webpackConfig, {
     watch: !ci,
     entry: './index.test.js'
@@ -25,7 +25,7 @@ function getConfig(context) {
 
       // base path that will be used to resolve all patterns (eg. files, exclude)
       basePath: './',
-      frameworks: ['mocha', 'chai-sinon'],
+      frameworks: ['mocha'],
       files: [entry],
       exclude: [],
 
@@ -74,7 +74,7 @@ function getConfig(context) {
       plugins: [
         require('karma-webpack'),
         'karma-mocha',
-        'karma-chai-sinon',
+        'karma-chai',
         'karma-chrome-launcher',
         'karma-firefox-launcher'
       ]

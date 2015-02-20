@@ -1,3 +1,11 @@
+# 3.2.0
+
+## New Features
+
+- `setType` now allows a new property called `extends` which allows you to extend the functionality of other types. It even handles `link`, `controller`, and `defaultOptions` functions really nicely. This is an awesome addition!
+- `setType` now throws errors if you specify anything but the allowed properties for types which further helps you use formly correctly.
+- The error/warning url now points to a file that's in the repo which ensures that the warning and error descriptions will live with the code they were written for.
+
 # 3.1.6
 
 ## Bug Fixes

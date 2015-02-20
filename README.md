@@ -498,6 +498,13 @@ specified. And works fine if supplied in addition to either. If a function is su
 the field and is supposed to return the default options (don't do the merging yourself, just pass what you want to be
 used for the default for this configuration).
 
+#### extends (string)
+
+This allows you to extend the functionality of other types. It merges the options specified with the parent's options
+and it will even gracefully handle situations where the parent has link/controller/defaultOptions functions as well.
+Note: in the case of a wrapper conflict, don't use this feature as it just gets too complicated, create a new type
+instead.
+
 #### wrapper (string|array of strings)
 
 Specify the name of wrappers that you want fields of this type to be wrapped in by default.

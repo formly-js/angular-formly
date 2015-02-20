@@ -23,6 +23,25 @@
         });
       }
     });
+
+    formlyConfigProvider.setType({
+      name: 'customExtended',
+      extends: 'custom',
+      controller: function($scope) {
+        console.log('extended', $scope);
+      },
+      link: function(scope, el) {
+        console.log('This is an extended link', scope, el);
+      },
+      defaultOptions: {
+        validators: {
+          custom: {
+            expression: '$viewValue === "custom"',
+            message: '$viewValue + " is not \"custom\""'
+          }
+        }
+      }
+    });
   });
 
   app.run(function(formlyConfig, $http, $templateCache) {
@@ -30,8 +49,7 @@
       return $http.get('components/wrapper.html', {
         cache: $templateCache
       }).then(function(response) {
-        console.log(template + '{{to | json}}');
-        return response.data.replace('<my-own-transclude></my-own-transclude>', template + '<pre>{{to | json}}</pre>');
+        return response.data.replace('<my-own-transclude></my-own-transclude>', template);
       });
     });
   });
@@ -40,6 +58,23 @@
     var vm = this;
 
     vm.user = {};
+
+    vm.realFields = [
+      {
+        type: 'customExtended',
+        key: 'myCustomThing',
+        templateOptions: {
+          label: 'Custom stuff',
+          description: 'This has a link and controller!'
+        },
+        link: function(scope, el) {
+          console.log(scope, el);
+        },
+        controller: function($scope, $log) {
+          $log.info($scope);
+        }
+      }
+    ];
 
     vm.fields = [
       {
@@ -81,7 +116,7 @@
         }
       },
       {
-        type: 'custom',
+        type: 'customExtended',
         key: 'myCustomThing',
         templateOptions: {
           label: 'Custom stuff',

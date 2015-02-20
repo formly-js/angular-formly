@@ -1,4 +1,5 @@
 /* jshint maxlen:false */
+const sinon = require('sinon');
 module.exports = ngModule => {
   describe('formlyConfig', () => {
     beforeEach(window.module(ngModule.name));
@@ -212,6 +213,209 @@ module.exports = ngModule => {
           setterFn({name, template, wrapper: [wrapper, wrapper2]});
           expect(getterFn(name).wrapper).to.eql([wrapper, wrapper2]);
         });
+
+        describe(`extends`, () => {
+          describe(`object case`, () => {
+            beforeEach(() => {
+              setterFn([
+                {
+                  name,
+                  template,
+                  defaultOptions: {
+                    templateOptions: {
+                      required: true,
+                      min: 3
+                    }
+                  }
+                },
+                {
+                  name: 'type2',
+                  extends: name,
+                  defaultOptions: {
+                    templateOptions: {
+                      required: false,
+                      max: 4
+                    },
+                    data: {
+                      extraStuff: [1, 2, 3]
+                    }
+                  }
+                }
+              ]);
+            });
+            it(`should inherit all fields that it does not have itself`, () => {
+              expect(getterFn('type2').template).to.eql(template);
+            });
+
+            it(`should merge objects that it shares`, () => {
+              expect(getterFn('type2').defaultOptions).to.eql({
+                templateOptions: {
+                  required: false,
+                  min: 3,
+                  max: 4
+                },
+                data: {
+                  extraStuff: [1, 2, 3]
+                }
+              });
+            });
+
+            it(`should not error when extends is specified without a template, templateUrl, or defaultOptions`, () => {
+              expect(() => setterFn({name: 'type3', extends: 'type2'})).to.not.throw();
+            });
+
+          });
+
+          describe(`function cases`, () => {
+            let args, parentFn, childFn, parentDefaultOptions, childDefaultOptions,
+              argsAndParent;
+            beforeEach(() => {
+              args = {data: {someData: true}};
+              parentDefaultOptions = {
+                data: {extraOptions: true},
+                templateOptions: {placeholder: 'hi'}
+              };
+              childDefaultOptions = {
+                templateOptions: {placeholder: 'hey', required: true}
+              };
+              parentFn = sinon.stub().returns(parentDefaultOptions);
+              childFn = sinon.stub().returns(childDefaultOptions);
+              argsAndParent = {
+                data: {someData: true, extraOptions: true},
+                templateOptions: {placeholder: 'hi'}
+              };
+            });
+
+            it(`should call the extended parent's defaultOptions function and its own defaultOptions function`, () => {
+              setterFn([
+                {name, defaultOptions: parentFn},
+                {name: 'type2', extends: name, defaultOptions: childFn}
+              ]);
+              getterFn('type2').defaultOptions(args);
+              expect(parentFn).to.have.been.calledWith(args);
+              expect(childFn).to.have.been.calledWith(parentDefaultOptions);
+            });
+
+            it(`should call the extended parent's defaultOptions function when it doesn't have one of its own`, () => {
+              setterFn([
+                {name, defaultOptions: parentFn},
+                {name: 'type2', extends: name}
+              ]);
+              getterFn('type2').defaultOptions(args);
+              expect(parentFn).to.have.been.calledWith(args);
+            });
+
+            it(`should call its own defaultOptions function when the parent doesn't have one`, () => {
+              setterFn([
+                {name, template},
+                {name: 'type2', extends: name, defaultOptions: childFn}
+              ]);
+              getterFn('type2').defaultOptions(args);
+              expect(childFn).to.have.been.calledWith(args);
+            });
+
+            it(`should extend its defaultOptions object with the parent's defaultOptions object`, () => {
+              const objectMergedDefaultOptions = {
+                data: {extraOptions: true},
+                templateOptions: {placeholder: 'hey', required: true}
+              };
+              setterFn([
+                {name, defaultOptions: parentDefaultOptions},
+                {name: 'type2', extends: name, defaultOptions: childDefaultOptions}
+              ]);
+              expect(getterFn('type2').defaultOptions).to.eql(objectMergedDefaultOptions);
+            });
+
+            it(`should call its defaultOptions with the parent's defaultOptions object merged with the given args`, () => {
+              setterFn([
+                {name, defaultOptions: parentDefaultOptions},
+                {name: 'type2', extends: name, defaultOptions: childFn}
+              ]);
+              var returned = getterFn('type2').defaultOptions(args);
+              expect(childFn).to.have.been.calledWith(argsAndParent);
+              expect(returned).to.eql(childDefaultOptions);
+            });
+          });
+
+          describe(`link functions`, () => {
+            let linkArgs, parentFn, childFn;
+            beforeEach(inject(($rootScope) => {
+              linkArgs = [$rootScope.$new(), angular.element('<div></div>'), {}];
+              parentFn = sinon.spy();
+              childFn = sinon.spy();
+            }));
+
+            it(`should call the parent link function when there is no child function`, () => {
+              setterFn([
+                {name, template, link: parentFn},
+                {name: 'type2', extends: name}
+              ]);
+              getterFn('type2').link(...linkArgs);
+              expect(parentFn).to.have.been.calledWith(...linkArgs);
+            });
+
+            it(`should call the child link function when there is no parent function`, () => {
+              setterFn([
+                {name, template},
+                {name: 'type2', extends: name, link: childFn}
+              ]);
+              getterFn('type2').link(...linkArgs);
+              expect(childFn).to.have.been.calledWith(...linkArgs);
+            });
+
+            it(`should call the child link function and the parent link function when they are both present`, () => {
+              setterFn([
+                {name, template, link: parentFn},
+                {name: 'type2', extends: name, link: childFn}
+              ]);
+              getterFn('type2').link(...linkArgs);
+              expect(parentFn).to.have.been.calledWith(...linkArgs);
+              expect(childFn).to.have.been.calledWith(...linkArgs);
+            });
+
+          });
+
+          describe(`controller functions`, () => {
+            let parentFn, childFn, $controller, $scope;
+            beforeEach(inject(($rootScope, _$controller_) => {
+              $scope = $rootScope.$new();
+              $controller = _$controller_;
+              parentFn = sinon.spy();
+              parentFn.$inject = ['$log'];
+              childFn = sinon.spy();
+              childFn.$inject = ['$http'];
+            }));
+
+            it(`should call the parent controller function when there is no child controller function`, inject(($log) => {
+              setterFn([
+                {name, template, controller: parentFn},
+                {name: 'type2', extends: name}
+              ]);
+              $controller(getterFn('type2').controller, {$scope});
+              expect(parentFn).to.have.been.calledWith($log);
+            }));
+
+            it(`should call the parent controller function and the child's when there is a child controller function`, inject(($log, $http) => {
+              setterFn([
+                {name, template, controller: parentFn},
+                {name: 'type2', extends: name, controller: childFn}
+              ]);
+              $controller(getterFn('type2').controller, {$scope});
+              expect(parentFn).to.have.been.calledWith($log);
+              expect(childFn).to.have.been.calledWith($http);
+            }));
+
+            it(`should call the child controller function when there's no parent controller`, inject(($http) => {
+              setterFn([
+                {name, template},
+                {name: 'type2', extends: name, controller: childFn}
+              ]);
+              $controller(getterFn('type2').controller, {$scope});
+              expect(childFn).to.have.been.calledWith($http);
+            }));
+
+          });
+        });
       });
 
       describe('(◞‸◟；) path', () => {
@@ -221,16 +425,20 @@ module.exports = ngModule => {
           expect(() => setterFn(false)).to.throw(/must.*provide.*object.*array/);
         });
 
-        it(`should throw an error when there is not a specified template or templateUrl`, () => {
+        it(`should throw an error when there is not a specified template, templateUrl, defaultOptions, or extends`, () => {
           expect(() => setterFn([
             {name, template},
-            {name: 'type2', foo:'bar'}
+            {name: 'type2', foo: 'bar'}
           ])).to.throw(/must.*provide.*template.*templateUrl/);
           expect(() => setterFn({name})).to.throw(/must.*provide.*template.*templateUrl/);
         });
 
         it('should throw an error when a name is not provided', () => {
           expect(() => setterFn({templateUrl})).to.throw(/must.*provide.*name/);
+        });
+
+        it(`should throw an error when an extra property is provided`, () => {
+          expect(() => setterFn({name, templateUrl, extra: true})).to.throw(/properties.*not.*allowed.*extra/);
         });
 
         it('should warn when attempting to override a type', () => {
