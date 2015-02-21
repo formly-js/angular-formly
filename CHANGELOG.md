@@ -1,3 +1,9 @@
+# 3.2.3
+
+## Bug Fixes
+
+Missed something sorta crutial in that last release...
+
 # 3.2.2
 
 ## Bug Fixes

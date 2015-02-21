@@ -118,7 +118,7 @@ module.exports = ngModule => {
             if (formControl) {
               options.formControl = formControl;
               scope.fc = formControl;
-              addShowMessagesWatcher();
+              addShowMessagesWatcher(scope, options);
               cleanUp();
             } else if (intervalTime * iterations > maxTime) {
               formlyWarn(
