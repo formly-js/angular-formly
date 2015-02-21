@@ -1,3 +1,10 @@
+# 3.2.1
+
+## New Features
+
+- `to` gets set in the scope of the `formly-field` BEFORE controllers are invoked so the controllers can reference `to` as well.
+- a new variable gets added to the scope called `fc` which is a shortcut for `scope.options.formControl`.
+
 # 3.2.0
 
 ## New Features

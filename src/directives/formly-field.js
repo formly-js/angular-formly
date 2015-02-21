@@ -34,10 +34,10 @@ module.exports = ngModule => {
         addModelWatcher($scope, opts);
         addShowMessagesWatcher($scope, opts);
         addValidationMessages(opts);
-        invokeControllers($scope, opts, fieldType);
         // simplify things
         // create $scope.to so template authors can reference to instead of $scope.options.templateOptions
         $scope.to = $scope.options.templateOptions;
+        invokeControllers($scope, opts, fieldType);
 
         // function definitions
         function runExpressions() {
@@ -118,6 +118,7 @@ module.exports = ngModule => {
             var formControl = scope.form && scope.form[scope.id];
             if (formControl) {
               options.formControl = formControl;
+              scope.fc = formControl;
               cleanUp();
             } else if (intervalTime * iterations > maxTime) {
               formlyWarn(
