@@ -32,7 +32,6 @@ module.exports = ngModule => {
         runExpressions();
         setFormControl($scope, opts);
         addModelWatcher($scope, opts);
-        addShowMessagesWatcher($scope, opts);
         addValidationMessages(opts);
         // simplify things
         // create $scope.to so template authors can reference to instead of $scope.options.templateOptions
@@ -119,6 +118,7 @@ module.exports = ngModule => {
             if (formControl) {
               options.formControl = formControl;
               scope.fc = formControl;
+              addShowMessagesWatcher();
               cleanUp();
             } else if (intervalTime * iterations > maxTime) {
               formlyWarn(
@@ -144,8 +144,13 @@ module.exports = ngModule => {
         }
 
         function addShowMessagesWatcher(scope, options) {
-          var expression = 'options.formControl.$invalid && (options.formControl.$touched || options.validation.show)';
-          scope.$watch(expression, function(show) {
+          scope.$watch(function() {
+            if (angular.isDefined(scope.options.validation.show)) {
+              return scope.options.validation.show;
+            } else {
+              return scope.fc.$invalid && scope.fc.$touched;
+            }
+          }, function(show) {
             options.validation.errorExistsAndShouldBeVisible = show;
           });
         }

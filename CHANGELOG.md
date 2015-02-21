@@ -1,3 +1,9 @@
+# 3.2.2
+
+## Bug Fixes
+
+- `formly-field`'s scope property `options.validation.errorExistsAndShouldBeVisible` wasn't giving preference to `validation.show` and it should. Also, only adding the watcher when a formControl is set on the field's options.
+
 # 3.2.1
 
 ## New Features
