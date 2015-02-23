@@ -1,3 +1,9 @@
+# 3.2.5
+
+## Bug Fixes
+
+- The `extends` for `defaultOptions` in the case where both were functions was not calling the child properly. It was calling with the parent's result, but it should be called with the parent's result merged with the options.
+
 # 3.2.4
 
 ## New Features

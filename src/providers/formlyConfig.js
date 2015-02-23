@@ -126,8 +126,10 @@ module.exports = ngModule => {
       if (extendsDOIsFn) {
         options.defaultOptions = function defaultOptions(options) {
           var extendsDefaultOptions = extendsDO(options);
+          let mergedDefaultOptions = {};
+          utils.reverseDeepMerge(mergedDefaultOptions, options, extendsDefaultOptions);
           if (optionsDOIsFn) {
-            return optionsDO(extendsDefaultOptions);
+            return optionsDO(mergedDefaultOptions);
           } else {
             utils.reverseDeepMerge(extendsDefaultOptions, optionsDO);
             return extendsDefaultOptions;

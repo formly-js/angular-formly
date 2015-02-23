@@ -293,7 +293,7 @@ module.exports = ngModule => {
               ]);
               getterFn('type2').defaultOptions(args);
               expect(parentFn).to.have.been.calledWith(args);
-              expect(childFn).to.have.been.calledWith(parentDefaultOptions);
+              expect(childFn).to.have.been.calledWith(argsAndParent);
             });
 
             it(`should call the extended parent's defaultOptions function when it doesn't have one of its own`, () => {
