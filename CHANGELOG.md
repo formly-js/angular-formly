@@ -1,3 +1,9 @@
+# 3.2.6
+
+## Bug Fixes & New Features
+
+- Introducing `showError` as a scope variable in `formly-field`s. It's a shortcut for `options.validation.errorExistsAndShouldBeVisible`. Also, fixing an issue where a non-boolean value for `validation.show` would be used. Also, `validation.show` will only set these to `true` if the form control is also `$invalid` which was the original intent.
+
 # 3.2.5
 
 ## Bug Fixes

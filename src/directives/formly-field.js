@@ -145,13 +145,14 @@ module.exports = ngModule => {
 
         function addShowMessagesWatcher(scope, options) {
           scope.$watch(function() {
-            if (angular.isDefined(scope.options.validation.show)) {
-              return scope.options.validation.show;
+            if (angular.isBoolean(scope.options.validation.show)) {
+              return scope.fc.$invalid && scope.options.validation.show;
             } else {
               return scope.fc.$invalid && scope.fc.$touched;
             }
           }, function(show) {
             options.validation.errorExistsAndShouldBeVisible = show;
+            scope.showError = show;
           });
         }
 
