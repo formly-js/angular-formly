@@ -1,3 +1,9 @@
+# 3.2.4
+
+## New Features
+
+- Because the attribute html `maxlength` prevents the user from inputing anything longer than the specified length, `formlyNgModelAttrsManipulator` allows you to specify that you want to use the `bound` version only (i.e. `ng-maxlength`). This adds a watcher, but is a better user experience. Set `formlyConfig.extras.ngModelAttrsManipulatorPreferBound = true` to enable this.
+
 # 3.2.3
 
 ## Bug Fixes

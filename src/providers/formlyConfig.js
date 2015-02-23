@@ -28,7 +28,8 @@ module.exports = ngModule => {
       removeWrappersForType,
       disableWarnings: false,
       extras: {
-        disableNgModelAttrsManipulator: false
+        disableNgModelAttrsManipulator: false,
+        ngModelAttrsManipulatorPreferBound: false
       },
       templateManipulators: {
         preWrapper: [],

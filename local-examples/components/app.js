@@ -3,6 +3,8 @@
 
   //var app = angular.module('app', ['formly', 'formlyVanilla'], function(formlyConfigProvider) {
   var app = angular.module('app', ['formly', 'formlyBootstrap'], function(formlyConfigProvider) {
+    formlyConfigProvider.extras.ngModelAttrsManipulatorPreferBound = true;
+
     formlyConfigProvider.setType({
       name: 'custom',
       template: formlyConfigProvider.getType('input').template,
@@ -35,10 +37,10 @@
       },
       defaultOptions: {
         validators: {
-          custom: {
-            expression: '$viewValue === "custom"',
-            message: '$viewValue + " is not \"custom\""'
-          }
+          //custom: {
+          //  expression: '$viewValue === "custom"',
+          //  message: '$viewValue + " is not \"custom\""'
+          //}
         }
       }
     });
@@ -65,7 +67,15 @@
         key: 'myCustomThing',
         templateOptions: {
           label: 'Custom stuff',
-          description: 'This has a link and controller!'
+          description: 'This has a link and controller!',
+          maxlength: 4
+        },
+        expressionProperties: {
+          'templateOptions.maxlength': function() {
+            var val = Math.floor(Math.random() * 10) + 3;
+            console.log(val);
+            return val;
+          }
         },
         link: function(scope, el) {
           console.log(scope, el);
