@@ -145,7 +145,7 @@ module.exports = ngModule => {
 
         function addShowMessagesWatcher(scope, options) {
           scope.$watch(function() {
-            if (angular.isBoolean(scope.options.validation.show)) {
+            if (typeof scope.options.validation.show === 'boolean') {
               return scope.fc.$invalid && scope.options.validation.show;
             } else {
               return scope.fc.$invalid && scope.fc.$touched;

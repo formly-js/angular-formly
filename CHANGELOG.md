@@ -1,3 +1,9 @@
+# 3.2.7
+
+## Bug Fixes
+
+- Evidently... `angular.isBoolean` does not exist...
+
 # 3.2.6
 
 ## Bug Fixes & New Features
