@@ -125,7 +125,7 @@ module.exports = ngModule => {
           );
         }
         // enforce the model attribute because we're making it optional to help with migrations
-        if (!attrs.hasOwnProperty('model') || !scope.model) {
+        if (!attrs.hasOwnProperty('model')) {
           throw formlyUsability.getFormlyError(
             'The "model" attribute is required on a formly-form.'
           );

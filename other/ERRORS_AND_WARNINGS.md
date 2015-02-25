@@ -49,6 +49,14 @@ field.
 
 Same as above.
 
+# setType validation failed
+
+If you're looking at this, file a bug for me to put more info here. Basically you're calling `setType` and you aren't
+passing all the required data or you're passing the wrong properties/types. `name` is the only required property. If
+you're passing this, then it's likely that you're either passing an extra property that isn't allowed or you're passing
+the wrong data type for a property. Look at the output for what you passed and compare it with what you're allowed to
+pass.
+
 # You have specified properties for {context} that are not allowed
 
 Formly will warn you when specifying properties that are not allowed for a few things (fields or types for example).

@@ -375,6 +375,58 @@ module.exports = ngModule => {
 
           });
 
+          describe(`validateOptions functions`, () => {
+            let options, parentFn, childFn;
+            beforeEach(() => {
+              options = {
+                a: 'b',
+                c: {d: 'e'}
+              };
+              parentFn = sinon.spy();
+              childFn = sinon.spy();
+            });
+
+            it(`should call the parent validateOptions function when there is no child function`, () => {
+              setterFn([
+                {name, template, validateOptions: parentFn},
+                {name: 'type2', extends: name}
+              ]);
+              getterFn('type2').validateOptions(options);
+              expect(parentFn).to.have.been.calledWith(options);
+            });
+
+            it(`should call the child validateOptions function when there is no parent function`, () => {
+              setterFn([
+                {name, template},
+                {name: 'type2', extends: name, validateOptions: childFn}
+              ]);
+              getterFn('type2').validateOptions(options);
+              expect(childFn).to.have.been.calledWith(options);
+            });
+
+            it(`should call the child validateOptions function and the parent validateOptions function when they are both present`, () => {
+              setterFn([
+                {name, template, validateOptions: parentFn},
+                {name: 'type2', extends: name, validateOptions: childFn}
+              ]);
+              getterFn('type2').validateOptions(options);
+              expect(childFn).to.have.been.calledWith(options);
+              expect(parentFn).to.have.been.calledWith(options);
+            });
+
+            it(`should pass the result of the child's defaultOptions with the given options to the parent's validateOptions function`, () => {
+              const defaultOptions = {f: 'g'};
+              const combinedOptions = {a: 'b', c: {d: 'e'}, f: 'g'};
+              setterFn([
+                {name, template, validateOptions: parentFn},
+                {name: 'type2', extends: name, validateOptions: childFn, defaultOptions}
+              ]);
+              getterFn('type2').validateOptions(options);
+              expect(childFn).to.have.been.calledWith(options);
+              expect(parentFn).to.have.been.calledWith(combinedOptions);
+            });
+          });
+
           describe(`controller functions`, () => {
             let parentFn, childFn, $controller, $scope;
             beforeEach(inject(($rootScope, _$controller_) => {
@@ -416,6 +468,21 @@ module.exports = ngModule => {
 
           });
         });
+
+        describe(`validateOptions`, () => {
+          it(`should allow you to specify this as a property of a type`, () => {
+            const validateOptions = () => {
+            };
+            expect(() => {
+              setterFn({
+                name,
+                validateOptions,
+                template
+              });
+            }).to.not.throw();
+            expect(getterFn(name).validateOptions).to.be.a('function');
+          });
+        });
       });
 
       describe('(◞‸◟；) path', () => {
@@ -425,20 +492,16 @@ module.exports = ngModule => {
           expect(() => setterFn(false)).to.throw(/must.*provide.*object.*array/);
         });
 
-        it(`should throw an error when there is not a specified template, templateUrl, defaultOptions, or extends`, () => {
-          expect(() => setterFn([
-            {name, template},
-            {name: 'type2', foo: 'bar'}
-          ])).to.throw(/must.*provide.*template.*templateUrl/);
-          expect(() => setterFn({name})).to.throw(/must.*provide.*template.*templateUrl/);
+        it('should throw an error when a name is not provided', () => {
+          expect(() => setterFn({templateUrl})).to.throw(/formlyConfig\.setType/);
         });
 
-        it('should throw an error when a name is not provided', () => {
-          expect(() => setterFn({templateUrl})).to.throw(/must.*provide.*name/);
+        it(`should throw an error when specifying both a template and a templateUrl`, () => {
+          expect(() => setterFn({name, template, templateUrl})).to.throw(/formlyConfig\.setType/);
         });
 
         it(`should throw an error when an extra property is provided`, () => {
-          expect(() => setterFn({name, templateUrl, extra: true})).to.throw(/properties.*not.*allowed.*extra/);
+          expect(() => setterFn({name, templateUrl, extra: true})).to.throw(/formlyConfig\.setType/);
         });
 
         it('should warn when attempting to override a type', () => {

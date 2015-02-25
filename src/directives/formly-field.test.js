@@ -1,3 +1,4 @@
+const sinon = require('sinon');
 module.exports = ngModule => {
   describe('formly-field', function() {
     var $compile;
@@ -49,7 +50,7 @@ module.exports = ngModule => {
             }
           }
         ];
-        var el = $compile(angular.element(template))(scope);
+        var el = $compile(template)(scope);
         scope.$digest();
         expect(el[0].querySelector('.my-template-wrapper')).to.exist;
       });
@@ -65,7 +66,7 @@ module.exports = ngModule => {
             }
           }
         ];
-        var el = $compile(angular.element(template))(scope);
+        var el = $compile(template)(scope);
         scope.$digest();
         var outerEl = el[0].querySelector('.my-other-template-wrapper');
         expect(outerEl).to.exist;
@@ -83,7 +84,7 @@ module.exports = ngModule => {
             }
           }
         ];
-        var el = $compile(angular.element(template))(scope);
+        var el = $compile(template)(scope);
         scope.$digest();
         expect(el[0].querySelector('.my-template-wrapper')).to.not.exist;
       });
@@ -92,12 +93,15 @@ module.exports = ngModule => {
 
 
     describe('api check', () => {
-      var scope, $compile;
-      var template = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
+      let scope, $compile;
+      let template = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
+      let validateOptions;
       beforeEach(inject((formlyConfig, $rootScope, _$compile_)  => {
         $compile = _$compile_;
+        validateOptions = sinon.spy();
         formlyConfig.setType({
-          name: 'text', template: `<input name="{{id}}" ng-model="model[options.key]" />`
+          name: 'text', template: `<input name="{{id}}" ng-model="model[options.key]" />`,
+          validateOptions
         });
         scope = $rootScope.$new();
         scope.model = {};
@@ -110,9 +114,17 @@ module.exports = ngModule => {
             extraProp: 'whatever'
           }
         ];
-        $compile(angular.element(template))(scope);
+        $compile(template)(scope);
 
         expect(() => scope.$digest()).to.throw(/properties.*not.*allowed.*extraProp/);
+      });
+
+      it(`should invoke the validateOptions property of the type`, () => {
+        const field = {type: 'text'};
+        scope.fields = [field];
+        $compile(template)(scope);
+        scope.$digest();
+        expect(validateOptions).to.have.been.calledWith(field);
       });
     });
 
@@ -172,7 +184,7 @@ module.exports = ngModule => {
       it('should default to the ipAddress type options', () => {
         var field = {type: 'ipAddress'};
         scope.fields = [field];
-        $compile(angular.element(template))(scope);
+        $compile(template)(scope);
         scope.$digest();
         expect(field.data.usingDefaultOptions).to.be.true;
         expect(field.validators.ipAddress).to.be.a('function');
@@ -181,7 +193,7 @@ module.exports = ngModule => {
       it('should be possible to specify defaultOptions-only types (non-template types)', () => {
         var field = {type: 'text', optionsTypes: ['phone', 'required']};
         scope.fields = [field];
-        $compile(angular.element(template))(scope);
+        $compile(template)(scope);
         scope.$digest();
         expect(field.data.hasPropertiesFromTextType).to.be.true;
         expect(field.ngModelAttrs.bound['ng-pattern']).to.be.instanceOf(RegExp);

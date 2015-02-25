@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "3.2.7",
+  "version": "3.3.0",
   "author": "Astrism <astrisms@gmail.com>",
   "contributors": [
     "Astrism <astrisms@gmail.com>",
@@ -39,10 +39,10 @@
     "angular": "~1.x"
   },
   "devDependencies": {
-    "6to5": "^3.0.10",
-    "6to5-loader": "^3.0.0",
     "angular": "^1.3.11",
     "angular-mocks": "^1.3.11",
+    "babel-core": "^4.4.6",
+    "babel-loader": "^4.0.0",
     "chai": "^1.10.0",
     "deep-extend": "^0.3.2",
     "ghooks": "^0.2.4",
@@ -68,5 +68,8 @@
     "source-map": "^0.2.0",
     "webpack": "^1.5.3",
     "webpack-dev-server": "^1.7.0"
+  },
+  "dependencies": {
+    "api-check": "^1.0.0"
   }
 }

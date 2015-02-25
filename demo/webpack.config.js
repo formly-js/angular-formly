@@ -62,7 +62,7 @@ function getConfig(context) {
         {test: /\.css$/, loader: 'style!css'},
         {test: /\.html$/, loader: 'raw', exclude: /node_modules/},
         {test: /\.json$/, loader: 'json'},
-        {test: /\.js$/, loader: (dev ? '' : ngAnnotateLoader + '!') + '6to5!jshint', exclude: /node_modules|dist/},
+        {test: /\.js$/, loader: (dev ? '' : ngAnnotateLoader + '!') + 'babel!jshint', exclude: /node_modules|dist/},
         {test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader?name=res/[name].[ext]?[hash]'}
       ]
     }

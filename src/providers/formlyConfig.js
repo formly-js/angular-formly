@@ -6,7 +6,7 @@ module.exports = ngModule => {
 
   formlyConfig.tests = ON_TEST ? require('./formlyConfig.test')(ngModule) : null;
 
-  function formlyConfig(formlyUsabilityProvider) {
+  function formlyConfig(formlyUsabilityProvider, formlyApiTypes, apiCheck) {
 
     var typeMap = {};
     var templateWrappersMap = {};
@@ -15,7 +15,7 @@ module.exports = ngModule => {
     var getError = formlyUsabilityProvider.getFormlyError;
     const allowedTypeProperties = [
       'name', 'template', 'templateUrl', 'controller', 'link',
-      'defaultOptions', 'extends', 'wrapper', 'data'
+      'defaultOptions', 'extends', 'wrapper', 'data', 'validateOptions', 'overwriteOk'
     ];
 
     angular.extend(this, {
@@ -53,23 +53,14 @@ module.exports = ngModule => {
     }
 
     function checkType(options) {
-      if (!options.name) {
-        throw getError(`You must provide a name for setType. You provided: ${JSON.stringify(arguments)}`);
-      } else if (!options.defaultOptions && !options.template && !options.templateUrl && !options.extends) {
-        throw getError(
-          `You must provide defaultOptions, extends OR a template OR templateUrl for setType. ` +
-          `You provided none of these: ${JSON.stringify(arguments)}`
-        );
-      } else if (options.template && options.templateUrl) {
-        throw getError(
-          `You must provide at most a template OR templateUrl for setType. ` +
-          `You provided both: ${JSON.stringify(arguments)}`
-        );
-      }
+      apiCheck.throw(formlyApiTypes.typeOptionsApi, arguments, {
+        prefix: 'formlyConfig.setType',
+        url: 'settype-validation-failed'
+      });
       if (!options.overwriteOk) {
         checkOverwrite(options.name, typeMap, options, 'types');
       } else {
-        delete options.overwriteOk;
+        options.overwriteOk = undefined;
       }
       formlyUsabilityProvider.checkAllowedProperties(allowedTypeProperties, options);
     }
@@ -78,6 +69,7 @@ module.exports = ngModule => {
       const extendsType = getType(options.extends, true, options);
       extendTypeControllerFunction(options, extendsType);
       extendTypeLinkFunction(options, extendsType);
+      extendTypeValidateOptionsFunction(options, extendsType);
       extendTypeDefaultOptions(options, extendsType);
       utils.reverseDeepMerge(options, extendsType);
     }
@@ -112,6 +104,31 @@ module.exports = ngModule => {
         };
       } else {
         options.link = extendsFn;
+      }
+    }
+
+    function extendTypeValidateOptionsFunction(options, extendsType) {
+      const extendsFn = extendsType.validateOptions;
+      if (!angular.isDefined(extendsFn)) {
+        return;
+      }
+      const optionsFn = options.validateOptions;
+      const originalDefaultOptions = options.defaultOptions;
+      if (angular.isDefined(optionsFn)) {
+        options.validateOptions = function(options) {
+          optionsFn(options);
+          let mergedOptions = angular.copy(options);
+          let defaultOptions = originalDefaultOptions;
+          if (defaultOptions) {
+            if (angular.isFunction(defaultOptions)) {
+              defaultOptions = defaultOptions(mergedOptions);
+            }
+            utils.reverseDeepMerge(mergedOptions, defaultOptions);
+          }
+          extendsFn(mergedOptions);
+        };
+      } else {
+        options.validateOptions = extendsFn;
       }
     }
 

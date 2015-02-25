@@ -1,3 +1,15 @@
+# 3.3.0
+
+## New Features
+
+- `api-check` is now a dependency of angular-formly. It is bundled with `angular-formly` to prevent a breaking change and `angular-formly` exposes it as an injectable constant via `apiCheck`.
+- `formlyConfig.setType` now allows you to specify `validateOptions` which will pass the user's specified options for validation. The author is responsible for logging warnings or throwing errors. Recommended to use `apiCheck.js` which will be shipped as a dependency for `angular-formly` soon. This also supports `extends`.
+
+## Other Changes
+
+- `formly-form` no longer throwing an error when the `scope.model` is falsey.
+- `formlyConfig.setType` no longer throws an error when you neglect to specify a `template`, `templateUrl`, or `defaultOptions` because with `extends` you could create a type that's meant to be extended.
+
 # 3.2.7
 
 ## Bug Fixes

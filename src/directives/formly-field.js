@@ -344,6 +344,12 @@ module.exports = ngModule => {
       ];
       formlyUsability.checkAllowedProperties(allowedProperties, options);
 
+      // validate with the type
+      const type = options.type && formlyConfig.getType(options.type);
+      if (type && type.validateOptions) {
+        type.validateOptions(options);
+      }
+
       function getTemplateOptionsCount(options) {
         let templateOptions = 0;
         templateOptions += angular.isDefined(options.template) ? 1 : 0;
