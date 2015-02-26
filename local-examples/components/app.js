@@ -1,13 +1,21 @@
 (function() {
   'use strict';
 
-  //var app = angular.module('app', ['formly', 'formlyVanilla'], function(formlyConfigProvider) {
-  var app = angular.module('app', ['formly', 'formlyBootstrap'], function(formlyConfigProvider) {
-    formlyConfigProvider.extras.ngModelAttrsManipulatorPreferBound = true;
+  //var app = angular.module('app', ['formly', 'formlyVanilla'], function(formlyConfig) {
+  var app = angular.module('app', ['formly', 'formlyBootstrap']).run(function(formlyConfig, apiCheck) {
+    apiCheck.disable();
+    formlyConfig.extras.ngModelAttrsManipulatorPreferBound = true;
 
-    formlyConfigProvider.setType({
+    formlyConfig.setType({
       name: 'custom',
-      template: formlyConfigProvider.getType('input').template,
+      template: formlyConfig.getType('input').template,
+      defaultOptions: {
+        ngModelAttrs: {
+          '/^hello$/': {
+            value: 'ng-pattern'
+          }
+        }
+      },
       controller: function($scope) {
         console.log($scope);
       },
@@ -26,7 +34,7 @@
       }
     });
 
-    formlyConfigProvider.setType({
+    formlyConfig.setType({
       name: 'customExtended',
       extends: 'custom',
       controller: function($scope) {
@@ -65,8 +73,8 @@
       {
         type: 'customExtended',
         key: 'myCustomThing',
+        label: 'Custom stuff',
         templateOptions: {
-          label: 'Custom stuff',
           description: 'This has a link and controller!',
           maxlength: 4
         },

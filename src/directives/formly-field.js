@@ -5,8 +5,8 @@ module.exports = ngModule => {
 
   formlyField.tests = ON_TEST ? require('./formly-field.test')(ngModule) : null;
 
-  function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyValidationMessages,
-                       formlyUtil, formlyUsability, formlyWarn) {
+  function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyValidationMessages, apiCheck,
+                       formlyApiTypes, formlyUtil, formlyUsability, formlyWarn) {
     return {
       restrict: 'AE',
       transclude: true,
@@ -23,7 +23,7 @@ module.exports = ngModule => {
         var fieldType = opts.type && formlyConfig.getType(opts.type);
         simplifyLife(opts);
         mergeFieldOptionsWithTypeDefaults(opts, fieldType);
-        apiCheck(opts);
+        checkApi(opts);
         // set field id to link labels and fields
         $scope.id = formlyUtil.getFieldId($scope.formId, opts, $scope.index);
 
@@ -318,44 +318,15 @@ module.exports = ngModule => {
       return wrapper;
     }
 
-    function apiCheck(options) {
-      var templateOptions = getTemplateOptionsCount(options);
-      if (templateOptions === 0) {
-        throw formlyUsability.getFieldError(
-          'you-must-provide-one-of-type-template-or-templateurl-for-a-field',
-          'You must provide one of type, template, or templateUrl for a field', options
-        );
-      } else if (templateOptions > 1) {
-        throw formlyUsability.getFieldError(
-          'you-must-only-provide-a-type-template-or-templateurl-for-a-field',
-          'You must only provide a type, template, or templateUrl for a field', options
-        );
-      }
-
-      // check that only allowed properties are provided
-      var allowedProperties = [
-        'type', 'template', 'templateUrl', 'key', 'model',
-        'expressionProperties', 'data', 'templateOptions',
-        'wrapper', 'modelOptions', 'watcher', 'validators',
-        'noFormControl', 'hide', 'ngModelAttrs', 'optionsTypes',
-        'link', 'controller', 'validation',
-        // things we add to the field after the fact are ok
-        'formControl', 'value', 'runExpressions'
-      ];
-      formlyUsability.checkAllowedProperties(allowedProperties, options);
-
+    function checkApi(options) {
+      apiCheck.throw(formlyApiTypes.fieldOptionsApi, arguments, {
+        prefix: 'formly-field directive',
+        url: 'formly-field-directive-validation-failed'
+      });
       // validate with the type
       const type = options.type && formlyConfig.getType(options.type);
       if (type && type.validateOptions) {
         type.validateOptions(options);
-      }
-
-      function getTemplateOptionsCount(options) {
-        let templateOptions = 0;
-        templateOptions += angular.isDefined(options.template) ? 1 : 0;
-        templateOptions += angular.isDefined(options.type) ? 1 : 0;
-        templateOptions += angular.isDefined(options.templateUrl) ? 1 : 0;
-        return templateOptions;
       }
     }
 

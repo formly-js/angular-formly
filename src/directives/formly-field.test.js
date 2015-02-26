@@ -116,7 +116,7 @@ module.exports = ngModule => {
         ];
         $compile(template)(scope);
 
-        expect(() => scope.$digest()).to.throw(/properties.*not.*allowed.*extraProp/);
+        expect(() => scope.$digest()).to.throw(/extra.*properties.*extraProp/);
       });
 
       it(`should invoke the validateOptions property of the type`, () => {
@@ -162,8 +162,8 @@ module.exports = ngModule => {
           name: 'phone',
           defaultOptions: {
             ngModelAttrs: {
-              bound: {
-                'ng-pattern': /^1[2-9]\d{2}[2-9]\d{6}$/
+              '/^1[2-9]\\d{2}[2-9]\\d{6}$/': {
+                value: 'ng-pattern'
               }
             }
           }
@@ -172,10 +172,19 @@ module.exports = ngModule => {
           name: 'required',
           defaultOptions: {
             ngModelAttrs: {
-              bound: {
-                'ng-required': true,
-                'ng-pattern': /overwriting stuff is fun for tests/
+              '/overwriting stuff is fun for tests/': {
+                value: 'ng-pattern'
+              },
+              required: {
+                bound: 'ng-required',
+                attribute: 'required'
+              },
+              myChange: {
+                expression: 'ng-change'
               }
+            },
+            templateOptions: {
+              required: true
             }
           }
         });
@@ -191,12 +200,16 @@ module.exports = ngModule => {
       });
 
       it('should be possible to specify defaultOptions-only types (non-template types)', () => {
-        var field = {type: 'text', optionsTypes: ['phone', 'required']};
+        const field = {
+          type: 'text', optionsTypes: ['phone', 'required'], templateOptions: {myChange: 'model.otherThing = true'}
+        };
         scope.fields = [field];
-        $compile(template)(scope);
+        const el = $compile(template)(scope);
         scope.$digest();
+        const input = el.find('input');
         expect(field.data.hasPropertiesFromTextType).to.be.true;
-        expect(field.ngModelAttrs.bound['ng-pattern']).to.be.instanceOf(RegExp);
+        expect(input.attr('ng-pattern')).to.equal('/overwriting stuff is fun for tests/');
+        expect(input.attr('ng-change')).to.contain('myChange');
       });
     });
 

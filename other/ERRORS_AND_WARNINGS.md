@@ -57,6 +57,12 @@ you're passing this, then it's likely that you're either passing an extra proper
 the wrong data type for a property. Look at the output for what you passed and compare it with what you're allowed to
 pass.
 
+# formly-field directive validation failed
+
+You need to make sure that the field config for all of your fields is correct according the specification. apiCheck
+should print out something that helps you understand what this is. If it's not good enough, file an issue and I'll look
+and improving it!
+
 # You have specified properties for {context} that are not allowed
 
 Formly will warn you when specifying properties that are not allowed for a few things (fields or types for example).

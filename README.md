@@ -738,6 +738,12 @@ where you want it (if you want it at all) and formly will take care of most of t
 properties, you have pretty much full reign over the `options.templateOptions` object. Just be aware that angular-formly
 does make use of common parameters like `required` or `onClick` to automatically add attributes to `ng-model` elements.
 
+## apiCheck
+
+angular-formly uses [apiCheck.js](https://github.com/kentcdodds/apiCheck.js) to do type validation to help you use
+formly correctly. If you wish to disable this (in production that is recommended) then simply inject `apiCheck` and
+disable it with `apiCheck.disable()`.
+
 ## Roadmap
 
 - See the [issues labeled enhancement](labels/enhancement)

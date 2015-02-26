@@ -1,5 +1,5 @@
 module.exports = ngModule => {
-  require('./formlyTypes')(ngModule);
+  require('./formlyApiTypes')(ngModule);
   require('./formlyUsability')(ngModule);
   require('./formlyConfig')(ngModule);
   require('./formlyVersion')(ngModule);

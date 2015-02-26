@@ -379,8 +379,10 @@ module.exports = ngModule => {
             let options, parentFn, childFn;
             beforeEach(() => {
               options = {
-                a: 'b',
-                c: {d: 'e'}
+                data: {
+                  a: 'b',
+                  c: {d: 'e'}
+                }
               };
               parentFn = sinon.spy();
               childFn = sinon.spy();
@@ -415,8 +417,8 @@ module.exports = ngModule => {
             });
 
             it(`should pass the result of the child's defaultOptions with the given options to the parent's validateOptions function`, () => {
-              const defaultOptions = {f: 'g'};
-              const combinedOptions = {a: 'b', c: {d: 'e'}, f: 'g'};
+              const defaultOptions = {data: {f: 'g'}};
+              const combinedOptions = {data: {a: 'b', c: {d: 'e'}, f: 'g'}};
               setterFn([
                 {name, template, validateOptions: parentFn},
                 {name: 'type2', extends: name, validateOptions: childFn, defaultOptions}

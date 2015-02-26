@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "author": "Astrism <astrisms@gmail.com>",
   "contributors": [
     "Astrism <astrisms@gmail.com>",
@@ -70,6 +70,6 @@
     "webpack-dev-server": "^1.7.0"
   },
   "dependencies": {
-    "api-check": "^1.0.0"
+    "api-check": "^3.0.4"
   }
 }

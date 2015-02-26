@@ -1,3 +1,9 @@
+# 3.3.1
+
+## New Features
+
+- Updated `api-check` to 3.0.0. It's awesome. Also added field checking to types.
+
 # 3.3.0
 
 ## New Features
