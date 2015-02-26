@@ -27,7 +27,8 @@
     "test:ci": "node node_modules/karma/bin/karma start karma.conf.ci.js",
     "watch": "node node_modules/webpack/bin/webpack.js --watch",
     "start": "npm run watch & npm run test",
-    "deploy": "grunt deploy"
+    "deploy": "grunt deploy",
+    "release": "git push && npm publish && git push --tags"
   },
   "config": {
     "ghooks": {
