@@ -7,6 +7,11 @@
     formlyConfig.extras.ngModelAttrsManipulatorPreferBound = true;
 
     formlyConfig.setType({
+      name: 'nullWrappers',
+      wrapper: null
+    });
+
+    formlyConfig.setType({
       name: 'custom',
       template: formlyConfig.getType('input').template,
       defaultOptions: {

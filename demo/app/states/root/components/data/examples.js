@@ -22,12 +22,24 @@ module.exports = [
         title: 'Introduction Example',
         slug: 'introduction',
         jsbinId: 'kunaho'
-      },
+      }
+    ]
+  },
+  {
+    title: 'Field Options',
+    name: 'field-options',
+    examples: [
       {
         title: 'Expression Properties',
         slug: 'expression-properties',
         jsbinId: 'vupihu'
-      },
+      }
+    ]
+  },
+  {
+    title: 'Custom Types',
+    name: 'custom-types',
+    examples: [
       {
         title: 'Creating Custom Templates',
         slug: 'custom-templates',
@@ -42,6 +54,11 @@ module.exports = [
         title: 'Extending Types',
         slug: 'extending-types',
         jsbinId: 'koweni'
+      },
+      {
+        title: 'Validating Options',
+        slug: 'validate-options',
+        jsbinId: 'qafefu'
       }
     ]
   },
