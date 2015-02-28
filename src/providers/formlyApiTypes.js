@@ -8,6 +8,9 @@ module.exports = ngModule => {
   };
 
   ngModule.constant('apiCheck', apiCheck);
+  if (ON_TEST) {
+    require('./formlyApiTypes.test')(ngModule);
+  }
 
   let formlyExpressionType = apiCheck.oneOfType([apiCheck.string, apiCheck.func]);
 
@@ -68,7 +71,7 @@ module.exports = ngModule => {
       show: apiCheck.oneOfType([
         apiCheck.bool, apiCheck.oneOf([null])
       ]).optional,
-      messages: apiCheck.func.optional,
+      messages: apiCheck.objectOf(apiCheck.func).optional,
       errorExistsAndShouldBeVisible: apiCheck.bool.optional
     }).optional,
     formControl: apiCheck.object.optional,

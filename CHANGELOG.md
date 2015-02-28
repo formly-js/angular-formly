@@ -1,3 +1,9 @@
+# 3.3.2
+
+## Bug FIxes
+
+- Bug fix ([#188](/../../issues/188)). The `options.messages` type was wrong.
+
 # 3.3.1
 
 ## New Features
