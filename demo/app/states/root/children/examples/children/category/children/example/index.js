@@ -13,7 +13,7 @@ module.exports = {
     slug: stateUtils.resolveParameter('slug')
   },
   data: {
-    activationEvents: 'exampleSelected'
+    activationEvents: ['exampleSelected', 'navigateToExample']
   }
 };
 

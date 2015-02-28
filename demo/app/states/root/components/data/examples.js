@@ -63,6 +63,17 @@ module.exports = [
     ]
   },
   {
+    title: 'Other',
+    name: 'other',
+    examples: [
+      {
+        title: 'Matching Two Fields',
+        slug: 'matching-two-fields',
+        jsbinId: 'ginere'
+      }
+    ]
+  },
+  {
     title: 'Advanced',
     name: 'advanced',
     examples: [
