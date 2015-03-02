@@ -1,12 +1,12 @@
 /* jshint maxlen:false */
 module.exports = ngModule => {
-  describe('formlyApiTypes', () => {
+  describe('formlyApiCheck', () => {
     beforeEach(window.module(ngModule.name));
 
-    describe('fieldOptionsApi', () => {
-      let fieldOptionsApi;
-      beforeEach(inject((formlyApiTypes) => {
-        fieldOptionsApi = formlyApiTypes.fieldOptionsApi;
+    describe('formlyFIeldOptions', () => {
+      let formlyFIeldOptions;
+      beforeEach(inject((formlyApiCheck) => {
+        formlyFIeldOptions = formlyApiCheck.formlyFieldOptions;
       }));
 
       it(`should pass when validation.messages is an object of functions`, () => {
@@ -19,7 +19,7 @@ module.exports = ngModule => {
             }
           }
         };
-        const result = fieldOptionsApi(options);
+        const result = formlyFIeldOptions(options);
         expect(result).to.be.undefined;
       });
     });

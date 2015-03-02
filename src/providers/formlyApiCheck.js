@@ -1,19 +1,21 @@
 module.exports = ngModule => {
 
-  const _ = require('lodash');
-  let apiCheck = require('api-check');
-  apiCheck.config.output = {
-    prefix: 'angular-formly:',
-    docsBaseUrl: `https://github.com/formly-js/angular-formly/blob/${VERSION}/other/ERRORS_AND_WARNINGS.md#`
-  };
+  let apiCheck = require('api-check')({
+    output: {
+      prefix: 'angular-formly:',
+      docsBaseUrl: `https://github.com/formly-js/angular-formly/blob/${VERSION}/other/ERRORS_AND_WARNINGS.md#`
+    }
+  });
 
-  ngModule.constant('apiCheck', apiCheck);
+  ngModule.constant('formlyApiCheck', apiCheck);
   if (ON_TEST) {
-    require('./formlyApiTypes.test')(ngModule);
+    require('./formlyApiCheck.test')(ngModule);
   }
 
-  let formlyExpressionType = apiCheck.oneOfType([apiCheck.string, apiCheck.func]);
-
+  let formlyExpression = apiCheck.oneOfType([apiCheck.string, apiCheck.func]);
+  let wrapperType = apiCheck.oneOfType([
+    apiCheck.oneOf([null]), apiCheck.typeOrArrayOf(apiCheck.string)
+  ]);
 
   let fieldOptionsApiShape = {
     type: apiCheck.shape.ifNot(['template', 'templateUrl'], apiCheck.string).optional,
@@ -22,17 +24,15 @@ module.exports = ngModule => {
     key: apiCheck.oneOfType([apiCheck.string, apiCheck.number]),
     model: apiCheck.object.optional,
     expressionProperties: apiCheck.objectOf(apiCheck.oneOfType([
-      formlyExpressionType,
+      formlyExpression,
       apiCheck.shape({
-        expression: formlyExpressionType,
-        message: formlyExpressionType.optional
+        expression: formlyExpression,
+        message: formlyExpression.optional
       }).strict
     ])).optional,
     data: apiCheck.object.optional,
     templateOptions: apiCheck.object.optional,
-    wrapper: apiCheck.oneOfType([
-      apiCheck.oneOf([null]), apiCheck.typeOrArrayOf(apiCheck.string)
-    ]).optional,
+    wrapper: wrapperType.optional,
     modelOptions: apiCheck.shape({
       updateOn: apiCheck.string.optional,
       debounce: apiCheck.oneOfType([
@@ -44,14 +44,14 @@ module.exports = ngModule => {
     }).optional,
     watcher: apiCheck.typeOrArrayOf(
       apiCheck.shape({
-        expression: formlyExpressionType.optional,
-        listener: formlyExpressionType
+        expression: formlyExpression.optional,
+        listener: formlyExpression
       })
     ).optional,
     validators: apiCheck.objectOf(apiCheck.oneOfType([
       apiCheck.func, apiCheck.shape({
-        expression: formlyExpressionType,
-        message: formlyExpressionType.optional
+        expression: formlyExpression,
+        message: formlyExpression.optional
       }).strict
     ])).optional,
     noFormControl: apiCheck.bool.optional,
@@ -79,12 +79,12 @@ module.exports = ngModule => {
     runExpressions: apiCheck.func.optional
   };
 
-  let fieldOptionsApi = apiCheck.shape(fieldOptionsApiShape).strict;
+  let formlyFieldOptions = apiCheck.shape(fieldOptionsApiShape).strict;
 
-  let typeOptionsDefaultOptions = _.clone(fieldOptionsApiShape);
+  let typeOptionsDefaultOptions = angular.copy(fieldOptionsApiShape);
   typeOptionsDefaultOptions.key = apiCheck.string.optional;
 
-  let typeOptionsApi = apiCheck.shape({
+  let formlyTypeOptions = apiCheck.shape({
     name: apiCheck.string,
     template: apiCheck.shape.ifNot('templateUrl', apiCheck.string).optional,
     templateUrl: apiCheck.shape.ifNot('template', apiCheck.string).optional,
@@ -96,15 +96,13 @@ module.exports = ngModule => {
       apiCheck.func, apiCheck.shape(typeOptionsDefaultOptions)
     ]).optional,
     extends: apiCheck.string.optional,
-    wrapper: apiCheck.oneOfType([
-      apiCheck.arrayOf(apiCheck.string), apiCheck.string
-    ]).optional,
+    wrapper: wrapperType.optional,
     data: apiCheck.object.optional,
     validateOptions: apiCheck.func.optional,
     overwriteOk: apiCheck.bool.optional
   }).strict;
 
-  ngModule.constant('formlyApiTypes', {
-    typeOptionsApi, fieldOptionsApi
+  angular.extend(apiCheck, {
+    formlyTypeOptions, formlyFieldOptions, formlyExpression
   });
 };

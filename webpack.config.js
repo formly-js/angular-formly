@@ -5,7 +5,7 @@ var path = require('path');
 
 var exclude = /node_modules/;
 
-var ngAnnotateLoader = path.join(__dirname, '/loaders/ng-annotate.js');
+var ngAnnotateLoader = here('loaders/ng-annotate.js');
 
 
 var packageJsonString = fs.readFileSync('package.json', 'utf8');
@@ -20,11 +20,11 @@ var baseEnvVars = {
 };
 
 var baseConfig = {
-  context: __dirname + '/src',
+  context: here('src'),
   entry: './index.js',
   output: {
     filename: 'formly.js',
-    path: __dirname + '/dist',
+    path: here('dist'),
     library: 'ngFormly',
     libraryTarget: 'umd'
   },
@@ -36,7 +36,8 @@ var baseConfig = {
   },
 
   externals: {
-    angular: 'angular'
+    angular: 'angular',
+    'api-check': 'apiCheck'
   },
 
   plugins: [],
@@ -44,7 +45,7 @@ var baseConfig = {
   resolve: {
     extensions: ['', '.js'],
     alias: {
-      'angular-fix': path.join(__dirname, '/src/angular-fix')
+      'angular-fix': here('src/angular-fix')
     }
   },
 
@@ -65,7 +66,7 @@ var devConfig = {
 var prodConfig = {
   output: {
     filename: 'formly.min.js',
-    path: __dirname + '/dist'
+    path: here('dist')
   },
   devtool: 'source-map',
   plugins: [
@@ -88,6 +89,7 @@ var prodConfig = {
 var testCIConfig = deepExtend({}, prodConfig);
 var testConfig = deepExtend({}, devConfig);
 delete testConfig.jshint;
+
 delete testCIConfig.jshint;
 
 var envContexts = {
@@ -129,9 +131,13 @@ function getConfig(context) {
 }
 
 function getBanner() {
-  return '// angular-formly version ' +
+  return '// ' + packageJson.name + ' version ' +
     packageJson.version +
     ' built with ♥ by ' +
     packageJson.contributors.join(', ') +
     ' (ó ì_í)=óò=(ì_í ò)\n';
+}
+
+function here(p) {
+  return path.join(__dirname, p || '');
 }

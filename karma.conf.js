@@ -15,7 +15,7 @@ function getConfig(context) {
     watch: !ci,
     entry: './index.test.js'
   });
-  delete testConfig.externals.angular; // need angular in test context
+  delete testConfig.externals; // need angular in test context
   var entry = path.join(testConfig.context, testConfig.entry);
   var preprocessors = {};
   preprocessors[entry] = ['webpack'];

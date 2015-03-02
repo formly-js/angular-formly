@@ -5,8 +5,8 @@ module.exports = ngModule => {
 
   formlyField.tests = ON_TEST ? require('./formly-field.test')(ngModule) : null;
 
-  function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyValidationMessages, apiCheck,
-                       formlyApiTypes, formlyUtil, formlyUsability, formlyWarn) {
+  function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyValidationMessages, formlyApiCheck,
+                       formlyUtil, formlyUsability, formlyWarn) {
     return {
       restrict: 'AE',
       transclude: true,
@@ -319,7 +319,7 @@ module.exports = ngModule => {
     }
 
     function checkApi(options) {
-      apiCheck.throw(formlyApiTypes.fieldOptionsApi, arguments, {
+      formlyApiCheck.throw(formlyApiCheck.formlyFieldOptions, arguments, {
         prefix: 'formly-field directive',
         url: 'formly-field-directive-validation-failed'
       });

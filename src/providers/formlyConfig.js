@@ -6,7 +6,7 @@ module.exports = ngModule => {
 
   formlyConfig.tests = ON_TEST ? require('./formlyConfig.test')(ngModule) : null;
 
-  function formlyConfig(formlyUsabilityProvider, formlyApiTypes, apiCheck) {
+  function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
 
     var typeMap = {};
     var templateWrappersMap = {};
@@ -53,7 +53,7 @@ module.exports = ngModule => {
     }
 
     function checkType(options) {
-      apiCheck.throw(formlyApiTypes.typeOptionsApi, arguments, {
+      formlyApiCheck.throw(formlyApiCheck.formlyTypeOptions, arguments, {
         prefix: 'formlyConfig.setType',
         url: 'settype-validation-failed'
       });

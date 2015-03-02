@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "3.3.2",
+  "version": "4.0.0",
   "author": "Astrism <astrisms@gmail.com>",
   "contributors": [
     "Astrism <astrisms@gmail.com>",
@@ -50,7 +50,7 @@
     "grunt": "^0.4.5",
     "grunt-gh-pages": "^0.9.1",
     "imports-loader": "^0.6.3",
-    "jshint": "^2.6.0",
+    "jshint": "2.6.0",
     "jshint-loader": "^0.8.1",
     "karma": "^0.12.31",
     "karma-chai": "^0.1.0",
@@ -71,6 +71,6 @@
     "webpack-dev-server": "^1.7.0"
   },
   "dependencies": {
-    "api-check": "^3.0.4"
+    "api-check": "^6.0.0"
   }
 }

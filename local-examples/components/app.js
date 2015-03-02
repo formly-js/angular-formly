@@ -2,8 +2,8 @@
   'use strict';
 
   //var app = angular.module('app', ['formly', 'formlyVanilla'], function(formlyConfig) {
-  var app = angular.module('app', ['formly', 'formlyBootstrap']).run(function(formlyConfig, apiCheck) {
-    apiCheck.disable();
+  var app = angular.module('app', ['formly', 'formlyBootstrap']).run(function(formlyConfig, formlyVersion) {
+    //apiCheck.disable();
     formlyConfig.extras.ngModelAttrsManipulatorPreferBound = true;
 
     formlyConfig.setType({
@@ -117,7 +117,10 @@
           label: 'My Input',
           required: true,
           description: 'This is an awesome description',
-          focus: true
+          focus: true,
+          addonRight: {
+            class: 'glyphicon glyphicon-ok'
+          }
         },
         expressionProperties: {
           'templateOptions.label': '$viewValue',
@@ -132,10 +135,26 @@
           label: 'Choose something!',
           options: [
             {},
-            {name: 'item 1', value: 'coolio'},
-            {name: 'item 2', value: 'coolio2'},
-            {name: 'item 3', value: 'coolio3'}
-          ]
+            {display: 'item 1', id: 'coolio'},
+            {display: 'item 2', id: 'coolio2'},
+            {display: 'item 3', id: 'coolio3'}
+          ],
+          valueProp: 'id',
+          labelProp: 'display'
+        }
+      },
+      {
+        type: 'multiCheckbox',
+        key: 'multipleOptions',
+        templateOptions: {
+          label: 'Multiple Options',
+          options: [
+            {label: 'Cool cat', value: {a: 'b'}},
+            {label: 'Cool Dog', value: {c: 'd'}},
+            {label: 'Cool Frog', value: true},
+            {label: 'Cool Log', value: 34}
+          ],
+          labelProp: 'label'
         }
       },
       {

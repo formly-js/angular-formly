@@ -1,6 +1,17 @@
+# 4.0.0
+
+## Breaking Changes
+
+- Upgrading api-check to create a custom instance of api-check. This comes with a breaking change. formly used to add `apiCheck` as a constant but no longer does. Instead, it adds `formlyApiCheck` as a constant and that is the instance of apiCheck for `angualr-formly`.
+
+## Bug Fixes
+
+- wrapper apiCheck was incorrect for `setType`.
+- no longer shipping with lodash... whoops :-/
+
 # 3.3.2
 
-## Bug FIxes
+## Bug Fixes
 
 - Bug fix ([#188](/../../issues/188)). The `options.messages` type was wrong.
 
