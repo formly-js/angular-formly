@@ -37,7 +37,12 @@ var baseConfig = {
 
   externals: {
     angular: 'angular',
-    'api-check': 'apiCheck'
+    'api-check': {
+      root: 'apiCheck',
+      amd: 'api-check',
+      commonjs2: 'api-check',
+      commonjs: 'api-check'
+    }
   },
 
   plugins: [],

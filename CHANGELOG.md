@@ -1,3 +1,9 @@
+# 4.0.2
+
+## Bug Fixes
+
+- Fixing issue with external dependencies
+
 # 4.0.1
 
 ## New Features

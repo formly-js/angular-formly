@@ -25,7 +25,8 @@ http://formly-js.github.io/angular-formly/
 
 ## Dependencies
 
- - Angular
+ - [Angular](https://angularjs.org/) - HTML enhanced for web apps
+ - [apiCheck.js](https://github.com/kentcdodds/apiCheck.js) - VanillaJS version of ReactJS propTypes
 
 ## Install in your project
 1. Install with bower or npm (or just download the script)
