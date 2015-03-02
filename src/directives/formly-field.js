@@ -16,6 +16,7 @@ module.exports = ngModule => {
         formId: '=?',
         index: '=?',
         fields: '=?',
+        formState: '=?',
         form: '=?'
       },
       controller: function fieldController($scope, $timeout, $parse, $controller) {
@@ -264,11 +265,14 @@ module.exports = ngModule => {
           return $q.when(template);
         }
 
-        wrapper.forEach(formlyUsability.checkWrapper);
+        wrapper.forEach((wrapper) => {
+          formlyUsability.checkWrapper(wrapper, options);
+        });
         let promises = wrapper.map(w => getTemplate(w.template || w.templateUrl, !w.template));
         return $q.all(promises).then(wrappersTemplates => {
           wrappersTemplates.forEach((wrapperTemplate, index) => {
             formlyUsability.checkWrapperTemplate(wrapperTemplate, wrapper[index]);
+
           });
           wrappersTemplates.reverse(); // wrapper 0 is wrapped in wrapper 1 and so on...
           let totalWrapper = wrappersTemplates.shift();

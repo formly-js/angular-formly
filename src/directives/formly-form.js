@@ -25,6 +25,7 @@ module.exports = ngModule => {
                  fields="fields"
                  form="form"
                  form-id="formId"
+                 form-state="options.formState"
                  index="$index">
             </div>
             <div ng-transclude></div>
@@ -35,11 +36,14 @@ module.exports = ngModule => {
       transclude: true,
       scope: {
         fields: '=',
-        model: '=?', // we'll do our own warning to help with migrations
-        form: '=?'
+        model: '=', // we'll do our own warning to help with migrations
+        form: '=?',
+        options: '=?'
       },
       controller: function($scope) {
         $scope.formId = `formly_${currentFormId++}`;
+        $scope.options = $scope.options || {};
+        $scope.options.formState = $scope.options.formState || {};
 
         angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
         angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
@@ -122,12 +126,6 @@ module.exports = ngModule => {
         if (attrs.name !== 'form') { // then they specified their own name
           throw formlyUsability.getFormlyError(
             'The "name" attribute on a formly-form is no longer valid. Use "form" instead'
-          );
-        }
-        // enforce the model attribute because we're making it optional to help with migrations
-        if (!attrs.hasOwnProperty('model')) {
-          throw formlyUsability.getFormlyError(
-            'The "model" attribute is required on a formly-form.'
           );
         }
       }

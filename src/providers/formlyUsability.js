@@ -38,7 +38,7 @@ module.exports = ngModule => {
       return `Formly Error: ${message}. ${url}`;
     }
 
-    function checkWrapper(wrapper) {
+    function checkWrapper(wrapper, options) {
       if (wrapper.template && wrapper.templateUrl) {
         throw getFormlyError(
           'Template wrappers can only have a templateUrl or a template. ' +
@@ -51,6 +51,7 @@ module.exports = ngModule => {
           `This one provided neither: ${JSON.stringify(wrapper)}`
         );
       }
+      wrapper.validateOptions && wrapper.validateOptions(options);
     }
 
     function checkWrapperTemplate(template, additionalInfo) {

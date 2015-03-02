@@ -6,6 +6,12 @@
     //apiCheck.disable();
     formlyConfig.extras.ngModelAttrsManipulatorPreferBound = true;
 
+
+    var label = formlyConfig.getWrapper('bootstrapLabel');
+    label.validateOptions = function(options) {
+      console.log(arguments);
+    };
+
     formlyConfig.setType({
       name: 'nullWrappers',
       wrapper: null
@@ -85,9 +91,7 @@
         },
         expressionProperties: {
           'templateOptions.maxlength': function() {
-            var val = Math.floor(Math.random() * 10) + 3;
-            console.log(val);
-            return val;
+            return Math.floor(Math.random() * 10) + 3;
           }
         },
         link: function(scope, el) {
@@ -111,6 +115,17 @@
       },
       {
         type: 'input',
+        key: 'maxLength',
+        templateOptions: {
+          type: 'number',
+          label: 'Max Length',
+          onChange: function(value, options, scope) {
+            scope.formState.maxLength = value;
+          }
+        }
+      },
+      {
+        type: 'input',
         key: 'myKey',
         templateOptions: {
           placeholder: 'This rocks',
@@ -124,7 +139,7 @@
         },
         expressionProperties: {
           'templateOptions.label': '$viewValue',
-          'templateOptions.customMaxlength': 'model.mine ? 5 : 8',
+          'templateOptions.maxlength': 'formState.maxLength',
           'templateOptions.tabindex': 'model.mine ? 0 : -1'
         }
       },

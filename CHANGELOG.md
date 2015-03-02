@@ -1,3 +1,10 @@
+# 4.0.1
+
+## New Features
+
+- `formly-form` now takes `options` which can specify `formData` which will be passed to the field on the new `form-data` attribute. This is useful for sharing data between fields. ([#187](/../../issues/187))
+- `formlyConfig.setWrapper` now allows you to specify `validateOptions` which will be used similar to `type.validateOptions`.  ([#192](/../../issues/192))
+
 # 4.0.0
 
 ## Breaking Changes
