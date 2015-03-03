@@ -1,3 +1,7 @@
+# 4.0.3
+
+- Fixing bower dependency with api-check rename
+
 # 4.0.2
 
 ## Bug Fixes

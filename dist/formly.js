@@ -1,4 +1,4 @@
-// angular-formly version 4.0.2 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 4.0.3 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -197,7 +197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var apiCheck = __webpack_require__(21)({
 	    output: {
 	      prefix: "angular-formly:",
-	      docsBaseUrl: "https://github.com/formly-js/angular-formly/blob/" + ("4.0.2") + "/other/ERRORS_AND_WARNINGS.md#"
+	      docsBaseUrl: "https://github.com/formly-js/angular-formly/blob/" + ("4.0.3") + "/other/ERRORS_AND_WARNINGS.md#"
 	    }
 	  });
 	
@@ -666,7 +666,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	
 	module.exports = function (ngModule) {
-	  ngModule.constant("formlyVersion", ("4.0.2"));
+	  ngModule.constant("formlyVersion", ("4.0.3"));
 	};
 
 /***/ },
