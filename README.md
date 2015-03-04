@@ -523,12 +523,34 @@ This function will be invoked after the `formly-field` link function has been in
 specified). It is invoked with all the normal arguments of a regular link function. If the type extends another, this
 function will be run *after* the parent link function is run.
 
-#### apiCheck (apiCheck.shape)
+#### apiCheck (objectOf(func))
 
 This is specific to the use of the `apiCheck.js` library. This is the preferred method for validating options as it
 allows for tooling to discover what the api to your type is.
 
+```javascript
+ngModule.constant('yourOwnCheck', apiCheck({
+  output: {prefix: 'you app/lib name'}
+}));
+ngModule.run(function(formlyConfig, yourOwnCheck) {
+  formlyConfig.setType({
+    name: 'input',
+    template: '<input class="to.className" ng-model="model[options.key]" />',
+    apiCheck: {
+      templateOptions: yourOwnCheck.shape({
+        className: yourOwnCheck.string
+      })
+    },
+    apiCheckInstance: yourOwnCheck
+  });
+});
+```
+
+#### apiCheck
+
 #### validateOptions (function)
+
+Note: It is recommended that you use `apiCheck` with `apiCheckInstance` rather than `validateOptions`.
 
 This function will be invoked with the options of the field after it has been merged with it's `optionsDefaults` and
 any types that its type `extends`. Feel free to log warnings to the console or throw errors here to help users use your
@@ -536,12 +558,12 @@ types correctly. Recommended: Use [apiCheck.js](https://github.com/kentcdodds/ap
 and will already be available to you. You can inject this dependency with `apiCheck`. You can use it like so:
 
 ```javascript
-ngModule.run(function(formlyConfig, apiCheck) {
+ngModule.run(function(formlyConfig, yourOwnCheck) {
   formlyConfig.setType({
     name: 'input',
     template: '<input ng-model="model[options.key]" />',
     validateOptions: function(options) {
-      apiCheck.throw(apiCheck.object, arguments);
+      yourOwnCheck.throw(yourOwnCheck.object, arguments);
     }
   });
 });

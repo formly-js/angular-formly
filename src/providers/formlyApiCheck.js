@@ -39,21 +39,7 @@ module.exports = ngModule => {
     apiCheck.oneOf([null]), apiCheck.typeOrArrayOf(apiCheck.string)
   ]);
 
-  const __apiCheckDataChecker = apiCheck.shape({
-    type: apiCheck.oneOf(['shape']),
-    strict: apiCheck.oneOf([false])
-  });
-
-  const apiCheckProperty = apiCheck.func.withProperties({
-    type: apiCheck.oneOfType([
-      apiCheck.func.withProperties({
-        __apiCheckData: __apiCheckDataChecker
-      }),
-      apiCheck.shape({
-        __apiCheckData: __apiCheckDataChecker
-      })
-    ])
-  });
+  const apiCheckProperty = apiCheck.objectOf(apiCheck.func);
 
   const apiCheckInstanceProperty = apiCheck.shape.onlyIf('apiCheck', apiCheck.func.withProperties({
     warn: apiCheck.func,

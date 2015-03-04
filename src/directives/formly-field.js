@@ -344,7 +344,8 @@ module.exports = ngModule => {
       }
       const instance = apiCheckInstance || formlyApiCheck;
       const fn = apiCheckFunction || 'warn';
-      instance[fn](apiCheck, [options], {
+      const shape = instance.shape(apiCheck);
+      instance[fn](shape, [options], {
         prefix: `formly-field ${name}`,
         url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
       });

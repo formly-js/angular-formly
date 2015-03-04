@@ -538,10 +538,10 @@ module.exports = ngModule => {
         getterFn = formlyConfig[getterName];
       }));
       it(`should allow you to specify an apiCheck function that will be used to validate your options`, () => {
-        const apiCheck = formlyApiCheck.shape({
+        const apiCheck = {
           templateOptions: formlyApiCheck.shape({}),
           data: formlyApiCheck.shape({})
-        });
+        };
         expect(() => {
           setterFn({
             name,
@@ -550,20 +550,10 @@ module.exports = ngModule => {
           });
         }).to.not.throw();
 
-        expect(getterFn(name).apiCheck).to.be.a('function');
+        expect(getterFn(name).apiCheck).to.equal(apiCheck);
       });
 
       it(`should throw an error when specifying a function is the wrong shape`, () => {
-        let apiCheck = function() {
-        };
-        expect(() => setterFn({name, apiCheck, template})).to.throw();
-        apiCheck = formlyApiCheck.object;
-        expect(() => setterFn({name, apiCheck, template})).to.throw();
-        apiCheck = formlyApiCheck.shape({}).strict;
-        expect(() => setterFn({name, apiCheck, template})).to.throw();
-      });
-
-      it(`should throw an error when the apiCheck specified is checking for invalid properties`, () => {
         // TODO
       });
 
@@ -572,10 +562,10 @@ module.exports = ngModule => {
         let apiCheck;
         beforeEach(() => {
           apiCheckInstance = require('api-check')();
-          apiCheck = formlyApiCheck.shape({
+          apiCheck = {
             templateOptions: formlyApiCheck.shape({}),
             data: formlyApiCheck.shape({})
-          });
+          };
         });
         it(`should allow you to specify an instance of your own apiCheck so messaging will be custom`, () => {
           expect(() => {
@@ -593,10 +583,10 @@ module.exports = ngModule => {
       describe(`apiCheckFunction`, () => {
         let apiCheck;
         beforeEach(() => {
-          apiCheck = formlyApiCheck.shape({
+          apiCheck = {
             templateOptions: formlyApiCheck.shape({}),
             data: formlyApiCheck.shape({})
-          });
+          };
         });
         it(`should allow you to specify warn or throw as the `, () => {
           expect(() => {

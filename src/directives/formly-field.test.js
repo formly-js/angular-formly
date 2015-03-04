@@ -342,12 +342,12 @@ module.exports = ngModule => {
         formlyConfig.setType({
           name: type,
           template: '<label>{{to.label}}</label><input class="{{to.className}}" ng-model="model[options.key]" />',
-          apiCheck: apiCheck.shape({
+          apiCheck: {
             templateOptions: apiCheck.shape({
               label: apiCheck.string,
               className: apiCheck.string
             })
-          }),
+          },
           apiCheckInstance: apiCheck({
             output: {prefix: 'custom-api-check'}
           })
@@ -387,12 +387,12 @@ module.exports = ngModule => {
           name,
           template:
             '<div class="to.className"><label>{{to.label}}</label><formly-transclude></formly-transclude></div>',
-          apiCheck: apiCheck.shape({
+          apiCheck: {
             templateOptions: apiCheck.shape({
               label: apiCheck.string,
               className: apiCheck.string
             })
-          }),
+          },
           apiCheckInstance: apiCheck({
             output: {prefix: 'custom-api-check'}
           })
