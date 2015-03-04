@@ -546,7 +546,17 @@ ngModule.run(function(formlyConfig, yourOwnCheck) {
 });
 ```
 
-#### apiCheck
+#### apiCheckInstance (apiCheck instance)
+
+Your own instance of apiCheck so you have the correct prefix/suffix/url/etc.
+
+#### apiCheckFunction ('throw' or 'warn')
+
+Allows you to customize whether your check throws and error or simple warns. Defaults to warn.
+
+#### apiCheckOptions (object)
+
+The options to use when the check fails. Defaults to something sensible.
 
 #### validateOptions (function)
 

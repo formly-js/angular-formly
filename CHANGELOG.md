@@ -1,3 +1,7 @@
+# 4.0.5
+
+- Adding `apiCheckOptions`
+
 # 4.0.4
 
 - Adding `apiCheck` and it's kids `apiCheckInstance` and `apiCheckFunction`.

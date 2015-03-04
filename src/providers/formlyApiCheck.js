@@ -58,7 +58,8 @@ module.exports = ngModule => {
     validateOptions: apiCheck.func.optional,
     apiCheck: apiCheckProperty.optional,
     apiCheckInstance: apiCheckInstanceProperty.optional,
-    apiCheckFunction: apiCheckFunctionProperty.optional
+    apiCheckFunction: apiCheckFunctionProperty.optional,
+    apiCheckOptions: apiCheck.object.optional
   }).strict;
 
   let fieldOptionsApiShape = {
@@ -146,6 +147,7 @@ module.exports = ngModule => {
     apiCheck: apiCheckProperty.optional,
     apiCheckInstance: apiCheckInstanceProperty.optional,
     apiCheckFunction: apiCheckFunctionProperty.optional,
+    apiCheckOptions: apiCheck.object.optional,
     overwriteOk: apiCheck.bool.optional
   }).strict;
 
