@@ -5,6 +5,9 @@
   var app = angular.module('app', ['formly', 'formlyBootstrap']).run(function(formlyConfig, formlyVersion) {
     //apiCheck.disable();
     formlyConfig.extras.ngModelAttrsManipulatorPreferBound = true;
+    var myCheck = apiCheck({
+      output: {prefix: 'my check'}
+    });
 
 
     var label = formlyConfig.getWrapper('bootstrapLabel');
@@ -27,6 +30,13 @@
           }
         }
       },
+      apiCheck: myCheck.shape({
+        templateOptions: myCheck.shape({
+          description: myCheck.string
+        })
+      }),
+      apiCheckInstance: myCheck,
+      apiCheckFunction: 'throw',
       controller: function($scope) {
         console.log($scope);
       },
@@ -80,28 +90,7 @@
 
     vm.user = {};
 
-    vm.realFields = [
-      {
-        type: 'customExtended',
-        key: 'myCustomThing',
-        label: 'Custom stuff',
-        templateOptions: {
-          description: 'This has a link and controller!',
-          maxlength: 4
-        },
-        expressionProperties: {
-          'templateOptions.maxlength': function() {
-            return Math.floor(Math.random() * 10) + 3;
-          }
-        },
-        link: function(scope, el) {
-          console.log(scope, el);
-        },
-        controller: function($scope, $log) {
-          $log.info($scope);
-        }
-      }
-    ];
+    vm.realFields = [];
 
     vm.fields = [
       {
@@ -177,7 +166,7 @@
         key: 'myCustomThing',
         templateOptions: {
           label: 'Custom stuff',
-          description: 'This has a link and controller!'
+          //description: 'This has a link and controller!'
         },
         link: function(scope, el) {
           console.log(scope, el);

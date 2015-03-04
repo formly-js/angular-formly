@@ -13,10 +13,6 @@ module.exports = ngModule => {
     var defaultWrapperName = 'default';
     var _this = this;
     var getError = formlyUsabilityProvider.getFormlyError;
-    const allowedTypeProperties = [
-      'name', 'template', 'templateUrl', 'controller', 'link',
-      'defaultOptions', 'extends', 'wrapper', 'data', 'validateOptions', 'overwriteOk'
-    ];
 
     angular.extend(this, {
       setType,
@@ -62,7 +58,6 @@ module.exports = ngModule => {
       } else {
         options.overwriteOk = undefined;
       }
-      formlyUsabilityProvider.checkAllowedProperties(allowedTypeProperties, options);
     }
 
     function extendTypeOptions(options) {

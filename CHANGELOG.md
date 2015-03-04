@@ -1,3 +1,7 @@
+# 4.0.4
+
+- Adding `apiCheck` and it's kids `apiCheckInstance` and `apiCheckFunction`.
+
 # 4.0.3
 
 - Fixing bower dependency with api-check rename
@@ -19,7 +23,7 @@
 
 ## Breaking Changes
 
-- Upgrading api-check to create a custom instance of api-check. This comes with a breaking change. formly used to add `apiCheck` as a constant but no longer does. Instead, it adds `formlyApiCheck` as a constant and that is the instance of apiCheck for `angualr-formly`.
+- Upgrading api-check to create a custom instance of api-check. This comes with a breaking change. formly used to add `apiCheck` as a constant but no longer does. Instead, it adds `formlyApiCheck` as a constant and that is the instance of apiCheck for `angular-formly`.
 
 ## Bug Fixes
 

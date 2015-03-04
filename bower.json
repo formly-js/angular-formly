@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "authors": [
     "Astrism <astrisms@gmail.com>"
   ],
@@ -41,6 +41,6 @@
   ],
   "dependencies": {
     "angular": ">=1.2.x",
-    "api-check": "~6.0.0"
+    "api-check": "~6.0.10"
   }
 }

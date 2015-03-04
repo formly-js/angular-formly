@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "author": "Astrism <astrisms@gmail.com>",
   "contributors": [
     "Astrism <astrisms@gmail.com>",
@@ -37,7 +37,8 @@
   },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
   "peerDependencies": {
-    "angular": "~1.x"
+    "angular": "~1.x",
+    "api-check": "^6.0.10"
   },
   "devDependencies": {
     "angular": "^1.3.11",
@@ -69,8 +70,5 @@
     "source-map": "^0.2.0",
     "webpack": "^1.5.3",
     "webpack-dev-server": "^1.7.0"
-  },
-  "dependencies": {
-    "api-check": "^6.0.0"
   }
 }

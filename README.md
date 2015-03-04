@@ -523,6 +523,11 @@ This function will be invoked after the `formly-field` link function has been in
 specified). It is invoked with all the normal arguments of a regular link function. If the type extends another, this
 function will be run *after* the parent link function is run.
 
+#### apiCheck (apiCheck.shape)
+
+This is specific to the use of the `apiCheck.js` library. This is the preferred method for validating options as it
+allows for tooling to discover what the api to your type is.
+
 #### validateOptions (function)
 
 This function will be invoked with the options of the field after it has been merged with it's `optionsDefaults` and

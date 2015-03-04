@@ -4,6 +4,13 @@ you to these for additional help. If these don't help you, please reproduce the 
 [file an issue on GitHub](https://github.com/formly-js/angular-formly/issues) or
 [join us on Gitter](https://gitter.im/formly-js/angular-formly).
 
+# apiCheck.js dependency required
+
+angular-formly has two dependencies: angular and [apiCheck.js](https://github.com/kentcdodds/apiCheck.js). You need to
+make sure you include apiCheck on the page for angular-formly to work. If you're using something like webpack or
+browserify, this should just work and you shouldn't be seeing this. If you are in that case, please file a bug. However
+if you're using just script tags, make sure to include the apiCheck.js script on the page.
+
 # Couldn't set the formControl after {time}ms
 
 For every field, Angular formly will attempt to set a property on the `options` called `formControl`. This is the
@@ -51,11 +58,15 @@ Same as above.
 
 # setType validation failed
 
-If you're looking at this, file a bug for me to put more info here. Basically you're calling `setType` and you aren't
-passing all the required data or you're passing the wrong properties/types. `name` is the only required property. If
-you're passing this, then it's likely that you're either passing an extra property that isn't allowed or you're passing
-the wrong data type for a property. Look at the output for what you passed and compare it with what you're allowed to
-pass.
+Basically you're calling `setType` and you aren't passing all the required data or you're passing the wrong
+properties/types. `name` is the only required property. If you're passing this, then it's likely that you're either
+passing an extra property that isn't allowed or you're passing the wrong data type for a property. Look at the output
+for what you passed and compare it with what you're allowed to pass.
+
+# setWrapper validation failed
+
+Similar to [setType validation failed](#settype-validation-failed) above, however the `name` property is only required
+if no `types` property is specified.
 
 # formly-field directive validation failed
 
@@ -63,19 +74,19 @@ You need to make sure that the field config for all of your fields is correct ac
 should print out something that helps you understand what this is. If it's not good enough, file an issue and I'll look
 and improving it!
 
-# You have specified properties for {context} that are not allowed
-
-Formly will warn you when specifying properties that are not allowed for a few things (fields or types for example).
-This is to help you use formly correctly. To fix this, remove or move any of the specified extra properties to one of
-the allowed properties. In the case of a field, move them to to either the `data` or `templateOptions` property
-(`templateOptions` if it's used by the template for the field, and `data` for everything else).
-
 # All field watchers must have a listener
 
 If you're using the `watcher` property, it can be an object (called a `watcher` object) or an array of `watcher`
 objects. Either way, all watchers must have a `listener` property which is a string (expression) or a function. The
 `expression` property is optional and you will not receive a warning for this property. See the documentation for more
 information.
+
+# formly-field {type} apiCheck failed
+
+Formly types can specify an `apiCheck` property which uses the `apiCheck.js` library to validate the options you
+provide (after they have been merged with the `optionsTypes` but before the `defaultOptions` of the type). You will see
+this warning if your options fail the apiCheck validation. Look at the warning, there's generally something there to
+indicate what you're missing. If you can't figure it out, or it's not clear, please file an issue!
 
 # There was a problem setting the template for this field
 

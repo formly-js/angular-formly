@@ -78,11 +78,14 @@ module.exports = ngModule => {
 
       describe('(◞‸◟；) path', () => {
         it('should throw an error when providing both a template and templateUrl', () => {
-          expect(() => setterFn({template, templateUrl}, name)).to.throw(/only.*?templateUrl.*?or.*?template/);
+          expect(() => setterFn({template, templateUrl}, name)).to.throw(/template.*?only if templateUrl.*not/i);
         });
 
         it('should throw an error when providing neither a template or a templateUrl', () => {
-          expect(() => setterFn({}, name)).to.throw(/one.*?templateUrl.*?or.*?template/);
+          expect(() => setterFn({
+            template,
+            templateUrl
+          }, name)).to.throw(/template.*specified only if templateUrl is not specified/i);
         });
 
         it('should throw an error when the template does not use formly-transclude', () => {
@@ -91,7 +94,7 @@ module.exports = ngModule => {
         });
 
         it('should throw an error when specifying an array type where not all items are strings', () => {
-          var error = /types.*?string.*?array.*?strings/;
+          var error = /types.*?typeOrArrayOf.*?String.*?/i;
           expect(() => setterFn({template, types: ['hi', 2, false, 'cool']})).to.throw(error);
         });
 
@@ -108,6 +111,11 @@ module.exports = ngModule => {
             setterFn({template, overwriteOk: true});
           });
         });
+      });
+
+
+      describe(`apiCheck`, () => {
+        testApiCheck('setWrapper', 'getWrapper');
       });
 
     });
@@ -485,6 +493,7 @@ module.exports = ngModule => {
             expect(getterFn(name).validateOptions).to.be.a('function');
           });
         });
+
       });
 
       describe('(◞‸◟；) path', () => {
@@ -513,7 +522,100 @@ module.exports = ngModule => {
           });
         });
       });
+
+      describe(`apiCheck`, () => {
+        testApiCheck('setType', 'getType');
+      });
     });
+
+    function testApiCheck(setterName, getterName) {
+      const template = 'something with <formly-transclude></formly-transclude>';
+      const name = 'input';
+      let setterFn, getterFn, formlyApiCheck;
+      beforeEach(inject((_formlyApiCheck_, formlyConfig) => {
+        formlyApiCheck = _formlyApiCheck_;
+        setterFn = formlyConfig[setterName];
+        getterFn = formlyConfig[getterName];
+      }));
+      it(`should allow you to specify an apiCheck function that will be used to validate your options`, () => {
+        const apiCheck = formlyApiCheck.shape({
+          templateOptions: formlyApiCheck.shape({}),
+          data: formlyApiCheck.shape({})
+        });
+        expect(() => {
+          setterFn({
+            name,
+            apiCheck,
+            template
+          });
+        }).to.not.throw();
+
+        expect(getterFn(name).apiCheck).to.be.a('function');
+      });
+
+      it(`should throw an error when specifying a function is the wrong shape`, () => {
+        let apiCheck = function() {
+        };
+        expect(() => setterFn({name, apiCheck, template})).to.throw();
+        apiCheck = formlyApiCheck.object;
+        expect(() => setterFn({name, apiCheck, template})).to.throw();
+        apiCheck = formlyApiCheck.shape({}).strict;
+        expect(() => setterFn({name, apiCheck, template})).to.throw();
+      });
+
+      it(`should throw an error when the apiCheck specified is checking for invalid properties`, () => {
+        // TODO
+      });
+
+      describe(`apiCheckInstance`, () => {
+        let apiCheckInstance;
+        let apiCheck;
+        beforeEach(() => {
+          apiCheckInstance = require('api-check')();
+          apiCheck = formlyApiCheck.shape({
+            templateOptions: formlyApiCheck.shape({}),
+            data: formlyApiCheck.shape({})
+          });
+        });
+        it(`should allow you to specify an instance of your own apiCheck so messaging will be custom`, () => {
+          expect(() => {
+            setterFn({name, apiCheck, apiCheckInstance, template});
+          }).to.not.throw();
+          expect(getterFn(name).apiCheckInstance).to.equal(apiCheckInstance);
+        });
+        it(`should throw an error if you specify an instance without specifying an apiCheck`, () => {
+          expect(() => {
+            setterFn({name, apiCheckInstance, template});
+          }).to.throw();
+        });
+      });
+
+      describe(`apiCheckFunction`, () => {
+        let apiCheck;
+        beforeEach(() => {
+          apiCheck = formlyApiCheck.shape({
+            templateOptions: formlyApiCheck.shape({}),
+            data: formlyApiCheck.shape({})
+          });
+        });
+        it(`should allow you to specify warn or throw as the `, () => {
+          expect(() => {
+            setterFn({name, apiCheck, apiCheckFunction: 'warn', template});
+          }).to.not.throw();
+          expect(getterFn(name).apiCheckFunction).to.equal('warn');
+          expect(() => {
+            setterFn({name: 'name2', apiCheck, apiCheckFunction: 'throw', template});
+          }).to.not.throw();
+          expect(getterFn('name2').apiCheckFunction).to.equal('throw');
+        });
+
+        it(`should throw an error if you specify anything other than warn or throw`, () => {
+          expect(() => {
+            setterFn({name, apiCheckFunction: 'other', template});
+          }).to.throw();
+        });
+      });
+    }
 
 
     function shouldWarn(match, test) {

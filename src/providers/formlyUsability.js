@@ -1,7 +1,7 @@
 var angular = require('angular-fix');
 
 module.exports = ngModule => {
-  ngModule.provider('formlyUsability', function(formlyVersion) {
+  ngModule.provider('formlyUsability', function(formlyVersion, formlyApiCheck) {
     var errorsAndWarningsUrlPrefix =
       `https://github.com/formly-js/angular-formly/blob/${formlyVersion}/other/ERRORS_AND_WARNINGS.md#`;
     angular.extend(this, {
@@ -9,7 +9,6 @@ module.exports = ngModule => {
       getFieldError: getFieldError,
       checkWrapper: checkWrapper,
       checkWrapperTemplate: checkWrapperTemplate,
-      checkAllowedProperties,
       $get: () => this
     });
 
@@ -38,20 +37,11 @@ module.exports = ngModule => {
       return `Formly Error: ${message}. ${url}`;
     }
 
-    function checkWrapper(wrapper, options) {
-      if (wrapper.template && wrapper.templateUrl) {
-        throw getFormlyError(
-          'Template wrappers can only have a templateUrl or a template. ' +
-          `This one provided both: ${JSON.stringify(wrapper)}`
-        );
-      }
-      if (!wrapper.template && !wrapper.templateUrl) {
-        throw getFormlyError(
-          'Template wrappers must have one of a templateUrl or a template. ' +
-          `This one provided neither: ${JSON.stringify(wrapper)}`
-        );
-      }
-      wrapper.validateOptions && wrapper.validateOptions(options);
+    function checkWrapper(wrapper) {
+      formlyApiCheck.throw(formlyApiCheck.formlyWrapperType, arguments, {
+        prefix: 'formlyConfig.setWrapper',
+        urlSuffix: 'setwrapper-validation-failed'
+      });
     }
 
     function checkWrapperTemplate(template, additionalInfo) {
@@ -64,23 +54,5 @@ module.exports = ngModule => {
         );
       }
     }
-
-    function checkAllowedProperties(allowedProperties, obj, context) {
-      var extraProps = Object.keys(obj).filter(prop => allowedProperties.indexOf(prop) === -1);
-      if (extraProps.length) {
-        let extraPropsJSON = JSON.stringify(extraProps.join(', '));
-        let allowedPropsJSON = JSON.stringify(allowedProperties.join(', '));
-        throw getFieldError(
-          'you-have-specified-properties-for-context-that-are-not-allowed',
-          [
-            `You have specified properties for ${context} that are not allowed: ${extraPropsJSON}`,
-            `Allowed properties are: ${allowedPropsJSON}`
-          ].join('\n'),
-          obj
-        );
-      }
-    }
-
-
   });
 };

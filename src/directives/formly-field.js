@@ -267,12 +267,13 @@ module.exports = ngModule => {
 
         wrapper.forEach((wrapper) => {
           formlyUsability.checkWrapper(wrapper, options);
+          wrapper.validateOptions && wrapper.validateOptions(options);
+          runApiCheck(wrapper, options);
         });
         let promises = wrapper.map(w => getTemplate(w.template || w.templateUrl, !w.template));
         return $q.all(promises).then(wrappersTemplates => {
           wrappersTemplates.forEach((wrapperTemplate, index) => {
             formlyUsability.checkWrapperTemplate(wrapperTemplate, wrapper[index]);
-
           });
           wrappersTemplates.reverse(); // wrapper 0 is wrapped in wrapper 1 and so on...
           let totalWrapper = wrappersTemplates.shift();
@@ -329,9 +330,24 @@ module.exports = ngModule => {
       });
       // validate with the type
       const type = options.type && formlyConfig.getType(options.type);
-      if (type && type.validateOptions) {
-        type.validateOptions(options);
+      if (type) {
+        if (type.validateOptions) {
+          type.validateOptions(options);
+        }
+        runApiCheck(type, options);
       }
+    }
+
+    function runApiCheck({apiCheck, apiCheckInstance, apiCheckFunction}, options) {
+      if (!apiCheck) {
+        return;
+      }
+      const instance = apiCheckInstance || formlyApiCheck;
+      const fn = apiCheckFunction || 'warn';
+      instance[fn](apiCheck, [options], {
+        prefix: `formly-field ${name}`,
+        url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
+      });
     }
 
   }

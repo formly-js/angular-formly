@@ -3,9 +3,31 @@ module.exports = ngModule => {
   let apiCheck = require('api-check')({
     output: {
       prefix: 'angular-formly:',
-      docsBaseUrl: `https://github.com/formly-js/angular-formly/blob/${VERSION}/other/ERRORS_AND_WARNINGS.md#`
+      docsBaseUrl: require('../other/docsBaseUrl')
     }
   });
+
+  function shapeRequiredIfNot(otherProps, propChecker) {
+    if (!angular.isArray(otherProps)) {
+      otherProps = [otherProps];
+    }
+    const type = `specified if these are not specified: \`${otherProps.join(', ')}\` (otherwise it's optional)`;
+    function shapeRequiredIfNotDefinition(prop, propName, location, obj) {
+      var propExists = obj && obj.hasOwnProperty(propName);
+      var otherPropsExist = otherProps.some(function (otherProp) {
+        return obj && obj.hasOwnProperty(otherProp);
+      });
+      //console.log(propName, propExists, prop, otherPropsExist, otherProps.join(', '));
+      if (!otherPropsExist && !propExists) {
+        return apiCheck.utils.getError(propName, location, type);
+      } else if (propExists) {
+        return propChecker(prop, propName, location, obj);
+      }
+    }
+    shapeRequiredIfNotDefinition.type = type;
+    apiCheck.utils.checkerHelpers.setupChecker(shapeRequiredIfNotDefinition);
+    return shapeRequiredIfNotDefinition;
+  }
 
   ngModule.constant('formlyApiCheck', apiCheck);
   if (ON_TEST) {
@@ -13,9 +35,45 @@ module.exports = ngModule => {
   }
 
   let formlyExpression = apiCheck.oneOfType([apiCheck.string, apiCheck.func]);
-  let wrapperType = apiCheck.oneOfType([
+  let specifyWrapperType = apiCheck.oneOfType([
     apiCheck.oneOf([null]), apiCheck.typeOrArrayOf(apiCheck.string)
   ]);
+
+  const __apiCheckDataChecker = apiCheck.shape({
+    type: apiCheck.oneOf(['shape']),
+    strict: apiCheck.oneOf([false])
+  });
+
+  const apiCheckProperty = apiCheck.func.withProperties({
+    type: apiCheck.oneOfType([
+      apiCheck.func.withProperties({
+        __apiCheckData: __apiCheckDataChecker
+      }),
+      apiCheck.shape({
+        __apiCheckData: __apiCheckDataChecker
+      })
+    ])
+  });
+
+  const apiCheckInstanceProperty = apiCheck.shape.onlyIf('apiCheck', apiCheck.func.withProperties({
+    warn: apiCheck.func,
+    throw: apiCheck.func,
+    shape: apiCheck.func
+  }));
+
+  const apiCheckFunctionProperty = apiCheck.shape.onlyIf('apiCheck', apiCheck.oneOf(['throw', 'warn']));
+
+  const formlyWrapperType = apiCheck.shape({
+    name: shapeRequiredIfNot('types', apiCheck.string).optional,
+    template: apiCheck.shape.ifNot('templateUrl', apiCheck.string).optional,
+    templateUrl: apiCheck.shape.ifNot('template', apiCheck.string).optional,
+    types: apiCheck.typeOrArrayOf(apiCheck.string).optional,
+    overwriteOk: apiCheck.bool.optional,
+    validateOptions: apiCheck.func.optional,
+    apiCheck: apiCheckProperty.optional,
+    apiCheckInstance: apiCheckInstanceProperty.optional,
+    apiCheckFunction: apiCheckFunctionProperty.optional
+  }).strict;
 
   let fieldOptionsApiShape = {
     type: apiCheck.shape.ifNot(['template', 'templateUrl'], apiCheck.string).optional,
@@ -32,7 +90,7 @@ module.exports = ngModule => {
     ])).optional,
     data: apiCheck.object.optional,
     templateOptions: apiCheck.object.optional,
-    wrapper: wrapperType.optional,
+    wrapper: specifyWrapperType.optional,
     modelOptions: apiCheck.shape({
       updateOn: apiCheck.string.optional,
       debounce: apiCheck.oneOfType([
@@ -96,13 +154,16 @@ module.exports = ngModule => {
       apiCheck.func, apiCheck.shape(typeOptionsDefaultOptions)
     ]).optional,
     extends: apiCheck.string.optional,
-    wrapper: wrapperType.optional,
+    wrapper: specifyWrapperType.optional,
     data: apiCheck.object.optional,
     validateOptions: apiCheck.func.optional,
+    apiCheck: apiCheckProperty.optional,
+    apiCheckInstance: apiCheckInstanceProperty.optional,
+    apiCheckFunction: apiCheckFunctionProperty.optional,
     overwriteOk: apiCheck.bool.optional
   }).strict;
 
   angular.extend(apiCheck, {
-    formlyTypeOptions, formlyFieldOptions, formlyExpression
+    formlyTypeOptions, formlyFieldOptions, formlyExpression, formlyWrapperType
   });
 };
