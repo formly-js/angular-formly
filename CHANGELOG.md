@@ -3,6 +3,7 @@
 ## New Features and Internal Changes
 
 - Updating error messaging for when a type has no template or templateUrl.
+- Fixing the URL for error messages
 
 # 4.0.6
 
