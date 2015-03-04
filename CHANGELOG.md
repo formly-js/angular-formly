@@ -1,12 +1,24 @@
+# 4.0.6
+
+## Bug Fixes
+
+- Allowing the use of validators as formlyExpressions (both strings and functions)
+
 # 4.0.5
+
+## New Features
 
 - Adding `apiCheckOptions`
 
 # 4.0.4
 
+## New Features
+
 - Adding `apiCheck` and it's kids `apiCheckInstance` and `apiCheckFunction`.
 
 # 4.0.3
+
+## Bug Fixes
 
 - Fixing bower dependency with api-check rename
 

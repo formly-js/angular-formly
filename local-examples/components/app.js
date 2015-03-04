@@ -5,7 +5,7 @@
   var app = angular.module('app', ['formly', 'formlyBootstrap']).run(function(formlyConfig, formlyVersion) {
     //apiCheck.disable();
     formlyConfig.extras.ngModelAttrsManipulatorPreferBound = true;
-    var myCheck = apiCheck({
+    var myCheck = window.apiCheck({
       output: {prefix: 'my check'}
     });
 
@@ -30,11 +30,11 @@
           }
         }
       },
-      apiCheck: myCheck.shape({
+      apiCheck: {
         templateOptions: myCheck.shape({
           description: myCheck.string
         })
-      }),
+      },
       apiCheckInstance: myCheck,
       apiCheckFunction: 'throw',
       controller: function($scope) {
@@ -166,7 +166,7 @@
         key: 'myCustomThing',
         templateOptions: {
           label: 'Custom stuff',
-          //description: 'This has a link and controller!'
+          description: 'This has a link and controller!'
         },
         link: function(scope, el) {
           console.log(scope, el);
@@ -180,6 +180,7 @@
         key: 'coolTextarea',
         templateOptions: {
           label: 'Type stuff',
+          required: 32,
           placeholder: 'Way fun',
           cols: 15,
           rows: 12

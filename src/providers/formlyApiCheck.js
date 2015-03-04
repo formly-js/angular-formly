@@ -94,7 +94,7 @@ module.exports = ngModule => {
       })
     ).optional,
     validators: apiCheck.objectOf(apiCheck.oneOfType([
-      apiCheck.func, apiCheck.shape({
+      formlyExpression, apiCheck.shape({
         expression: formlyExpression,
         message: formlyExpression.optional
       }).strict
