@@ -16,11 +16,10 @@ if you're using just script tags, make sure to include the apiCheck.js script on
 For every field, Angular formly will attempt to set a property on the `options` called `formControl`. This is the
 `NgModelController` for that field. Possible reasons you could be seeing this are:
 
-1. The field has no form on the scope (shouldn't happen if you're using the latest version and the `formly-form`
-directive)
-2. The element with the `ng-model` attribute for the field's template doesn't use the `name` property with the `id`
-property of the scope (i.e. `name={{::id}}` or in angular 1.2 `formly-dynamic-name="id"`) <-- this is the most likely
-reason
+1. The template is not using `ng-model` <-- this is most likely
+2. You have disabled `formlyNgModelAttrsManipulator` (if you don't know what that means, then this is not likely) and it
+doesn't use the `name` property with the `id` property of the scope (i.e. `name={{::id}}` or in angular 1.2
+`formly-dynamic-name="id"`)
 
 Fixes for this warning are:
 
