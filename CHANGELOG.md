@@ -1,3 +1,9 @@
+# Latest
+
+## New Features and Internal Changes
+
+- Updating error messaging for when a type has no template or templateUrl.
+
 # 4.0.6
 
 ## Bug Fixes

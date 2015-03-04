@@ -41,11 +41,10 @@ Fixes for this warning are:
 Webpack's `raw-loader` then it's as simple as `require('./my-formly-template.html')`. This is what I do, and it's a
 beautiful thing :-)
 
-# template type {type} not supported.
+# Type {type} has no template
 
-You may see this as `template type undefined not supported` if you do, you failed to specify a type, template or
-templateUrl for a field. You must specify at least one. If you do see a type there then it is likely that the specified
-type was never registered with the `formlyConfigProvider` using `setTemplate` or `setTemplateUrl`. Do that.
+This means that you're specifying a type for a field that doesn't not have a template or templateUrl. For a field to
+be shown it must either have a `template`, `templateUrl`, or a `type` that has a `template` or `templateUrl`.
 
 # You must provide one of type, template, or templateUrl for a field
 

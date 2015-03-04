@@ -232,8 +232,8 @@ module.exports = ngModule => {
       let templateUrl = options.templateUrl || type && type.templateUrl;
       if (!template && !templateUrl) {
         throw formlyUsability.getFieldError(
-          'template-type-type-not-supported',
-          `template type '${options.type}' not supported. On element:`, options
+          'type-type-has-no-template',
+          `Type '${options.type}' has not template. On element:`, options
         );
       }
       return getTemplate(template || templateUrl, !template);
