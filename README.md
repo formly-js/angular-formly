@@ -23,6 +23,10 @@ not able to update the configuration very easily, see
 
 http://formly-js.github.io/angular-formly/
 
+## NG-NL Talk
+
+[![JavaScript Powered Forms](other/ng-nl-talk)](http://youtu.be/o90TMDL3OYc)
+
 ## Dependencies
 
  - [Angular](https://angularjs.org/) - HTML enhanced for web apps
