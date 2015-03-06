@@ -25,7 +25,7 @@ http://formly-js.github.io/angular-formly/
 
 ## NG-NL Talk
 
-[![JavaScript Powered Forms](other/ng-nl-talk)](http://youtu.be/o90TMDL3OYc)
+[![JavaScript Powered Forms](other/ng-nl-talk.png)](http://youtu.be/o90TMDL3OYc)
 
 ## Dependencies
 
