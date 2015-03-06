@@ -35,25 +35,33 @@ http://formly-js.github.io/angular-formly/
 ## Install in your project
 1. Install with bower or npm (or just download the script)
 
- `$ bower install angular-formly --save`
+ `$ bower install angular api-check angular-formly --save`
 
  or
 
- `$ npm install angular-formly --save`
+ `$ npm install angular api-check angular-formly --save`
 
 2. Include the javascript file in your index.html, Formly without any form templates. You can create your own or use
 some of our prebuilt templates which cover basic form types, then extend with your own as needed.
 
- `<script src="bower_components/angular-formly/dist/formly.min.js"></script>`
+```html
+<script src="node_modules/api-check/dist/apiCheck.min.js"></script>
+<script src="node_modules/angular/angular.min.js"></script>
+<script src="node_modules/angular-formly/dist/formly.min.js"></script>
+```
 
- and
+and
 
- `angular.module('yourModule', ['formly']);`
+```javascript
+angular.module('yourModule', ['formly']);
+```
 
- or
+or
 
- `angular.module('yourModule', [require('angular-formly')]);`
-
+```javascript
+var angular = require('angular');
+angular.module('yourModule', [require('angular-formly')]);
+```
 
 ### Prebuilt Templates
 
