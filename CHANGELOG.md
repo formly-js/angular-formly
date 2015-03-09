@@ -1,3 +1,9 @@
+# 4.0.8
+
+## Bug Fixes
+
+- I guess I didn't actually fix the `peerDependencies` like I thought I had... Don't test something, then change it without testing again...
+
 # 4.0.7
 
 ## New Features and Internal Changes
