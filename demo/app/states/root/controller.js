@@ -1,12 +1,12 @@
 // @ngInject
-module.exports = function MainCtrl($location, examples, $filter, stateUtils) {
+module.exports = function MainCtrl($location, examples, $filter, stateUtils, formlyVersion) {
   var vm = this;
 
   window.$location = $location;
   vm.$location = $location;
   vm.examples = examples;
   vm.onSearchEntered = onSearchEntered;
-  vm.formlyVersion = VERSION;
+  vm.formlyVersion = formlyVersion;
   var allTheExamples = [];
 
   vm.exampleClass = exampleClass;
