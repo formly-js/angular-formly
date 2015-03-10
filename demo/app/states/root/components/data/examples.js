@@ -70,6 +70,11 @@ module.exports = [
         title: 'Matching Two Fields',
         slug: 'matching-two-fields',
         jsbinId: 'ginere'
+      },
+      {
+        title: 'Advanced Layout',
+        slug: 'advanced-layout',
+        jsbinId: 'yutixo'
       }
     ]
   },
