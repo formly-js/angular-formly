@@ -75,6 +75,11 @@ module.exports = [
         title: 'Advanced Layout',
         slug: 'advanced-layout',
         jsbinId: 'yutixo'
+      },
+      {
+        title: 'Async Select Options with Controller',
+        slug: 'async-select-options-with-controller',
+        jsbinId: 'jubiha'
       }
     ]
   },
