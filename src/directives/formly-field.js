@@ -24,12 +24,12 @@ module.exports = ngModule => {
         var fieldType = opts.type && formlyConfig.getType(opts.type);
         simplifyLife(opts);
         mergeFieldOptionsWithTypeDefaults(opts, fieldType);
+        extendOptionsWithDefaults(opts, $scope.index);
         checkApi(opts);
         // set field id to link labels and fields
         $scope.id = formlyUtil.getFieldId($scope.formId, opts, $scope.index);
 
         // initalization
-        extendOptionsWithDefaults(opts, $scope.index);
         runExpressions();
         setFormControl($scope, opts);
         addModelWatcher($scope, opts);

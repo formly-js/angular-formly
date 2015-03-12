@@ -1,3 +1,9 @@
+# 4.0.9
+
+## Bug Fixes
+
+- The key should be defaulted before apiCheck runs on the formly-field.
+
 # 4.0.8
 
 ## Bug Fixes
