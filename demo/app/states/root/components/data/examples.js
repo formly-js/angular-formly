@@ -67,6 +67,11 @@ module.exports = [
     name: 'other',
     examples: [
       {
+        title: 'Disable submit button',
+        slug: 'disable-submit-button',
+        jsbinId: 'kubeko'
+      },
+      {
         title: 'Matching Two Fields',
         slug: 'matching-two-fields',
         jsbinId: 'ginere'

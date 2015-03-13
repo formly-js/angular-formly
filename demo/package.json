@@ -21,6 +21,7 @@
   "scripts": {
     "build": "node node_modules/webpack/bin/webpack.js --config webpack.config.minify.js",
     "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "add-example": "npm run build && git commit -am 'Adding example' && git push && npm run deploy",
     "deploy": "grunt deploy"
   },
   "description": "Demo for angular-formly",
