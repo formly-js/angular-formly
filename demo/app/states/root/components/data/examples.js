@@ -77,6 +77,11 @@ module.exports = [
         jsbinId: 'yutixo'
       },
       {
+        title: 'Bootstrap Horizontal',
+        slug: 'bootstrap-horizontal',
+        jsbinId: 'qesaqa'
+      },
+      {
         title: 'Async Select Options with Controller',
         slug: 'async-select-options-with-controller',
         jsbinId: 'jubiha'
