@@ -1,3 +1,13 @@
+# 4.0.10
+
+## Internal Changes
+
+ - Adding ngdoc annotations to some of the directives
+
+## Bug Fixes
+
+ - Restricting formly-focus and formly-custom-validation to attributes as they were never meant to be allowed as elements.
+
 # 4.0.9
 
 ## Bug Fixes
