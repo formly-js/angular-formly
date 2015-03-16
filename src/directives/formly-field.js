@@ -5,6 +5,11 @@ module.exports = ngModule => {
 
   formlyField.tests = ON_TEST ? require('./formly-field.test')(ngModule) : null;
 
+  /**
+   * @ngdoc directive
+   * @name formlyField
+   * @restrict AE
+   */
   function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyValidationMessages, formlyApiCheck,
                        formlyUtil, formlyUsability, formlyWarn) {
     return {

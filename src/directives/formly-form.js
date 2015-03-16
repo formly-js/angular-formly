@@ -5,6 +5,11 @@ module.exports = ngModule => {
 
   formlyForm.tests = ON_TEST ? require('./formly-form.test')(ngModule) : null;
 
+  /**
+   * @ngdoc directive
+   * @name formlyForm
+   * @restrict E
+   */
   function formlyForm(formlyUsability) {
     var currentFormId = 1;
     return {

@@ -2,6 +2,7 @@ module.exports = ngModule => {
   ngModule.directive('formlyFocus', function($timeout, $document) {
     /* jshint -W052 */
     return {
+      restrict: 'A',
       link: function(scope, element, attrs) {
         var previousEl = null;
         var el = element[0];

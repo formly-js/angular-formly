@@ -5,6 +5,7 @@ module.exports = ngModule => {
 
   function formlyCustomValidation(formlyUtil, $q) {
     return {
+      restrict: 'A',
       require: 'ngModel',
       link: function(scope, el, attrs, ctrl) {
         var validators = scope.$eval(attrs.formlyCustomValidation);
