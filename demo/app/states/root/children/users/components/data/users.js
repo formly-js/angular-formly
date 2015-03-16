@@ -27,6 +27,13 @@ export default [
     description: require('./users-data/parakeet/description.md')
   },
   {
+    name: 'DuckieDocs',
+    slug: 'duckiedocs',
+    logo: require('./users-data/no-logo.png'),
+    link: 'https://github.com/SchizoDuckie/DuckieDocs',
+    description: require('./users-data/duckiedocs/description.md')
+  },
+  {
     name: 'Add Your Project!',
     slug: 'new',
     logo: require('./users-data/new/logo.png'),
