@@ -13,7 +13,7 @@
  */
 
 
-module.exports = [
+export default [
   {
     title: 'Intro',
     name: 'intro',
@@ -70,6 +70,11 @@ module.exports = [
         title: 'Disable submit button',
         slug: 'disable-submit-button',
         jsbinId: 'kubeko'
+      },
+      {
+        title: 'Read-only form',
+        slug: 'read-only-form',
+        jsbinId: 'tinoxo'
       },
       {
         title: 'Matching Two Fields',

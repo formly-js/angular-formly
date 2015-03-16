@@ -1,43 +1,26 @@
 <div>
   <div class="jumbotron">
     <h1 class="+text-center +font-size-xlarge">
-      <a formly-event-navigate="goHome">Angular Formly</a>
+      <a fd-event-navigate="goHome">Angular Formly</a>
       <br />
       <small>JavaScript Powered Forms for AngularJS</small>
     </h1>
   </div>
 
   <div class="container +margin-bottom-large">
-
     <hr/>
-
     <div class="row +margin-bottom-large">
       <div class="col-sm-3">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Filter Examples" ng-model="vm.search" ng-keydown="vm.onSearchEntered($event, vm.search)">
-          <span class="input-group-addon">
-            <i class="glyphicon glyphicon-search"></i>
-          </span>
-        </div>
+        <a fd-event-navigate="showUsers">
+          <strong>Who uses angular-formly?</strong>
+        </a>
+        <hr/>
+        <p class="left-nav-title">Examples</p>
+        <fd-example-search examples="vm.examples"></fd-example-search>
+        <hr/>
         <div class="text-muted +margin-top-small">
           Latest Version: {{::vm.formlyVersion}}
         </div>
-        <hr/>
-        <div class="formly-examples">
-          <div class="formly-example" ng-repeat="category in vm.examples track by $index">
-            <strong>{{::category.title}}</strong>
-            <div ng-repeat="example in category.examples | filter:vm.search track by $index">
-              <a class="example-link" formly-event-navigate="exampleSelected(example)" ng-class="vm.exampleClass(example)">{{example.title}}</a>
-            </div>
-            <hr/>
-          </div>
-        </div>
-        <div>
-          <a href="https://github.com/formly-js/angular-formly/edit/master/demo/app/states/root/components/data/examples.js">
-            Suggest an example
-          </a>
-        </div>
-        <hr/>
       </div>
       <div class="col-sm-9 main-ui-view">
         <div ui-view></div>

@@ -1,3 +1,3 @@
 module.exports = ngModule => {
-  require('./formly-jsbin-example')(ngModule);
+  require('./fd-jsbin-example')(ngModule);
 };

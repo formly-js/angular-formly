@@ -1,13 +1,9 @@
-let ngModule = require('registerModule')(require('ngCommon'));
-let stateUtils = require('stateUtils');
-let _ = require('lodash');
+const ngModule = require('registerModule')(require('ngCommon'));
+const stateUtils = require('stateUtils');
 
-let examples = require('./components/data/examples');
-_.each(examples, function(category) {
-  _.each(category.examples, function(example) {
-    example.category = category.name;
-  });
-});
+require('./components')(ngModule);
+
+const examples = require('./components/data/examples');
 
 module.exports = {
   name: ngModule.name,

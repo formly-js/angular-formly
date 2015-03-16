@@ -1,0 +1,15 @@
+<div class="@UserDescription">
+  <a type="button" class="close" aria-label="Close" fd-event-navigate="showUsers">
+    <span aria-hidden="true">&times;</span>
+  </a>
+  <div class="col-sm-5">
+    <fd-user-logo logo="vm.user.logo"></fd-user-logo>
+  </div>
+  <div class="col-sm-7">
+    <h1 style="text-align:center">
+      <a ng-if="::vm.user.link" ng-href="{{::vm.user.link}}">{{::vm.user.name}}</a>
+      <span ng-if="::!vm.user.link">{{::vm.user.name}}</span>
+    </h1>
+    <div ng-bind-html="::vm.userDescription"></div>
+  </div>
+</div>

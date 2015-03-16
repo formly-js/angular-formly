@@ -1,0 +1,8 @@
+.fd-jsbin-example {
+  height: 750px;
+  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+.fd-jsbin-example iframe {
+  border: none;
+}

@@ -6,26 +6,37 @@ function YourCtrl() {
   vm.userFields = [
     {
       key: 'email',
-      type: 'email',
-      label: 'Email address',
-      placeholder: 'Enter email'
+      type: 'input',
+      templateOptions: {
+        type: 'email',
+        label: 'Email address',
+        placeholder: 'Enter email'
+      }
     },
     {
       key: 'password',
-      type: 'password',
-      label: 'Password',
-      placholder: 'Password'
+      type: 'input',
+      templateOptions: {
+        type: 'password',
+        label: 'Password',
+        placeholder: 'Password'
+      }
     },
     {
       key: 'file',
       type: 'file',
-      label: 'File input',
-      description: 'Example block-level help text here'
+      templateOptions: {
+        label: 'File input',
+        description: 'Example block-level help text here',
+        url: 'https://example.com/upload'
+      }
     },
     {
       key: 'checked',
       type: 'checkbox',
-      label: 'Check me out'
+      templateOptions: {
+        label: 'Check me out'
+      }
     }
   ];
 }

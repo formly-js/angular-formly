@@ -1,33 +1,37 @@
 .main-ui-view {
   position: relative;
 }
+
 .main-ui-view [ui-view] {
   width: 100%;
   transition: all 0.3s ease-in-out;
 }
+
 .main-ui-view [ui-view].ng-enter,
 .main-ui-view [ui-view].ng-leave {
   position: absolute;
   opacity: 0;
 }
+
 .main-ui-view [ui-view].ng-enter {
   position: absolute;
   opacity: 0;
 }
+
 .main-ui-view [ui-view].ng-enter-active {
   opacity: 1;
 }
+
 .main-ui-view [ui-view].ng-leave {
   opacity: 1;
 }
+
 .main-ui-view [ui-view].ng-leave-active {
   position: absolute;
   opacity: 0;
 }
-.formly-examples .example-link {
-  transition: color .3s;
-}
 
-.formly-examples .example-link.active {
-  color: #B52E31;
+.left-nav-title {
+  font-size: 1.3em;
+  font-weight: bold;
 }

@@ -1,12 +1,12 @@
 module.exports = ngModule => {
-  ngModule.directive('formlyEventNavigate', function formlyEventNavigateDirective(stateUtils) {
+  ngModule.directive('fdEventNavigate', function formlyEventNavigateDirective(stateUtils) {
     return {
       restrict: 'A',
       link: function(scope, el, attrs) {
         let tagName = el[0].tagName;
         let expressionRegex = /^(.*?)(\((.*?)(,(.*?))?\))?$/;
         if (tagName === 'A') {
-          attrs.$observe('formlyEventNavigate', function(value) {
+          attrs.$observe('fdEventNavigate', function(value) {
             if (!value) {
               return;
             }
@@ -22,10 +22,10 @@ module.exports = ngModule => {
             }
           });
         } else {
-          throw new Error('formly-event-navigate must be on an <a> or <button> tag only!');
+          throw new Error('fd-event-navigate must be on an <a> or <button> tag only!');
         }
         function action() {
-          let args = getEventArgs(attrs.formlyEventNavigate);
+          let args = getEventArgs(attrs.fdEventNavigate);
           stateUtils.eventNavigate(...args);
         }
 

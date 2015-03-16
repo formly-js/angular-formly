@@ -10,7 +10,7 @@ require('./lodash-mixins');
 var moduleName = require('./formlyDemo').name;
 
 angular.element(document).ready(function() {
-  angular.bootstrap(document.body, [moduleName]);
+  angular.bootstrap(document.body, [moduleName], {strictDi: true});
   if (ON_DEV) {
     require('./dev.excluded');
   }

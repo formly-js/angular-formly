@@ -5,9 +5,6 @@ var path = require('path');
 
 var exclude = /node_modules/;
 
-var ngAnnotateLoader = here('loaders/ng-annotate.js');
-
-
 var packageJsonString = fs.readFileSync('package.json', 'utf8');
 var packageJson = JSON.parse(packageJsonString);
 console.log('building version', packageJson.version);
@@ -57,7 +54,7 @@ var baseConfig = {
   module: {
     loaders: [
       {test: /\.html$/, loader: 'raw', exclude: exclude},
-      {test: /\.js$/, loader: ngAnnotateLoader + '!babel!jshint', exclude: exclude},
+      {test: /\.js$/, loader: 'ng-annotate!babel!jshint', exclude: exclude},
       {test: /sinon.*\.js$/, loader: 'imports?define=>false'}
     ]
   }

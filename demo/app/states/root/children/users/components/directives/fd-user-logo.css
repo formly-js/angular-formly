@@ -1,0 +1,21 @@
+.fd-user-logo.center-vertically {
+  transition: all .5s;
+  line-height: 250px;
+  width: 250px;
+  height: 250px;
+  .user-logo {
+    transition: all .5s;
+    max-width: 250px;
+    max-height: 250px;
+  }
+  &.shrink {
+    line-height: 0;
+    height: 0;
+    width: 0;
+    .user-logo {
+      max-height: 0;
+      max-width: 0;
+    }
+  }
+}
+

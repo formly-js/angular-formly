@@ -5,7 +5,6 @@ var _ = require('lodash');
 
 var packageJsonString = fs.readFileSync('../package.json', 'utf8');
 var packageJson = JSON.parse(packageJsonString);
-var ngAnnotateLoader = path.join(__dirname, '../loaders/ng-annotate.js');
 
 module.exports = getConfig('dev');
 module.exports.getConfig = getConfig;
@@ -24,7 +23,7 @@ function getConfig(context) {
       reasons: true
     },
 
-    devtool: dev? 'eval' : null,
+    devtool: dev ? 'eval' : null,
 
     plugins: _.filter(_.union([
       new webpack.DefinePlugin({
@@ -59,12 +58,22 @@ function getConfig(context) {
 
     module: {
       loaders: [
-        {test: /\.css$/, loader: 'style!css'},
+        {test: /\.css$/, loader: 'style!css!postcss'},
         {test: /\.html$/, loader: 'raw', exclude: /node_modules/},
+        {test: /\.md$/, loader: 'html!markdown'},
         {test: /\.json$/, loader: 'json'},
-        {test: /\.js$/, loader: (dev ? '' : ngAnnotateLoader + '!') + 'babel!jshint', exclude: /node_modules|dist/},
-        {test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader?name=res/[name].[ext]?[hash]'}
+        {test: /\.png$/, loader: 'url?mimetype=image/png'},
+        {test: /\.js$/, loader: 'ng-annotate!babel!jshint', exclude: /node_modules|dist/},
+        {
+          test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: 'file-loader?name=res/[name].[ext]?[hash]'
+        }
       ]
-    }
+    },
+    postcss: [
+      require('postcss-nested'),
+      require('autoprefixer-core'),
+      require('csswring')
+    ]
   };
 }

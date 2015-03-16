@@ -65,6 +65,7 @@
     "lodash-node": "^2.4.1",
     "mocha": "^2.1.0",
     "ng-annotate": "^0.15.1",
+    "ng-annotate-loader": "0.0.2",
     "raw-loader": "^0.5.1",
     "sinon": "git://github.com/cjohansen/Sinon.JS#sinon-2.0",
     "sinon-chai": "^2.6.0",

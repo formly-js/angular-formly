@@ -1,9 +1,9 @@
 module.exports = ngModule => {
-  ngModule.directive('formlyJsbinExample', formlyJsbinExample);
+  ngModule.directive('fdJsbinExample', fdJsbinExample);
 
-  formlyJsbinExample.styles = require('./formly-jsbin-example.css');
+  fdJsbinExample.styles = require('./fd-jsbin-example.css');
 
-  function formlyJsbinExample() {
+  function fdJsbinExample() {
     return {
       restrict: 'E',
       scope: {
@@ -11,7 +11,7 @@ module.exports = ngModule => {
       },
       link: function(scope, el) {
         el.replaceWith(angular.element(`
-          <div class="formly-jsbin-example">
+          <div class="fd-jsbin-example">
             <iframe width="100%"
                     height="100%"
                     src="https://jsbin.com/${scope.jsbinId}/embed?output">
