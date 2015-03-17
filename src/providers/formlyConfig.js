@@ -137,15 +137,15 @@ module.exports = ngModule => {
       const extendsDOIsFn = angular.isFunction(extendsDO);
       if (extendsDOIsFn) {
         options.defaultOptions = function defaultOptions(options) {
-          var extendsDefaultOptions = extendsDO(options);
-          let mergedDefaultOptions = {};
+          const extendsDefaultOptions = extendsDO(options);
+          const mergedDefaultOptions = {};
           utils.reverseDeepMerge(mergedDefaultOptions, options, extendsDefaultOptions);
+          let extenderOptionsDefaultOptions = optionsDO;
           if (optionsDOIsFn) {
-            return optionsDO(mergedDefaultOptions);
-          } else {
-            utils.reverseDeepMerge(extendsDefaultOptions, optionsDO);
-            return extendsDefaultOptions;
+            extenderOptionsDefaultOptions = extenderOptionsDefaultOptions(mergedDefaultOptions);
           }
+          utils.reverseDeepMerge(extendsDefaultOptions, extenderOptionsDefaultOptions);
+          return extendsDefaultOptions;
         };
       } else if (optionsDOIsFn) {
         options.defaultOptions = function defaultOptions(options) {

@@ -1,3 +1,9 @@
+# 4.0.11
+
+## Bug Fixes
+
+- Extending with default options where the extender is also a function would result in pretty much a noop for the extendee's options. Fixed that :-)
+
 # 4.0.10
 
 ## Internal Changes
