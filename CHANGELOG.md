@@ -1,3 +1,9 @@
+# 4.1.0
+
+## Improvements
+
+- No longer using `setInterval` to get the form control but using a `watch` instead which gives you the power to have a read-only version of the field that switches to a named input later. I feel like it's worth the watcher. However, this means users will no longer get warnings about the inability to set the form control :-( Still worth it.
+
 # 4.0.11
 
 ## Bug Fixes

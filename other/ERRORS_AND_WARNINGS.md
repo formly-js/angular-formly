@@ -11,22 +11,6 @@ make sure you include apiCheck on the page for angular-formly to work. If you're
 browserify, this should just work and you shouldn't be seeing this. If you are in that case, please file a bug. However
 if you're using just script tags, make sure to include the apiCheck.js script on the page.
 
-# Couldn't set the formControl after {time}ms
-
-For every field, Angular formly will attempt to set a property on the `options` called `formControl`. This is the
-`NgModelController` for that field. Possible reasons you could be seeing this are:
-
-1. The template is not using `ng-model` <-- this is most likely
-2. You have disabled `formlyNgModelAttrsManipulator` (if you don't know what that means, then this is not likely) and it
-doesn't use the `name` property with the `id` property of the scope (i.e. `name={{::id}}` or in angular 1.2
-`formly-dynamic-name="id"`)
-
-Fixes for this warning are:
-
-1. Add the appropriate attribute to the element with the `ng-model` attribute for the field's template so it has a name
-(as mentioned above)
-2. On the field options, specify `noFormControl: true`
-
 # Problem loading template for {templateUrl}
 
 If you provide a `templateUrl` as a property for a formly field or for a preconfigured template type, formly will

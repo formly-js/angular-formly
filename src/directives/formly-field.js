@@ -111,36 +111,13 @@ module.exports = ngModule => {
           if (options.noFormControl) {
             return;
           }
-          var stopWaitingForDestroy;
-          var maxTime = 2000;
-          var intervalTime = 5;
-          var iterations = 0;
-          var interval = setInterval(function() {
-            iterations++;
-            if (!angular.isDefined(options.key)) {
-              return cleanUp();
-            }
-            var formControl = scope.form && scope.form[scope.id];
+          scope.$watch('form["' + scope.id + '"]', function(formControl) {
             if (formControl) {
-              options.formControl = formControl;
-              scope.fc = formControl;
+              scope.fc = formControl; // shortcut for template authors
+              scope.options.formControl = formControl;
               addShowMessagesWatcher(scope, options);
-              cleanUp();
-            } else if (intervalTime * iterations > maxTime) {
-              formlyWarn(
-                'couldnt-set-the-formcontrol-after-timems',
-                `Couldn't set the formControl after ${maxTime}ms`,
-                scope
-              );
-              cleanUp();
             }
-          }, intervalTime);
-          stopWaitingForDestroy = scope.$on('$destroy', cleanUp);
-
-          function cleanUp() {
-            stopWaitingForDestroy();
-            clearInterval(interval);
-          }
+          });
         }
 
         function addModelWatcher(scope, options) {
@@ -158,7 +135,7 @@ module.exports = ngModule => {
             }
           }, function(show) {
             options.validation.errorExistsAndShouldBeVisible = show;
-            scope.showError = show;
+            scope.showError = show; // shortcut for template authors
           });
         }
 
