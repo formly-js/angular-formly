@@ -33,6 +33,11 @@ export default [
         title: 'Expression Properties',
         slug: 'expression-properties',
         jsbinId: 'vupihu'
+      },
+      {
+        title: 'Watchers',
+        slug: 'watchers',
+        jsbinId: 'kilihu'
       }
     ]
   },
