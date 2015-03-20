@@ -137,6 +137,11 @@ export default [
         title: 'ngModelAttrs',
         slug: 'ngModelAttrs',
         jsbinId: 'biliras'
+      },
+      {
+        title: 'OIM (Online Interface Mapper)',
+        slug: 'oim',
+        jsbinId: 'gemaje'
       }
     ]
   }
