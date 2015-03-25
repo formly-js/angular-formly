@@ -8,7 +8,9 @@ The directive originated from a need to allow our users to create surveys and di
 angular-formly is very powerful.
 
 ```html
-<formly-form model="formData" fields="formFields"></formly-form>
+<form ng-submit="vm.handleSubmit()">
+  <formly-form model="vm.formData" fields="vm.formFields"></formly-form>
+</form>
 ```
 
 ## NOTICE: UPGRADING FROM 2.0 to 3.0?
