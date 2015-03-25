@@ -41,6 +41,6 @@
   ],
   "dependencies": {
     "angular": "^1.2.x",
-    "api-check": "~6.0.10"
+    "api-check": "https://github.com/acsl/apiCheck.js.git#master"
   }
 }
