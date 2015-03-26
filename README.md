@@ -1,8 +1,8 @@
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/formly-js/angular-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/formly-js/angular-formly.svg)](https://travis-ci.org/formly-js/angular-formly)
 
+![Angular Formly](./images/logo/angular-formly-logo-128px.png)
 # angular-formly
-
 Formly for Angular is an AngularJS module which has directives to help customize and render JavaScript configured forms.
 The directive originated from a need to allow our users to create surveys and distribute them easily. Buckle up, because
 angular-formly is very powerful.
