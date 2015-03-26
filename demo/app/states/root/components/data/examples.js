@@ -100,6 +100,11 @@ export default [
         title: 'Async Select Options with Controller',
         slug: 'async-select-options-with-controller',
         jsbinId: 'jubiha'
+      },
+      {
+        title: 'JSON powered',
+        slug: 'json-powered',
+        jsbinId: 'pakivu'
       }
     ]
   },
