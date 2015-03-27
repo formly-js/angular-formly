@@ -2,7 +2,12 @@
 
 ## [angular-formly](http://formly-js.github.io/angular-formly/)
 
-[![bower version](https://img.shields.io/bower/v/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly) [![npm version](https://img.shields.io/npm/v/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly) [![npm downloads](https://img.shields.io/npm/dm/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly) [![Build Status](https://img.shields.io/travis/formly-js/angular-formly.svg?style=flat-square)](https://github.com/js-data/js-data/blob/master/LICENSE) [![mailing list](https://img.shields.io/badge/mailing-list-orange.svg?style=flat-square)](https://groups.io/org/groupsio/formly-js) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/formly-js/angular-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![bower version](https://img.shields.io/bower/v/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly)
+[![npm version](https://img.shields.io/npm/v/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly)
+[![npm downloads](https://img.shields.io/npm/dm/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly)
+[![Build Status](https://img.shields.io/travis/formly-js/angular-formly.svg?style=flat-square)](https://github.com/js-data/js-data/blob/master/LICENSE)
+[![mailing list](https://img.shields.io/badge/mailing-list-orange.svg?style=flat-square)](https://groups.io/org/groupsio/formly-js)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/formly-js/angular-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Formly for Angular is an AngularJS module which has directives to help customize and render JavaScript configured forms.
 The directive originated from a need to allow our users to create surveys and distribute them easily. Buckle up, because
