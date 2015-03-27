@@ -953,3 +953,22 @@ Finally, you can specify the custom attribute as a `value`. In this case, a conf
 
 Which gives you the liberty to specify exactly the value you wish for your attribute in the template.
 
+## Browser support
+
+To make formly functional in IE8, formly already adds the dashed version of all of its directives as [customTags](https://code.angularjs.org/1.2.27/docs/guide/ie).
+
+Not included in the release, but required to make it work in IE8:
+
+Add polyfills for a number of ES5 functions: `String.prototype.trim`, `Array.isArray`, `Array.prototype.map`, `Array.prototype.filter`, `Array.prototype.some`, `Array.prototype.every`, `Array.prototype.indexOf`, `Array.prototype.forEach`, `Object.keys`, `Object.getPrototypeOf` (or simply use the excellent [es5-shim](https://github.com/es-shims/es5-shim))
+
+Change the root element of the `<formly-form>` tag. IE8 cannot cope with custom tags in a replace directive:
+```
+<formly-form root-el="form"></formly-form>
+```
+or
+```
+<div ng-form>
+  <formly-form root-el="div"></formly-form>
+</div>
+```
+
