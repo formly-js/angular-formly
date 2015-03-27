@@ -14,14 +14,20 @@ angular-formly is very powerful.
 </form>
 ```
 
-## Egghead.io Lessons
+## Learning
+
+### Egghead.io Lessons
 
 - https://egghead.io/lessons/angularjs-introduction-to-angular-formly
 - [Bug me](/../../issues/219) for more...
 
-## NG-NL Talk
+### NG-NL Talk
 
 [![JavaScript Powered Forms](other/ng-nl-talk.png)](http://youtu.be/o90TMDL3OYc)
+
+### Examples
+
+[The website](http://formly-js.github.io/angular-formly/) is totally full of tons examples.
 
 ## Dependencies
 
