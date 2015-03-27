@@ -83,5 +83,42 @@ module.exports = ngModule => {
         expect(firstObj).to.eql(result);
       });
     });
+
+    describe('findByNodeName', () => {
+      let find, $compile, scope;
+      beforeEach(inject(function(_$compile_, $rootScope, formlyUtil) {
+        $compile = _$compile_;
+        scope = $rootScope;
+        find = formlyUtil.findByNodeName;
+      }));
+
+      it('should find an element by nodeName from a single root', () => {
+        const template =
+          '<div><form><input></form></div>';
+        const el = $compile(template)(scope);
+        const found = find(el, 'input');
+        expect(found.length).to.equal(1);
+        expect(found.prop('nodeName')).to.equal('INPUT');
+      });
+
+      it('should find an element by nodeName from multiple root', () => {
+        const template =
+          '<div><form><input></form></div>' +
+          '<span><a><i></i></a>';
+        const el = $compile(template)(scope);
+        const found = find(el, 'i');
+        expect(found.length).to.equal(1);
+        expect(found.prop('nodeName')).to.equal('I');
+      });
+
+      it('should return undefined when a node can\'t be found', () => {
+        const template =
+          '<div><form><input></form></div>';
+        const el = $compile(template)(scope);
+        const found = find(el, 'bla');
+        expect(found).to.be.undefined;
+      });
+
+    });
   });
 };

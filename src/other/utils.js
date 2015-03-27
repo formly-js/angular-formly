@@ -57,7 +57,7 @@ function findByNodeName(el, nodeName) {
 
   var c = el.children();
   for(var i = 0; c && i < c.length; i++) {
-    var node = findByNodeName(c.get(i), nodeName);
+    var node = findByNodeName(c[i], nodeName);
     if (node) {
       return node;
     }
