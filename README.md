@@ -18,7 +18,7 @@ angular-formly is very powerful.
 
 ### Egghead.io Lessons
 
-- https://egghead.io/lessons/angularjs-introduction-to-angular-formly
+- [Introduction](https://egghead.io/lessons/angularjs-introduction-to-angular-formly)
 - [Bug me](/../../issues/219) for more...
 
 ### NG-NL Talk
