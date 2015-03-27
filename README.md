@@ -1,8 +1,9 @@
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/formly-js/angular-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.org/formly-js/angular-formly.svg)](https://travis-ci.org/formly-js/angular-formly)
+<img src="https://raw.githubusercontent.com/formly-js/angular-formly/master/images/logo/angular-formly-logo-64px.png" alt="angular-formly logo" title="angular-formly" align="right" width="64" height="64" />
 
-![Angular Formly](./images/logo/angular-formly-logo-128px.png)
-# angular-formly
+## [angular-formly](http://formly-js.github.io/angular-formly/)
+
+[![bower version](https://img.shields.io/bower/v/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly) [![npm version](https://img.shields.io/npm/v/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly) [![npm downloads](https://img.shields.io/npm/dm/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly) [![Build Status](https://img.shields.io/travis/formly-js/angular-formly.svg?style=flat-square)](https://github.com/js-data/js-data/blob/master/LICENSE) [![mailing list](https://img.shields.io/badge/mailing-list-orange.svg?style=flat-square)](https://groups.io/org/groupsio/formly-js) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/formly-js/angular-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Formly for Angular is an AngularJS module which has directives to help customize and render JavaScript configured forms.
 The directive originated from a need to allow our users to create surveys and distribute them easily. Buckle up, because
 angular-formly is very powerful.
@@ -13,17 +14,10 @@ angular-formly is very powerful.
 </form>
 ```
 
-## NOTICE: UPGRADING FROM 2.0 to 3.0?
+## Egghead.io Lessons
 
-There were some [significant changes](https://github.com/formly-js/angular-formly/blob/master/CHANGELOG.md) that you'll
-want to be aware of. In order to upgrade and get all the cool features, you're going to need to change your field
-configurations. [Here is a tool](http://jsbin.com/ruwoke) that should help make that process easier. Also, if you are
-not able to update the configuration very easily, see
-[this issue](https://github.com/formly-js/angular-formly/issues/162) for ideas on how to ease things a little.
-
-## Demo
-
-http://formly-js.github.io/angular-formly/
+- https://egghead.io/lessons/angularjs-introduction-to-angular-formly
+- [Bug me](/../../issues/219) for more...
 
 ## NG-NL Talk
 
@@ -58,7 +52,7 @@ and
 angular.module('yourModule', ['formly']);
 ```
 
-or
+or, if you're able to use CommonJS (with [webpack](http://webpack.github.io/) for example)
 
 ```javascript
 var angular = require('angular');
@@ -73,14 +67,40 @@ templates you can use:
  - [Vanilla HTML](https://github.com/formly-js/angular-formly-templates-vanilla)
  - [Bootstrap](https://github.com/formly-js/angular-formly-templates-bootstrap)
  - [LumX](https://github.com/formly-js/angular-formly-templates-lumx)
+ - [Ionic](https://github.com/formly-js/angular-formly-templates-ionic)
  - [angular-material](https://github.com/formly-js/angular-formly-templates-material) (WIP)
- - [Ionic](https://github.com/formly-js/angular-formly-templates-ionic): (WIP, owner needed)
  - [Foundation](https://github.com/formly-js/angular-formly-templates-foundation): (WIP, owner needed)
 
 ### DIY Templates
 
 Regardless of which flavor you use (or if you use no flavor at all), you can create your own templates with
 `formlyConfigProvider`. This is the recommended approach if you want to customize your templates at all.
+
+## Browser support
+
+angular-formly supports all of the latest browsers and works with IE8 (thanks
+[koenweyn](https://github.com/koenweyn))! To make formly functional in IE8, formly already adds the dashed
+version of all of its directives as [customTags](https://code.angularjs.org/1.2.27/docs/guide/ie).
+
+You must also add polyfills for a number of ES5 functions: `String.prototype.trim`, `Array.isArray`,
+`Array.prototype.map`, `Array.prototype.filter`, `Array.prototype.some`, `Array.prototype.every`,
+`Array.prototype.indexOf`, `Array.prototype.forEach`, `Object.keys`, `Object.getPrototypeOf` (or simply use
+the excellent [es5-shim](https://github.com/es-shims/es5-shim))
+
+Also, you must change the root element of the `<formly-form>` tag (because IE8 cannot cope with custom tags
+in a replace directive):
+
+```html
+<formly-form root-el="form"></formly-form>
+```
+
+or
+
+```html
+<div ng-form>
+  <formly-form root-el="div"></formly-form>
+</div>
+```
 
 ## Documentation
 
@@ -954,23 +974,4 @@ Finally, you can specify the custom attribute as a `value`. In this case, a conf
 ```
 
 Which gives you the liberty to specify exactly the value you wish for your attribute in the template.
-
-## Browser support
-
-To make formly functional in IE8, formly already adds the dashed version of all of its directives as [customTags](https://code.angularjs.org/1.2.27/docs/guide/ie).
-
-Not included in the release, but required to make it work in IE8:
-
-Add polyfills for a number of ES5 functions: `String.prototype.trim`, `Array.isArray`, `Array.prototype.map`, `Array.prototype.filter`, `Array.prototype.some`, `Array.prototype.every`, `Array.prototype.indexOf`, `Array.prototype.forEach`, `Object.keys`, `Object.getPrototypeOf` (or simply use the excellent [es5-shim](https://github.com/es-shims/es5-shim))
-
-Change the root element of the `<formly-form>` tag. IE8 cannot cope with custom tags in a replace directive:
-```
-<formly-form root-el="form"></formly-form>
-```
-or
-```
-<div ng-form>
-  <formly-form root-el="div"></formly-form>
-</div>
-```
 
