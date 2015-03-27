@@ -1,12 +1,19 @@
 # Contributing
 
+## Questions/Help
+
+Please join the [mailing list](https://groups.io/org/groupsio/formly-js) and ask/answer questions about how to
+use angular-formly there. Also join us on [gitter](https://gitter.im/formly-js/angular-formly).
+
 ## Issues
 
-If you've found an issue, please submit it in [the issues](https://github.com/formly-js/angular-formly/issues) with a link to a jsbin that demonstrates the issue (clone [this template](http://jsbin.com/biqesi/edit))
+If you've found an issue, please submit it in [the issues](https://github.com/formly-js/angular-formly/issues)
+with a link to a jsbin that demonstrates the issue (clone [this template](http://jsbin.com/biqesi/edit))
 
 ## Pull Requests
 
-If you would like to add functionality, please submit [an issue](https://github.com/formly-js/angular-formly/issues) first to make sure it's a direction we want to take.
+If you would like to add functionality, please submit [an issue](https://github.com/formly-js/angular-formly/issues)
+first to make sure it's a direction we want to take.
 
 When submitting a Pull Request please submit it to the `master` branch.
 
@@ -36,11 +43,12 @@ There are actually two `package.json` files. One for the library and one for the
 
 In the demo, you can run `npm run start` to start the development server.
 
-### Grunt targets
-* `grunt deploy`: Publishes the demo to gh-pages (note, only publishes current state of the demo, so make sure that you build that folder before you run this).
+### Grunt target
+
+* `grunt deploy`: Publishes the demo to gh-pages (note, pretty sure you have to be a collaborator on the repo to run this, so don't bother :-)).
 
 ### What do you need help with?
 
-* Tests! We don't have any... But we do have the scaffolding for them. See the top of the `formly-field.js` file for an example of how to hook those up.
+* Tests! Our coverage isn't great...
 * Any of the issues in GitHub, let us know if you have some time to fix one. Especially those labeld [PR Please!](https://github.com/formly-js/angular-formly/labels/PRs%20please%21)
 * Examples, examples, examples! The website is driven by examples. Please follow the instructions in [this file](https://github.com/formly-js/angular-formly/edit/master/demo/app/states/root/components/data/examples.js) for what you need to do!
