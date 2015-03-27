@@ -1,3 +1,9 @@
+# 4.2.0
+
+## Improvements
+
+- Thanks to @koenweyn, we now can support IE8 (with polyfills).
+
 # 4.1.0
 
 ## Improvements
