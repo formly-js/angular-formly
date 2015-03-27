@@ -27,7 +27,7 @@ angular-formly is very powerful.
 
 ### Examples
 
-[The website](http://formly-js.github.io/angular-formly/) is totally full of tons examples.
+[The website](http://formly-js.github.io/angular-formly/) is totally full of tons of examples.
 
 ## Dependencies
 
