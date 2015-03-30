@@ -1,3 +1,16 @@
+# 4.2.2
+
+## Other
+
+- Had trouble with release 4.2.1
+- Updating documentation... Big time.
+
+# 4.2.1
+
+## Other
+
+- Had trouble release 4.2.0
+
 # 4.2.0
 
 ## Improvements
