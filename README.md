@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/formly-js/angular-formly/master/images/logo/angular-formly-logo-64px.png" alt="angular-formly logo" title="angular-formly" align="right" width="64" height="64" />
+<img src="https://raw.githubusercontent.com/formly-js/angular-formly/master/other/logo/angular-formly-logo-64px.png" alt="angular-formly logo" title="angular-formly" align="right" width="64" height="64" />
 
 ## [angular-formly](http://docs.angular-formly.com)
 

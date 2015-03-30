@@ -1,3 +1,10 @@
+# 4.2.5
+
+## Other
+
+- Moving where the logos are
+- Ignoring the `other` directory
+
 # 4.2.3
 
 ## Other

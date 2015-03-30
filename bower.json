@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "4.2.3",
+  "version": "4.2.4",
   "authors": [
     "Astrism <astrisms@gmail.com>"
   ],
@@ -37,7 +37,8 @@
     "src",
     "webpack.config.js",
     "webpack.config.minify.js",
-    "coverage"
+    "coverage",
+    "other"
   ],
   "dependencies": {
     "angular": "^1.2.x",
