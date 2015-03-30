@@ -9,10 +9,10 @@ Status:
 [![Build Status](https://img.shields.io/travis/formly-js/angular-formly.svg?style=flat-square)](https://github.com/js-data/js-data/blob/master/LICENSE)
 
 Links:
-[![mailing list](https://img.shields.io/badge/mailing-list-orange.svg?style=flat-square)](https://groups.io/org/groupsio/formly-js)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/formly-js/angular-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Documentation](https://img.shields.io/badge/API-Docs-red.svg?style=flat-square)](http://docs.angular-formly.com)
 [![Examples](https://img.shields.io/badge/formly-examples-green.svg?style=flat-square)](http://angular-formly.com)
+[![mailing list](https://img.shields.io/badge/mailing-list-orange.svg?style=flat-square)](https://groups.io/org/groupsio/formly-js)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/formly-js/angular-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 angular-formly is an AngularJS module which has a directive to help customize and render JavaScript/JSON configured forms.
 The `formly-form` directive and the `formlyConfig` service are very powerful and bring unmatched maintainability to your
@@ -45,7 +45,7 @@ Find all the documentation at [docs.angular-formly.com](http://docs.angular-form
 
 ## Roadmap
 
-- See the [issues labeled enhancement](labels/enhancement)
+See the [issues labeled enhancement](labels/enhancement)
 
 ## Contributing
 
