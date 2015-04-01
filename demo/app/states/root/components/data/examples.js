@@ -105,6 +105,11 @@ export default [
         title: 'JSON powered',
         slug: 'json-powered',
         jsbinId: 'pakivu'
+      },
+      {
+        title: 'Force showing error state',
+        slug: 'force-show-error',
+        jsbinId: 'mowube'
       }
     ]
   },
