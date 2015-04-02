@@ -41,6 +41,14 @@ module.exports = ngModule => {
       expect(scope.vm.myForm).to.have.property('$name');
     });
 
+    it(`should not require a form attribute`, () => {
+      expect(() => {
+        compileAndDigest(`
+          <formly-form></formly-form>
+        `);
+      }).to.not.throw();
+    });
+
     function compileAndDigest(template) {
       const el = $compile(template)(scope);
       scope.$digest();
