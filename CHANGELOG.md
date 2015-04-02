@@ -1,3 +1,9 @@
+# 5.0.2
+
+## Bug Fixes
+
+- Really fixed ([#222](/../../issues/222)) this time
+
 # 5.0.1
 
 ## Bug Fixes
