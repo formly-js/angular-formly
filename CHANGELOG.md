@@ -1,3 +1,9 @@
+# 5.0.1
+
+## Bug Fixes
+
+- Fixed issue where the `form` attribute on the `<formly-form>` directive would not actually do anything :-(
+
 # 5.0.0
 
 ## Breaking Changes
