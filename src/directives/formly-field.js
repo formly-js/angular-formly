@@ -18,7 +18,7 @@ module.exports = ngModule => {
       scope: {
         options: '=',
         model: '=',
-        formId: '=?',
+        formId: '@',
         index: '=?',
         fields: '=?',
         formState: '=?',

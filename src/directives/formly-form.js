@@ -16,10 +16,11 @@ module.exports = ngModule => {
       restrict: 'E',
       template: function(el, attrs) {
         /* jshint -W033 */ // this because jshint is broken I guess...
-        var rootEl = attrs.rootEl || 'ng-form';
+        const rootEl = attrs.rootEl || 'ng-form';
+        const formName = `formly_${currentFormId++}`;
         return `
           <${rootEl} class="formly"
-                   name="form"
+                   name="${formName}"
                    role="form">
             <div formly-field
                  ng-repeat="field in fields track by $index"
@@ -28,8 +29,8 @@ module.exports = ngModule => {
                  options="field"
                  model="field.model || model"
                  fields="fields"
-                 form="form"
-                 form-id="formId"
+                 form="${formName}"
+                 form-id="${formName}"
                  form-state="options.formState"
                  index="$index">
             </div>
@@ -41,12 +42,11 @@ module.exports = ngModule => {
       transclude: true,
       scope: {
         fields: '=',
-        model: '=', // we'll do our own warning to help with migrations
+        model: '=',
         form: '=?',
         options: '=?'
       },
       controller: function($scope) {
-        $scope.formId = `formly_${currentFormId++}`;
         $scope.options = $scope.options || {};
         $scope.options.formState = $scope.options.formState || {};
 
@@ -120,18 +120,6 @@ module.exports = ngModule => {
 
         function modifyArgs(watcher, index, ...originalArgs) {
           return [$scope.fields[index], ...originalArgs, watcher.stopWatching];
-        }
-      },
-      link: function(scope, el, attrs) {
-        if (attrs.hasOwnProperty('result')) {
-          throw formlyUsability.getFormlyError(
-            'The "result" attribute on a formly-form is no longer valid. Use "model" instead'
-          );
-        }
-        if (attrs.name !== 'form') { // then they specified their own name
-          throw formlyUsability.getFormlyError(
-            'The "name" attribute on a formly-form is no longer valid. Use "form" instead'
-          );
         }
       }
     };

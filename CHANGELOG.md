@@ -1,3 +1,15 @@
+# 5.0.0
+
+## Breaking Changes
+
+- formly-field scope attribute `formId` is now an attribute, not a two-way binding
+- the `form` of a `formly-form` is now generated to avoid siblings overriding each other
+
+## Other
+
+- Removed migration warning about changing from `result` to `model`.
+- Removed migration warning about changing from `name` to `form`.
+
 # 4.2.5
 
 ## Other
