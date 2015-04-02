@@ -32,6 +32,14 @@ module.exports = ngModule => {
       expect(scope.parent).to.have.property('formly_2');
     });
 
+    it(`should place the form control on the scope property defined by the form attribute`, () => {
+      const el = compileAndDigest(`
+        <formly-form form="vm.myForm"></formly-form>
+      `);
+      var scope = el.scope();
+      expect(scope.vm).to.have.property('myForm');
+    });
+
     function compileAndDigest(template) {
       const el = $compile(template)(scope);
       scope.$digest();

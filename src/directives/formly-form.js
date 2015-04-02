@@ -10,7 +10,7 @@ module.exports = ngModule => {
    * @name formlyForm
    * @restrict E
    */
-  function formlyForm(formlyUsability) {
+  function formlyForm(formlyUsability, $parse) {
     var currentFormId = 1;
     return {
       restrict: 'E',
@@ -121,6 +121,10 @@ module.exports = ngModule => {
         function modifyArgs(watcher, index, ...originalArgs) {
           return [$scope.fields[index], ...originalArgs, watcher.stopWatching];
         }
+      },
+      link(scope, el, attrs) {
+        const formId = attrs.name;
+        $parse(attrs.form).assign(scope.$parent, formId);
       }
     };
   }
