@@ -38,6 +38,7 @@ module.exports = ngModule => {
       `);
       var scope = el.scope();
       expect(scope.vm).to.have.property('myForm');
+      expect(scope.vm.myForm).to.have.property('$name');
     });
 
     function compileAndDigest(template) {

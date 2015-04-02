@@ -124,7 +124,7 @@ module.exports = ngModule => {
       },
       link(scope, el, attrs) {
         const formId = attrs.name;
-        $parse(attrs.form).assign(scope.$parent, formId);
+        $parse(attrs.form).assign(scope.$parent, scope[formId]);
       }
     };
   }
