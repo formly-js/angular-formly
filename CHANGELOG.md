@@ -1,3 +1,9 @@
+# 5.0.3
+
+## Bug Fixes
+
+- Removing the requirement to have the `form` attribute.
+
 # 5.0.2
 
 ## Bug Fixes
