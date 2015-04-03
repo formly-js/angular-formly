@@ -110,6 +110,11 @@ export default [
         title: 'Force showing error state',
         slug: 'force-show-error',
         jsbinId: 'mowube'
+      },
+      {
+        title: 'Async validation of unique value',
+        slug: 'unique-value-async-validation',
+        jsbinId: 'sawakuniko'
       }
     ]
   },
