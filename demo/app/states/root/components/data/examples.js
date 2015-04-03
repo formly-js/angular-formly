@@ -115,6 +115,10 @@ export default [
         title: 'Async validation of unique value',
         slug: 'unique-value-async-validation',
         jsbinId: 'sawakuniko'
+      },
+        title: 'Integrate with angular-wizard',
+        slug: 'angular-wizard',
+        jsbinId: 'sajeso'
       }
     ]
   },
