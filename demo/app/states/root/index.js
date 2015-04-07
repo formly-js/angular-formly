@@ -4,6 +4,7 @@ const stateUtils = require('stateUtils');
 require('./components')(ngModule);
 
 const examples = require('./components/data/examples');
+const logoSrc = require('./components/resources/logo.png');
 
 module.exports = {
   name: ngModule.name,
@@ -14,7 +15,8 @@ module.exports = {
   controllerAs: 'vm',
   children: require('./children'),
   resolve: {
-    examples: stateUtils.resolveIdentity(examples)
+    examples: stateUtils.resolveIdentity(examples),
+    logoSrc: stateUtils.resolveIdentity(logoSrc)
   }
 };
 

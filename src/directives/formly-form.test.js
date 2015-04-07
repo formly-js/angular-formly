@@ -20,6 +20,35 @@ module.exports = ngModule => {
       expect(el.prop('nodeName').toLowerCase()).to.equal('form');
     });
 
+    it(`should not allow sibling forms to override each other on a parent form`, () => {
+      const el = compileAndDigest(`
+        <form name="parent">
+          <formly-form form="form1"></formly-form>
+          <formly-form form="form2"></formly-form>
+        </form>
+      `);
+      var scope = el.scope();
+      expect(scope.parent).to.have.property('formly_1');
+      expect(scope.parent).to.have.property('formly_2');
+    });
+
+    it(`should place the form control on the scope property defined by the form attribute`, () => {
+      const el = compileAndDigest(`
+        <formly-form form="vm.myForm"></formly-form>
+      `);
+      var scope = el.scope();
+      expect(scope.vm).to.have.property('myForm');
+      expect(scope.vm.myForm).to.have.property('$name');
+    });
+
+    it(`should not require a form attribute`, () => {
+      expect(() => {
+        compileAndDigest(`
+          <formly-form></formly-form>
+        `);
+      }).to.not.throw();
+    });
+
     function compileAndDigest(template) {
       const el = $compile(template)(scope);
       scope.$digest();

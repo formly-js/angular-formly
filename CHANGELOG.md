@@ -1,3 +1,65 @@
+# 5.0.3
+
+## Bug Fixes
+
+- Removing the requirement to have the `form` attribute.
+
+# 5.0.2
+
+## Bug Fixes
+
+- Really fixed ([#222](/../../issues/222)) this time
+
+# 5.0.1
+
+## Bug Fixes
+
+- Fixed issue where the `form` attribute on the `<formly-form>` directive would not actually do anything :-(
+
+# 5.0.0
+
+## Breaking Changes
+
+- formly-field scope attribute `formId` is now an attribute, not a two-way binding
+- the `form` of a `formly-form` is now generated to avoid siblings overriding each other
+
+## Other
+
+- Removed migration warning about changing from `result` to `model`.
+- Removed migration warning about changing from `name` to `form`.
+
+# 4.2.5
+
+## Other
+
+- Moving where the logos are
+- Ignoring the `other` directory
+
+# 4.2.3
+
+## Other
+
+- Trouble with 4.2.2... :-(
+
+# 4.2.2
+
+## Other
+
+- Had trouble with release 4.2.1
+- Updating documentation... Big time.
+
+# 4.2.1
+
+## Other
+
+- Had trouble release 4.2.0
+
+# 4.2.0
+
+## Improvements
+
+- Thanks to @koenweyn, we now can support IE8 (with polyfills).
+
 # 4.1.0
 
 ## Improvements

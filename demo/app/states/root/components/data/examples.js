@@ -100,6 +100,26 @@ export default [
         title: 'Async Select Options with Controller',
         slug: 'async-select-options-with-controller',
         jsbinId: 'jubiha'
+      },
+      {
+        title: 'JSON powered',
+        slug: 'json-powered',
+        jsbinId: 'pakivu'
+      },
+      {
+        title: 'Force showing error state',
+        slug: 'force-show-error',
+        jsbinId: 'mowube'
+      },
+      {
+        title: 'Async validation of unique value',
+        slug: 'unique-value-async-validation',
+        jsbinId: 'sawakuniko'
+      },
+      {
+        title: 'Integrate with angular-wizard',
+        slug: 'angular-wizard',
+        jsbinId: 'sajeso'
       }
     ]
   },
@@ -137,6 +157,11 @@ export default [
         title: 'ngModelAttrs',
         slug: 'ngModelAttrs',
         jsbinId: 'biliras'
+      },
+      {
+        title: 'OIM (Online Interface Mapper)',
+        slug: 'oim',
+        jsbinId: 'gemaje'
       }
     ]
   }
