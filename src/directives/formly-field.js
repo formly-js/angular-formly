@@ -131,7 +131,8 @@ module.exports = ngModule => {
             if (typeof scope.options.validation.show === 'boolean') {
               return scope.fc.$invalid && scope.options.validation.show;
             } else {
-              return scope.fc.$invalid && scope.fc.$touched;
+              return scope.fc.$invalid &&
+                (scope.fc.$touched || (angular.isUndefined(scope.fc.$touched) && scope.fc.$dirty));
             }
           }, function(show) {
             options.validation.errorExistsAndShouldBeVisible = show;
