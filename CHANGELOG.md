@@ -1,3 +1,9 @@
+# 5.1.2
+
+## Other Fixes
+
+- Changing the peerDependency to include beta versions of angular.
+
 # 5.1.1
 
 ## Bug Fixes
