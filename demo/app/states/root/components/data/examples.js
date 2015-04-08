@@ -42,6 +42,17 @@ export default [
     ]
   },
   {
+    title: 'Bootstrap Formly',
+    name: 'bootstrap-formly',
+    examples: [
+      {
+        title: 'Table Rows',
+        slug: 'bootstrap-table-rows',
+        jsbinId: 'tuliju'
+      }
+    ]
+  },
+  {
     title: 'Custom Types',
     name: 'custom-types',
     examples: [
