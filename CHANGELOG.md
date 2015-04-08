@@ -1,3 +1,13 @@
+# 5.1.0
+
+## Features
+
+- You can now specify `validation.messages` formly expressions.
+
+## Internal Breaking Changes
+
+- `formly-custom-validation` (internal directive) no longer allows you to specify your own custom validation object but instead simply relies on the scope having an `options.validators` property. It already depended on some other stuff from the scope and it's so specific to angular-formly that this should not cause an issue for anyone.
+
 # 5.0.3
 
 ## Bug Fixes
