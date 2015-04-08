@@ -1,3 +1,9 @@
+# 5.1.1
+
+## Bug Fixes
+
+- Fixes ([#231](/../../issues/231)). Code borrowed from @koenweyn's PR.
+
 # 5.1.0
 
 ## Features
