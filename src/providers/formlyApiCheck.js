@@ -116,7 +116,7 @@ module.exports = ngModule => {
       show: apiCheck.oneOfType([
         apiCheck.bool, apiCheck.oneOf([null])
       ]).optional,
-      messages: apiCheck.objectOf(apiCheck.func).optional,
+      messages: apiCheck.objectOf(formlyExpression).optional,
       errorExistsAndShouldBeVisible: apiCheck.bool.optional
     }).optional,
     formControl: apiCheck.object.optional,

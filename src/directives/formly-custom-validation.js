@@ -8,19 +8,23 @@ module.exports = ngModule => {
       restrict: 'A',
       require: 'ngModel',
       link: function(scope, el, attrs, ctrl) {
-        var validators = scope.$eval(attrs.formlyCustomValidation);
-        if (!validators) {
-          return;
+        const opts = scope.options;
+        if (opts.validators) {
+          checkValidators(opts.validators);
         }
-        checkValidators(validators);
-        scope.options.validation.messages = scope.options.validation.messages || {};
+        opts.validation.messages = opts.validation.messages || {};
+        angular.forEach(opts.validation.messages, (message, key) => {
+          opts.validation.messages[key] = () => {
+            return formlyUtil.formlyEval(scope, message, ctrl.$modelValue, ctrl.$viewValue);
+          };
+        });
 
 
         var useNewValidatorsApi = ctrl.hasOwnProperty('$validators') && !attrs.hasOwnProperty('useParsers');
-        angular.forEach(validators, function(validator, name) {
+        angular.forEach(opts.validators, function(validator, name) {
           var message = validator.message;
           if (message) {
-            scope.options.validation.messages[name] = () => {
+            opts.validation.messages[name] = () => {
               return formlyUtil.formlyEval(scope, message, ctrl.$modelValue, ctrl.$viewValue);
             };
           }
