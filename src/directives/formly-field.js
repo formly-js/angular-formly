@@ -131,7 +131,8 @@ module.exports = ngModule => {
             if (typeof scope.options.validation.show === 'boolean') {
               return scope.fc.$invalid && scope.options.validation.show;
             } else {
-              return scope.fc.$invalid && scope.fc.$touched;
+              let noTouchedButDirty = (angular.isUndefined(scope.fc.$touched) && scope.fc.$dirty);
+              return scope.fc.$invalid && (scope.fc.$touched || noTouchedButDirty);
             }
           }, function(show) {
             options.validation.errorExistsAndShouldBeVisible = show;
@@ -141,9 +142,9 @@ module.exports = ngModule => {
 
         function addValidationMessages(options) {
           options.validation.messages = options.validation.messages || {};
-          angular.forEach(formlyValidationMessages.messages, function (expression, name) {
+          angular.forEach(formlyValidationMessages.messages, function(expression, name) {
             if (!options.validation.messages[name]) {
-              options.validation.messages[name] = function (viewValue, modelValue, scope) {
+              options.validation.messages[name] = function(viewValue, modelValue, scope) {
                 return formlyUtil.formlyEval(scope, expression, modelValue, viewValue);
               };
             }
