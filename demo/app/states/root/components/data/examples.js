@@ -35,6 +35,11 @@ export default [
         jsbinId: 'vupihu'
       },
       {
+        title: 'Model',
+        slug: 'model',
+        jsbinId: 'haxenu'
+      },
+      {
         title: 'Watchers',
         slug: 'watchers',
         jsbinId: 'kilihu'
