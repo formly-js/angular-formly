@@ -4,7 +4,7 @@ export default {formlyEval, getFieldId, reverseDeepMerge, findByNodeName};
 
 function formlyEval(scope, expression, modelValue, viewValue) {
   if (angular.isFunction(expression)) {
-    return expression(viewValue || modelValue, modelValue, scope);
+    return expression(viewValue, modelValue, scope);
   } else {
     return scope.$eval(expression, {
       $viewValue: viewValue || modelValue,
