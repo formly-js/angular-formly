@@ -1,4 +1,10 @@
-# 5.2.0
+# 5.2.1
+
+## Bug Fixes
+
+- Changing `fixChromeAutoComplete` to `removeChromeAutoComplete`. This release is coming immediately after the previous so hopefully nobody's using the feature yet.
+
+# 5.2.0 - deprecated
 
 ## Features
 

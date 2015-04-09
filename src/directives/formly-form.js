@@ -157,9 +157,9 @@ module.exports = ngModule => {
         // chrome autocomplete lameness
         // see https://code.google.com/p/chromium/issues/detail?id=468153#c14
         // ლ(ಠ益ಠლ)   (╯°□°)╯︵ ┻━┻    (◞‸◟；)
-        const global = formlyConfig.extras.fixChromeAutoComplete === true;
-        const offInstance = scope.options && scope.options.fixChromeAutoComplete === false;
-        const onInstance = scope.options && scope.options.fixChromeAutoComplete === true;
+        const global = formlyConfig.extras.removeChromeAutoComplete === true;
+        const offInstance = scope.options && scope.options.removeChromeAutoComplete === false;
+        const onInstance = scope.options && scope.options.removeChromeAutoComplete === true;
         if ((global && !offInstance) || onInstance) {
           const input = document.createElement('input');
           input.setAttribute('autocomplete', 'address-level4');

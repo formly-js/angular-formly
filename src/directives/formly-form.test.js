@@ -146,7 +146,7 @@ module.exports = ngModule => {
         });
       });
 
-      describe(`fixChromeAutoComplete`, () => {
+      describe(`removeChromeAutoComplete`, () => {
         it(`should not have a hidden input when nothing is specified`, () => {
           const el = compileAndDigest(template);
           const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
@@ -154,22 +154,22 @@ module.exports = ngModule => {
         });
 
         it(`should add a hidden input when specified as true`, () => {
-          scope.options.fixChromeAutoComplete = true;
+          scope.options.removeChromeAutoComplete = true;
           const el = compileAndDigest(template);
           const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
           expect(autoCompleteFixEl).to.exist;
         });
 
         it(`should override the 'true' global configuration`, inject((formlyConfig) => {
-          formlyConfig.extras.fixChromeAutoComplete = true;
-          scope.options.fixChromeAutoComplete = false;
+          formlyConfig.extras.removeChromeAutoComplete = true;
+          scope.options.removeChromeAutoComplete = false;
           const el = compileAndDigest(template);
           const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
           expect(autoCompleteFixEl).to.be.null;
         }));
 
         it(`should be added regardless of the option if the global config is set`, inject((formlyConfig) => {
-          formlyConfig.extras.fixChromeAutoComplete = true;
+          formlyConfig.extras.removeChromeAutoComplete = true;
           const el = compileAndDigest(template);
           const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
           expect(autoCompleteFixEl).to.exist;
