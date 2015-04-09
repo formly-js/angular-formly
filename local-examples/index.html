@@ -15,8 +15,10 @@
     <!--<formly-form model="vm.user" fields="vm.realFields" form="vm.realForm"></formly-form>-->
   <!--</form>-->
   <form name="vm.form">
-    <formly-form model="vm.user" fields="vm.fields" form="vm.form"></formly-form>
+    <formly-form model="vm.user" fields="vm.fields" form="vm.form" options="vm.options"></formly-form>
   </form>
+  <button class="btn btn-default" ng-click="vm.options.resetModel()">Reset Model</button>
+  <button class="btn btn-default" ng-click="vm.options.updateInitialValue()">Update Initial Value</button>
 
   <h1>User</h1>
   <pre>{{vm.user | json}}</pre>
