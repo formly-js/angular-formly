@@ -10,7 +10,7 @@ module.exports = ngModule => {
    * @name formlyForm
    * @restrict E
    */
-  function formlyForm(formlyUsability, $parse, formlyApiCheck) {
+  function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
     var currentFormId = 1;
     var optionsApi = [
       formlyApiCheck.shape({
@@ -152,6 +152,19 @@ module.exports = ngModule => {
         if (attrs.form) {
           const formId = attrs.name;
           $parse(attrs.form).assign(scope.$parent, scope[formId]);
+        }
+
+        // chrome autocomplete lameness
+        // see https://code.google.com/p/chromium/issues/detail?id=468153#c14
+        // ლ(ಠ益ಠლ)   (╯°□°)╯︵ ┻━┻    (◞‸◟；)
+        const global = formlyConfig.extras.fixChromeAutoComplete === true;
+        const offInstance = scope.options && scope.options.fixChromeAutoComplete === false;
+        const onInstance = scope.options && scope.options.fixChromeAutoComplete === true;
+        if ((global && !offInstance) || onInstance) {
+          const input = document.createElement('input');
+          input.setAttribute('autocomplete', 'address-level4');
+          input.setAttribute('hidden', true);
+          el[0].appendChild(input);
         }
       }
     };

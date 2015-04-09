@@ -70,7 +70,7 @@ module.exports = ngModule => {
         it(`should reset the model that's given`, () => {
           compileAndDigest(template);
           expect(typeof scope.options.resetModel).to.eq('function');
-          var previousFoo = scope.model.foo;
+          const previousFoo = scope.model.foo;
           scope.model.foo = 'newFoo';
           scope.options.resetModel();
           expect(scope.model.foo).to.eq(previousFoo);
@@ -78,7 +78,7 @@ module.exports = ngModule => {
 
         it(`should reset the $viewValue of fields`, () => {
           compileAndDigest(template);
-          var previousFoobar = scope.model.foobar;
+          const previousFoobar = scope.model.foobar;
           scope.fields[2].formControl.$setViewValue('not-an-email');
           scope.options.resetModel();
           expect(scope.fields[2].formControl.$viewValue).to.equal(previousFoobar);
@@ -127,7 +127,7 @@ module.exports = ngModule => {
 
         it(`should update the initial value of the fields`, () => {
           compileAndDigest(template);
-          var field = scope.fields[0];
+          const field = scope.fields[0];
           expect(field.initialValue).to.equal('myFoo');
           scope.model.foo = 'otherValue';
           scope.options.updateInitialValue();
@@ -136,7 +136,7 @@ module.exports = ngModule => {
 
         it(`should reset to the updated initial value`, () => {
           compileAndDigest(template);
-          var field = scope.fields[0];
+          const field = scope.fields[0];
           scope.model.foo = 'otherValue';
           scope.options.updateInitialValue();
           scope.model.foo = 'otherValueAgain';
@@ -144,6 +144,36 @@ module.exports = ngModule => {
           expect(field.initialValue).to.equal('otherValue');
           expect(scope.model.foo).to.equal('otherValue');
         });
+      });
+
+      describe(`fixChromeAutoComplete`, () => {
+        it(`should not have a hidden input when nothing is specified`, () => {
+          const el = compileAndDigest(template);
+          const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
+          expect(autoCompleteFixEl).to.be.null;
+        });
+
+        it(`should add a hidden input when specified as true`, () => {
+          scope.options.fixChromeAutoComplete = true;
+          const el = compileAndDigest(template);
+          const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
+          expect(autoCompleteFixEl).to.exist;
+        });
+
+        it(`should override the 'true' global configuration`, inject((formlyConfig) => {
+          formlyConfig.extras.fixChromeAutoComplete = true;
+          scope.options.fixChromeAutoComplete = false;
+          const el = compileAndDigest(template);
+          const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
+          expect(autoCompleteFixEl).to.be.null;
+        }));
+
+        it(`should be added regardless of the option if the global config is set`, inject((formlyConfig) => {
+          formlyConfig.extras.fixChromeAutoComplete = true;
+          const el = compileAndDigest(template);
+          const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
+          expect(autoCompleteFixEl).to.exist;
+        }));
       });
     });
 

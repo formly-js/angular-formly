@@ -1,3 +1,13 @@
+# 5.2.0
+
+## Features
+
+- Added `options.fixChromeAutoComplete` to `formly-form` options as well as `formlyConfig.extras.fixChromeAutoComplete`
+
+## Bug Fixes
+
+- Fixing issue with the `resetModel` where if the model is `null` things break.
+
 # 5.2.0-beta.1
 
 ## Other changes
