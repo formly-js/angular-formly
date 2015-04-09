@@ -1,3 +1,9 @@
+# 5.2.0-beta.1
+
+## Other changes
+
+- Botched the other beta release...
+
 # 5.2.0-beta.0
 
 ## Features
