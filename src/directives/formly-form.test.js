@@ -1,5 +1,6 @@
 module.exports = ngModule => {
   describe('formly-form', () => {
+    const input = '<input ng-model="model[options.key]" />';
     let $compile, scope;
 
     beforeEach(window.module(ngModule.name));
@@ -9,13 +10,17 @@ module.exports = ngModule => {
     }));
 
     it('should use ng-form as the default root tag', () => {
-      const el = compileAndDigest('<formly-form form="theForm"></formly-form>');
+      const el = compileAndDigest(`
+        <formly-form model="model" fields="fields" form="theForm"></formly-form>
+      `);
       expect(el.length).to.equal(1);
       expect(el.prop('nodeName').toLowerCase()).to.equal('ng-form');
     });
 
     it('should use a different root tag when specified', () => {
-      const el = compileAndDigest('<formly-form form="theForm" root-el="form"></formly-form>');
+      const el = compileAndDigest(`
+        <formly-form model="model" fields="fields" form="theForm" root-el="form"></formly-form>
+      `);
       expect(el.length).to.equal(1);
       expect(el.prop('nodeName').toLowerCase()).to.equal('form');
     });
@@ -23,8 +28,8 @@ module.exports = ngModule => {
     it(`should not allow sibling forms to override each other on a parent form`, () => {
       compileAndDigest(`
         <form name="parent">
-          <formly-form form="form1"></formly-form>
-          <formly-form form="form2"></formly-form>
+          <formly-form form="form1" model="model" fields="fields"></formly-form>
+          <formly-form form="form2" model="model" fields="fields"></formly-form>
         </form>
       `);
       expect(scope.parent).to.have.property('formly_1');
@@ -33,7 +38,7 @@ module.exports = ngModule => {
 
     it(`should place the form control on the scope property defined by the form attribute`, () => {
       compileAndDigest(`
-        <formly-form form="vm.myForm"></formly-form>
+        <formly-form form="vm.myForm" model="model" fields="fields"></formly-form>
       `);
       expect(scope.vm).to.have.property('myForm');
       expect(scope.vm.myForm).to.have.property('$name');
@@ -43,14 +48,47 @@ module.exports = ngModule => {
     it(`should not require a form attribute`, () => {
       expect(() => {
         compileAndDigest(`
-          <formly-form></formly-form>
+          <formly-form model="model" fields="fields"></formly-form>
         `);
       }).to.not.throw();
     });
 
+    it(`should require the model attribute`, () => {
+      expect(() => {
+        compileAndDigest(`
+          <formly-form fields="fields"></formly-form>
+        `);
+      }).to.throw();
+    });
+
+    it(`should require the fields attribute`, () => {
+      expect(() => {
+        compileAndDigest(`
+          <formly-form model="model"></formly-form>
+        `);
+      }).to.throw();
+    });
+
+    it(`should initialize the model and the fields if not provided`, () => {
+      compileAndDigest(`
+        <formly-form model="model" fields="fields"></formly-form>
+      `);
+      expect(scope.model).to.exist;
+      expect(scope.fields).to.exist;
+    });
+
+    it(`should initialize the model and fields if they are null`, () => {
+      scope.model = null;
+      scope.fields = null;
+      compileAndDigest(`
+        <formly-form model="model" fields="fields"></formly-form>
+      `);
+      expect(scope.model).to.exist;
+      expect(scope.fields).to.exist;
+    });
+
     describe(`options`, () => {
       const template = '<formly-form options="options" model="model" fields="fields"></formly-form>';
-      const input = '<input ng-model="model[options.key]" />';
       beforeEach(() => {
         scope.model = {
           foo: 'myFoo',
@@ -64,6 +102,15 @@ module.exports = ngModule => {
           {template: input, key: 'foobar', templateOptions: {type: 'email'}}
         ];
         scope.options = {};
+      });
+
+      it(`should throw an error with extra options`, () => {
+        expect(() => {
+          scope.options = {extra: true};
+          compileAndDigest(`
+            <formly-form model="model" fields="fields" options="options"></formly-form>
+          `);
+        }).to.throw();
       });
 
       describe(`resetModel`, () => {

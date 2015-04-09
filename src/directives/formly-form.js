@@ -16,7 +16,8 @@ module.exports = ngModule => {
       formlyApiCheck.shape({
         formState: formlyApiCheck.object.optional,
         resetModel: formlyApiCheck.func.optional,
-        updateInitialValue: formlyApiCheck.func.optional
+        updateInitialValue: formlyApiCheck.func.optional,
+        removeChromeAutoComplete: formlyApiCheck.bool.optional
       }).strict.optional
     ];
     return {
@@ -55,6 +56,8 @@ module.exports = ngModule => {
       },
       controller: function($scope) {
         setupOptions();
+        $scope.model = $scope.model || {};
+        $scope.fields = $scope.fields || [];
 
         angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
         angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
@@ -68,7 +71,7 @@ module.exports = ngModule => {
         }, true);
 
         function setupOptions() {
-          formlyApiCheck(optionsApi, [$scope.options], {prefix: 'formly-form options check'});
+          formlyApiCheck.throw(optionsApi, [$scope.options], {prefix: 'formly-form options check'});
           $scope.options = $scope.options || {};
           $scope.options.formState = $scope.options.formState || {};
 
