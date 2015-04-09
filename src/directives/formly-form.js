@@ -10,8 +10,15 @@ module.exports = ngModule => {
    * @name formlyForm
    * @restrict E
    */
-  function formlyForm(formlyUsability, $parse) {
+  function formlyForm(formlyUsability, $parse, formlyApiCheck) {
     var currentFormId = 1;
+    var optionsApi = [
+      formlyApiCheck.shape({
+        formState: formlyApiCheck.object.optional,
+        resetModel: formlyApiCheck.func.optional,
+        updateInitialValue: formlyApiCheck.func.optional
+      }).strict.optional
+    ];
     return {
       restrict: 'E',
       template: function(el, attrs) {
@@ -47,8 +54,7 @@ module.exports = ngModule => {
         options: '=?'
       },
       controller: function($scope) {
-        $scope.options = $scope.options || {};
-        $scope.options.formState = $scope.options.formState || {};
+        setupOptions();
 
         angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
         angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
@@ -60,6 +66,26 @@ module.exports = ngModule => {
             field.runExpressions && field.runExpressions(newResult);
           });
         }, true);
+
+        function setupOptions() {
+          formlyApiCheck(optionsApi, [$scope.options], {prefix: 'formly-form options check'});
+          $scope.options = $scope.options || {};
+          $scope.options.formState = $scope.options.formState || {};
+
+          angular.extend($scope.options, {
+            updateInitialValue,
+            resetModel
+          });
+
+        }
+
+        function updateInitialValue() {
+          angular.forEach($scope.fields, field => field.updateInitialValue());
+        }
+
+        function resetModel() {
+          angular.forEach($scope.fields, field => field.resetModel());
+        }
 
         function attachKey(field, index) {
           field.key = field.key || index || 0;

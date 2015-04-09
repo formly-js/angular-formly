@@ -98,11 +98,16 @@ module.exports = ngModule => {
         }
 
         function extendOptionsWithDefaults(options, index) {
+          const key = options.key || index || 0;
+          const initialValue = $scope.model[key];
           angular.extend(options, {
             // attach the key in case the formly-field directive is used directly
-            key: options.key || index || 0,
+            key,
             value: valueGetterSetter,
-            runExpressions: runExpressions
+            runExpressions,
+            resetModel,
+            updateInitialValue,
+            initialValue
           });
         }
 
@@ -138,6 +143,18 @@ module.exports = ngModule => {
             options.validation.errorExistsAndShouldBeVisible = show;
             scope.showError = show; // shortcut for template authors
           });
+        }
+
+        function resetModel() {
+          $scope.model[$scope.options.key] = $scope.options.initialValue;
+          if ($scope.options.formControl) {
+            $scope.options.formControl.$setViewValue($scope.model[$scope.options.key]);
+            $scope.options.formControl.$render();
+          }
+        }
+
+        function updateInitialValue() {
+          $scope.options.initialValue = $scope.model[$scope.options.key];
         }
 
         function addValidationMessages(options) {

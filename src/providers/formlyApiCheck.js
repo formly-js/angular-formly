@@ -121,7 +121,10 @@ module.exports = ngModule => {
     }).optional,
     formControl: apiCheck.object.optional,
     value: apiCheck.func.optional,
-    runExpressions: apiCheck.func.optional
+    runExpressions: apiCheck.func.optional,
+    resetModel: apiCheck.func.optional,
+    updateInitialValue: apiCheck.func.optional,
+    initialValue: apiCheck.any.optional
   };
 
   let formlyFieldOptions = apiCheck.shape(fieldOptionsApiShape).strict;
