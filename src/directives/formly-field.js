@@ -99,7 +99,7 @@ module.exports = ngModule => {
 
         function extendOptionsWithDefaults(options, index) {
           const key = options.key || index || 0;
-          const initialValue = $scope.model[key];
+          const initialValue = $scope.model && $scope.model[key];
           angular.extend(options, {
             // attach the key in case the formly-field directive is used directly
             key,
