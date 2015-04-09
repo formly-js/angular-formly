@@ -47,6 +47,17 @@ export default [
     ]
   },
   {
+    title: 'Form Options',
+    name: 'form-options',
+    examples: [
+      {
+        title: 'Reset Model',
+        slug: 'reset-model',
+        jsbinId: 'fufado'
+      }
+    ]
+  },
+  {
     title: 'Bootstrap Formly',
     name: 'bootstrap-formly',
     examples: [
