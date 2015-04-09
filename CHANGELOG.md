@@ -1,3 +1,9 @@
+# 5.2.0-beta.0
+
+## Features
+
+- Adding the ability to reset a form's model back to its original state (also adding the ability to reset what the "original state" is)
+
 # 5.1.2
 
 ## Other Fixes
