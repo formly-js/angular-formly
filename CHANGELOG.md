@@ -1,3 +1,11 @@
+# 6.0.0-beta.0
+
+## Breaking Changes
+
+- A Formly Expression (used for `validators`, `expressionProperties`, and `validation.messages`) when providing a function, used to pass `$viewValue` as the first parameter and was calculated as: `$viewValue || $modelValue`. `$viewValue` is still the first parameter, but it no longer uses `|| $modelValue` so you need to do undefined/null checking.
+- Now using `apiCheck` to check the `options` passed to `formly-form`
+- Now initializing the `model` and `fields` if they haven't been initialized, which will throw an error if the attribute is not present.
+
 # 5.2.1
 
 ## Bug Fixes
