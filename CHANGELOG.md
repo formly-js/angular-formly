@@ -1,3 +1,9 @@
+# 6.0.0-beta.2
+
+## Bug Fixes
+
+- Updating to the latest beta version of `api-check` which has a bug fix in it.
+
 # 6.0.0-beta.1
 
 ## Breaking Changes
