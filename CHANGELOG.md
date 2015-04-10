@@ -1,3 +1,9 @@
+# 6.0.0-beta.3
+
+## Breaking Changes
+
+- Removing deprecated `data.noTouchy` in favor of the new `data.skipNgModelAttrsManipulator`. Makes so much more sense.
+
 # 6.0.0-beta.2
 
 ## Bug Fixes
