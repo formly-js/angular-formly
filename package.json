@@ -28,7 +28,8 @@
     "watch": "node node_modules/webpack/bin/webpack.js --watch",
     "start": "npm run watch & npm run test",
     "deploy": "grunt deploy",
-    "release": "git push && npm publish && git push --tags"
+    "release": "git push && npm publish && git push --tags",
+    "release:beta": "git push && npm publish --tag beta && git push --tags"
   },
   "config": {
     "ghooks": {
