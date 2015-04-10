@@ -38,7 +38,7 @@ module.exports = ngModule => {
     }
 
     function checkWrapper(wrapper) {
-      formlyApiCheck.throw(formlyApiCheck.formlyWrapperType, arguments, {
+      formlyApiCheck.throw(formlyApiCheck.formlyWrapperType, wrapper, {
         prefix: 'formlyConfig.setWrapper',
         urlSuffix: 'setwrapper-validation-failed'
       });

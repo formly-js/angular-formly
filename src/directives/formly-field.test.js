@@ -371,7 +371,7 @@ module.exports = ngModule => {
           {type, templateOptions: {label: 'string'}}
         ];
         shouldWarn(
-          /custom-api-check.*?input type checker.*?className.*?some-custom-url/,
+          /custom-api-check.*?input type checker.*?some-custom-url(.|\n)*?className/,
           compileAndDigest
         );
       });
@@ -382,7 +382,7 @@ module.exports = ngModule => {
           {type, templateOptions: {label: 'string'}}
         ];
         expect(compileAndDigest).to.throw(
-          /custom-api-check.*?input type checker.*?className.*?some-custom-url/
+          /custom-api-check.*?input type checker.*?some-custom-url(.|\n)*?className/
         );
       });
     });
@@ -420,7 +420,7 @@ module.exports = ngModule => {
         scope.fields = [
           {template, wrapper, templateOptions: {label: 'string'}}
         ];
-        shouldWarn(/custom-api-check.*?formly-field.*?className/, compileAndDigest);
+        shouldWarn(/custom-api-check.*?formly-field(.|\n)*?className/, compileAndDigest);
       });
 
       it(`should throw if the apiCheckFunction is set to "throw" and everything's not fine`, () => {
@@ -428,7 +428,7 @@ module.exports = ngModule => {
         scope.fields = [
           {template, wrapper, templateOptions: {label: 'string'}}
         ];
-        expect(compileAndDigest).to.throw(/custom-api-check.*?formly-field.*?className/);
+        expect(compileAndDigest).to.throw(/custom-api-check.*?formly-field(.|\n)*?className/);
       });
     });
 

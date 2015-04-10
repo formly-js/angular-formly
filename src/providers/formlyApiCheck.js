@@ -25,8 +25,7 @@ module.exports = ngModule => {
       }
     }
     shapeRequiredIfNotDefinition.type = type;
-    apiCheck.utils.checkerHelpers.setupChecker(shapeRequiredIfNotDefinition);
-    return shapeRequiredIfNotDefinition;
+    return apiCheck.utils.checkerHelpers.setupChecker(shapeRequiredIfNotDefinition);
   }
 
   ngModule.constant('formlyApiCheck', apiCheck);

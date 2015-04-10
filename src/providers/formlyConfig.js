@@ -50,7 +50,7 @@ module.exports = ngModule => {
     }
 
     function checkType(options) {
-      formlyApiCheck.throw(formlyApiCheck.formlyTypeOptions, arguments, {
+      formlyApiCheck.throw(formlyApiCheck.formlyTypeOptions, options, {
         prefix: 'formlyConfig.setType',
         url: 'settype-validation-failed'
       });

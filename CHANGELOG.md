@@ -1,3 +1,9 @@
+# 6.0.0-beta.1
+
+## Breaking Changes
+
+- Updated to `api-check` version 7.0.0-beta.1. It should be released to a non-beta version before angular-formly 6.0.0 comes out of beta.
+
 # 6.0.0-beta.0
 
 ## Breaking Changes

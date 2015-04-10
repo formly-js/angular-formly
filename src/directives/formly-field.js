@@ -328,7 +328,7 @@ module.exports = ngModule => {
     }
 
     function checkApi(options) {
-      formlyApiCheck.throw(formlyApiCheck.formlyFieldOptions, arguments, {
+      formlyApiCheck.throw(formlyApiCheck.formlyFieldOptions, options, {
         prefix: 'formly-field directive',
         url: 'formly-field-directive-validation-failed'
       });
@@ -349,7 +349,7 @@ module.exports = ngModule => {
       const instance = apiCheckInstance || formlyApiCheck;
       const fn = apiCheckFunction || 'warn';
       const shape = instance.shape(apiCheck);
-      instance[fn](shape, [options], apiCheckOptions || {
+      instance[fn](shape, options, apiCheckOptions || {
         prefix: `formly-field ${name}`,
         url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
       });
