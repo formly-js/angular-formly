@@ -12,13 +12,7 @@ module.exports = ngModule => {
       /* jshint maxcomplexity:6 */
       var el = document.createElement('div');
       var data = options.data;
-      if (data.noTouchy) {
-        formlyUsability.getFormlyError(
-          'data.noTouchy is going to be removed in an upcoming release. This was an awful name to begin with. ' +
-          'Please use `data.skipNgModelAttrsManipulator = true` instead.'
-        );
-      }
-      if (data.noTouchy || (data.skipNgModelAttrsManipulator === true)) {
+      if (data.skipNgModelAttrsManipulator === true) {
         return template;
       }
       el.innerHTML = template;
