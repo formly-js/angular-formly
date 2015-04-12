@@ -6,7 +6,7 @@ Status:
 [![bower version](https://img.shields.io/bower/v/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly)
 [![npm version](https://img.shields.io/npm/v/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly)
 [![npm downloads](https://img.shields.io/npm/dm/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly)
-[![Build Status](https://img.shields.io/travis/formly-js/angular-formly.svg?style=flat-square)](https://github.com/js-data/js-data/blob/master/LICENSE)
+[![Build Status](https://img.shields.io/travis/formly-js/angular-formly.svg?style=flat-square)](https://travis-ci.org/formly-js/angular-formly)
 
 Links:
 [![Documentation](https://img.shields.io/badge/API-Docs-red.svg?style=flat-square)](http://docs.angular-formly.com)
