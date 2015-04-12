@@ -1,3 +1,9 @@
+# 6.0.0-beta.4
+
+## Breaking Changes
+
+- Fixing the Formly Expression string version to be consistent with the change for the function version as far as not using the `|| $modelValue` for the `$viewValue`;
+
 # 6.0.0-beta.3
 
 ## Breaking Changes

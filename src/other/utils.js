@@ -2,14 +2,11 @@ const angular = require('angular-fix');
 
 export default {formlyEval, getFieldId, reverseDeepMerge, findByNodeName};
 
-function formlyEval(scope, expression, modelValue, viewValue) {
+function formlyEval(scope, expression, $modelValue, $viewValue) {
   if (angular.isFunction(expression)) {
-    return expression(viewValue, modelValue, scope);
+    return expression($viewValue, $modelValue, scope);
   } else {
-    return scope.$eval(expression, {
-      $viewValue: viewValue || modelValue,
-      $modelValue: modelValue
-    });
+    return scope.$eval(expression, {$viewValue, $modelValue});
   }
 }
 
