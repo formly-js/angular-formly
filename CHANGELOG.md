@@ -1,4 +1,10 @@
-# 6.0.0-beta.4
+# 6.0.0-beta.5
+
+## Other
+
+- Accidentally released the beta version without the beta tag.
+
+# 6.0.0-beta.4 (deprecated)
 
 ## Breaking Changes
 
