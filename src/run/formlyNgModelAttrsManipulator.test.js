@@ -26,7 +26,12 @@ module.exports = ngModule => {
 
     it(`should have a limited number of automatically added attributes without any specific options`, () => {
       manipulate();
-      expect(result).to.equal('<input ng-model="model[options.key]" id="id" name="id">');
+      // because different browsers place attributes in different places...
+      const spaces = '<input ng-model="model[options.key]" id="id" name="id">'.split(' ').length;
+      expect(result.split(' ').length).to.equal(spaces);
+      attrExists('ng-model');
+      attrExists('id');
+      attrExists('name');
     });
 
     it(`should automatically add an id and name`, () => {
@@ -39,7 +44,7 @@ module.exports = ngModule => {
       it(`should be added if modelOptions is specified`, () => {
         field.modelOptions = {};
         manipulate();
-        expect(resultEl.attr('ng-model-options')).to.exist;
+        attrExists('ng-model-options');
       });
 
       it(`should change the value of ng-model if getterSetter is specified`, () => {
@@ -74,11 +79,7 @@ module.exports = ngModule => {
 
       function formlyCustomValidationPresence(present) {
         manipulate();
-        if (present) {
-          expect(resultNode.getAttribute('formly-custom-validation')).to.exist;
-        } else {
-          expect(resultNode.getAttribute('formly-custom-validation')).to.not.exist;
-        }
+        attrExists('formly-custom-validation', !present);
       }
     });
 
@@ -94,7 +95,7 @@ module.exports = ngModule => {
               [name]: true
             };
             manipulate();
-            expect(resultEl.attr(name)).to.exist;
+            attrExists(name);
           });
 
           it(`should allow you to specify 'false' for ${name}`, () => {
@@ -102,8 +103,8 @@ module.exports = ngModule => {
               [name]: false
             };
             manipulate();
-            expect(resultEl.attr(name)).to.not.exist;
-            expect(resultEl.attr(`ng-${name}`)).to.not.exist;
+            attrExists(name, false);
+            attrExists(`ng-${name}`, false);
           });
         }
       });
@@ -138,7 +139,7 @@ module.exports = ngModule => {
           };
           manipulate();
           expect(resultEl.attr('ng-maxlength')).to.eq(`options.templateOptions['maxlength']`);
-          expect(resultEl.attr('maxlength')).to.not.exist;
+          attrExists('maxlength', false);
         });
 
         it(`should allow you to specify maxlength that gets set to maxlength if it's not in expressionProperties`, () => {
@@ -147,7 +148,7 @@ module.exports = ngModule => {
             maxlength: 3
           };
           manipulate();
-          expect(resultEl.attr('ng-maxlength')).to.not.exist;
+          attrExists('ng-maxlength', false);
           expect(resultEl.attr('maxlength')).to.eq('3');
           formlyConfig.extras.ngModelAttrsManipulatorPreferUnbound = false;
         });
@@ -158,7 +159,7 @@ module.exports = ngModule => {
           };
           manipulate();
           expect(resultEl.attr('ng-maxlength')).to.eq(`options.templateOptions['maxlength']`);
-          expect(resultEl.attr('maxlength')).to.not.exist;
+          attrExists('maxlength', false);
         });
 
       });
@@ -169,6 +170,15 @@ module.exports = ngModule => {
       result = manipulator(template, field, scope);
       resultEl = angular.element(result);
       resultNode = resultEl[0];
+    }
+
+    function attrExists(name, notExists) {
+      const attr = resultNode.getAttribute(name);
+      if (notExists) {
+        expect(attr).to.be.null;
+      } else {
+        expect(attr).to.be.defined;
+      }
     }
   });
 };
