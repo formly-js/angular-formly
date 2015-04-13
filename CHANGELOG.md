@@ -1,3 +1,13 @@
+# 6.0.0-beta.6
+
+## Bug Fixes
+
+- Fixed issue [#239](/../../issues/239) with by adding a `boolean` type for `ngModelAttrs` specifically for `required` and `disabled`.
+
+## Breaking Changes
+
+- Changed `ngModelAttrsManipulatorPreferBound` to `ngModelAttrsManipulatorPreferUnbound` because it's the more common case to want this enabled.
+
 # 6.0.0-beta.5
 
 ## Other

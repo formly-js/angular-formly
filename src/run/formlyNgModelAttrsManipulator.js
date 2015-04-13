@@ -1,7 +1,11 @@
+const angular = require('../angular-fix');
+
 module.exports = ngModule => {
   ngModule.run(addFormlyNgModelAttrsManipulator);
 
-  function addFormlyNgModelAttrsManipulator(formlyConfig, formlyUsability) {
+  addFormlyNgModelAttrsManipulator.test = ON_TEST ? require('./formlyNgModelAttrsManipulator.test')(ngModule) : null;
+
+  function addFormlyNgModelAttrsManipulator(formlyConfig) {
     if (formlyConfig.extras.disableNgModelAttrsManipulator) {
       return;
     }
@@ -42,7 +46,9 @@ module.exports = ngModule => {
         if (angular.isDefined(options.modelOptions)) {
           addIfNotPresent(modelNodes, 'ng-model-options', 'options.modelOptions');
           if (options.modelOptions.getterSetter) {
-            modelNodes.attr('ng-model', 'options.value');
+            angular.forEach(modelNodes, node => {
+              node.setAttribute('ng-model', 'options.value');
+            });
           }
         }
       }
@@ -55,13 +61,14 @@ module.exports = ngModule => {
         const to = options.templateOptions || {};
         const ep = options.expressionProperties || {};
 
-        let ngModelAttributes = getBuiltinAttributes();
+        let ngModelAttributes = getBuiltInAttributes();
 
         // extend with the user's specifications winning
         angular.extend(ngModelAttributes, options.ngModelAttrs);
 
+        // Feel free to make this more simple :-)
         angular.forEach(ngModelAttributes, (val, name) => {
-          /* jshint maxcomplexity:10 */
+          /* jshint maxcomplexity:14 */
           let attrVal;
           let attrName;
           const ref = `options.templateOptions['${name}']`;
@@ -88,16 +95,26 @@ module.exports = ngModule => {
           } else if (val.bound && inEp) {
             attrName = val.bound;
             attrVal = ref;
-          } else if (val.attribute && inEp) {
-            attrName = val.attribute;
+          } else if ((val.attribute || val.boolean) && inEp) {
+            attrName = val.attribute || val.boolean;
             attrVal = `{{${ref}}}`;
           } else if (val.attribute && inTo) {
             attrName = val.attribute;
             attrVal = toVal;
+          } else if (val.boolean) {
+            if (inTo && !inEp && toVal) {
+              attrName = val.boolean;
+              attrVal = true;
+            } else {
+              // jshint -W035
+              // empty to illustrate that a boolean will not be added via val.bound
+              // if you want it added via val.bound, then put it in expressionProperties
+            }
           } else if (val.bound && inTo) {
             attrName = val.bound;
             attrVal = ref;
           }
+
           if (angular.isDefined(attrName) && angular.isDefined(attrVal)) {
             addIfNotPresent(modelNodes, attrName, attrVal);
           }
@@ -106,24 +123,29 @@ module.exports = ngModule => {
     }
 
     // Utility functions
-    function getBuiltinAttributes() {
+    function getBuiltInAttributes() {
       let ngModelAttributes = {
         focus: {
           attribute: 'formly-focus'
         }
       };
       const boundOnly = [];
-      const bothAttributeAndBound = ['required', 'disabled', 'pattern', 'minlength'];
+      const bothBooleanAndBound = ['required', 'disabled'];
+      const bothAttributeAndBound = ['pattern', 'minlength'];
       const expressionOnly = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
       const attributeOnly = ['placeholder', 'min', 'max', 'tabindex', 'type'];
-      if (formlyConfig.extras.ngModelAttrsManipulatorPreferBound) {
-        boundOnly.push('maxlength');
-      } else {
+      if (formlyConfig.extras.ngModelAttrsManipulatorPreferUnbound) {
         bothAttributeAndBound.push('maxlength');
+      } else {
+        boundOnly.push('maxlength');
       }
 
       angular.forEach(boundOnly, item => {
         ngModelAttributes[item] = {bound: 'ng-' + item};
+      });
+
+      angular.forEach(bothBooleanAndBound, item => {
+        ngModelAttributes[item] = {boolean: item, bound: 'ng-' + item};
       });
 
       angular.forEach(bothAttributeAndBound, item => {

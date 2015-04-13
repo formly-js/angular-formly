@@ -25,7 +25,7 @@ module.exports = ngModule => {
       disableWarnings: false,
       extras: {
         disableNgModelAttrsManipulator: false,
-        ngModelAttrsManipulatorPreferBound: false,
+        ngModelAttrsManipulatorPreferUnbound: false,
         removeChromeAutoComplete: false
       },
       templateManipulators: {
