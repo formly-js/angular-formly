@@ -1,3 +1,9 @@
+# 6.0.0-beta.7
+
+## Other
+
+- Broke stuff 
+
 # 6.0.0-beta.6
 
 ## Bug Fixes
