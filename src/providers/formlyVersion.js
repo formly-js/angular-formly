@@ -1,3 +1,1 @@
-module.exports = ngModule => {
-  ngModule.constant('formlyVersion', VERSION);
-};
+export default VERSION;
