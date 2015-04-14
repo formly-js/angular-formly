@@ -1,6 +1,4 @@
-const angular = require('angular-fix');
-
-export default {formlyEval, getFieldId, reverseDeepMerge, findByNodeName};
+import angular from 'angular-fix';
 
 function formlyEval(scope, expression, $modelValue, $viewValue) {
   if (angular.isFunction(expression)) {
@@ -60,3 +58,5 @@ function findByNodeName(el, nodeName) {
     }
   }
 }
+
+export default {formlyEval, getFieldId, reverseDeepMerge, findByNodeName};
