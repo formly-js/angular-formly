@@ -106,6 +106,16 @@ module.exports = ngModule => {
             attrExists(name, false);
             attrExists(`ng-${name}`, false);
           });
+
+          it(`should allow you to specify expressionProperties for ${name}`, () => {
+            field.expressionProperties= {
+              [`templateOptions.${name}`]: 'someExpression'
+            };
+            manipulate();
+            attrExists(name, false);
+            attrExists(`ng-${name}`);
+            expect(resultEl.attr(`ng-${name}`)).to.eq(`options.templateOptions['${name}']`);
+          });
         }
       });
 

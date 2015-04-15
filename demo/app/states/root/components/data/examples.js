@@ -147,6 +147,11 @@ export default [
         title: 'Integrate with angular-wizard',
         slug: 'angular-wizard',
         jsbinId: 'sajeso'
+      },
+      {
+        title: 'Toggle required field validation',
+        slug: 'toggle-required',
+        jsbinId: 'fuwaji'
       }
     ]
   },
