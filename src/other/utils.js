@@ -1,4 +1,4 @@
-const angular = require('angular-fix');
+import angular from 'angular-fix';
 
 export default {formlyEval, getFieldId, reverseDeepMerge, findByNodeName};
 

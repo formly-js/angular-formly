@@ -1,11 +1,5 @@
-const utils = require('../other/utils');
+import utils from '../other/utils';
 
-module.exports = ngModule => {
-  ngModule.factory('formlyUtil', formlyUtil);
-
-  formlyUtil.tests = ON_TEST ? require('./formlyUtil.test')(ngModule) : null;
-
-  function formlyUtil() {
-    return utils;
-  }
-};
+export default function formlyUtil() {
+  return utils;
+}
