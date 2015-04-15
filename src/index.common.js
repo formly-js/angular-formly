@@ -1,31 +1,43 @@
-const apiCheck = require('api-check');
-if (!apiCheck) {
-  throw new Error(
-    'angular-formly requires the library apiCheck.js! Please include it! ' +
-      require('./other/docsBaseUrl') + 'apicheckjs-dependency-required'
-  );
-}
+import angular from 'angular-fix';
+
+import formlyApiCheck from './providers/formlyApiCheck';
+import formlyErrorAndWarningsUrlPrefix from './providers/formlyErrorAndWarningsUrlPrefix';
+import formlyVersion from './providers/formlyVersion';
+import formlyUsability from './providers/formlyUsability';
+import formlyConfig from './providers/formlyConfig';
+import formlyValidationMessages from './providers/formlyValidationMessages';
+import formlyUtil from './services/formlyUtil';
+import formlyWarn from './services/formlyWarn';
+
+import formlyCustomValidation from './directives/formly-custom-validation';
+import formlyField from './directives/formly-field';
+import formlyFocus from './directives/formly-focus';
+import formlyForm from './directives/formly-form';
+
+import formlyNgModelAttrsManipulator from './run/formlyNgModelAttrsManipulator';
+import formlyCustomTags from './run/formlyCustomTags';
+
 const ngModuleName = 'formly';
-const angular = require('./angular-fix');
+
+export default ngModuleName;
+
 const ngModule = angular.module(ngModuleName, []);
 
-ngModule.constant('formlyApiCheck', require('./providers/formlyApiCheck'));
-ngModule.constant('formlyErrorAndWarningsUrlPrefix', require('./providers/formlyErrorAndWarningsUrlPrefix'));
-ngModule.constant('formlyVersion', require('./providers/formlyVersion'));
+ngModule.constant('formlyApiCheck', formlyApiCheck);
+ngModule.constant('formlyErrorAndWarningsUrlPrefix', formlyErrorAndWarningsUrlPrefix);
+ngModule.constant('formlyVersion', formlyVersion);
 
-ngModule.provider('formlyUsability', require('./providers/formlyUsability'));
-ngModule.provider('formlyConfig', require('./providers/formlyConfig'));
+ngModule.provider('formlyUsability', formlyUsability);
+ngModule.provider('formlyConfig', formlyConfig);
 
-ngModule.factory('formlyValidationMessages', require('./providers/formlyValidationMessages'));
-ngModule.factory('formlyUtil', require('./services/formlyUtil'));
-ngModule.factory('formlyWarn', require('./services/formlyWarn'));
+ngModule.factory('formlyValidationMessages', formlyValidationMessages);
+ngModule.factory('formlyUtil', formlyUtil);
+ngModule.factory('formlyWarn', formlyWarn);
 
-ngModule.directive('formlyCustomValidation', require('./directives/formly-custom-validation'));
-ngModule.directive('formlyField', require('./directives/formly-field'));
-ngModule.directive('formlyFocus', require('./directives/formly-focus'));
-ngModule.directive('formlyForm', require('./directives/formly-form'));
+ngModule.directive('formlyCustomValidation', formlyCustomValidation);
+ngModule.directive('formlyField', formlyField);
+ngModule.directive('formlyFocus', formlyFocus);
+ngModule.directive('formlyForm', formlyForm);
 
-ngModule.run(require('./run/formlyNgModelAttrsManipulator'));
-ngModule.run(require('./run/formlyCustomTags'));
-
-module.exports = ngModuleName;
+ngModule.run(formlyNgModelAttrsManipulator);
+ngModule.run(formlyCustomTags);

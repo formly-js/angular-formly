@@ -1,19 +1,19 @@
-export default function () {
+export default function formlyValidationMessages () {
 
-  var formlyValidationMessages = {
+  var validationMessages = {
     addTemplateOptionValueMessage,
     addStringMessage,
     messages: {}
   };
 
-  return formlyValidationMessages;
+  return validationMessages;
 
   function addTemplateOptionValueMessage(name, prop, prefix, suffix, alternate) {
-    formlyValidationMessages.messages[name] = templateOptionValue(prop, prefix, suffix, alternate);
+    validationMessages.messages[name] = templateOptionValue(prop, prefix, suffix, alternate);
   }
 
   function addStringMessage(name, string) {
-    formlyValidationMessages.messages[name] = () => string;
+    validationMessages.messages[name] = () => string;
   }
 
 

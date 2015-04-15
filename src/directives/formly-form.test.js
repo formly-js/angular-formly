@@ -1,3 +1,5 @@
+import {expect} from 'chai';
+
 describe('formly-form', () => {
   const input = '<input ng-model="model[options.key]" />';
   let $compile, scope;

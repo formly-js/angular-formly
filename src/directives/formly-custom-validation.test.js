@@ -1,3 +1,5 @@
+import {expect} from 'chai';
+
 describe(`formly-custom-validation`, function() {
   let $compile, $timeout, $q, scope;
   let formTemplate = `<form name="myForm">TEMPLATE</form>`;

@@ -1,7 +1,7 @@
 import angular from 'angular-fix';
 import utils from '../other/utils';
 
-function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
+export default function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
 
   var typeMap = {};
   var templateWrappersMap = {};
@@ -271,5 +271,3 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
     }
   }
 }
-
-export default formlyConfig;

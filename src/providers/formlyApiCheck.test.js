@@ -1,4 +1,6 @@
 /* jshint maxlen:false */
+import {expect} from 'chai';
+
 describe('formlyApiCheck', () => {
   beforeEach(window.module('formly'));
 

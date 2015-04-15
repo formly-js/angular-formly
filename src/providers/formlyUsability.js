@@ -1,6 +1,6 @@
 import angular from 'angular-fix';
 
-function formlyUsability (formlyVersion, formlyApiCheck) {
+export default function formlyUsability (formlyVersion, formlyApiCheck) {
   var errorsAndWarningsUrlPrefix =
     `https://github.com/formly-js/angular-formly/blob/${formlyVersion}/other/ERRORS_AND_WARNINGS.md#`;
   angular.extend(this, {
@@ -54,4 +54,3 @@ function formlyUsability (formlyVersion, formlyApiCheck) {
     }
   }
 }
-export default formlyUsability;

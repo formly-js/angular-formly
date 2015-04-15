@@ -1,4 +1,4 @@
-function addCustomTags($document) {
+export default function addCustomTags($document) {
 
   if ($document && $document.get) {
     //IE8 check ->
@@ -19,5 +19,3 @@ function addCustomTags($document) {
     }
   }
 }
-
-export default addCustomTags;

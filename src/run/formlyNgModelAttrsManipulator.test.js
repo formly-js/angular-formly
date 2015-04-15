@@ -1,4 +1,6 @@
 /* jshint maxlen:false */
+import {expect} from 'chai';
+
 describe('formlyNgModelAttrsManipulator', () => {
   beforeEach(window.module('formly'));
 
