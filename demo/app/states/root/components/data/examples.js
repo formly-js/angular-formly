@@ -141,7 +141,7 @@ export default [
       {
         title: 'Async validation of unique value',
         slug: 'unique-value-async-validation',
-        jsbinId: 'sawakuniko'
+        jsbinId: 'buwoka'
       },
       {
         title: 'Integrate with angular-wizard',
@@ -178,6 +178,11 @@ export default [
         title: 'Custom controller & link',
         slug: 'custom-controller-and-link',
         jsbinId: 'gonode'
+      },
+      {
+        title: 'Repeating Seciton',
+        slug: 'repeating-section',
+        jsbinId: 'murule'
       }
     ]
   },
