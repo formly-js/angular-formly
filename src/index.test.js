@@ -1,4 +1,6 @@
 // Load up the 'test environment' with angular mocks, which in turn needs angular in context
+/* jshint -W098 */
+// this because loading angular and angularMocks needs to happen before anything else :-( #globalscope
 import angular from 'angular-fix';
 import angularMocks from 'angular-mocks/angular-mocks';
 

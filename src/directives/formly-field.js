@@ -5,8 +5,9 @@ import angular from 'angular-fix';
  * @name formlyField
  * @restrict AE
  */
-export default function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyValidationMessages, formlyApiCheck,
-                     formlyUtil, formlyUsability, formlyWarn) {
+export default function formlyField($http, $q, $compile, $templateCache, formlyConfig,
+                                    formlyValidationMessages, formlyApiCheck,
+                                    formlyUtil, formlyUsability, formlyWarn) {
   return {
     restrict: 'AE',
     transclude: true,
