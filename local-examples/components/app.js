@@ -180,7 +180,6 @@
         key: 'coolTextarea',
         templateOptions: {
           label: 'Type stuff',
-          required: 32,
           placeholder: 'Way fun',
           cols: 15,
           rows: 12

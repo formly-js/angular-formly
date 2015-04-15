@@ -98,11 +98,16 @@ module.exports = ngModule => {
         }
 
         function extendOptionsWithDefaults(options, index) {
+          const key = options.key || index || 0;
+          const initialValue = $scope.model && $scope.model[key];
           angular.extend(options, {
             // attach the key in case the formly-field directive is used directly
-            key: options.key || index || 0,
+            key,
             value: valueGetterSetter,
-            runExpressions: runExpressions
+            runExpressions,
+            resetModel,
+            updateInitialValue,
+            initialValue
           });
         }
 
@@ -131,8 +136,8 @@ module.exports = ngModule => {
             if (typeof scope.options.validation.show === 'boolean') {
               return scope.fc.$invalid && scope.options.validation.show;
             } else {
-              return scope.fc.$invalid &&
-                (scope.fc.$touched || (angular.isUndefined(scope.fc.$touched) && scope.fc.$dirty));
+              let noTouchedButDirty = (angular.isUndefined(scope.fc.$touched) && scope.fc.$dirty);
+              return scope.fc.$invalid && (scope.fc.$touched || noTouchedButDirty);
             }
           }, function(show) {
             options.validation.errorExistsAndShouldBeVisible = show;
@@ -140,11 +145,23 @@ module.exports = ngModule => {
           });
         }
 
+        function resetModel() {
+          $scope.model[$scope.options.key] = $scope.options.initialValue;
+          if ($scope.options.formControl) {
+            $scope.options.formControl.$setViewValue($scope.model[$scope.options.key]);
+            $scope.options.formControl.$render();
+          }
+        }
+
+        function updateInitialValue() {
+          $scope.options.initialValue = $scope.model[$scope.options.key];
+        }
+
         function addValidationMessages(options) {
           options.validation.messages = options.validation.messages || {};
-          angular.forEach(formlyValidationMessages.messages, function (expression, name) {
+          angular.forEach(formlyValidationMessages.messages, function(expression, name) {
             if (!options.validation.messages[name]) {
-              options.validation.messages[name] = function (viewValue, modelValue, scope) {
+              options.validation.messages[name] = function(viewValue, modelValue, scope) {
                 return formlyUtil.formlyEval(scope, expression, modelValue, viewValue);
               };
             }
@@ -311,7 +328,7 @@ module.exports = ngModule => {
     }
 
     function checkApi(options) {
-      formlyApiCheck.throw(formlyApiCheck.formlyFieldOptions, arguments, {
+      formlyApiCheck.throw(formlyApiCheck.formlyFieldOptions, options, {
         prefix: 'formly-field directive',
         url: 'formly-field-directive-validation-failed'
       });
@@ -332,7 +349,7 @@ module.exports = ngModule => {
       const instance = apiCheckInstance || formlyApiCheck;
       const fn = apiCheckFunction || 'warn';
       const shape = instance.shape(apiCheck);
-      instance[fn](shape, [options], apiCheckOptions || {
+      instance[fn](shape, options, apiCheckOptions || {
         prefix: `formly-field ${name}`,
         url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
       });

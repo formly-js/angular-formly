@@ -25,8 +25,7 @@ module.exports = ngModule => {
       }
     }
     shapeRequiredIfNotDefinition.type = type;
-    apiCheck.utils.checkerHelpers.setupChecker(shapeRequiredIfNotDefinition);
-    return shapeRequiredIfNotDefinition;
+    return apiCheck.utils.checkerHelpers.setupChecker(shapeRequiredIfNotDefinition);
   }
 
   ngModule.constant('formlyApiCheck', apiCheck);
@@ -116,12 +115,15 @@ module.exports = ngModule => {
       show: apiCheck.oneOfType([
         apiCheck.bool, apiCheck.oneOf([null])
       ]).optional,
-      messages: apiCheck.objectOf(apiCheck.func).optional,
+      messages: apiCheck.objectOf(formlyExpression).optional,
       errorExistsAndShouldBeVisible: apiCheck.bool.optional
     }).optional,
     formControl: apiCheck.object.optional,
     value: apiCheck.func.optional,
-    runExpressions: apiCheck.func.optional
+    runExpressions: apiCheck.func.optional,
+    resetModel: apiCheck.func.optional,
+    updateInitialValue: apiCheck.func.optional,
+    initialValue: apiCheck.any.optional
   };
 
   let formlyFieldOptions = apiCheck.shape(fieldOptionsApiShape).strict;

@@ -23,7 +23,9 @@ export default ngModule => {
 
         angular.forEach(vm.examples, function(category) {
           allTheExamples = allTheExamples.concat(category.examples);
+          angular.forEach(category.examples, example => example.category = category.name);
         });
+
 
         function onSearchEntered($event, search) {
           var filteredExamples = $filter('filter')(allTheExamples, search);

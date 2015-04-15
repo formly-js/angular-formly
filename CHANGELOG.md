@@ -1,3 +1,107 @@
+# 6.0.0-beta.7
+
+## Other
+
+- Broke stuff 
+
+# 6.0.0-beta.6
+
+## Bug Fixes
+
+- Fixed issue [#239](/../../issues/239) with by adding a `boolean` type for `ngModelAttrs` specifically for `required` and `disabled`.
+
+## Breaking Changes
+
+- Changed `ngModelAttrsManipulatorPreferBound` to `ngModelAttrsManipulatorPreferUnbound` because it's the more common case to want this enabled.
+
+# 6.0.0-beta.5
+
+## Other
+
+- Accidentally released the beta version without the beta tag.
+
+# 6.0.0-beta.4 (deprecated)
+
+## Breaking Changes
+
+- Fixing the Formly Expression string version to be consistent with the change for the function version as far as not using the `|| $modelValue` for the `$viewValue`;
+
+# 6.0.0-beta.3
+
+## Breaking Changes
+
+- Removing deprecated `data.noTouchy` in favor of the new `data.skipNgModelAttrsManipulator`. Makes so much more sense.
+
+# 6.0.0-beta.2
+
+## Bug Fixes
+
+- Updating to the latest beta version of `api-check` which has a bug fix in it.
+
+# 6.0.0-beta.1
+
+## Breaking Changes
+
+- Updated to `api-check` version 7.0.0-beta.1. It should be released to a non-beta version before angular-formly 6.0.0 comes out of beta.
+
+# 6.0.0-beta.0
+
+## Breaking Changes
+
+- A Formly Expression (used for `validators`, `expressionProperties`, and `validation.messages`) when providing a function, used to pass `$viewValue` as the first parameter and was calculated as: `$viewValue || $modelValue`. `$viewValue` is still the first parameter, but it no longer uses `|| $modelValue` so you need to do undefined/null checking.
+- Now using `apiCheck` to check the `options` passed to `formly-form`
+- Now initializing the `model` and `fields` if they haven't been initialized, which will throw an error if the attribute is not present.
+
+# 5.2.1
+
+## Bug Fixes
+
+- Changing `fixChromeAutoComplete` to `removeChromeAutoComplete`. This release is coming immediately after the previous so hopefully nobody's using the feature yet.
+
+# 5.2.0 - deprecated
+
+## Features
+
+- Added `options.fixChromeAutoComplete` to `formly-form` options as well as `formlyConfig.extras.fixChromeAutoComplete`
+
+## Bug Fixes
+
+- Fixing issue with the `resetModel` where if the model is `null` things break.
+
+# 5.2.0-beta.1
+
+## Other changes
+
+- Botched the other beta release...
+
+# 5.2.0-beta.0
+
+## Features
+
+- Adding the ability to reset a form's model back to its original state (also adding the ability to reset what the "original state" is)
+
+# 5.1.2
+
+## Other Fixes
+
+- Changing the peerDependency to include beta versions of angular.
+
+# 5.1.1
+
+## Bug Fixes
+
+- Fixes ([#231](/../../issues/231)). Code borrowed from @koenweyn's PR.
+
+# 5.1.0
+
+## Features
+
+- You can now specify `validation.messages` formly expressions.
+
+## Internal Breaking Changes
+
+- `formly-custom-validation` (internal directive) no longer allows you to specify your own custom validation object but instead simply relies on the scope having an `options.validators` property. It already depended on some other stuff from the scope and it's so specific to angular-formly that this should not cause an issue for anyone.
+
 # 5.0.3
 
 ## Bug Fixes

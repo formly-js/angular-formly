@@ -35,9 +35,36 @@ export default [
         jsbinId: 'vupihu'
       },
       {
+        title: 'Model',
+        slug: 'model',
+        jsbinId: 'haxenu'
+      },
+      {
         title: 'Watchers',
         slug: 'watchers',
         jsbinId: 'kilihu'
+      }
+    ]
+  },
+  {
+    title: 'Form Options',
+    name: 'form-options',
+    examples: [
+      {
+        title: 'Reset Model',
+        slug: 'reset-model',
+        jsbinId: 'fufado'
+      }
+    ]
+  },
+  {
+    title: 'Bootstrap Formly',
+    name: 'bootstrap-formly',
+    examples: [
+      {
+        title: 'Table Rows',
+        slug: 'bootstrap-table-rows',
+        jsbinId: 'tuliju'
       }
     ]
   },

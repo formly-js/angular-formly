@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "5.0.3",
+  "version": "6.0.0-beta.7",
   "author": "Astrism <astrisms@gmail.com>",
   "contributors": [
     "Astrism <astrisms@gmail.com>",
@@ -28,7 +28,8 @@
     "watch": "node node_modules/webpack/bin/webpack.js --watch",
     "start": "npm run watch & npm run test",
     "deploy": "grunt deploy",
-    "release": "git push && npm publish && git push --tags"
+    "release": "git push && npm publish && git push --tags",
+    "release:beta": "git push && npm publish --tag beta && git push --tags"
   },
   "config": {
     "ghooks": {
@@ -37,13 +38,13 @@
   },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
   "peerDependencies": {
-    "angular": "^1.x",
-    "api-check": "^6.0.10"
+    "angular": "^1.2.x || >= 1.4.0-beta.0 || >= 1.5.0-beta.0",
+    "api-check": "7.0.0 || >=7.0.0-beta.0"
   },
   "devDependencies": {
     "angular": "^1.3.11",
     "angular-mocks": "^1.3.11",
-    "api-check": "^6.0.10",
+    "api-check": "^7.0.0-beta.2",
     "babel-core": "^4.4.6",
     "babel-loader": "^4.0.0",
     "chai": "^1.10.0",

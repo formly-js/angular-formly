@@ -8,20 +8,37 @@ module.exports = ngModule => {
       $timeout = _$timeout_;
       $q = _$q_;
       scope = $rootScope.$new();
-      scope.customValidation = {};
-      scope.options = {validation:{}};
+      scope.options = {validation:{}, validators: {}};
     }));
 
     describe(`using parsers`, () => {
       checkApi(formTemplate.replace(
-        `TEMPLATE`, `<input ng-model="input" name="field" formly-custom-validation="customValidation" use-parsers />`
+        `TEMPLATE`, `<input ng-model="input" name="field" formly-custom-validation use-parsers />`
       ), angular.version.minor >= 3);
     });
 
     describe(`using $validators`, () => {
       checkApi(formTemplate.replace(
-        `TEMPLATE`, `<input ng-model="input" name="field" formly-custom-validation="customValidation" />`
+        `TEMPLATE`, `<input ng-model="input" name="field" formly-custom-validation />`
       ));
+    });
+
+    describe(`options.validation.messages`, () => {
+      it(`should convert all strings to functions`, () => {
+        scope.options.validation = {
+          messages: {
+            isHello: `'"' + $viewValue + '" is not "hello"'`
+          }
+        };
+        $compile(formTemplate.replace(
+          `TEMPLATE`, `<input ng-model="input" name="field" formly-custom-validation />`
+        ))(scope);
+
+        expect(typeof scope.options.validation.messages.isHello).to.eq('function');
+        const field = scope.myForm.field;
+        field.$setViewValue('sup');
+        expect(scope.options.validation.messages.isHello()).to.eq('"sup" is not "hello"');
+      });
     });
 
     function checkApi(template, versionThreeOrBetterAndEmulating) {
@@ -53,8 +70,8 @@ module.exports = ngModule => {
       it(`should be pending until the promise is resolved`, () => {
         const deferred = $q.defer();
         const deferred2 = $q.defer();
-        scope.customValidation.isHello = () => deferred.promise;
-        scope.customValidation.isHey = () => deferred2.promise;
+        scope.options.validators.isHello = () => deferred.promise;
+        scope.options.validators.isHey = () => deferred2.promise;
         $compile(template)(scope);
         const field = scope.myForm.field;
         scope.$digest();
@@ -80,7 +97,7 @@ module.exports = ngModule => {
       });
 
       function doValidation(validator, pass) {
-        scope.customValidation.isHello = validator;
+        scope.options.validators.isHello = validator;
         $compile(template)(scope);
         const field = scope.myForm.field;
         scope.$digest();

@@ -8,7 +8,7 @@
     <h2>Features</h2>
     <ul>
       <li>
-        <a ng-href="{{::vm.docs('Prebuilt Templates')}}">Prebuilt templates</a>
+        <a ng-href="{{::vm.docs('custom-templates#prebuilt-templates')}}">Prebuilt templates</a>
         for
         <span ng-repeat="prebuilt in ::vm.prebuiltTemplates">
           <span ng-if="::$last">and</span>
@@ -22,23 +22,26 @@
       </li>
       <li>
         Simpler than cake
-        <a ng-href="{{::vm.docs('diy-templates')}}">do it yourself templates</a>
+        <a ng-href="{{::vm.docs('custom-templates')}}">do it yourself templates</a>
         through the <code>formlyConfig</code> service.
       </li>
       <li>
         Totally
-        <a ng-href="{{::vm.docs('creating-form-fields')}}">customizable fields</a>
+        <a ng-href="{{::vm.docs('formly-form#field-config')}}">customizable fields</a>
         (specify model for the form or for a specific field)
       </li>
       <li>
-        <a ng-href="{{::vm.docs('setwrapper-getwrapper-getwrapperbytype-removewrapperbyname--removewrappersfortype')}}">
+        <a ng-href="{{::vm.docs('formlyconfig#setwrapper')}}">
           Template Wrappers
         </a>
         make it very easy reduce the amount of boilerplate in your template code so you can maintain a consistent style
         without running into a maintainence nightmare
       </li>
+      <li ng-init="resetModel={category: 'form-options', slug: 'reset-model'}">
+        Easy <a fd-event-navigate="navigateToExample(resetModel)">Reset Model</a> functionality.
+      </li>
       <li>
-        <a ng-href="{{::vm.docs('templatemanipulators')}}">Template manipulators</a>
+        <a ng-href="{{::vm.docs('formlyconfig#templatemanipulators')}}">Template manipulators</a>
         which allow you to modify templates programmatically. This comes with
         <a ng-href="{{::vm.docs('ngmodelattrstemplatemanipulator')}}">
           a built-in template manipulator
@@ -49,11 +52,11 @@
       </li>
       <li>
         Take advantage of angular's validators api, whether you're using 1.2 or 1.3, with formly's super simple
-        <a ng-href="{{::vm.docs('validators-object')}}">validators api</a> with simple string
+        <a ng-href="{{::vm.docs('validation')}}">validators api</a> with simple string
         expressions, advanced functions, and async validation support (in both 1.2 and 1.3).
       </li>
       <li>
-        <a ng-href="{{::vm.docs('expressionproperties-object')}}"><code>expressionProperties</code></a>
+        <a ng-href="{{::vm.docs('formly-form#expressionproperties-object-')}}"><code>expressionProperties</code></a>
         makes it super easy to manipulate the fields as the user interacts with your app
       </li>
       <li>
@@ -62,7 +65,7 @@
       </li>
       <li>
         If you're using Angular 1.3, then you can take advantage of the <code>ng-model-options</code> directive via
-        <a ng-href="{{::vm.docs('modeloptions-object')}}">modelOptions</a>.
+        <a ng-href="{{::vm.docs('formly-form#modeloptions-object-')}}">modelOptions</a>.
       </li>
       <li>
         <code>defaultOptions</code> for field types, allowing for as DRY code as possible.
@@ -72,7 +75,7 @@
         without having to create a custom directive to add functionality.
       </li>
       <li>
-        <a ng-href="{{::vm.docs('watcher-objectarray-of-watches')}}">Custom watchers</a>
+        <a ng-href="{{::vm.docs('formly-form#watcher-object-array-of-watches-')}}">Custom watchers</a>
         with an enhanced API give you total control when you need it
       </li>
     </ul>

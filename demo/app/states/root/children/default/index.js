@@ -35,7 +35,7 @@ module.exports = {
     ]);
 
     function docs(slug) {
-      return baseWithSuffix(`#${slug.toLowerCase().replace(/ /, '-').replace(/&|#/, '')}`);
+      return `http://docs.angular-formly.com/docs/${slug}`;
     }
 
     function baseWithSuffix(suffix) {

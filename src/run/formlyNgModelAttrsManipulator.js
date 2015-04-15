@@ -1,5 +1,9 @@
+const angular = require('../angular-fix');
+
 module.exports = ngModule => {
   ngModule.run(addFormlyNgModelAttrsManipulator);
+
+  addFormlyNgModelAttrsManipulator.test = ON_TEST ? require('./formlyNgModelAttrsManipulator.test')(ngModule) : null;
 
   function addFormlyNgModelAttrsManipulator(formlyConfig) {
     if (formlyConfig.extras.disableNgModelAttrsManipulator) {
@@ -9,34 +13,45 @@ module.exports = ngModule => {
 
 
     function ngModelAttrsManipulator(template, options, scope) {
-      /* jshint maxcomplexity:7 */
-      var el = angular.element('<a></a>');
+      /* jshint maxcomplexity:6 */
+      var el = document.createElement('div');
       var data = options.data;
-      if (data.noTouchy) {
+      if (data.skipNgModelAttrsManipulator === true) {
         return template;
       }
-      el.append(template);
-      var modelEls = angular.element(el[0].querySelectorAll('[ng-model]'));
-      if (!modelEls || !modelEls.length) {
+      el.innerHTML = template;
+      var modelNodes = el.querySelectorAll('[ng-model]');
+      if (!modelNodes || !modelNodes.length) {
         return template;
       }
 
-      addIfNotPresent(modelEls, 'id', scope.id);
-      addIfNotPresent(modelEls, 'name', scope.id);
+      addIfNotPresent(modelNodes, 'id', scope.id);
+      addIfNotPresent(modelNodes, 'name', scope.id);
 
-      if (angular.isDefined(options.validators)) {
-        addIfNotPresent(modelEls, 'formly-custom-validation', 'options.validators');
-      }
-      if (angular.isDefined(options.modelOptions)) {
-        addIfNotPresent(modelEls, 'ng-model-options', 'options.modelOptions');
-        if (options.modelOptions.getterSetter) {
-          modelEls.attr('ng-model', 'options.value');
-        }
-      }
+      addValidation();
+      addModelOptions();
       addTemplateOptionsAttrs();
 
-      return el.html();
 
+      return el.innerHTML;
+
+
+      function addValidation() {
+        if (angular.isDefined(options.validators) || angular.isDefined(options.validation.messages)) {
+          addIfNotPresent(modelNodes, 'formly-custom-validation', '');
+        }
+      }
+
+      function addModelOptions() {
+        if (angular.isDefined(options.modelOptions)) {
+          addIfNotPresent(modelNodes, 'ng-model-options', 'options.modelOptions');
+          if (options.modelOptions.getterSetter) {
+            angular.forEach(modelNodes, node => {
+              node.setAttribute('ng-model', 'options.value');
+            });
+          }
+        }
+      }
 
       function addTemplateOptionsAttrs() {
         if (!options.templateOptions && !options.expressionProperties) {
@@ -46,13 +61,14 @@ module.exports = ngModule => {
         const to = options.templateOptions || {};
         const ep = options.expressionProperties || {};
 
-        let ngModelAttributes = getBuiltinAttributes();
+        let ngModelAttributes = getBuiltInAttributes();
 
         // extend with the user's specifications winning
         angular.extend(ngModelAttributes, options.ngModelAttrs);
 
+        // Feel free to make this more simple :-)
         angular.forEach(ngModelAttributes, (val, name) => {
-          /* jshint maxcomplexity:10 */
+          /* jshint maxcomplexity:14 */
           let attrVal;
           let attrName;
           const ref = `options.templateOptions['${name}']`;
@@ -79,68 +95,86 @@ module.exports = ngModule => {
           } else if (val.bound && inEp) {
             attrName = val.bound;
             attrVal = ref;
-          } else if (val.attribute && inEp) {
-            attrName = val.attribute;
+          } else if ((val.attribute || val.boolean) && inEp) {
+            attrName = val.attribute || val.boolean;
             attrVal = `{{${ref}}}`;
           } else if (val.attribute && inTo) {
             attrName = val.attribute;
             attrVal = toVal;
+          } else if (val.boolean) {
+            if (inTo && !inEp && toVal) {
+              attrName = val.boolean;
+              attrVal = true;
+            } else {
+              // jshint -W035
+              // empty to illustrate that a boolean will not be added via val.bound
+              // if you want it added via val.bound, then put it in expressionProperties
+            }
           } else if (val.bound && inTo) {
             attrName = val.bound;
             attrVal = ref;
           }
+
           if (angular.isDefined(attrName) && angular.isDefined(attrVal)) {
-            addIfNotPresent(modelEls, attrName, attrVal);
+            addIfNotPresent(modelNodes, attrName, attrVal);
           }
         });
       }
+    }
 
-      function getBuiltinAttributes() {
-        let ngModelAttributes = {
-          focus: {
-            attribute: 'formly-focus'
-          }
-        };
-        const boundOnly = [];
-        const bothAttributeAndBound = ['required', 'disabled', 'pattern', 'minlength'];
-        const expressionOnly = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
-        const attributeOnly = ['placeholder', 'min', 'max', 'tabindex', 'type'];
-        if (formlyConfig.extras.ngModelAttrsManipulatorPreferBound) {
-          boundOnly.push('maxlength');
-        } else {
-          bothAttributeAndBound.push('maxlength');
+    // Utility functions
+    function getBuiltInAttributes() {
+      let ngModelAttributes = {
+        focus: {
+          attribute: 'formly-focus'
         }
-
-        angular.forEach(boundOnly, item => {
-          ngModelAttributes[item] = {bound: 'ng-' + item};
-        });
-
-        angular.forEach(bothAttributeAndBound, item => {
-          ngModelAttributes[item] = {attribute: item, bound: 'ng-' + item};
-        });
-
-        angular.forEach(expressionOnly, item => {
-          var propName = 'on' + item.substr(0, 1).toUpperCase() + item.substr(1);
-          ngModelAttributes[propName] = {expression: 'ng-' + item};
-        });
-
-        angular.forEach(attributeOnly, item => {
-          ngModelAttributes[item] = {attribute: item};
-        });
-        return ngModelAttributes;
+      };
+      const boundOnly = [];
+      const bothBooleanAndBound = ['required', 'disabled'];
+      const bothAttributeAndBound = ['pattern', 'minlength'];
+      const expressionOnly = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
+      const attributeOnly = ['placeholder', 'min', 'max', 'tabindex', 'type'];
+      if (formlyConfig.extras.ngModelAttrsManipulatorPreferUnbound) {
+        bothAttributeAndBound.push('maxlength');
+      } else {
+        boundOnly.push('maxlength');
       }
 
-      function getEpValue(ep, name) {
-        return ep['templateOptions.' + name] ||
-          ep[`templateOptions['${name}']`] ||
-          ep[`templateOptions["${name}"]`];
-      }
+      angular.forEach(boundOnly, item => {
+        ngModelAttributes[item] = {bound: 'ng-' + item};
+      });
 
-      function addIfNotPresent(el, attr, val) {
-        if (!el.attr(attr)) {
-          el.attr(attr, val);
+      angular.forEach(bothBooleanAndBound, item => {
+        ngModelAttributes[item] = {boolean: item, bound: 'ng-' + item};
+      });
+
+      angular.forEach(bothAttributeAndBound, item => {
+        ngModelAttributes[item] = {attribute: item, bound: 'ng-' + item};
+      });
+
+      angular.forEach(expressionOnly, item => {
+        var propName = 'on' + item.substr(0, 1).toUpperCase() + item.substr(1);
+        ngModelAttributes[propName] = {expression: 'ng-' + item};
+      });
+
+      angular.forEach(attributeOnly, item => {
+        ngModelAttributes[item] = {attribute: item};
+      });
+      return ngModelAttributes;
+    }
+
+    function getEpValue(ep, name) {
+      return ep['templateOptions.' + name] ||
+        ep[`templateOptions['${name}']`] ||
+        ep[`templateOptions["${name}"]`];
+    }
+
+    function addIfNotPresent(nodes, attr, val) {
+      angular.forEach(nodes, node => {
+        if (!node.getAttribute(attr)) {
+          node.setAttribute(attr, val);
         }
-      }
+      });
     }
   }
 };

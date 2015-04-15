@@ -10,8 +10,16 @@ module.exports = ngModule => {
    * @name formlyForm
    * @restrict E
    */
-  function formlyForm(formlyUsability, $parse) {
+  function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
     var currentFormId = 1;
+    var optionsApi = [
+      formlyApiCheck.shape({
+        formState: formlyApiCheck.object.optional,
+        resetModel: formlyApiCheck.func.optional,
+        updateInitialValue: formlyApiCheck.func.optional,
+        removeChromeAutoComplete: formlyApiCheck.bool.optional
+      }).strict.optional
+    ];
     return {
       restrict: 'E',
       template: function(el, attrs) {
@@ -47,8 +55,9 @@ module.exports = ngModule => {
         options: '=?'
       },
       controller: function($scope) {
-        $scope.options = $scope.options || {};
-        $scope.options.formState = $scope.options.formState || {};
+        setupOptions();
+        $scope.model = $scope.model || {};
+        $scope.fields = $scope.fields || [];
 
         angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
         angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
@@ -60,6 +69,26 @@ module.exports = ngModule => {
             field.runExpressions && field.runExpressions(newResult);
           });
         }, true);
+
+        function setupOptions() {
+          formlyApiCheck.throw(optionsApi, [$scope.options], {prefix: 'formly-form options check'});
+          $scope.options = $scope.options || {};
+          $scope.options.formState = $scope.options.formState || {};
+
+          angular.extend($scope.options, {
+            updateInitialValue,
+            resetModel
+          });
+
+        }
+
+        function updateInitialValue() {
+          angular.forEach($scope.fields, field => field.updateInitialValue());
+        }
+
+        function resetModel() {
+          angular.forEach($scope.fields, field => field.resetModel());
+        }
 
         function attachKey(field, index) {
           field.key = field.key || index || 0;
@@ -126,6 +155,19 @@ module.exports = ngModule => {
         if (attrs.form) {
           const formId = attrs.name;
           $parse(attrs.form).assign(scope.$parent, scope[formId]);
+        }
+
+        // chrome autocomplete lameness
+        // see https://code.google.com/p/chromium/issues/detail?id=468153#c14
+        // ლ(ಠ益ಠლ)   (╯°□°)╯︵ ┻━┻    (◞‸◟；)
+        const global = formlyConfig.extras.removeChromeAutoComplete === true;
+        const offInstance = scope.options && scope.options.removeChromeAutoComplete === false;
+        const onInstance = scope.options && scope.options.removeChromeAutoComplete === true;
+        if ((global && !offInstance) || onInstance) {
+          const input = document.createElement('input');
+          input.setAttribute('autocomplete', 'address-level4');
+          input.setAttribute('hidden', true);
+          el[0].appendChild(input);
         }
       }
     };

@@ -25,7 +25,8 @@ module.exports = ngModule => {
       disableWarnings: false,
       extras: {
         disableNgModelAttrsManipulator: false,
-        ngModelAttrsManipulatorPreferBound: false
+        ngModelAttrsManipulatorPreferUnbound: false,
+        removeChromeAutoComplete: false
       },
       templateManipulators: {
         preWrapper: [],
@@ -49,7 +50,7 @@ module.exports = ngModule => {
     }
 
     function checkType(options) {
-      formlyApiCheck.throw(formlyApiCheck.formlyTypeOptions, arguments, {
+      formlyApiCheck.throw(formlyApiCheck.formlyTypeOptions, options, {
         prefix: 'formlyConfig.setType',
         url: 'settype-validation-failed'
       });
