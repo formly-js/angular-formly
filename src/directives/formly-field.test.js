@@ -1,5 +1,6 @@
 import sinon from 'sinon';
 import apiCheck from 'api-check';
+import {expect} from 'chai';
 
 describe('formly-field', function() {
   let $compile, scope, formlyConfig;

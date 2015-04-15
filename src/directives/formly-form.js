@@ -5,7 +5,7 @@ import angular from 'angular-fix';
  * @name formlyForm
  * @restrict E
  */
-function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
+export default function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
   var currentFormId = 1;
   var optionsApi = [
     formlyApiCheck.shape({
@@ -167,5 +167,3 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
     }
   };
 }
-
-export default formlyForm;

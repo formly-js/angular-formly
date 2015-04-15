@@ -5,7 +5,7 @@ import angular from 'angular-fix';
  * @name formlyField
  * @restrict AE
  */
-function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyValidationMessages, formlyApiCheck,
+export default function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyValidationMessages, formlyApiCheck,
                      formlyUtil, formlyUsability, formlyWarn) {
   return {
     restrict: 'AE',
@@ -360,5 +360,3 @@ function arrayify(obj) {
   }
   return obj;
 }
-
-export default formlyField;

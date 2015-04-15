@@ -1,4 +1,4 @@
-function formlyWarn (formlyConfig, formlyErrorAndWarningsUrlPrefix, $log) {
+export default function formlyWarn (formlyConfig, formlyErrorAndWarningsUrlPrefix, $log) {
   return function warn() {
     if (!formlyConfig.disableWarnings) {
       var args = Array.prototype.slice.call(arguments);
@@ -9,5 +9,3 @@ function formlyWarn (formlyConfig, formlyErrorAndWarningsUrlPrefix, $log) {
     }
   };
 }
-
-export default formlyWarn;

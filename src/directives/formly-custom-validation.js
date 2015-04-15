@@ -1,4 +1,4 @@
-function formlyCustomValidation(formlyUtil, $q) {
+export default function formlyCustomValidation(formlyUtil, $q) {
   return {
     restrict: 'A',
     require: 'ngModel',
@@ -105,5 +105,3 @@ function formlyCustomValidation(formlyUtil, $q) {
     }
   }
 }
-
-export default formlyCustomValidation;

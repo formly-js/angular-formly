@@ -1,3 +1,5 @@
+import {expect} from 'chai';
+
 describe('formlyUtil', () => {
   beforeEach(window.module('formly'));
 

@@ -1,5 +1,7 @@
 import angular from 'angular-fix';
 
+export default {formlyEval, getFieldId, reverseDeepMerge, findByNodeName};
+
 function formlyEval(scope, expression, $modelValue, $viewValue) {
   if (angular.isFunction(expression)) {
     return expression($viewValue, $modelValue, scope);
@@ -58,5 +60,3 @@ function findByNodeName(el, nodeName) {
     }
   }
 }
-
-export default {formlyEval, getFieldId, reverseDeepMerge, findByNodeName};

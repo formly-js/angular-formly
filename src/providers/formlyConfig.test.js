@@ -1,5 +1,6 @@
 /* jshint maxlen:false */
 import sinon from 'sinon';
+import {expect} from 'chai';
 
 describe('formlyConfig', () => {
   beforeEach(window.module('formly'));

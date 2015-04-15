@@ -1,6 +1,6 @@
 import angular from 'angular-fix';
 
-function addFormlyNgModelAttrsManipulator(formlyConfig) {
+export default function addFormlyNgModelAttrsManipulator(formlyConfig) {
   if (formlyConfig.extras.disableNgModelAttrsManipulator) {
     return;
   }
@@ -172,5 +172,3 @@ function addFormlyNgModelAttrsManipulator(formlyConfig) {
     });
   }
 }
-
-export default addFormlyNgModelAttrsManipulator;
