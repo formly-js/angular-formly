@@ -1,8 +1,14 @@
+# 6.0.0-beta.8
+
+## Internal Changes
+
+- Going all the way with es6 modules with some help from [@sparty02](https://github.com/sparty02) (Thanks!). This should also fix some issues with browserify because we're no longer requiring our tests in the source.
+
 # 6.0.0-beta.7
 
 ## Other
 
-- Broke stuff 
+- Broke stuff
 
 # 6.0.0-beta.6
 
