@@ -1,7 +1,10 @@
 import angular from 'angular-fix';
 import utils from '../other/utils';
 
-export default function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
+export default formlyConfig;
+
+// @ngInject
+function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
 
   var typeMap = {};
   var templateWrappersMap = {};

@@ -17,7 +17,6 @@ function shapeRequiredIfNot(otherProps, propChecker) {
     var otherPropsExist = otherProps.some(function (otherProp) {
       return obj && obj.hasOwnProperty(otherProp);
     });
-    //console.log(propName, propExists, prop, otherPropsExist, otherProps.join(', '));
     if (!otherPropsExist && !propExists) {
       return apiCheck.utils.getError(propName, location, type);
     } else if (propExists) {

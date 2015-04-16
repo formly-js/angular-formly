@@ -1,11 +1,14 @@
 import angular from 'angular-fix';
 
+export default formlyForm;
+
 /**
  * @ngdoc directive
  * @name formlyForm
  * @restrict E
  */
-export default function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
+// @ngInject
+function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
   var currentFormId = 1;
   var optionsApi = [
     formlyApiCheck.shape({

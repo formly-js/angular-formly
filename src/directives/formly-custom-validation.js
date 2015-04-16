@@ -1,4 +1,7 @@
-export default function formlyCustomValidation(formlyUtil, $q) {
+export default formlyCustomValidation;
+
+// @ngInject
+function formlyCustomValidation(formlyUtil, $q) {
   return {
     restrict: 'A',
     require: 'ngModel',

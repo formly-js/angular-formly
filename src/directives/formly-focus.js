@@ -1,4 +1,7 @@
-export default function formlyFocus ($timeout, $document) {
+export default formlyFocus;
+
+// @ngInject
+function formlyFocus($timeout, $document) {
   /* jshint -W052 */
   return {
     restrict: 'A',

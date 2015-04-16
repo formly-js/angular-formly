@@ -1,8 +1,7 @@
 import angular from 'angular-fix';
 
 import formlyApiCheck from './providers/formlyApiCheck';
-import formlyErrorAndWarningsUrlPrefix from './providers/formlyErrorAndWarningsUrlPrefix';
-import formlyVersion from './providers/formlyVersion';
+import formlyErrorAndWarningsUrlPrefix from './other/docsBaseUrl';
 import formlyUsability from './providers/formlyUsability';
 import formlyConfig from './providers/formlyConfig';
 import formlyValidationMessages from './providers/formlyValidationMessages';
@@ -25,7 +24,7 @@ const ngModule = angular.module(ngModuleName, []);
 
 ngModule.constant('formlyApiCheck', formlyApiCheck);
 ngModule.constant('formlyErrorAndWarningsUrlPrefix', formlyErrorAndWarningsUrlPrefix);
-ngModule.constant('formlyVersion', formlyVersion);
+ngModule.constant('formlyVersion', VERSION); // <-- webpack variable
 
 ngModule.provider('formlyUsability', formlyUsability);
 ngModule.provider('formlyConfig', formlyConfig);

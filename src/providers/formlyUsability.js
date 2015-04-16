@@ -1,8 +1,9 @@
 import angular from 'angular-fix';
 
-export default function formlyUsability (formlyVersion, formlyApiCheck) {
-  var errorsAndWarningsUrlPrefix =
-    `https://github.com/formly-js/angular-formly/blob/${formlyVersion}/other/ERRORS_AND_WARNINGS.md#`;
+export default formlyUsability;
+
+// @ngInject
+function formlyUsability(formlyApiCheck, formlyErrorAndWarningsUrlPrefix) {
   angular.extend(this, {
     getFormlyError: getFormlyError,
     getFieldError: getFieldError,
@@ -31,7 +32,7 @@ export default function formlyUsability (formlyVersion, formlyApiCheck) {
   function getErrorMessage(errorInfoSlug, message) {
     let url = '';
     if (errorInfoSlug !== null) {
-      url = `${errorsAndWarningsUrlPrefix}${errorInfoSlug}`;
+      url = `${formlyErrorAndWarningsUrlPrefix}${errorInfoSlug}`;
     }
     return `Formly Error: ${message}. ${url}`;
   }
