@@ -5,7 +5,7 @@
 Status:
 [![bower version](https://img.shields.io/bower/v/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly)
 [![npm version](https://img.shields.io/npm/v/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly)
-[![npm downloads](https://img.shields.io/npm/dm/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly)
+[![npm downloads](https://img.shields.io/npm/dm/angular-formly.svg?style=flat-square)](http://npm-stat.com/charts.html?package=angular-formly&from=2015-01-01)
 [![Build Status](https://img.shields.io/travis/formly-js/angular-formly.svg?style=flat-square)](https://travis-ci.org/formly-js/angular-formly)
 
 Links:
