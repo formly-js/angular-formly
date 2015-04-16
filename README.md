@@ -45,7 +45,7 @@ Find all the documentation at [docs.angular-formly.com](http://docs.angular-form
 
 ## Roadmap
 
-See the [issues labeled enhancement](labels/enhancement)
+See the [issues labeled enhancement](https://github.com/formly-js/angular-formly/labels/enhancement)
 
 ## Contributing
 
