@@ -1,3 +1,9 @@
+# 6.0.0-beta.9
+
+## Bug Fixes
+
+- Annotating function properly
+
 # 6.0.0-beta.8
 
 ## Internal Changes
