@@ -40,7 +40,7 @@ function getConfig(context) {
       // test results reporter to use
       // possible values: 'dots', 'progress'
       // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-      reporters: ['progress', 'coverage'],
+      reporters: ['progress', 'coverage', 'coveralls'],
 
       coverageReporter: {
         type: 'lcov', // lcov or lcovonly are required for generating lcov.info files
@@ -79,6 +79,7 @@ function getConfig(context) {
         require('karma-webpack'),
         'karma-mocha',
         'karma-coverage',
+        'karma-coveralls',
         'karma-chai',
         'karma-chrome-launcher',
         'karma-firefox-launcher'
