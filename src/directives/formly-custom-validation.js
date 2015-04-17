@@ -5,7 +5,7 @@ function formlyCustomValidation(formlyUtil, $q) {
   return {
     restrict: 'A',
     require: 'ngModel',
-    link: function(scope, el, attrs, ctrl) {
+    link: function formlyCustomValidationLink(scope, el, attrs, ctrl) {
       const opts = scope.options;
       if (opts.validators) {
         checkValidators(opts.validators);
@@ -19,7 +19,7 @@ function formlyCustomValidation(formlyUtil, $q) {
 
 
       var useNewValidatorsApi = ctrl.hasOwnProperty('$validators') && !attrs.hasOwnProperty('useParsers');
-      angular.forEach(opts.validators, function(validator, name) {
+      angular.forEach(opts.validators, function addValidatorToPipeline(validator, name) {
         var message = validator.message;
         if (message) {
           opts.validation.messages[name] = () => {
@@ -36,7 +36,7 @@ function formlyCustomValidation(formlyUtil, $q) {
 
         function setupWithValidators() {
           var validatorCollection = isPossiblyAsync ? '$asyncValidators' : '$validators';
-          ctrl[validatorCollection][name] = function(modelValue, viewValue) {
+          ctrl[validatorCollection][name] = function evalValidity(modelValue, viewValue) {
             var value = formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
             if (isPossiblyAsync) {
               return isPromiseLike(value) ? value : value ? $q.when(value) : $q.reject(value);
@@ -48,7 +48,7 @@ function formlyCustomValidation(formlyUtil, $q) {
 
         function setupWithParsers() {
           let inFlightValidator;
-          ctrl.$parsers.unshift(function(viewValue) {
+          ctrl.$parsers.unshift(function evalValidityOfParser(viewValue) {
             var isValid = formlyUtil.formlyEval(scope, validator, ctrl.$modelValue, viewValue);
             if (isPromiseLike(isValid)) {
               ctrl.$pending = ctrl.$pending || {};

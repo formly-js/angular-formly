@@ -5,13 +5,13 @@ function formlyFocus($timeout, $document) {
   /* jshint -W052 */
   return {
     restrict: 'A',
-    link: function(scope, element, attrs) {
+    link: function formlyFocusLink(scope, element, attrs) {
       var previousEl = null;
       var el = element[0];
       var doc = $document[0];
-      attrs.$observe('formlyFocus', function(value) {
+      attrs.$observe('formlyFocus', function respondToFocusExpressionChange(value) {
         if (value === 'true') {
-          $timeout(function() {
+          $timeout(function setElementFocus() {
             previousEl = doc.activeElement;
             el.focus();
           }, ~~attrs.focusWait);

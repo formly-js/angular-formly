@@ -22,7 +22,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       formState: '=?',
       form: '=?'
     },
-    controller: function fieldController($scope, $timeout, $parse, $controller) {
+    controller: /* @ngInject */ function FormlyFieldController($scope, $timeout, $parse, $controller) {
       var opts = $scope.options;
       var fieldType = opts.type && formlyConfig.getType(opts.type);
       simplifyLife(opts);
@@ -44,13 +44,14 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
 
       // function definitions
       function runExpressions() {
-        $timeout(function() { // must run on next tick to make sure that the current value is correct.
+        // must run on next tick to make sure that the current value is correct.
+        $timeout(function runExpressionsOnNextTick() {
           var field = $scope.options;
           var currentValue = valueGetterSetter();
           angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
             var setter = $parse(prop).assign;
             var promise = $q.when(formlyUtil.formlyEval($scope, expression, currentValue));
-            promise.then(function(value) {
+            promise.then(function setFieldValue(value) {
               setter(field, value);
             });
           });
@@ -114,7 +115,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         if (options.noFormControl) {
           return;
         }
-        scope.$watch('form["' + scope.id + '"]', function(formControl) {
+        scope.$watch('form["' + scope.id + '"]', function onFormControlChange(formControl) {
           if (formControl) {
             scope.fc = formControl; // shortcut for template authors
             scope.options.formControl = formControl;
@@ -130,14 +131,14 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       }
 
       function addShowMessagesWatcher(scope, options) {
-        scope.$watch(function() {
+        scope.$watch(function watchShowValidationChange() {
           if (typeof scope.options.validation.show === 'boolean') {
             return scope.fc.$invalid && scope.options.validation.show;
           } else {
             let noTouchedButDirty = (angular.isUndefined(scope.fc.$touched) && scope.fc.$dirty);
             return scope.fc.$invalid && (scope.fc.$touched || noTouchedButDirty);
           }
-        }, function(show) {
+        }, function onShowValidationChange(show) {
           options.validation.errorExistsAndShouldBeVisible = show;
           scope.showError = show; // shortcut for template authors
         });
@@ -157,9 +158,9 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
 
       function addValidationMessages(options) {
         options.validation.messages = options.validation.messages || {};
-        angular.forEach(formlyValidationMessages.messages, function(expression, name) {
+        angular.forEach(formlyValidationMessages.messages, function createFunctionForMessage(expression, name) {
           if (!options.validation.messages[name]) {
-            options.validation.messages[name] = function(viewValue, modelValue, scope) {
+            options.validation.messages[name] = function evaluateMessage(viewValue, modelValue, scope) {
               return formlyUtil.formlyEval(scope, expression, modelValue, viewValue);
             };
           }
@@ -243,15 +244,15 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       return $q.when(template);
     } else {
       let httpOptions = {cache: $templateCache};
-      return $http.get(template, httpOptions).then(function(response) {
-        return response.data;
-      }).catch(function(error) {
-        formlyWarn(
-          'problem-loading-template-for-templateurl',
-          'Problem loading template for ' + template,
-          error
-        );
-      });
+      return $http.get(template, httpOptions)
+        .then((response) => response.data)
+        .catch(function handleErrorGettingATemplate(error) {
+          formlyWarn(
+            'problem-loading-template-for-templateurl',
+            'Problem loading template for ' + template,
+            error
+          );
+        });
     }
   }
 

@@ -20,7 +20,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
   ];
   return {
     restrict: 'E',
-    template: function(el, attrs) {
+    template: function formlyFormGetTemplate(el, attrs) {
       /* jshint -W033 */ // this because jshint is broken I guess...
       const rootEl = attrs.rootEl || 'ng-form';
       const formName = `formly_${currentFormId++}`;
@@ -52,7 +52,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       form: '=?',
       options: '=?'
     },
-    controller: function($scope) {
+    controller: /* @ngInject */ function FormlyFormController($scope) {
       setupOptions();
       $scope.model = $scope.model || {};
       $scope.fields = $scope.fields || [];
@@ -62,7 +62,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
 
       // watch the model and evaluate watch expressions that depend on it.
       $scope.$watch('model', function onResultUpdate(newResult) {
-        angular.forEach($scope.fields, function(field) {
+        angular.forEach($scope.fields, function runFieldExpressionProperties(field) {
           /*jshint -W030 */
           field.runExpressions && field.runExpressions(newResult);
         });
@@ -100,7 +100,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
         if (!angular.isArray(watchers)) {
           watchers = [watchers];
         }
-        angular.forEach(watchers, function(watcher) {
+        angular.forEach(watchers, function setupWatcher(watcher) {
           if (!angular.isDefined(watcher.listener)) {
             throw formlyUsability.getFieldError(
               'all-field-watchers-must-have-a-listener',
