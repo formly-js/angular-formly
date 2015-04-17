@@ -42,6 +42,10 @@ function getConfig(context) {
       // available reporters: https://npmjs.org/browse/keyword/karma-reporter
       reporters: ['progress', 'coverage'],
 
+      coverageReporter: {
+        type: 'lcov', // lcov or lcovonly are required for generating lcov.info files
+        dir: 'coverage/'
+      },
 
       // web server port
       port: 9876,
