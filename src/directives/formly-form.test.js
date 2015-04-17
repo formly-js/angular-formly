@@ -88,6 +88,19 @@ describe('formly-form', () => {
     expect(scope.fields).to.exist;
   });
 
+  it(`should allow the user to specify their own name for the form`, () => {
+    compileAndDigest(`
+      <form name="parent">
+        <div ng-repeat="forms in [1, 2] track by $index">
+          <formly-form model="model" fields="fields" bind-name="$parent.$index + '_in_my_ng_repeat'"></formly-form>
+        </div>
+      </form>
+    `);
+
+    expect(scope.parent).to.have.property('formly_0_in_my_ng_repeat');
+    expect(scope.parent).to.have.property('formly_1_in_my_ng_repeat');
+  });
+
   describe(`options`, () => {
     const template = '<formly-form options="options" model="model" fields="fields"></formly-form>';
     beforeEach(() => {

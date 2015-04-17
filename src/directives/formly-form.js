@@ -23,7 +23,15 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
     template: function formlyFormGetTemplate(el, attrs) {
       /* jshint -W033 */ // this because jshint is broken I guess...
       const rootEl = attrs.rootEl || 'ng-form';
-      const formName = `formly_${currentFormId++}`;
+      const formId = `formly_${currentFormId++}`;
+      let formName = formId;
+      const bindName = attrs.bindName;
+      if (bindName) {
+        if (angular.version.minor < 3) {
+          throw formlyUsability.getFormlyError('bind-name attribute on formly-form not allowed in > angular 1.3');
+        }
+        formName = `{{::'formly_' + ${bindName}}}`;
+      }
       return `
         <${rootEl} class="formly"
                  name="${formName}"
@@ -35,8 +43,8 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
                options="field"
                model="field.model || model"
                fields="fields"
-               form="${formName}"
-               form-id="${formName}"
+               form="${formId}"
+               form-id="${formId}"
                form-state="options.formState"
                index="$index">
           </div>
