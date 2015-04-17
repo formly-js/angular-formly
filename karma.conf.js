@@ -18,7 +18,7 @@ function getConfig(context) {
   delete testConfig.externals; // need angular in test context
   var entry = path.join(testConfig.context, testConfig.entry);
   var preprocessors = {};
-  preprocessors[entry] = ['webpack'];
+  preprocessors[entry] = ['webpack', 'coverage'];
 
   return function(config) {
     config.set({
@@ -40,7 +40,7 @@ function getConfig(context) {
       // test results reporter to use
       // possible values: 'dots', 'progress'
       // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-      reporters: ['progress'],
+      reporters: ['progress', 'coverage'],
 
 
       // web server port
@@ -74,6 +74,7 @@ function getConfig(context) {
       plugins: [
         require('karma-webpack'),
         'karma-mocha',
+        'karma-coverage',
         'karma-chai',
         'karma-chrome-launcher',
         'karma-firefox-launcher'
