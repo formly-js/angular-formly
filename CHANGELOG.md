@@ -1,3 +1,7 @@
+# 6.0.0
+
+- Official release!
+
 # 6.0.0-beta.10
 
 ## Features
