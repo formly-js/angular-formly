@@ -1,3 +1,9 @@
+# 6.0.0-beta.10
+
+## Features
+
+- You can now specify a name for your form via the `bind-name` property. This is to resolve [#252](/../../issues/252). It only works for >= angular 1.3 and is hopefully not going to be needed commonly.
+
 # 6.0.0-beta.9
 
 ## Bug Fixes
