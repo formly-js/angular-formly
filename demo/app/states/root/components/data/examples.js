@@ -152,6 +152,11 @@ export default [
         title: 'Toggle required field validation',
         slug: 'toggle-required',
         jsbinId: 'fuwaji'
+      },
+      {
+        title: 'Input add-ons',
+        slug: 'input-add-ons',
+        jsbinId: 'ziwuha'
       }
     ]
   },
