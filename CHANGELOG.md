@@ -1,3 +1,9 @@
+# 6.0.1
+
+## Internal Fixes
+
+- Fixing `api-check` `devDependency` version.
+
 # 6.0.0
 
 - Official release!
