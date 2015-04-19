@@ -19,13 +19,15 @@ The `formly-form` directive and the `formlyConfig` service are very powerful and
 application's forms.
 
 ```html
-<form name="myForm" ng-submit="vm.handleSubmit()">
+<form name="vm.someForm" ng-submit="vm.handleSubmit()">
   <formly-form model="vm.model" fields="vm.fields" options="vm.options">
-    <button type="submit" ng-disabled="myForm.$invalid">Submit</button>
+    <button type="submit" ng-disabled="vm.someForm.$invalid">Submit</button>
     <button type="button" ng-click="vm.options.resetModel()">Reset</button>
   </formly-form>
 </form>
 ```
+
+From there, it's just JavaScript. Allowing for DRY, maintainable, reusable forms.
 
 ## Learning
 
