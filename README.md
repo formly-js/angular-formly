@@ -19,8 +19,11 @@ The `formly-form` directive and the `formlyConfig` service are very powerful and
 application's forms.
 
 ```html
-<form ng-submit="vm.handleSubmit()">
-  <formly-form model="vm.formData" fields="vm.formFields"></formly-form>
+<form name="myForm" ng-submit="vm.handleSubmit()">
+  <formly-form model="vm.model" fields="vm.fields" options="vm.options">
+    <button type="submit" ng-disabled="myForm.$invalid">Submit</button>
+    <button type="button" ng-click="vm.options.resetModel()">Reset</button>
+  </formly-form>
 </form>
 ```
 
