@@ -22,6 +22,11 @@ export default [
         title: 'Introduction Example',
         slug: 'introduction',
         jsbinId: 'kunaho'
+      },
+      {
+        title: 'Introduction Example 2',
+        slug: 'introduction2',
+        jsbinId: 'yopola'
       }
     ]
   },
