@@ -29,7 +29,8 @@
     "start": "npm run watch & npm run test",
     "deploy": "grunt deploy",
     "release": "git push && npm publish && git push --tags",
-    "release:beta": "git push && npm publish --tag beta && git push --tags"
+    "release:beta": "git push && npm publish --tag beta && git push --tags",
+    "addExample": "cd demo && npm run build && cd .. && git commit -am 'updating demo' && grunt deploy"
   },
   "config": {
     "ghooks": {

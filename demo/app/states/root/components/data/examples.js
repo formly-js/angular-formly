@@ -162,6 +162,11 @@ export default [
         title: 'Input add-ons',
         slug: 'input-add-ons',
         jsbinId: 'ziwuha'
+      },
+      {
+        title: 'Multi-Input',
+        slug: 'multi-input',
+        jsbinId: 'yuyawo'
       }
     ]
   },
