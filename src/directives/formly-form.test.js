@@ -2,12 +2,15 @@ import {expect} from 'chai';
 
 describe('formly-form', () => {
   const input = '<input ng-model="model[options.key]" />';
-  let $compile, scope;
+  const basicForm = '<formly-form model="model" fields="fields"></formly-form>';
+  let $compile, scope, el;
 
   beforeEach(window.module('formly'));
   beforeEach(inject((_$compile_, $rootScope) => {
     $compile = _$compile_;
     scope = $rootScope.$new();
+    scope.model = {};
+    scope.fields = [];
   }));
 
   it('should use ng-form as the default root tag', () => {
@@ -184,6 +187,28 @@ describe('formly-form', () => {
       });
     });
 
+    describe(`hide-directive attribute`, () => {
+      beforeEach(() => {
+        scope.fields = [{template: input, key: 'foo'}];
+      });
+
+      it(`should default to ng-if`, () => {
+        compileAndDigest(basicForm);
+        const fieldNode = el[0].querySelector('.formly-field');
+        expect(fieldNode.getAttribute('ng-if')).to.exist;
+      });
+
+      it(`should allow custom directive for hiding`, () => {
+        compileAndDigest(`
+          <formly-form model="model" fields="fields" hide-directive="ng-show"></formly-form>
+        `);
+        const fieldNode = el[0].querySelector('.formly-field');
+        expect(fieldNode.getAttribute('ng-if')).to.not.exist;
+        expect(fieldNode.getAttribute('ng-show')).to.exist;
+      });
+
+    });
+
     describe(`updateInitialValue`, () => {
 
       it(`should update the initial value of the fields`, () => {
@@ -239,7 +264,7 @@ describe('formly-form', () => {
   });
 
   function compileAndDigest(template) {
-    const el = $compile(template)(scope);
+    el = $compile(template)(scope);
     scope.$digest();
     return el;
   }

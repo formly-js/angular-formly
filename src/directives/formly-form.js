@@ -21,6 +21,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
   return {
     restrict: 'E',
     template: function formlyFormGetTemplate(el, attrs) {
+      /* jshint maxcomplexity:6 */
       /* jshint -W033 */ // this because jshint is broken I guess...
       const rootEl = attrs.rootEl || 'ng-form';
       const formId = `formly_${currentFormId++}`;
@@ -32,13 +33,14 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
         }
         formName = `{{::'formly_' + ${bindName}}}`;
       }
+      const hideDirective = attrs.hideDirective || formlyConfig.extras.defaultHideDirective || 'ng-if';
       return `
         <${rootEl} class="formly"
                  name="${formName}"
                  role="form">
           <div formly-field
                ng-repeat="field in fields track by $index"
-               ng-if="!field.hide"
+               ${hideDirective}="!field.hide"
                class="formly-field {{field.type ? 'formly-field-' + field.type : ''}}"
                options="field"
                model="field.model || model"

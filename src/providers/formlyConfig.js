@@ -24,7 +24,8 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
     extras: {
       disableNgModelAttrsManipulator: false,
       ngModelAttrsManipulatorPreferUnbound: false,
-      removeChromeAutoComplete: false
+      removeChromeAutoComplete: false,
+      defaultHideDirective: 'ng-if'
     },
     templateManipulators: {
       preWrapper: [],
