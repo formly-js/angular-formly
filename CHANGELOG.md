@@ -1,3 +1,9 @@
+# 6.1.0
+
+## New Features
+
+- Adding `hide-directive` to give developers control over how the `formly-form` hides fields.
+
 # 6.0.1
 
 ## Internal Fixes
