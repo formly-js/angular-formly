@@ -19,15 +19,14 @@
     }
   ],
   "scripts": {
-    "build:dist": "node node_modules/webpack/bin/webpack.js",
-    "build:prod": "node node_modules/webpack/bin/webpack.js --config webpack.config.minify.js",
+    "build:dist": "NODE_ENV=development webpack --progress --colors",
+    "build:prod": "NODE_ENV=production webpack --progress --colors",
     "build": "npm run build:dist; npm run build:prod",
-    "test": "node node_modules/karma/bin/karma start karma.conf.js",
-    "test:single": "node node_modules/karma/bin/karma start karma.conf.js --single-run",
-    "test:ci": "node node_modules/karma/bin/karma start karma.conf.ci.js",
-    "watch": "node node_modules/webpack/bin/webpack.js --watch",
+    "test": "NODE_ENV=test node node_modules/karma/bin/karma start karma.conf.js",
+    "test:single": "NODE_ENV=test node node_modules/karma/bin/karma start karma.conf.js --single-run",
+    "test:ci": "NODE_ENV=test:ci node node_modules/karma/bin/karma start karma.conf.js",
+    "watch": "NODE_ENV=development webpack --watch --progress --colors",
     "start": "npm run watch & npm run test",
-    "deploy": "grunt deploy",
     "release": "git push && npm publish && git push --tags",
     "release:beta": "git push && npm publish --tag beta && git push --tags"
   },

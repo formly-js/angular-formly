@@ -1,23 +1,9 @@
 # generic (system) files/extensions we don't want
-*.seed
 *.log
-*.csv
-*.dat
-*.out
-*.pid
-*.gz
 .idea/*
 *.iml
 *.DS_Store
-lib-cov
-pids
-logs
-results
 
 node_modules
-
-demo/bundle.js
-demo/res
-.grunt
 
 coverage
