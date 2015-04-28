@@ -10,7 +10,6 @@ var testConfig = deepExtend({}, webpackConfig, {
   watch: !ci,
   entry: './index.test.js'
 });
-delete testConfig.externals; // need angular in test context
 var entry = path.join(testConfig.context, testConfig.entry);
 var preprocessors = {};
 preprocessors[entry] = ['webpack'];
@@ -21,7 +20,11 @@ module.exports = function(config) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: './',
     frameworks: ['mocha'],
-    files: [entry],
+    files: [
+      './node_modules/api-check/dist/api-check.js',
+      './node_modules/angular/angular.js',
+      entry
+    ],
     exclude: [],
 
 
