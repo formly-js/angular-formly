@@ -179,6 +179,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
 
       function watchFormControl() {
         let stopWatchingField = angular.noop;
+        let stopWatchingShowError = angular.noop;
         if (scope.options.noFormControl) {
           return;
         }
@@ -204,19 +205,18 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         }
 
         function watchFieldExistence(name) {
-          stopWatchingField = scope.$watch(`form["${name}"]`, function formControlChange(formControl, oldFormControl) {
+          stopWatchingField = scope.$watch(`form["${name}"]`, function formControlChange(formControl) {
             if (formControl) {
               scope.fc = formControl; // shortcut for template authors
               scope.options.formControl = formControl;
-              if (!oldFormControl) {
-                addShowMessagesWatcher();
-              }
+              stopWatchingShowError();
+              addShowMessagesWatcher();
             }
           });
         }
 
         function addShowMessagesWatcher() {
-          scope.$watch(function watchShowValidationChange() {
+          stopWatchingShowError = scope.$watch(function watchShowValidationChange() {
             if (typeof scope.options.validation.show === 'boolean') {
               return scope.fc.$invalid && scope.options.validation.show;
             } else {
