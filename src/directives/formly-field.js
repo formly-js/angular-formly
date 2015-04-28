@@ -34,7 +34,6 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
 
       // initalization
       runExpressions();
-      setFormControl($scope, opts);
       addModelWatcher($scope, opts);
       addValidationMessages(opts);
       // simplify things
@@ -111,37 +110,10 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       }
 
       // initialization functions
-      function setFormControl(scope, options) {
-        if (options.noFormControl) {
-          return;
-        }
-        scope.$watch('form["' + scope.id + '"]', function onFormControlChange(formControl) {
-          if (formControl) {
-            scope.fc = formControl; // shortcut for template authors
-            scope.options.formControl = formControl;
-            addShowMessagesWatcher(scope, options);
-          }
-        });
-      }
-
       function addModelWatcher(scope, options) {
         if (options.model) {
           scope.$watch('options.model', runExpressions, true);
         }
-      }
-
-      function addShowMessagesWatcher(scope, options) {
-        scope.$watch(function watchShowValidationChange() {
-          if (typeof scope.options.validation.show === 'boolean') {
-            return scope.fc.$invalid && scope.options.validation.show;
-          } else {
-            let noTouchedButDirty = (angular.isUndefined(scope.fc.$touched) && scope.fc.$dirty);
-            return scope.fc.$invalid && (scope.fc.$touched || noTouchedButDirty);
-          }
-        }, function onShowValidationChange(show) {
-          options.validation.errorExistsAndShouldBeVisible = show;
-          scope.showError = show; // shortcut for template authors
-        });
       }
 
       function resetModel() {
@@ -184,6 +156,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         .then(transcludeInWrappers(scope.options))
         .then(runManipulators(formlyConfig.templateManipulators.postWrapper))
         .then(setElementTemplate)
+        .then(watchFormControl)
         .catch(error => {
           formlyWarn(
             'there-was-a-problem-setting-the-template-for-this-field',
@@ -203,6 +176,38 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
           scope.options.link.apply(thusly, args);
         }
       }
+
+      function watchFormControl() {
+        if (scope.options.noFormControl) {
+          return;
+        }
+        const ngModelNode = el[0].querySelector('[ng-model]');
+        if (!ngModelNode || !ngModelNode.name) {
+          return;
+        }
+        scope.$watch('form["' + ngModelNode.name + '"]', function onFormControlChange(formControl) {
+          if (formControl) {
+            scope.fc = formControl; // shortcut for template authors
+            scope.options.formControl = formControl;
+            addShowMessagesWatcher();
+          }
+        });
+
+        function addShowMessagesWatcher() {
+          scope.$watch(function watchShowValidationChange() {
+            if (typeof scope.options.validation.show === 'boolean') {
+              return scope.fc.$invalid && scope.options.validation.show;
+            } else {
+              let noTouchedButDirty = (angular.isUndefined(scope.fc.$touched) && scope.fc.$dirty);
+              return scope.fc.$invalid && (scope.fc.$touched || noTouchedButDirty);
+            }
+          }, function onShowValidationChange(show) {
+            scope.options.validation.errorExistsAndShouldBeVisible = show;
+            scope.showError = show; // shortcut for template authors
+          });
+        }
+      }
+
 
       function runManipulators(manipulators) {
         return function runManipulatorsOnTemplate(template) {

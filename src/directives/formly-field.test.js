@@ -3,8 +3,10 @@ import apiCheck from 'api-check';
 import {expect} from 'chai';
 
 describe('formly-field', function() {
-  let $compile, scope, formlyConfig;
-  let template = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
+  let $compile, scope, el, formlyConfig;
+  const formTemplate = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
+  const inputTemplate = '<input ng-model="model[options.key]" />';
+
   beforeEach(window.module('formly'));
   beforeEach(inject((_$compile_, $rootScope, _formlyConfig_) => {
     $compile = _$compile_;
@@ -260,7 +262,7 @@ describe('formly-field', function() {
             expect(templateToManipulate).to.contain('manipulated');
             return angular.element(templateToManipulate).addClass('manipulated-twice');
           });
-          var el = $compile(angular.element(template))(scope);
+          compileAndDigest();
           scope.$digest();
           expect(el[0].querySelector('.manipulated')).to.exist;
           expect(el[0].querySelector('.manipulated-twice')).to.exist;
@@ -390,7 +392,6 @@ describe('formly-field', function() {
 
   describe(`wrapper apiCheck`, () => {
     const name = 'input';
-    const template = '<input ng-model="model[options.key]" />';
     const wrapper = name;
     beforeEach(() => {
       formlyConfig.setWrapper({
@@ -408,33 +409,73 @@ describe('formly-field', function() {
         })
       });
       scope.model = {};
+      scope.fields = [
+        {template: inputTemplate, wrapper, templateOptions: {}}
+      ];
     });
 
     it(`should not warn if everything's fine`, () => {
-      scope.fields = [
-        {template, wrapper, templateOptions: {label: 'string', className: 'string'}}
-      ];
+      scope.fields[0].templateOptions = {label: 'string', className: 'string'};
       shouldNotWarn(compileAndDigest);
     });
 
     it(`should warn if everything's not fine`, () => {
-      scope.fields = [
-        {template, wrapper, templateOptions: {label: 'string'}}
-      ];
+      scope.fields[0].templateOptions = {label: 'string'};
       shouldWarn(/custom-api-check.*?formly-field(.|\n)*?className/, compileAndDigest);
     });
 
     it(`should throw if the apiCheckFunction is set to "throw" and everything's not fine`, () => {
       formlyConfig.getWrapper(name).apiCheckFunction = 'throw';
-      scope.fields = [
-        {template, wrapper, templateOptions: {label: 'string'}}
-      ];
+      scope.fields[0].templateOptions = {label: 'string'};
       expect(compileAndDigest).to.throw(/custom-api-check.*?formly-field(.|\n)*?className/);
     });
   });
 
-  function compileAndDigest() {
-    const el = $compile(template)(scope);
+  describe(`formControl`, () => {
+    let isolateScope, field;
+
+    beforeEach(() => {
+      scope.fields = [{template: inputTemplate}];
+    });
+
+    it(`should be placed onto field's options`, () => {
+      compileAndDigestAndSetIsolateScope();
+      expect(field.formControl).to.exist;
+    });
+
+    it(`should be placed onto the isolate scope for the formly-field`, () => {
+      compileAndDigestAndSetIsolateScope();
+      expect(isolateScope.fc).to.exist;
+    });
+
+    describe(`name`, () => {
+      it(`should be almost random`, () => {
+        compileAndDigestAndSetIsolateScope();
+        expect(field.formControl.$name).to.match(/formly_\d+_template_.*?_\d+/);
+      });
+
+      it(`should be overrideable when a different name is specified`, () => {
+        scope.fields[0].template = `<input ng-model="model[options.key]" name="myCustomName" />`;
+        compileAndDigestAndSetIsolateScope();
+        expect(field.formControl).to.exist;
+        expect(isolateScope.fc).to.exist;
+        expect(field.formControl.$name).to.eq('myCustomName');
+        expect(scope.theForm).to.have.property('myCustomName');
+      });
+
+    });
+
+
+    function compileAndDigestAndSetIsolateScope() {
+      compileAndDigest();
+      isolateScope = angular.element(el[0].querySelector('.formly-field')).isolateScope();
+      field = scope.fields[0];
+    }
+
+  });
+
+  function compileAndDigest(template) {
+    el = $compile(template || formTemplate)(scope);
     scope.$digest();
     return el;
   }

@@ -1,3 +1,9 @@
+# 6.1.1
+
+## Bug Fixes
+
+- Fixing issue [#266](/../../issues/266) where the form control wasn't set when using a custom name.
+
 # 6.1.0
 
 ## New Features
