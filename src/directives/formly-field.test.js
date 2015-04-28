@@ -457,11 +457,21 @@ describe('formly-field', function() {
       it(`should be overrideable when a different name is specified`, () => {
         scope.fields[0].template = `<input ng-model="model[options.key]" name="myCustomName" />`;
         compileAndDigestAndSetIsolateScope();
+        makeNameExpectations('myCustomName');
+      });
+
+      it(`should handle interpolated names`, () => {
+        scope.fields[0].template = `<input ng-model="model[options.key]" name="{{'myCustomName'}}" />`;
+        compileAndDigestAndSetIsolateScope();
+        makeNameExpectations('myCustomName');
+      });
+
+      function makeNameExpectations(name) {
         expect(field.formControl).to.exist;
         expect(isolateScope.fc).to.exist;
-        expect(field.formControl.$name).to.eq('myCustomName');
-        expect(scope.theForm).to.have.property('myCustomName');
-      });
+        expect(field.formControl.$name).to.eq(name);
+        expect(scope.theForm).to.have.property(name);
+      }
 
     });
 

@@ -178,6 +178,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       }
 
       function watchFormControl() {
+        let stopWatchingField = angular.noop;
         if (scope.options.noFormControl) {
           return;
         }
@@ -185,13 +186,34 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         if (!ngModelNode || !ngModelNode.name) {
           return;
         }
-        scope.$watch('form["' + ngModelNode.name + '"]', function onFormControlChange(formControl) {
-          if (formControl) {
-            scope.fc = formControl; // shortcut for template authors
-            scope.options.formControl = formControl;
-            addShowMessagesWatcher();
-          }
-        });
+        const nameExpressionRegex = /\{\{(.*?)}}/;
+        const nameExpression = nameExpressionRegex.exec(ngModelNode.name);
+        if (nameExpression) {
+          watchFieldName(nameExpression[1]);
+        } else {
+          watchFieldExistence(ngModelNode.name);
+        }
+
+        function watchFieldName(expression) {
+          scope.$watch(expression, function oneFieldNameChange(name) {
+            if (name) {
+              stopWatchingField();
+              watchFieldExistence(name);
+            }
+          });
+        }
+
+        function watchFieldExistence(name) {
+          stopWatchingField = scope.$watch(`form["${name}"]`, function formControlChange(formControl, oldFormControl) {
+            if (formControl) {
+              scope.fc = formControl; // shortcut for template authors
+              scope.options.formControl = formControl;
+              if (!oldFormControl) {
+                addShowMessagesWatcher();
+              }
+            }
+          });
+        }
 
         function addShowMessagesWatcher() {
           scope.$watch(function watchShowValidationChange() {
