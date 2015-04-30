@@ -4,6 +4,7 @@ describe('formly-form', () => {
   const input = '<input ng-model="model[options.key]" />';
   const basicForm = '<formly-form model="model" fields="fields"></formly-form>';
   let $compile, scope, el;
+  let key = 0;
 
   beforeEach(window.module('formly'));
   beforeEach(inject((_$compile_, $rootScope) => {
@@ -102,6 +103,14 @@ describe('formly-form', () => {
 
     expect(scope.parent).to.have.property('formly_0_in_my_ng_repeat');
     expect(scope.parent).to.have.property('formly_1_in_my_ng_repeat');
+  });
+
+  it(`should allow you to completely swap out the fields`, () => {
+    scope.fields = [getNewField(), getNewField()];
+    compileAndDigest(basicForm);
+    scope.fields = [getNewField(), getNewField()];
+
+    expect(() => scope.$digest()).to.not.throw();
   });
 
   describe(`options`, () => {
@@ -210,7 +219,6 @@ describe('formly-form', () => {
     });
 
     describe(`track-by attribute`, () => {
-      let key = 0;
       const template = `<formly-form model="model" fields="fields" track-by="field.key"></formly-form>`;
 
       beforeEach(() => {
@@ -253,11 +261,6 @@ describe('formly-form', () => {
       it(`should allow you splice in a field after initial compile`, () => {
         expectFieldChange(scope.fields.splice.bind(scope.fields, 1, 0, getNewField()));
       });
-
-
-      function getNewField() {
-        return {template: input, key: key++};
-      }
 
       function expectTrackBy(trackBy) {
         expect(el[0].innerHTML).to.contain(`field in fields track by ${trackBy}`);
@@ -331,5 +334,10 @@ describe('formly-form', () => {
     scope.$digest();
     return el;
   }
+
+  function getNewField() {
+    return {template: input, key: key++};
+  }
+
 
 });
