@@ -19,6 +19,7 @@
   </form>
   <button class="btn btn-default" ng-click="vm.options.resetModel()">Reset Model</button>
   <button class="btn btn-default" ng-click="vm.options.updateInitialValue()">Update Initial Value</button>
+  <button class="btn btn-default" ng-click="vm.swapFields()">Swap Fields</button>
 
   <h1>User</h1>
   <pre>{{vm.user | json}}</pre>
@@ -27,7 +28,7 @@
   <pre ng-if="vm.form">{{vm.form | json}}</pre>
 </div>
 
-<script src="../node_modules/api-check/dist/apiCheck.js"></script>
+<script src="../node_modules/api-check/dist/api-check.js"></script>
 <script src="angular/angular.js"></script>
 <script src="dist/formly.js"></script>
 <!--<script src="formly-templates/angular-formly-templates-vanilla.js"></script>-->
