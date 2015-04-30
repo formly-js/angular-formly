@@ -11,8 +11,9 @@ describe('formlyApiCheck', () => {
     }));
 
     it(`should pass when validation.messages is an object of functions or strings`, () => {
-      const options = {
+      expectPass({
         key: '♪┏(・o･)┛♪┗ ( ･o･) ┓♪',
+        template: 'hi',
         validation: {
           messages: {
             thing1() {
@@ -20,9 +21,21 @@ describe('formlyApiCheck', () => {
             thing2: '"Formly Expression"'
           }
         }
-      };
+      });
+    });
+
+    it(`should allow $$hashKey`, () => {
+      expectPass({
+        $$hashKey: 'object:1',
+        template: 'hello',
+        key: 'whatevs'
+      });
+    });
+
+    function expectPass(options) {
       const result = formlyFieldOptions(options);
       expect(result).to.be.undefined;
-    });
+    }
   });
+
 });

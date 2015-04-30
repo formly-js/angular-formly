@@ -21,26 +21,16 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
   return {
     restrict: 'E',
     template: function formlyFormGetTemplate(el, attrs) {
-      /* jshint maxcomplexity:6 */
       /* jshint -W033 */ // this because jshint is broken I guess...
-      const rootEl = attrs.rootEl || 'ng-form';
+      const rootEl = getRootEl();
       const formId = `formly_${currentFormId++}`;
-      let formName = formId;
-      const bindName = attrs.bindName;
-      if (bindName) {
-        if (angular.version.minor < 3) {
-          throw formlyUsability.getFormlyError('bind-name attribute on formly-form not allowed in > angular 1.3');
-        }
-        formName = `{{::'formly_' + ${bindName}}}`;
-      }
-      const hideDirective = attrs.hideDirective || formlyConfig.extras.defaultHideDirective || 'ng-if';
       return `
         <${rootEl} class="formly"
-                 name="${formName}"
+                 name="${getFormName()}"
                  role="form">
           <div formly-field
-               ng-repeat="field in fields track by $index"
-               ${hideDirective}="!field.hide"
+               ng-repeat="field in fields ${getTrackBy()}"
+               ${getHideDirective()}="!field.hide"
                class="formly-field {{field.type ? 'formly-field-' + field.type : ''}}"
                options="field"
                model="field.model || model"
@@ -53,6 +43,34 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
           <div ng-transclude></div>
         </${rootEl}>
       `;
+
+      function getRootEl() {
+        return attrs.rootEl || 'ng-form';
+      }
+
+      function getHideDirective() {
+        return attrs.hideDirective || formlyConfig.extras.defaultHideDirective || 'ng-if';
+      }
+
+      function getTrackBy() {
+        if (!attrs.trackBy) {
+          return '';
+        } else {
+          return `track by ${attrs.trackBy}`;
+        }
+      }
+
+      function getFormName() {
+        let formName = formId;
+        const bindName = attrs.bindName;
+        if (bindName) {
+          if (angular.version.minor < 3) {
+            throw formlyUsability.getFormlyError('bind-name attribute on formly-form not allowed in > angular 1.3');
+          }
+          formName = `{{::'formly_' + ${bindName}}}`;
+        }
+        return formName;
+      }
     },
     replace: true,
     transclude: true,

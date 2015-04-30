@@ -56,6 +56,7 @@ const formlyWrapperType = apiCheck.shape({
 }).strict;
 
 let fieldOptionsApiShape = {
+  $$hashKey: apiCheck.any.optional,
   type: apiCheck.shape.ifNot(['template', 'templateUrl'], apiCheck.string).optional,
   template: apiCheck.shape.ifNot(['type', 'templateUrl'], apiCheck.string).optional,
   templateUrl: apiCheck.shape.ifNot(['type', 'template'], apiCheck.string).optional,

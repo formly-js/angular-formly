@@ -1,8 +1,16 @@
 # 6.1.1
 
+## New Features
+
+- Adding `track-by` attribute to `formly-form` to allow you to specify how you would like the `formly-form` `ng-repeat` to track your fields. [#246](/../../issues/246)
+
 ## Bug Fixes
 
 - Fixing issue [#266](/../../issues/266) where the form control wasn't set when using a custom name.
+
+## Notable Changes (non-breaking)
+
+- Removing default `track by $index` to allow developers to change fields without index issues. Should not break current developers usage.
 
 # 6.1.0
 
