@@ -3,7 +3,7 @@
 ## New Features
 
 - Adding `track-by` attribute to `formly-form` to allow you to specify how you would like the `formly-form` `ng-repeat` to track your fields. [#246](/../../issues/246)
-- Adding ability to specify a function (which can optionally return a promise) for both `template` and `templateUrl`.
+- Adding ability to specify a function (which can optionally return a promise) for both `template` and `templateUrl`. Thanks [@ckniffen](https://github.com/ckniffen)!
 
 ## Bug Fixes
 
