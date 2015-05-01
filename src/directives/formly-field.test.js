@@ -3,15 +3,16 @@ import apiCheck from 'api-check';
 import {expect} from 'chai';
 
 describe('formly-field', function() {
-  let $compile, scope, el, formlyConfig;
+  let $compile, scope, el, formlyConfig, $q;
   const formTemplate = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
   const inputTemplate = '<input ng-model="model[options.key]" />';
 
   beforeEach(window.module('formly'));
-  beforeEach(inject((_$compile_, $rootScope, _formlyConfig_) => {
+  beforeEach(inject((_$compile_, $rootScope, _formlyConfig_, _$q_) => {
     $compile = _$compile_;
     scope = $rootScope.$new();
     formlyConfig = _formlyConfig_;
+    $q = _$q_;
   }));
 
   describe('with template wrapper', function() {
@@ -342,7 +343,7 @@ describe('formly-field', function() {
   describe(`template and templateUrl properties`, () => {
     let $templateCache;
     var expectedTemplateText = 'sweet mercy';
-    
+
     beforeEach(inject((_$templateCache_) => {
       $templateCache = _$templateCache_;
       $templateCache.put('templateUrlTest.html', expectedTemplateText);
@@ -350,9 +351,26 @@ describe('formly-field', function() {
 
     it('should allow template property to be a function', () => {
       scope.fields = [
-        { 
-          template: function(options){
+        {
+          template: function(options) {
+            expect(options).to.eq(scope.fields[0]);
             return expectedTemplateText;
+          }
+        }
+      ];
+
+      const el = compileAndDigest();
+
+      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      expect(fieldEl.text()).to.equal(expectedTemplateText);
+    });
+
+    it(`should allow template property to be a function that returns a promise`, () => {
+      scope.fields = [
+        {
+          template: function(options) {
+            expect(options).to.eq(scope.fields[0]);
+            return $q.when(expectedTemplateText);
           }
         }
       ];
@@ -365,7 +383,7 @@ describe('formly-field', function() {
 
     it('should allow template property to be a string', () => {
       scope.fields = [
-        { template: expectedTemplateText }
+        {template: expectedTemplateText}
       ];
 
       const el = compileAndDigest();
@@ -375,10 +393,27 @@ describe('formly-field', function() {
     });
 
     it('should allow templateUrl property to be a function', () => {
-       scope.fields = [
-        { 
-          templateUrl: function(options){
+      scope.fields = [
+        {
+          templateUrl: function(options) {
+            expect(options).to.eq(scope.fields[0]);
             return 'templateUrlTest.html';
+          }
+        }
+      ];
+
+      const el = compileAndDigest();
+
+      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      expect(fieldEl.text()).to.equal(expectedTemplateText);
+    });
+
+    it('should allow templateUrl property to be a function that returns a promise', () => {
+      scope.fields = [
+        {
+          templateUrl: function(options) {
+            expect(options).to.eq(scope.fields[0]);
+            return $q.when('templateUrlTest.html');
           }
         }
       ];
@@ -391,7 +426,7 @@ describe('formly-field', function() {
 
     it('should allow templateUrl property to be a string', () => {
       scope.fields = [
-        { templateUrl: 'templateUrlTest.html' }
+        {templateUrl: 'templateUrlTest.html'}
       ];
 
       const el = compileAndDigest();
@@ -458,8 +493,7 @@ describe('formly-field', function() {
     beforeEach(() => {
       formlyConfig.setWrapper({
         name,
-        template:
-          '<div class="to.className"><label>{{to.label}}</label><formly-transclude></formly-transclude></div>',
+        template: '<div class="to.className"><label>{{to.label}}</label><formly-transclude></formly-transclude></div>',
         apiCheck: {
           templateOptions: apiCheck.shape({
             label: apiCheck.string,

@@ -268,15 +268,19 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
 
 
   function getTemplate(template, isUrl, options) {
-    if(angular.isFunction(template)){
-      template = template(options);
+    let templatePromise;
+    if (angular.isFunction(template)) {
+      templatePromise = $q.when(template(options));
+    } else {
+      templatePromise = $q.when(template);
     }
 
     if (!isUrl) {
-      return $q.when(template);
+      return templatePromise;
     } else {
       let httpOptions = {cache: $templateCache};
-      return $http.get(template, httpOptions)
+      return templatePromise
+        .then((url) => $http.get(url, httpOptions))
         .then((response) => response.data)
         .catch(function handleErrorGettingATemplate(error) {
           formlyWarn(
@@ -381,9 +385,9 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     const fn = apiCheckFunction || 'warn';
     const shape = instance.shape(apiCheck);
     instance[fn](shape, options, apiCheckOptions || {
-      prefix: `formly-field ${name}`,
-      url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
-    });
+        prefix: `formly-field ${name}`,
+        url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
+      });
   }
 
 }
