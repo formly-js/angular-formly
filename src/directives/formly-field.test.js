@@ -472,6 +472,14 @@ describe('formly-field', function() {
       compileAndDigest();
       expect(scope.model[key]).to.eq(complexDefaultValue);
     });
+
+    it(`should be set even if the defaultValue is falsy`, () => {
+      const falsyValue = 0;
+      scope.fields[0].defaultValue = falsyValue;
+
+      compileAndDigest();
+      expect(scope.model[key]).to.eq(falsyValue);
+    });
   });
 
   describe(`type apiCheck`, () => {

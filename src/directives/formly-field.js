@@ -78,7 +78,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       }
 
       function setDefaultValue() {
-        if (opts.defaultValue && !angular.isDefined($scope.model[opts.key])) {
+        if (angular.isDefined(opts.defaultValue) && !angular.isDefined($scope.model[opts.key])) {
           $scope.model[opts.key] = opts.defaultValue;
         }
       }

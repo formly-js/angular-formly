@@ -1,3 +1,9 @@
+# 6.3.1
+
+## Bug Fixes
+
+- Fixing falsy issue with `defaultOptions`
+
 # 6.3.0
 
 ## New Features
