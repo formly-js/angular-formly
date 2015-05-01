@@ -58,8 +58,14 @@ const formlyWrapperType = apiCheck.shape({
 let fieldOptionsApiShape = {
   $$hashKey: apiCheck.any.optional,
   type: apiCheck.shape.ifNot(['template', 'templateUrl'], apiCheck.string).optional,
-  template: apiCheck.shape.ifNot(['type', 'templateUrl'], apiCheck.string).optional,
-  templateUrl: apiCheck.shape.ifNot(['type', 'template'], apiCheck.string).optional,
+  template: apiCheck.shape.ifNot(
+    ['type', 'templateUrl'], 
+    apiCheck.oneOfType([apiCheck.string, apiCheck.func])
+  ).optional,
+  templateUrl: apiCheck.shape.ifNot(
+    ['type', 'template'],
+    apiCheck.oneOfType([apiCheck.string, apiCheck.func])
+  ).optional,
   key: apiCheck.oneOfType([apiCheck.string, apiCheck.number]),
   model: apiCheck.object.optional,
   expressionProperties: apiCheck.objectOf(apiCheck.oneOfType([
@@ -128,8 +134,8 @@ typeOptionsDefaultOptions.key = apiCheck.string.optional;
 
 let formlyTypeOptions = apiCheck.shape({
   name: apiCheck.string,
-  template: apiCheck.shape.ifNot('templateUrl', apiCheck.string).optional,
-  templateUrl: apiCheck.shape.ifNot('template', apiCheck.string).optional,
+  template: apiCheck.shape.ifNot('templateUrl', apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
+  templateUrl: apiCheck.shape.ifNot('template', apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
   controller: apiCheck.oneOfType([
     apiCheck.func, apiCheck.string, apiCheck.array
   ]).optional,

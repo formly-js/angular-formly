@@ -339,6 +339,68 @@ describe('formly-field', function() {
     });
   });
 
+  describe(`template and templateUrl properties`, () => {
+    let $templateCache;
+    var expectedTemplateText = 'sweet mercy';
+    
+    beforeEach(inject((_$templateCache_) => {
+      $templateCache = _$templateCache_;
+      $templateCache.put('templateUrlTest.html', expectedTemplateText);
+    }));
+
+    it('should allow template property to be a function', () => {
+      scope.fields = [
+        { 
+          template: function(options){
+            return expectedTemplateText;
+          }
+        }
+      ];
+
+      const el = compileAndDigest();
+
+      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      expect(fieldEl.text()).to.equal(expectedTemplateText);
+    });
+
+    it('should allow template property to be a string', () => {
+      scope.fields = [
+        { template: expectedTemplateText }
+      ];
+
+      const el = compileAndDigest();
+
+      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      expect(fieldEl.text()).to.equal(expectedTemplateText);
+    });
+
+    it('should allow templateUrl property to be a function', () => {
+       scope.fields = [
+        { 
+          templateUrl: function(options){
+            return 'templateUrlTest.html';
+          }
+        }
+      ];
+
+      const el = compileAndDigest();
+
+      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      expect(fieldEl.text()).to.equal(expectedTemplateText);
+    });
+
+    it('should allow templateUrl property to be a string', () => {
+      scope.fields = [
+        { templateUrl: 'templateUrlTest.html' }
+      ];
+
+      const el = compileAndDigest();
+
+      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      expect(fieldEl.text()).to.equal(expectedTemplateText);
+    });
+  });
+
   describe(`type apiCheck`, () => {
     let type = 'input';
     beforeEach(() => {
