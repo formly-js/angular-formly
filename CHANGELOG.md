@@ -1,3 +1,9 @@
+# 6.3.0
+
+## New Features
+
+- Adding `defaultOptions` property onto the `field` config. Normally you want to initialize the model, but this allows you to defer that to angular-formly.
+
 # 6.2.0
 
 ## New Features
