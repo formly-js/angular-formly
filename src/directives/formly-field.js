@@ -33,6 +33,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       $scope.id = formlyUtil.getFieldId($scope.formId, opts, $scope.index);
 
       // initalization
+      setDefaultValue();
       runExpressions();
       addModelWatcher($scope, opts);
       addValidationMessages(opts);
@@ -74,6 +75,12 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
           templateOptions: {},
           validation: {}
         });
+      }
+
+      function setDefaultValue() {
+        if (opts.defaultValue && !angular.isDefined($scope.model[opts.key])) {
+          $scope.model[opts.key] = opts.defaultValue;
+        }
       }
 
       function mergeFieldOptionsWithTypeDefaults(options, type) {

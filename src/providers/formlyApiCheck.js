@@ -59,7 +59,7 @@ let fieldOptionsApiShape = {
   $$hashKey: apiCheck.any.optional,
   type: apiCheck.shape.ifNot(['template', 'templateUrl'], apiCheck.string).optional,
   template: apiCheck.shape.ifNot(
-    ['type', 'templateUrl'], 
+    ['type', 'templateUrl'],
     apiCheck.oneOfType([apiCheck.string, apiCheck.func])
   ).optional,
   templateUrl: apiCheck.shape.ifNot(
@@ -124,7 +124,8 @@ let fieldOptionsApiShape = {
   runExpressions: apiCheck.func.optional,
   resetModel: apiCheck.func.optional,
   updateInitialValue: apiCheck.func.optional,
-  initialValue: apiCheck.any.optional
+  initialValue: apiCheck.any.optional,
+  defaultValue: apiCheck.any.optional
 };
 
 let formlyFieldOptions = apiCheck.shape(fieldOptionsApiShape).strict;

@@ -436,6 +436,44 @@ describe('formly-field', function() {
     });
   });
 
+  describe(`defaultValue`, () => {
+    const key = '♪┏(・o･)┛♪┗ ( ･o･) ┓♪';
+    const defaultValue = '~=[,,_,,]:3';
+    beforeEach(() => {
+      scope.fields = [
+        {template: inputTemplate, key, defaultValue}
+      ];
+      scope.model = {};
+    });
+
+    it(`should default the model's value to the specified value if it is not defined`, () => {
+      compileAndDigest();
+      expect(scope.model[key]).to.equal(defaultValue);
+    });
+
+    it(`should not have a problem if the model starts out as undefined`, () => {
+      scope.model = undefined;
+      compileAndDigest();
+      expect(scope.model[key]).to.equal(defaultValue);
+    });
+
+    it(`should not change the model's value if the specified value is defined`, () => {
+      const presetValue = 'ಠ_ರೃ';
+      scope.model[key] = presetValue;
+
+      compileAndDigest();
+      expect(scope.model[key]).to.equal(presetValue);
+    });
+
+    it(`should be exactly equal to a non-primative`, () => {
+      const complexDefaultValue = {foo: 'bar'};
+      scope.fields[0].defaultValue = complexDefaultValue;
+
+      compileAndDigest();
+      expect(scope.model[key]).to.eq(complexDefaultValue);
+    });
+  });
+
   describe(`type apiCheck`, () => {
     let type = 'input';
     beforeEach(() => {
