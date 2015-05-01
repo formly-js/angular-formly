@@ -262,11 +262,16 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         `Type '${options.type}' has not template. On element:`, options
       );
     }
-    return getTemplate(template || templateUrl, !template);
+
+    return getTemplate(template || templateUrl, !template, options);
   }
 
 
-  function getTemplate(template, isUrl) {
+  function getTemplate(template, isUrl, options) {
+    if(angular.isFunction(template)){
+      template = template(options);
+    }
+
     if (!isUrl) {
       return $q.when(template);
     } else {
