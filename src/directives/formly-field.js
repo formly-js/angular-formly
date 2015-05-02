@@ -34,6 +34,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
 
       // initalization
       setDefaultValue();
+      setInitialValue();
       runExpressions();
       addModelWatcher($scope, opts);
       addValidationMessages(opts);
@@ -83,6 +84,10 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         }
       }
 
+      function setInitialValue() {
+        opts.initialValue = $scope.model && $scope.model[opts.key];
+      }
+
       function mergeFieldOptionsWithTypeDefaults(options, type) {
         if (type) {
           mergeOptions(options, type.defaultOptions);
@@ -104,15 +109,13 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
 
       function extendOptionsWithDefaults(options, index) {
         const key = options.key || index || 0;
-        const initialValue = $scope.model && $scope.model[key];
         angular.extend(options, {
           // attach the key in case the formly-field directive is used directly
           key,
           value: valueGetterSetter,
           runExpressions,
           resetModel,
-          updateInitialValue,
-          initialValue
+          updateInitialValue
         });
       }
 

@@ -480,6 +480,12 @@ describe('formly-field', function() {
       compileAndDigest();
       expect(scope.model[key]).to.eq(falsyValue);
     });
+
+    it(`should be set as the initialValue`, () => {
+      compileAndDigest();
+
+      expect(scope.fields[0].initialValue).to.eq(defaultValue);
+    });
   });
 
   describe(`type apiCheck`, () => {
