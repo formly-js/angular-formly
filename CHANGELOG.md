@@ -1,14 +1,20 @@
+# 6.3.2
+
+## Bug Fixes
+
+- Correctly setting the `initialValue` *after* setting the `defaultValue`.
+
 # 6.3.1
 
 ## Bug Fixes
 
-- Fixing falsy issue with `defaultOptions`
+- Fixing falsy issue with `defaultValue`
 
 # 6.3.0
 
 ## New Features
 
-- Adding `defaultOptions` property onto the `field` config. Normally you want to initialize the model, but this allows you to defer that to angular-formly.
+- Adding `defaultValue` property onto the `field` config. Normally you want to initialize the model, but this allows you to defer that to angular-formly.
 
 # 6.2.0
 
