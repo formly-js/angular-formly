@@ -596,6 +596,44 @@ describe('formly-field', function() {
       expect(isolateScope.fc).to.exist;
     });
 
+    it(`should add a formControl even on a field with an ng-if on the ng-model`, () => {
+      const template = '<input ng-model="model[options.key]" ng-if="to.if" />';
+      const field = {template, templateOptions: {if: false}};
+      scope.fields = [field];
+      compileAndDigestAndSetIsolateScope();
+      expect(isolateScope.fc).to.not.exist;
+      field.templateOptions.if = true;
+      scope.$digest();
+      expect(isolateScope.fc).to.exist;
+    });
+
+    it(`should be used to add the formControl watcher if set to false even if there is no ng-model`, () => {
+      const radioTemplate = `
+        <div class="radio-group">
+          <div ng-repeat="(key, option) in to.options" class="radio">
+            <label>
+              <input type="radio"
+                     id="{{id + '_'+ $index}}"
+                     tabindex="0"
+                     ng-value="option[to.valueProp || 'value']"
+                     ng-model="model[options.key]">
+              {{option[to.labelProp || 'name']}}
+            </label>
+          </div>
+        </div>
+      `;
+      scope.fields = [
+        {
+          template: radioTemplate,
+          templateOptions: {
+            options: [{name: 'Name', value: 'name'}]
+          }
+        }
+      ];
+      compileAndDigestAndSetIsolateScope();
+      expect(isolateScope.fc).to.exist;
+    });
+
     describe(`noFormControl`, () => {
       it(`should skip adding the formControl if set to true`, () => {
         scope.fields = [{template: inputTemplate, noFormControl: true}];
@@ -603,33 +641,6 @@ describe('formly-field', function() {
         expect(isolateScope.fc).to.not.exist;
       });
 
-      it(`should be used to add the formControl watcher if set to false even if there is no ng-model`, () => {
-        const radioTemplate = `
-          <div class="radio-group">
-            <div ng-repeat="(key, option) in to.options" class="radio">
-              <label>
-                <input type="radio"
-                       id="{{id + '_'+ $index}}"
-                       tabindex="0"
-                       ng-value="option[to.valueProp || 'value']"
-                       ng-model="model[options.key]">
-                {{option[to.labelProp || 'name']}}
-              </label>
-            </div>
-          </div>
-        `;
-        scope.fields = [
-          {
-            template: radioTemplate,
-            noFormControl: false,
-            templateOptions: {
-              options: [{name: 'Name', value: 'name'}]
-            }
-          }
-        ];
-        compileAndDigestAndSetIsolateScope();
-        expect(isolateScope.fc).to.exist;
-      });
     });
 
     describe(`name`, () => {

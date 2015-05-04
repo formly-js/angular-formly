@@ -176,8 +176,8 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
           );
         });
 
-      function setElementTemplate(templateEl) {
-        el.html(asHtml(templateEl));
+      function setElementTemplate(templateString) {
+        el.html(asHtml(templateString));
         $compile(el.contents())(scope);
         if (type && type.link) {
           type.link.apply(thusly, args);
@@ -185,31 +185,19 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         if (scope.options.link) {
           scope.options.link.apply(thusly, args);
         }
+        return templateString;
       }
 
-      function watchFormControl() {
+      function watchFormControl(templateString) {
         let stopWatchingField = angular.noop;
         let stopWatchingShowError = angular.noop;
         if (scope.options.noFormControl) {
           return;
         }
-        const ngModelNode = el[0].querySelector('[ng-model]');
+        const templateEl = angular.element(`<div>${templateString}</div>`);
+        const ngModelNode = templateEl[0].querySelector('[ng-model]');
         if (ngModelNode && ngModelNode.name) {
           watchFieldNameOrExistence(ngModelNode.name);
-        } else if (scope.options.noFormControl === false) {
-          watchForFieldName();
-        }
-
-        function watchForFieldName() {
-          const stopWatchingFieldName = scope.$watch(() => {
-            const ngModelNode = el[0].querySelector('[ng-model]');
-            return ngModelNode && ngModelNode.name;
-          }, name => {
-            if (name) {
-              stopWatchingFieldName();
-              watchFieldNameOrExistence(name);
-            }
-          });
         }
 
         function watchFieldNameOrExistence(name) {

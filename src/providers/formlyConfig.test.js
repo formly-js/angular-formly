@@ -611,7 +611,7 @@ describe('formlyConfig', () => {
       beforeEach(inject(($rootScope, _$compile_, _formlyConfig_) => {
         scope = $rootScope.$new();
         $compile = _$compile_;
-        scope.fields = [{template: '<input ng-model="model[options.key] />'}];
+        scope.fields = [{template: '<input ng-model="model[options.key]" />'}];
         formlyConfig = _formlyConfig_;
       }));
 
