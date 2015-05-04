@@ -79,14 +79,7 @@ describe('formlyConfig', () => {
 
     describe('(◞‸◟；) path', () => {
       it('should throw an error when providing both a template and templateUrl', () => {
-        expect(() => setterFn({template, templateUrl}, name)).to.throw(/template.*?only if templateUrl.*not/i);
-      });
-
-      it('should throw an error when providing neither a template or a templateUrl', () => {
-        expect(() => setterFn({
-          template,
-          templateUrl
-        }, name)).to.throw(/template.*specified only if templateUrl is not specified/i);
+        expect(() => setterFn({template, templateUrl}, name)).to.throw(/`template` must be `ifNot\[templateUrl]`/i);
       });
 
       it('should throw an error when the template does not use formly-transclude', () => {
