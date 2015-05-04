@@ -1,3 +1,9 @@
+# 6.3.3
+
+## Bug Fixes
+
+- Adding the ability to force formly to watch your fields for a `formControl` by setting `noFormControl` to `false`.
+
 # 6.3.2
 
 ## Bug Fixes

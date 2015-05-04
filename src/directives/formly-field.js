@@ -194,15 +194,32 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
           return;
         }
         const ngModelNode = el[0].querySelector('[ng-model]');
-        if (!ngModelNode || !ngModelNode.name) {
-          return;
+        if (ngModelNode && ngModelNode.name) {
+          watchFieldNameOrExistence(ngModelNode.name);
+        } else if (scope.options.noFormControl === false) {
+          watchForFieldName();
         }
-        const nameExpressionRegex = /\{\{(.*?)}}/;
-        const nameExpression = nameExpressionRegex.exec(ngModelNode.name);
-        if (nameExpression) {
-          watchFieldName(nameExpression[1]);
-        } else {
-          watchFieldExistence(ngModelNode.name);
+
+        function watchForFieldName() {
+          const stopWatchingFieldName = scope.$watch(() => {
+            const ngModelNode = el[0].querySelector('[ng-model]');
+            return ngModelNode && ngModelNode.name;
+          }, name => {
+            if (name) {
+              stopWatchingFieldName();
+              watchFieldNameOrExistence(name);
+            }
+          });
+        }
+
+        function watchFieldNameOrExistence(name) {
+          const nameExpressionRegex = /\{\{(.*?)}}/;
+          const nameExpression = nameExpressionRegex.exec(name);
+          if (nameExpression) {
+            watchFieldName(nameExpression[1]);
+          } else {
+            watchFieldExistence(name);
+          }
         }
 
         function watchFieldName(expression) {
