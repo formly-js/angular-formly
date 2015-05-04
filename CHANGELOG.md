@@ -1,3 +1,9 @@
+# 6.3.4
+
+## Improvements
+
+- No longer need to specify `noFormControl` to be `false`. Formly is smart enough to know if you have an `ng-model` in your template.
+
 # 6.3.3
 
 ## Bug Fixes
