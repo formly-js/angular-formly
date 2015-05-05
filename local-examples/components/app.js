@@ -91,8 +91,26 @@
     vm.user = {};
 
     vm.swapFields = swapFields;
+    let key = 0;
 
-    vm.realFields = [];
+    vm.realFields = [
+      {
+        className: 'display-flex',
+        fieldGroup: [
+          {className: 'flex-1', type: 'input', key: key++, templateOptions: {label: 'Field ' + key}},
+          {className: 'flex-2', type: 'input', key: key++, templateOptions: {label: 'Field ' + key}}
+        ]
+      },
+      {type: 'input', key: key++, templateOptions: {label: 'Field ' + key}},
+      {type: 'input', key: key++, templateOptions: {label: 'Field ' + key}},
+      {
+        fieldGroup: [
+          {type: 'input', key: key++, templateOptions: {label: 'Field ' + key}},
+          {type: 'input', key: key++, templateOptions: {label: 'Field ' + key}},
+          {type: 'input', key: key++, templateOptions: {label: 'Field ' + key}}
+        ]
+      }
+    ];
 
     vm.fields = getFields();
 
