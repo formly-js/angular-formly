@@ -1,10 +1,10 @@
 import {expect} from 'chai';
+import testUtils from '../test.utils.js';
+
+const {getNewField, input, basicForm} = testUtils;
 
 describe('formly-form', () => {
-  const input = '<input ng-model="model[options.key]" />';
-  const basicForm = '<formly-form model="model" fields="fields"></formly-form>';
   let $compile, scope, el;
-  let key = 0;
 
   beforeEach(window.module('formly'));
   beforeEach(inject((_$compile_, $rootScope) => {
@@ -335,9 +335,6 @@ describe('formly-form', () => {
     return el;
   }
 
-  function getNewField() {
-    return {template: input, key: key++};
-  }
 
 
 });

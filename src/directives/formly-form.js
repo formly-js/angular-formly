@@ -31,7 +31,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
           <div formly-field
                ng-repeat="field in fields ${getTrackBy()}"
                ${getHideDirective()}="!field.hide"
-               class="formly-field {{field.type ? 'formly-field-' + field.type : ''}}"
+               class="formly-field"
                options="field"
                model="field.model || model"
                fields="fields"
@@ -67,6 +67,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
           if (angular.version.minor < 3) {
             throw formlyUsability.getFormlyError('bind-name attribute on formly-form not allowed in > angular 1.3');
           }
+          // we can do a one-time binding here because we know we're in 1.3.x territory
           formName = `{{::'formly_' + ${bindName}}}`;
         }
         return formName;

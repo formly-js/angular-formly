@@ -1,3 +1,13 @@
+# Latest
+
+## Improvements
+
+- No longer watching the `field.type` for the field's class because this can't ever change and simply adding the class itself
+
+## New Features
+
+- Adding the ability to specify a `className` on a field which will get added to the `formly-field`.
+
 # 6.3.4
 
 ## Improvements

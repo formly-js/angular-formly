@@ -158,6 +158,8 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       }
     },
     link: function fieldLink(scope, el) {
+      addClasses();
+
       var type = scope.options.type && formlyConfig.getType(scope.options.type);
       var args = arguments;
       var thusly = this;
@@ -175,6 +177,15 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
             error
           );
         });
+
+      function addClasses() {
+        if (scope.options.className) {
+          el.addClass(scope.options.className);
+        }
+        if (scope.options.type) {
+          el.addClass(`formly-field-${scope.options.type}`);
+        }
+      }
 
       function setElementTemplate(templateString) {
         el.html(asHtml(templateString));

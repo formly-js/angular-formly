@@ -2,10 +2,12 @@ import sinon from 'sinon';
 import apiCheck from 'api-check';
 import {expect} from 'chai';
 
+import testUtils from '../test.utils.js';
+
+const {getNewField, input, basicForm} = testUtils;
+
 describe('formly-field', function() {
   let $compile, scope, el, formlyConfig, $q;
-  const formTemplate = '<formly-form form="theForm" model="model" fields="fields"></formly-form>';
-  const inputTemplate = '<input ng-model="model[options.key]" />';
 
   beforeEach(window.module('formly'));
   beforeEach(inject((_$compile_, $rootScope, _formlyConfig_, _$q_) => {
@@ -441,7 +443,7 @@ describe('formly-field', function() {
     const defaultValue = '~=[,,_,,]:3';
     beforeEach(() => {
       scope.fields = [
-        {template: inputTemplate, key, defaultValue}
+        {template: input, key, defaultValue}
       ];
       scope.model = {};
     });
@@ -558,7 +560,7 @@ describe('formly-field', function() {
       });
       scope.model = {};
       scope.fields = [
-        {template: inputTemplate, wrapper, templateOptions: {}}
+        {template: input, wrapper, templateOptions: {}}
       ];
     });
 
@@ -583,7 +585,7 @@ describe('formly-field', function() {
     let isolateScope, field;
 
     beforeEach(() => {
-      scope.fields = [{template: inputTemplate}];
+      scope.fields = [{template: input}];
     });
 
     it(`should be placed onto field's options`, () => {
@@ -636,7 +638,7 @@ describe('formly-field', function() {
 
     describe(`noFormControl`, () => {
       it(`should skip adding the formControl if set to true`, () => {
-        scope.fields = [{template: inputTemplate, noFormControl: true}];
+        scope.fields = [{template: input, noFormControl: true}];
         compileAndDigestAndSetIsolateScope();
         expect(isolateScope.fc).to.not.exist;
       });
@@ -679,8 +681,31 @@ describe('formly-field', function() {
 
   });
 
+  describe(`link`, () => {
+    describe(`addClasses`, () => {
+      it(`should add the type class`, () => {
+        formlyConfig.setType({
+          name: 'input',
+          template: input
+        });
+
+        scope.fields = [{type: 'input'}];
+
+        compileAndDigest();
+        expect(el[0].querySelector('[formly-field].formly-field-input')).to.exist;
+      });
+
+      it(`should add the className class`, () => {
+        scope.fields = [getNewField({className: 'classy'}), getNewField({className: 'very-classy'})];
+        compileAndDigest();
+        expect(el[0].querySelector('[formly-field].classy')).to.exist;
+        expect(el[0].querySelector('[formly-field].very-classy')).to.exist;
+      });
+    });
+  });
+
   function compileAndDigest(template) {
-    el = $compile(template || formTemplate)(scope);
+    el = $compile(template || basicForm)(scope);
     scope.$digest();
     return el;
   }
