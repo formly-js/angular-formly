@@ -70,7 +70,6 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       }
 
       function copyAttributes(attributes) {
-        //console.log(attributes);
         const excluded = ['model', 'form', 'fields', 'options', 'name', 'role', 'class'];
         const arrayAttrs = [];
         angular.forEach(attributes, ({nodeName, nodeValue}) => {
@@ -106,17 +105,22 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
 
       // watch the model and evaluate watch expressions that depend on it.
-      $scope.$watch('model', function onResultUpdate(newResult) {
+      $scope.$watch('model', onModelOrFormStateChange, true);
+      if ($scope.options.formState) {
+        $scope.$watch('options.formState', onModelOrFormStateChange, true);
+      }
+
+      function onModelOrFormStateChange() {
         angular.forEach($scope.fields, function runFieldExpressionProperties(field) {
           /*jshint -W030 */
-          field.runExpressions && field.runExpressions(newResult);
+          const model = field.model || $scope.model;
+          field.runExpressions && field.runExpressions(model);
           if (field.hideExpression) {
-            const model = field.model || $scope.model;
             const val = model[field.key];
             field.hide = formlyUtil.formlyEval($scope, field.hideExpression, val, val);
           }
         });
-      }, true);
+      }
 
       function setupOptions() {
         formlyApiCheck.throw(

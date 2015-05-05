@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import testUtils from '../test.utils.js';
 import angular from 'angular-fix';
+import sinon from 'sinon';
 
 const {getNewField, input, basicForm} = testUtils;
 
@@ -293,7 +294,11 @@ describe('formly-form', () => {
         {template: input, key: 'bar', templateOptions: {type: 'numaber'}},
         {template: input, key: 'foobar', templateOptions: {type: 'email'}}
       ];
-      scope.options = {};
+      scope.options = {
+        formState: {
+          foo: 'bar'
+        }
+      };
     });
 
     it(`should throw an error with extra options`, () => {
@@ -303,6 +308,23 @@ describe('formly-form', () => {
           <formly-form model="model" fields="fields" options="options"></formly-form>
         `);
       }).to.throw();
+    });
+
+    it(`should run expressionProperties when the formState changes`, () => {
+      const spy = sinon.spy();
+      const field = {
+        template: input,
+        key: 'foo',
+        expressionProperties: {
+          'templateOptions.label': spy
+        }
+      };
+      scope.fields = [field];
+      compileAndDigest(template);
+      scope.options.formState.foo = 'eggs';
+      scope.$digest();
+      $timeout.flush();
+      expect(spy).to.have.been.called;
     });
 
     describe(`resetModel`, () => {
