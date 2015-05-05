@@ -1,3 +1,14 @@
+# 6.4.0-beta.2
+
+## New Features
+
+- Adding `model`, `options`, `hide`, and `form` to a `formGroup` to allow you to control those properties.
+- `formState` is the same object for `formGroup`s as the parent's `formState`.
+
+## Bug Fixes
+
+- Properly handling `resetModel` and `updateInitialValues` for `formGroup`s
+
 # 6.4.0-beta.1
 
 ## New Features
