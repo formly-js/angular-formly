@@ -27,8 +27,7 @@
     "test:ci": "NODE_ENV=test:ci node node_modules/karma/bin/karma start karma.conf.js",
     "watch": "NODE_ENV=development webpack --watch --progress --colors",
     "start": "npm run watch & npm run test",
-    "release": "git push && npm publish && git push --tags",
-    "release:beta": "git push && npm publish --tag beta && git push --tags"
+    "release": "git push && npm publish && git push --tags"
   },
   "config": {
     "ghooks": {
