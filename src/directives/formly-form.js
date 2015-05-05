@@ -97,7 +97,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       form: '=?',
       options: '=?'
     },
-    controller: /* @ngInject */ function FormlyFormController($scope) {
+    controller: /* @ngInject */ function FormlyFormController($scope, formlyUtil) {
       setupOptions();
       $scope.model = $scope.model || {};
       $scope.fields = $scope.fields || [];
@@ -110,6 +110,11 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
         angular.forEach($scope.fields, function runFieldExpressionProperties(field) {
           /*jshint -W030 */
           field.runExpressions && field.runExpressions(newResult);
+          if (field.hideExpression) {
+            const model = field.model || $scope.model;
+            const val = model[field.key];
+            field.hide = formlyUtil.formlyEval($scope, field.hideExpression, val, val);
+          }
         });
       }, true);
 

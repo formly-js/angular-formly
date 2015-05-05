@@ -252,6 +252,31 @@ describe('formly-form', () => {
       compileAndDigest();
       expect(scope.fields[0].form).to.have.property('$$parentForm');
     });
+
+    it(`should be able to be dynamically hidden with a hideExpression`, () => {
+      scope.fields = [
+        {
+          hideExpression: 'model.foo === "bar"',
+          fieldGroup: [
+            getNewField(),
+            getNewField()
+          ]
+        },
+        getNewField({key: 'foo', hideExpression: 'model.baz === "foobar"'})
+      ];
+
+      compileAndDigest();
+
+      expect(scope.fields[0].hide).to.be.false;
+      expect(scope.fields[1].hide).to.be.false;
+
+      scope.model.foo = 'bar';
+      scope.model.baz = 'foobar';
+      scope.$digest();
+
+      expect(scope.fields[0].hide).to.be.true;
+      expect(scope.fields[1].hide).to.be.true;
+    });
   });
 
   describe(`options`, () => {
