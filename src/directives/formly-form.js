@@ -10,14 +10,6 @@ export default formlyForm;
 // @ngInject
 function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
   var currentFormId = 1;
-  var optionsApi = [
-    formlyApiCheck.shape({
-      formState: formlyApiCheck.object.optional,
-      resetModel: formlyApiCheck.func.optional,
-      updateInitialValue: formlyApiCheck.func.optional,
-      removeChromeAutoComplete: formlyApiCheck.bool.optional
-    }).strict.optional
-  ];
   return {
     restrict: 'E',
     template: function formlyFormGetTemplate(el, attrs) {
@@ -117,12 +109,14 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       $scope.$watch('model', function onResultUpdate(newResult) {
         angular.forEach($scope.fields, function runFieldExpressionProperties(field) {
           /*jshint -W030 */
-          !isFieldGroup(field) && field.runExpressions && field.runExpressions(newResult);
+          field.runExpressions && field.runExpressions(newResult);
         });
       }, true);
 
       function setupOptions() {
-        formlyApiCheck.throw(optionsApi, [$scope.options], {prefix: 'formly-form options check'});
+        formlyApiCheck.throw(
+          [formlyApiCheck.formOptionsApi.optional], [$scope.options], {prefix: 'formly-form options check'}
+        );
         $scope.options = $scope.options || {};
         $scope.options.formState = $scope.options.formState || {};
 
@@ -134,11 +128,23 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       }
 
       function updateInitialValue() {
-        angular.forEach($scope.fields, field => field.updateInitialValue());
+        angular.forEach($scope.fields, field => {
+          if (isFieldGroup(field)) {
+            field.options.updateInitialValue();
+          } else {
+            field.updateInitialValue();
+          }
+        });
       }
 
       function resetModel() {
-        angular.forEach($scope.fields, field => field.resetModel());
+        angular.forEach($scope.fields, field => {
+          if (isFieldGroup(field)) {
+            field.options.resetModel();
+          } else {
+            field.resetModel();
+          }
+        });
       }
 
       function attachKey(field, index) {

@@ -10,6 +10,8 @@ export default formlyField;
 // @ngInject
 function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyValidationMessages, formlyApiCheck,
                      formlyUtil, formlyUsability, formlyWarn) {
+  const {arrayify} = formlyUtil;
+
   return {
     restrict: 'AE',
     transclude: true,
@@ -23,9 +25,12 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       form: '=?'
     },
     controller: /* @ngInject */ function FormlyFieldController($scope, $timeout, $parse, $controller) {
+      /* jshint maxstatements:31 */
       if ($scope.options.fieldGroup) {
+        setupFieldGroup();
         return;
       }
+
       var opts = $scope.options;
       var fieldType = opts.type && formlyConfig.getType(opts.type);
       simplifyLife(opts);
@@ -159,6 +164,11 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
           }
         });
       }
+
+      function setupFieldGroup() {
+        $scope.options.options = $scope.options.options || {};
+        $scope.options.options.formState = $scope.formState;
+      }
     },
     link: function fieldLink(scope, el) {
       if (scope.options.fieldGroup) {
@@ -167,7 +177,8 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         setElementTemplate(`
           <formly-form model="model"
                        fields="options.fieldGroup"
-                       options="$parent.options"
+                       options="options.options"
+                       form="options.form"
                        class="${scope.options.className}"
                        is-field-group>
           </formly-form>
@@ -444,13 +455,4 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       });
   }
 
-}
-
-function arrayify(obj) {
-  if (obj && !angular.isArray(obj)) {
-    obj = [obj];
-  } else if (!obj) {
-    obj = [];
-  }
-  return obj;
 }

@@ -55,6 +55,14 @@ const formlyWrapperType = apiCheck.shape({
   apiCheckOptions: apiCheck.object.optional
 }).strict;
 
+const expressionProperties = apiCheck.objectOf(apiCheck.oneOfType([
+  formlyExpression,
+  apiCheck.shape({
+    expression: formlyExpression,
+    message: formlyExpression.optional
+  }).strict
+]));
+
 let fieldOptionsApiShape = {
   $$hashKey: apiCheck.any.optional,
   type: apiCheck.shape.ifNot(['template', 'templateUrl'], apiCheck.string).optional,
@@ -69,13 +77,7 @@ let fieldOptionsApiShape = {
   key: apiCheck.oneOfType([apiCheck.string, apiCheck.number]).optional,
   model: apiCheck.object.optional,
   className: apiCheck.string.optional,
-  expressionProperties: apiCheck.objectOf(apiCheck.oneOfType([
-    formlyExpression,
-    apiCheck.shape({
-      expression: formlyExpression,
-      message: formlyExpression.optional
-    }).strict
-  ])).optional,
+  expressionProperties: expressionProperties.optional,
   data: apiCheck.object.optional,
   templateOptions: apiCheck.object.optional,
   wrapper: specifyWrapperType.optional,
@@ -132,10 +134,23 @@ let fieldOptionsApiShape = {
 
 let formlyFieldOptions = apiCheck.shape(fieldOptionsApiShape).strict;
 
+
+const formOptionsApi = apiCheck.shape({
+  formState: apiCheck.object.optional,
+  resetModel: apiCheck.func.optional,
+  updateInitialValue: apiCheck.func.optional,
+  removeChromeAutoComplete: apiCheck.bool.optional
+}).strict;
+
+
 const fieldGroup = apiCheck.shape({
   $$hashKey: apiCheck.any.optional,
   fieldGroup: apiCheck.arrayOf(formlyFieldOptions),
-  className: apiCheck.string.optional
+  className: apiCheck.string.optional,
+  options: formOptionsApi.optional,
+  hide: apiCheck.bool.optional,
+  model: apiCheck.object.optional,
+  form: apiCheck.object.optional
 }).strict;
 
 let typeOptionsDefaultOptions = angular.copy(fieldOptionsApiShape);
@@ -162,9 +177,8 @@ let formlyTypeOptions = apiCheck.shape({
   apiCheckOptions: apiCheck.object.optional,
   overwriteOk: apiCheck.bool.optional
 }).strict;
-
 angular.extend(apiCheck, {
-  formlyTypeOptions, formlyFieldOptions, formlyExpression, formlyWrapperType, fieldGroup
+  formlyTypeOptions, formlyFieldOptions, formlyExpression, formlyWrapperType, fieldGroup, formOptionsApi
 });
 
 export default apiCheck;

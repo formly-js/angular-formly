@@ -1,15 +1,17 @@
 import {expect} from 'chai';
 import testUtils from '../test.utils.js';
+import angular from 'angular-fix';
 
 const {getNewField, input, basicForm} = testUtils;
 
 describe('formly-form', () => {
-  let $compile, formlyConfig, scope, el;
+  let $compile, formlyConfig, scope, el, $timeout;
 
   beforeEach(window.module('formly'));
-  beforeEach(inject((_$compile_, _formlyConfig_, $rootScope) => {
+  beforeEach(inject((_$compile_, _formlyConfig_, _$timeout_, $rootScope) => {
     formlyConfig = _formlyConfig_;
     $compile = _$compile_;
+    $timeout = _$timeout_;
     scope = $rootScope.$new();
     scope.model = {};
     scope.fields = [];
@@ -115,7 +117,9 @@ describe('formly-form', () => {
   });
 
   describe(`fieldGroup`, () => {
-    it(`should allow you to specify a fieldGroup which will use the formly-form directive internally`, () => {
+
+    beforeEach(() => {
+      scope.user = {};
       formlyConfig.setType({
         name: 'input',
         template: input
@@ -123,6 +127,7 @@ describe('formly-form', () => {
       let key = 0;
       scope.fields = [
         {
+          className: 'bar',
           fieldGroup: [
             {type: 'input', key: key++},
             {type: 'input', key: key++}
@@ -132,14 +137,17 @@ describe('formly-form', () => {
         {type: 'input', key: key++},
         {
           className: 'foo',
+          model: scope.user,
           fieldGroup: [
             {type: 'input', key: key++},
-            {type: 'input', key: key++},
+            {type: 'input', key: key++, className: 'specific-field'},
             {type: 'input', key: key++}
           ]
         }
       ];
+    });
 
+    it(`should allow you to specify a fieldGroup which will use the formly-form directive internally`, () => {
       compileAndDigest();
 
       expect(el[0].querySelectorAll('[formly-field].formly-field-input')).to.have.length(7);
@@ -167,6 +175,82 @@ describe('formly-form', () => {
       expect(fieldGroupNode).to.exist;
 
       expect(fieldGroupNode.getAttribute('some-extra-attr')).to.eq('someValue');
+    });
+
+    describe(`options`, () => {
+      const formWithOptions = '<formly-form model="model" fields="fields" options="options"></formly-form>';
+      beforeEach(() => {
+        scope.fields = [
+          {
+            className: 'field-group',
+            fieldGroup: [
+              getNewField(),
+              getNewField()
+            ]
+          },
+          {
+            className: 'field-group',
+            fieldGroup: [
+              getNewField(),
+              getNewField()
+            ]
+          }
+        ];
+
+        scope.options = {};
+      });
+
+      it(`should allow you to call the child's updateInitialValue and resetModel from the parent`, () => {
+        const field = scope.fields[0].fieldGroup[0];
+        compileAndDigest(formWithOptions);
+        expect(field.initialValue).to.not.exist;
+        scope.model[field.key] = 'foo';
+        scope.options.updateInitialValue();
+        expect(field.initialValue).to.eq('foo');
+        scope.model[field.key] = 'bar';
+        scope.options.resetModel();
+        expect(scope.model[field.key]).to.eq('foo');
+      });
+
+      it(`should have the same formState`, () => {
+        compileAndDigest(formWithOptions);
+        const fieldGroup1 = scope.fields[0];
+        const fieldGroup2 = scope.fields[1];
+        expect(fieldGroup1.options.formState).to.eq(fieldGroup2.options.formState);
+        expect(scope.options.formState).to.eq(fieldGroup1.options.formState);
+      });
+    });
+
+    it(`should be possible to hide a fieldGroup with the hide property`, () => {
+      compileAndDigest();
+
+      expect(el[0].querySelectorAll('ng-form.bar')).to.have.length(1);
+
+      const fieldGroup1 = scope.fields[0];
+      fieldGroup1.hide = true;
+
+      scope.$digest();
+
+      expect(el[0].querySelectorAll('ng-form.bar')).to.have.length(0);
+    });
+
+    it(`should pass the model to it's children fields`, () => {
+      compileAndDigest();
+
+      const specificGroup = scope.fields[3];
+      const specificField = specificGroup.fieldGroup[1];
+      const specificFieldNode = el[0].querySelector('.specific-field');
+      expect(specificFieldNode).to.exist;
+      specificField.formControl.$setViewValue('foo');
+      expect(specificGroup.model[specificField.key]).to.eq('foo');
+      expect(specificGroup.model).to.eq(scope.user);
+      expect(scope.user[specificField.key]).to.eq('foo');
+      expect(angular.element(specificFieldNode).isolateScope().model).to.eq(scope.user);
+    });
+
+    it(`should have a form property`, () => {
+      compileAndDigest();
+      expect(scope.fields[0].form).to.have.property('$$parentForm');
     });
   });
 
