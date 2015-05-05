@@ -66,7 +66,7 @@ let fieldOptionsApiShape = {
     ['type', 'template'],
     apiCheck.oneOfType([apiCheck.string, apiCheck.func])
   ).optional,
-  key: apiCheck.oneOfType([apiCheck.string, apiCheck.number]),
+  key: apiCheck.oneOfType([apiCheck.string, apiCheck.number]).optional,
   model: apiCheck.object.optional,
   className: apiCheck.string.optional,
   expressionProperties: apiCheck.objectOf(apiCheck.oneOfType([
@@ -129,7 +129,14 @@ let fieldOptionsApiShape = {
   defaultValue: apiCheck.any.optional
 };
 
+
 let formlyFieldOptions = apiCheck.shape(fieldOptionsApiShape).strict;
+
+const fieldGroup = apiCheck.shape({
+  $$hashKey: apiCheck.any.optional,
+  fieldGroup: apiCheck.arrayOf(formlyFieldOptions),
+  className: apiCheck.string.optional
+}).strict;
 
 let typeOptionsDefaultOptions = angular.copy(fieldOptionsApiShape);
 typeOptionsDefaultOptions.key = apiCheck.string.optional;
@@ -157,7 +164,7 @@ let formlyTypeOptions = apiCheck.shape({
 }).strict;
 
 angular.extend(apiCheck, {
-  formlyTypeOptions, formlyFieldOptions, formlyExpression, formlyWrapperType
+  formlyTypeOptions, formlyFieldOptions, formlyExpression, formlyWrapperType, fieldGroup
 });
 
 export default apiCheck;

@@ -23,6 +23,9 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       form: '=?'
     },
     controller: /* @ngInject */ function FormlyFieldController($scope, $timeout, $parse, $controller) {
+      if ($scope.options.fieldGroup) {
+        return;
+      }
       var opts = $scope.options;
       var fieldType = opts.type && formlyConfig.getType(opts.type);
       simplifyLife(opts);
@@ -158,6 +161,19 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       }
     },
     link: function fieldLink(scope, el) {
+      if (scope.options.fieldGroup) {
+        checkFieldGroupApi(scope.options);
+        setElementTemplate(`
+          <formly-form model="model"
+                       fields="options.fieldGroup"
+                       options="$parent.options"
+                       class="${scope.options.className}"
+                       is-field-group>
+          </formly-form>
+        `);
+        return;
+      }
+
       addClasses();
 
       var type = scope.options.type && formlyConfig.getType(scope.options.type);
@@ -169,6 +185,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         .then(runManipulators(formlyConfig.templateManipulators.postWrapper))
         .then(setElementTemplate)
         .then(watchFormControl)
+        .then(callLinkFunctions)
         .catch(error => {
           formlyWarn(
             'there-was-a-problem-setting-the-template-for-this-field',
@@ -190,12 +207,6 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       function setElementTemplate(templateString) {
         el.html(asHtml(templateString));
         $compile(el.contents())(scope);
-        if (type && type.link) {
-          type.link.apply(thusly, args);
-        }
-        if (scope.options.link) {
-          scope.options.link.apply(thusly, args);
-        }
         return templateString;
       }
 
@@ -253,6 +264,15 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
             scope.options.validation.errorExistsAndShouldBeVisible = show;
             scope.showError = show; // shortcut for template authors
           });
+        }
+      }
+
+      function callLinkFunctions() {
+        if (type && type.link) {
+          type.link.apply(thusly, args);
+        }
+        if (scope.options.link) {
+          scope.options.link.apply(thusly, args);
         }
       }
 
@@ -401,6 +421,13 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       }
       runApiCheck(type, options);
     }
+  }
+
+  function checkFieldGroupApi(options) {
+    formlyApiCheck.throw(formlyApiCheck.fieldGroup, options, {
+      prefix: 'formly-field directive',
+      url: 'formly-field-directive-validation-failed'
+    });
   }
 
   function runApiCheck({apiCheck, apiCheckInstance, apiCheckFunction, apiCheckOptions}, options) {

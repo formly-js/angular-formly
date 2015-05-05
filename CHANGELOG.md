@@ -1,4 +1,4 @@
-# Latest
+# 6.4.0-beta.0
 
 ## Improvements
 
@@ -7,6 +7,7 @@
 ## New Features
 
 - Adding the ability to specify a `className` on a field which will get added to the `formly-field`.
+- Adding the ability to have `fieldGroups` THIS IS HUGE!!!
 
 # 6.3.4
 

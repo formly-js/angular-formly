@@ -4,10 +4,11 @@ import testUtils from '../test.utils.js';
 const {getNewField, input, basicForm} = testUtils;
 
 describe('formly-form', () => {
-  let $compile, scope, el;
+  let $compile, formlyConfig, scope, el;
 
   beforeEach(window.module('formly'));
-  beforeEach(inject((_$compile_, $rootScope) => {
+  beforeEach(inject((_$compile_, _formlyConfig_, $rootScope) => {
+    formlyConfig = _formlyConfig_;
     $compile = _$compile_;
     scope = $rootScope.$new();
     scope.model = {};
@@ -111,6 +112,61 @@ describe('formly-form', () => {
     scope.fields = [getNewField(), getNewField()];
 
     expect(() => scope.$digest()).to.not.throw();
+  });
+
+  describe(`fieldGroup`, () => {
+    it(`should allow you to specify a fieldGroup which will use the formly-form directive internally`, () => {
+      formlyConfig.setType({
+        name: 'input',
+        template: input
+      });
+      let key = 0;
+      scope.fields = [
+        {
+          fieldGroup: [
+            {type: 'input', key: key++},
+            {type: 'input', key: key++}
+          ]
+        },
+        {type: 'input', key: key++},
+        {type: 'input', key: key++},
+        {
+          className: 'foo',
+          fieldGroup: [
+            {type: 'input', key: key++},
+            {type: 'input', key: key++},
+            {type: 'input', key: key++}
+          ]
+        }
+      ];
+
+      compileAndDigest();
+
+      expect(el[0].querySelectorAll('[formly-field].formly-field-input')).to.have.length(7);
+
+      expect(el[0].querySelectorAll('ng-form')).to.have.length(2);
+      expect(el[0].querySelectorAll('ng-form.foo')).to.have.length(1);
+      expect(el[0].querySelectorAll('ng-form.foo [formly-field].formly-field-input')).to.have.length(3);
+    });
+
+    it(`should copy the parent's attributes in the template`, () => {
+      scope.fields = [
+        {
+          className: 'field-group',
+          fieldGroup: [
+            getNewField(),
+            getNewField()
+          ]
+        }
+      ];
+
+      compileAndDigest('<formly-form model="model" fields="fields" some-extra-attr="someValue"></formly-form>');
+
+      const fieldGroupNode = el[0].querySelector('.field-group');
+      expect(fieldGroupNode).to.exist;
+
+      expect(fieldGroupNode.getAttribute('some-extra-attr')).to.eq('someValue');
+    });
   });
 
   describe(`options`, () => {
@@ -330,11 +386,10 @@ describe('formly-form', () => {
   });
 
   function compileAndDigest(template) {
-    el = $compile(template)(scope);
+    el = $compile(template || basicForm)(scope);
     scope.$digest();
     return el;
   }
-
 
 
 });

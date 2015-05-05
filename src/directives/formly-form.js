@@ -24,10 +24,14 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       /* jshint -W033 */ // this because jshint is broken I guess...
       const rootEl = getRootEl();
       const formId = `formly_${currentFormId++}`;
+      let parentFormAttributes;
+      if (attrs.hasOwnProperty('isFieldGroup') && el.parent().parent().hasClass('formly')) {
+        parentFormAttributes = copyAttributes(el.parent().parent()[0].attributes);
+      }
       return `
         <${rootEl} class="formly"
                  name="${getFormName()}"
-                 role="form">
+                 role="form" ${parentFormAttributes}>
           <div formly-field
                ng-repeat="field in fields ${getTrackBy()}"
                ${getHideDirective()}="!field.hide"
@@ -72,6 +76,26 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
         }
         return formName;
       }
+
+      function copyAttributes(attributes) {
+        //console.log(attributes);
+        const excluded = ['model', 'form', 'fields', 'options', 'name', 'role', 'class'];
+        const arrayAttrs = [];
+        angular.forEach(attributes, ({nodeName, nodeValue}) => {
+          if (nodeName !== 'undefined' && excluded.indexOf(nodeName) === -1) {
+            arrayAttrs.push(`${toKebabCase(nodeName)}="${nodeValue}"`);
+          }
+        });
+        return arrayAttrs.join(' ');
+      }
+
+      function toKebabCase(string) {
+        if (string) {
+          return string.replace(/([A-Z])/g, $1 => '-' + $1.toLowerCase());
+        } else {
+          return '';
+        }
+      }
     },
     replace: true,
     transclude: true,
@@ -93,7 +117,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       $scope.$watch('model', function onResultUpdate(newResult) {
         angular.forEach($scope.fields, function runFieldExpressionProperties(field) {
           /*jshint -W030 */
-          field.runExpressions && field.runExpressions(newResult);
+          !isFieldGroup(field) && field.runExpressions && field.runExpressions(newResult);
         });
       }, true);
 
@@ -118,11 +142,13 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       }
 
       function attachKey(field, index) {
-        field.key = field.key || index || 0;
+        if (!isFieldGroup(field)) {
+          field.key = field.key || index || 0;
+        }
       }
 
       function setupWatchers(field, index) {
-        if (!angular.isDefined(field.watcher)) {
+        if (isFieldGroup(field) || !angular.isDefined(field.watcher)) {
           return;
         }
         var watchers = field.watcher;
@@ -176,6 +202,10 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
 
       function modifyArgs(watcher, index, ...originalArgs) {
         return [$scope.fields[index], ...originalArgs, watcher.stopWatching];
+      }
+
+      function isFieldGroup(field) {
+        return field && !!field.fieldGroup;
       }
     },
     link(scope, el, attrs) {
