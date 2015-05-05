@@ -1,3 +1,8 @@
+# 6.4.0-beta.3
+
+- Adding watch to `formState` to run expressionProperties [#270](/../../issues/270)
+- Adding `hideExpression` to the field to overcome issues with `ng-if` [#271](/../../issues/271)
+
 # 6.4.0-beta.2
 
 ## New Features
