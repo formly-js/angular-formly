@@ -163,6 +163,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     link: function fieldLink(scope, el) {
       if (scope.options.fieldGroup) {
         checkFieldGroupApi(scope.options);
+        el.addClass('formly-field-group');
         setElementTemplate(`
           <formly-form model="model"
                        fields="options.fieldGroup"

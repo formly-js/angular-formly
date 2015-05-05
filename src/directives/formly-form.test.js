@@ -147,6 +147,7 @@ describe('formly-form', () => {
       expect(el[0].querySelectorAll('ng-form')).to.have.length(2);
       expect(el[0].querySelectorAll('ng-form.foo')).to.have.length(1);
       expect(el[0].querySelectorAll('ng-form.foo [formly-field].formly-field-input')).to.have.length(3);
+      expect(el[0].querySelectorAll('.formly-field-group')).to.have.length(2);
     });
 
     it(`should copy the parent's attributes in the template`, () => {

@@ -1,3 +1,9 @@
+# 6.4.0-beta.1
+
+## New Features
+
+- Adding convenience `formly-field-group` class to `formly-field` that has a `fieldGroup`.
+
 # 6.4.0-beta.0
 
 ## Improvements
