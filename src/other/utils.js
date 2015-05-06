@@ -2,11 +2,11 @@ import angular from 'angular-fix';
 
 export default {formlyEval, getFieldId, reverseDeepMerge, findByNodeName, arrayify, extendFunction};
 
-function formlyEval(scope, expression, $modelValue, $viewValue) {
+function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
   if (angular.isFunction(expression)) {
-    return expression($viewValue, $modelValue, scope);
+    return expression($viewValue, $modelValue, scope, extraLocals);
   } else {
-    return scope.$eval(expression, {$viewValue, $modelValue});
+    return scope.$eval(expression, angular.extend({$viewValue, $modelValue}, extraLocals));
   }
 }
 

@@ -1,3 +1,7 @@
+# 6.4.0-beta.4
+
+- Making `hideExpression` function more like a `formlyExpression`. Not exactly the same still...
+
 # 6.4.0-beta.3
 
 - Adding watch to `formState` to run expressionProperties [#270](/../../issues/270)

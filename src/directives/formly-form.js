@@ -111,13 +111,20 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       }
 
       function onModelOrFormStateChange() {
-        angular.forEach($scope.fields, function runFieldExpressionProperties(field) {
+        angular.forEach($scope.fields, function runFieldExpressionProperties(field, index) {
           /*jshint -W030 */
           const model = field.model || $scope.model;
           field.runExpressions && field.runExpressions(model);
-          if (field.hideExpression) {
+          if (field.hideExpression) { // can't use hide with expressionProperties reliably
             const val = model[field.key];
-            field.hide = formlyUtil.formlyEval($scope, field.hideExpression, val, val);
+            // this makes it closer to what a regular expressionProperty would be
+            const extraLocals = {
+              options: field,
+              index: index,
+              formState: $scope.options.formState,
+              formId: $scope.formId
+            };
+            field.hide = formlyUtil.formlyEval($scope, field.hideExpression, val, val, extraLocals);
           }
         });
       }
@@ -226,6 +233,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
     link(scope, el, attrs) {
       if (attrs.form) {
         const formId = attrs.name;
+        scope.formId = formId;
         $parse(attrs.form).assign(scope.$parent, scope[formId]);
       }
 

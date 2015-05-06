@@ -263,7 +263,9 @@ describe('formly-form', () => {
             getNewField()
           ]
         },
-        getNewField({key: 'foo', hideExpression: 'model.baz === "foobar"'})
+        getNewField({
+          key: 'foo', hideExpression: 'options.data.canHide && model.baz === "foobar"', data: {canHide: true}
+        })
       ];
 
       compileAndDigest();
