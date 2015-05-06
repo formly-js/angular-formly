@@ -704,6 +704,22 @@ describe('formly-field', function() {
     });
   });
 
+  describe(`elementAttributes`, () => {
+    it(`should allow fields to have attributes which will be applied to the [formly-field]`, () => {
+      scope.fields = [getNewField({elementAttributes: {foo: 'bar', baz: 'eggs'}})];
+      compileAndDigest();
+      expect(el[0].querySelector('[formly-field][foo=bar][baz=eggs]')).to.exist;
+    });
+
+    it(`should allow fieldGroups to have attributes which will be applied to the ng-form`, () => {
+      scope.fields = [
+        {elementAttributes: {foo: 'bar', baz: 'eggs'}, fieldGroup: [getNewField()]}
+      ];
+      compileAndDigest();
+      expect(el[0].querySelector('ng-form[foo=bar][baz=eggs]')).to.exist;
+    });
+  });
+
   function compileAndDigest(template) {
     el = $compile(template || basicForm)(scope);
     scope.$digest();

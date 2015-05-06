@@ -111,6 +111,7 @@ let fieldOptionsApiShape = {
     attribute: apiCheck.shape.ifNot('expression', apiCheck.any).optional,
     bound: apiCheck.shape.ifNot('expression', apiCheck.any).optional
   }).strict).optional,
+  elementAttributes: apiCheck.objectOf(apiCheck.string).optional,
   optionsTypes: apiCheck.typeOrArrayOf(apiCheck.string).optional,
   link: apiCheck.func.optional,
   controller: apiCheck.oneOfType([
@@ -152,7 +153,8 @@ const fieldGroup = apiCheck.shape({
   hide: apiCheck.bool.optional,
   hideExpression: formlyExpression.optional,
   model: apiCheck.object.optional,
-  form: apiCheck.object.optional
+  form: apiCheck.object.optional,
+  elementAttributes: apiCheck.objectOf(apiCheck.string).optional
 }).strict;
 
 let typeOptionsDefaultOptions = angular.copy(fieldOptionsApiShape);

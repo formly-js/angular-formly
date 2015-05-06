@@ -172,20 +172,11 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     },
     link: function fieldLink(scope, el) {
       if (scope.options.fieldGroup) {
-        checkFieldGroupApi(scope.options);
-        el.addClass('formly-field-group');
-        setElementTemplate(`
-          <formly-form model="model"
-                       fields="options.fieldGroup"
-                       options="options.options"
-                       form="options.form"
-                       class="${scope.options.className}"
-                       is-field-group>
-          </formly-form>
-        `);
+        setFieldGroupTemplate();
         return;
       }
 
+      addAttributes();
       addClasses();
 
       var type = scope.options.type && formlyConfig.getType(scope.options.type);
@@ -206,6 +197,33 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
             error
           );
         });
+
+      function setFieldGroupTemplate() {
+        checkFieldGroupApi(scope.options);
+        el.addClass('formly-field-group');
+        let extraAttributes = '';
+        if (scope.options.elementAttributes) {
+          extraAttributes = Object.keys(scope.options.elementAttributes).map(key => {
+            return `${key}="${scope.options.elementAttributes[key]}"`;
+          }).join(' ');
+        }
+        setElementTemplate(`
+          <formly-form model="model"
+                       fields="options.fieldGroup"
+                       options="options.options"
+                       form="options.form"
+                       class="${scope.options.className}"
+                       ${extraAttributes}
+                       is-field-group>
+          </formly-form>
+        `);
+      }
+
+      function addAttributes() {
+        if (scope.options.elementAttributes) {
+          el.attr(scope.options.elementAttributes);
+        }
+      }
 
       function addClasses() {
         if (scope.options.className) {

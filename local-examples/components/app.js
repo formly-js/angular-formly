@@ -95,9 +95,12 @@
 
     vm.realFields = [
       {
+        elementAttributes: {
+          layout: ''
+        },
         className: 'display-flex',
         fieldGroup: [
-          {className: 'flex-1', type: 'input', key: key++, templateOptions: {label: 'Field ' + key}},
+          {elementAttributes: {flex: ''}, className: 'flex-1', type: 'input', key: key++, templateOptions: {label: 'Field ' + key}},
           {className: 'flex-2', type: 'input', key: key++, templateOptions: {label: 'Field ' + key}}
         ]
       },

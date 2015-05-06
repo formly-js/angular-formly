@@ -1,8 +1,16 @@
 # 6.4.0-beta.4
 
+## New Features
+
+- Ability to add custom attributes to a `formly-field` as well as the `ng-form` of a `fieldGroup` using new property called `elementAttributes`
+
+## Improvement
+
 - Making `hideExpression` function more like a `formlyExpression`. Not exactly the same still...
 
 # 6.4.0-beta.3
+
+## New Features
 
 - Adding watch to `formState` to run expressionProperties [#270](/../../issues/270)
 - Adding `hideExpression` to the field to overcome issues with `ng-if` [#271](/../../issues/271)
