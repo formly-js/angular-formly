@@ -15,6 +15,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
     template: function formlyFormGetTemplate(el, attrs) {
       /* jshint -W033 */ // this because jshint is broken I guess...
       const rootEl = getRootEl();
+      const fieldRootEl = getFieldRootEl();
       const formId = `formly_${currentFormId++}`;
       let parentFormAttributes;
       if (attrs.hasOwnProperty('isFieldGroup') && el.parent().parent().hasClass('formly')) {
@@ -24,7 +25,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
         <${rootEl} class="formly"
                  name="${getFormName()}"
                  role="form" ${parentFormAttributes}>
-          <div formly-field
+          <${fieldRootEl} formly-field
                ng-repeat="field in fields ${getTrackBy()}"
                ${getHideDirective()}="!field.hide"
                class="formly-field"
@@ -35,13 +36,17 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
                form-id="${formId}"
                form-state="options.formState"
                index="$index">
-          </div>
+          </${fieldRootEl}>
           <div ng-transclude></div>
         </${rootEl}>
       `;
 
       function getRootEl() {
         return attrs.rootEl || 'ng-form';
+      }
+
+      function getFieldRootEl() {
+        return attrs.fieldRootEl || 'div';
       }
 
       function getHideDirective() {

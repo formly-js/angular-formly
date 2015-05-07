@@ -34,6 +34,14 @@ describe('formly-form', () => {
     expect(el.prop('nodeName').toLowerCase()).to.equal('form');
   });
 
+  it(`should use a different root tag for formly-fields when specified`, () => {
+    scope.fields = [getNewField()];
+    const el = compileAndDigest(`
+      <formly-form model="model" fields="fields" form="theForm" field-root-el="area"></formly-form>
+    `);
+    expect(el[0].querySelector('area.formly-field')).to.exist;
+  });
+
   it(`should not allow sibling forms to override each other on a parent form`, () => {
     compileAndDigest(`
       <form name="parent">

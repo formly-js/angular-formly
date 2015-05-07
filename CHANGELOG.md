@@ -1,3 +1,9 @@
+# 6.4.0-beta.5
+
+## New Features
+
+- Adding `field-root-el` attribute to `<formly-form>` [#276](/../../issues/276)
+
 # 6.4.0-beta.4
 
 ## New Features
