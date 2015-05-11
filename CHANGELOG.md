@@ -1,3 +1,9 @@
+# 6.4.0-beta.6
+
+## Bug Fixes
+
+- Fixing issue with `resetModel` where it wasn't resetting the form's `$touched` and `$dirty` states [#278](/../../issues/278)
+
 # 6.4.0-beta.5
 
 ## New Features

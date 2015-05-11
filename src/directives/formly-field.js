@@ -139,6 +139,8 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         if ($scope.options.formControl) {
           $scope.options.formControl.$setViewValue($scope.model[$scope.options.key]);
           $scope.options.formControl.$render();
+          $scope.options.formControl.$setUntouched();
+          $scope.options.formControl.$setPristine();
         }
       }
 

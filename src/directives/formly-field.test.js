@@ -720,6 +720,37 @@ describe('formly-field', function() {
     });
   });
 
+  describe(`resetModel`, () => {
+    it(`should reset the form state`, () => {
+      const field = getNewField({key: 'foo'});
+      scope.fields = [field];
+      compileAndDigest();
+
+      // initial state
+      expect(field.formControl.$dirty).to.be.false;
+      expect(field.formControl.$touched).to.be.false;
+
+      // modification
+      scope.model.foo = '~=[,,_,,]:3';
+      field.formControl.$setTouched();
+      field.formControl.$setDirty();
+      scope.$digest();
+
+      // expect modification
+      expect(field.formControl.$dirty).to.be.true;
+      expect(field.formControl.$touched).to.be.true;
+      expect(field.formControl.$modelValue).to.eq('~=[,,_,,]:3');
+
+      // reset state
+      field.resetModel();
+
+      // expect reset
+      expect(field.formControl.$modelValue).to.be.empty;
+      expect(field.formControl.$touched).to.be.false;
+      expect(field.formControl.$dirty).to.be.false;
+    });
+  });
+
   function compileAndDigest(template) {
     el = $compile(template || basicForm)(scope);
     scope.$digest();
