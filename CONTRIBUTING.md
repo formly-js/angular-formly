@@ -2,8 +2,10 @@
 
 ## Questions/Help
 
-Please join the [mailing list](https://groups.io/org/groupsio/formly-js) and ask/answer questions about how to
-use angular-formly there. Also join us on [gitter](https://gitter.im/formly-js/angular-formly).
+Please post questions to [StackOverflow](http://stackoverflow.com/) using the
+[angular-formly](http://stackoverflow.com/tags/angular-formly/info) tag. There's also the
+[mailing list](https://groups.io/org/groupsio/formly-js) where you can ask/answer questions. Also join us on
+[gitter](https://gitter.im/formly-js/angular-formly). We like to say hi :-)
 
 ## Issues
 
@@ -19,33 +21,22 @@ When submitting a Pull Request please submit it to the `master` branch.
 
 Please do the following:
 * Follow the existing styles (we have an `.editorconfig` file)
-* Document your changes in the README
-* Create an example that demonstrates your changes so people can see how your changes work
+* Document your changes in the README (try to follow the convention you see in the rest of the file)
+* Create an example for the website that demonstrates your changes so people can see how your changes work
 
 ### Development
 
 1. `git checkout master`
 	1. run `npm install`
-	2. change your directory to the demo and test your code using `npm run start` which runs webpack and hosts the app locally at `http://localhost:8080`
+	2. change your directory to the demo and test your code using `npm start` which runs webpack and hosts the app locally at `http://localhost:8080`
 	3. Write your code in ES6 goodness :-)
-	5. run `npm run build` in both the root directory *and* the demo directory
 	4. commit your changes
 2. update `README.md`, `CHANGELOG.md`, and do any other final polishing to prepare for publishing
-	1. git commit changes
+	1. commit changes
 
-*Note:* There's a symlink for `dist` in the `demo` folders. Just FYI...
+*Note:* Please don't commit any changes to the `dist/` directory. This is only committed for releases.
 
 *Another Note:* Due to some inconsistencies with angular versions, always use `require('angular-fix')` rather than simply `require('angular')`
-
-### npm scripts
-
-There are actually two `package.json` files. One for the library and one for the demo. There are also two webpack configs for each of these (one for dev config and the other for the uglifying). Running `npm run build` in both folders will run webpack with each of those configs.
-
-In the demo, you can run `npm run start` to start the development server.
-
-### Grunt target
-
-* `grunt deploy`: Publishes the demo to gh-pages (note, pretty sure you have to be a collaborator on the repo to run this, so don't bother :-)).
 
 ### What do you need help with?
 
