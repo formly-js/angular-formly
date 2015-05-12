@@ -1,3 +1,7 @@
+# 6.4.0
+
+- Official Release (no changes from 6.4.0-beta.6)
+
 # 6.4.0-beta.6
 
 ## Bug Fixes
