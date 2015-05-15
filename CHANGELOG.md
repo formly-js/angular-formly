@@ -1,3 +1,10 @@
+# 6.4.1
+
+## Bug Fixes
+
+- `extends` and `template`/`templateUrl` issue. Thanks [ckniffen](https://github.com/ckniffen)!
+- `formControl`/`fc` not getting set when the `ng-model` is on a `div`. Thanks [TheMcMurder](https://github.com/TheMcMurder)
+
 # 6.4.0
 
 - Official Release (no changes from 6.4.0-beta.6)
