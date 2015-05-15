@@ -1,3 +1,9 @@
+# 6.4.2-beta.0
+
+## Bug Fixes
+
+- Fixing support for browserify [#186](/../../issues/186) by removing inline sourcemaps.
+
 # 6.4.1
 
 ## Bug Fixes

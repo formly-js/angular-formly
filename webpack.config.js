@@ -26,6 +26,7 @@ var baseConfig = {
     libraryTarget: 'umd'
   },
 
+  devtool: 'source-map',
 
   stats: {
     colors: true,
@@ -59,10 +60,7 @@ var baseConfig = {
     ]
   }
 };
-
-var devConfig = {
-  devtool: 'inline-source-map'
-};
+var devConfig = {};
 
 
 var prodConfig = {
@@ -70,7 +68,6 @@ var prodConfig = {
     filename: 'formly.min.js',
     path: here('dist')
   },
-  devtool: 'source-map',
   plugins: [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
