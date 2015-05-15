@@ -267,6 +267,42 @@ describe('formlyConfig', () => {
           });
 
         });
+        
+        describe(`template/templateUrl Cases`, () => {
+          it('should use templateUrl if type defines it and its parent has template defined', function(){
+            setterFn([
+              {
+                name,
+                template
+              },
+              {
+                name: 'type2',
+                extends: name,
+                templateUrl
+              }
+            ]);
+
+            expect(getterFn('type2').templateUrl).not.to.be.undefined;
+            expect(getterFn('type2').template).to.be.undefined;
+          });
+
+          it('should use template if type defines it and its parent had templateUrl defined', function(){
+            setterFn([
+              {
+                name,
+                templateUrl
+              },
+              {
+                name: 'type2',
+                extends: name,
+                template
+              }
+            ]);
+
+            expect(getterFn('type2').template).not.to.be.undefined;
+            expect(getterFn('type2').templateUrl).to.be.undefined;
+          });
+        });
 
         describe(`function cases`, () => {
           let args, parentFn, childFn, parentDefaultOptions, childDefaultOptions,
