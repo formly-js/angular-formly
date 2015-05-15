@@ -751,6 +751,16 @@ describe('formly-field', function() {
     });
   });
 
+  describe(`with a div ng-model`,() => {
+    it(`should have a form-controller`, () => {
+      const template = `<div ng-model="model[options.key]"> </div>`;
+      scope.fields = [getNewField({template: template})];
+      compileAndDigest();
+      const isolateScope = angular.element(el[0].querySelector('.formly-field')).isolateScope();
+      expect(isolateScope.fc).to.exist;
+    });
+  });
+
   function compileAndDigest(template) {
     el = $compile(template || basicForm)(scope);
     scope.$digest();
