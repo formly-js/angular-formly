@@ -67,6 +67,15 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
     extendTypeValidateOptionsFunction(options, extendsType);
     extendTypeDefaultOptions(options, extendsType);
     utils.reverseDeepMerge(options, extendsType);
+    extendTemplate(options, extendsType);
+  }
+
+  function extendTemplate(options, extendsType){
+    if(options.template && extendsType.templateUrl){
+      delete options.templateUrl;
+    } else if(options.templateUrl && extendsType.template){
+      delete options.template;
+    }
   }
 
   function extendTypeControllerFunction(options, extendsType) {
