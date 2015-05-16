@@ -781,6 +781,21 @@ describe('formly-field', function() {
       compileAndDigest();
       expect(manipulator).to.have.been.calledOnce;
     });
+
+    it(`should apply wrappers`, () => {
+      formlyConfig.setWrapper({
+        name: 'tempWrapper',
+        template: '<div class="my-wrapper"><formly-transclude></formly-transclude></div>'
+      });
+      scope.fields = [getNewField({
+        template: '<input ng-model="model[options.key]" class="foo" />',
+        wrapper: ['tempWrapper']
+      })];
+      compileAndDigest();
+      const fieldEl = el[0].querySelector('.my-wrapper');
+      expect(fieldEl).to.exist;
+    });
+
     afterEach(() => {
       formlyConfig.extras.syncMode = undefined;
     });

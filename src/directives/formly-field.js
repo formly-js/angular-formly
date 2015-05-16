@@ -201,8 +201,8 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     function runSyncOperations() {
       let template = getFieldTemplateSync(scope.options);
       template = runManipulatorsSync(formlyConfig.templateManipulators.preWrapper, scope.options, template);
+      template = transcludeInWrappersSync(scope.options, template);
       /*
-       template = transcludeInWrappersSync(scope.options, template);
        template = runManipulatorsSync(formlyConfig.templateManipulators.postWrapper, scope.options, template);
        */
 
@@ -223,6 +223,21 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
           template = manipulator(template, options, scope);
         });
         return template;
+      }
+
+      function transcludeInWrappersSync(options, template) {
+        const wrappers = getWrapperOption(options);
+        if (!wrappers.length) {
+          return template;
+        }
+        const wrapperTemplates = [];
+        wrappers.forEach(wrapper => {
+          validateWrapper(wrapper, options);
+          const wrapperTemplate = wrapper.template;
+          formlyUsability.checkWrapperTemplate(wrapperTemplate, wrapper);
+          wrapperTemplates.unshift(wrapperTemplate); // unshifted so they're wrapped in the proper order
+        });
+        return wrapTemplateInWrappers(wrapperTemplates, template);
       }
     }
 
@@ -418,36 +433,38 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         return $q.when(template);
       }
 
-      wrapper.forEach((wrapper) => {
-        formlyUsability.checkWrapper(wrapper, options);
-        wrapper.validateOptions && wrapper.validateOptions(options);
-        runApiCheck(wrapper, options);
-      });
+      wrapper.forEach(wrapper => validateWrapper(wrapper, options));
       let promises = wrapper.map(w => getTemplate(w.template || w.templateUrl, !w.template));
       return $q.all(promises).then(wrappersTemplates => {
         wrappersTemplates.forEach((wrapperTemplate, index) => {
           formlyUsability.checkWrapperTemplate(wrapperTemplate, wrapper[index]);
         });
         wrappersTemplates.reverse(); // wrapper 0 is wrapped in wrapper 1 and so on...
-        let totalWrapper = wrappersTemplates.shift();
-        wrappersTemplates.forEach(wrapperTemplate => {
-          totalWrapper = doTransclusion(totalWrapper, wrapperTemplate);
-        });
-        return doTransclusion(totalWrapper, template);
+        return wrapTemplateInWrappers(wrappersTemplates, template);
       });
     };
   }
 
+  function validateWrapper(wrapper, options) {
+    formlyUsability.checkWrapper(wrapper, options);
+    wrapper.validateOptions && wrapper.validateOptions(options);
+    runApiCheck(wrapper, options);
+  }
+
+  function wrapTemplateInWrappers(wrappersTemplates, template) {
+    let totalWrapper = wrappersTemplates.shift();
+    wrappersTemplates.forEach(wrapperTemplate => {
+      totalWrapper = doTransclusion(totalWrapper, wrapperTemplate);
+    });
+    return doTransclusion(totalWrapper, template);
+  }
+
   function doTransclusion(wrapper, template) {
-    let superWrapper = angular.element('<a></a>'); // this allows people not have to have a single root in wrappers
-    superWrapper.append(wrapper);
-    let transcludeEl = superWrapper.find('formly-transclude');
-    if (!transcludeEl.length) {
-      //try it using our custom find function
-      transcludeEl = formlyUtil.findByNodeName(superWrapper, 'formly-transclude');
-    }
-    transcludeEl.replaceWith(template);
-    return superWrapper.html();
+    let superWrapper = document.createElement('div');
+    superWrapper.innerHTML = wrapper;
+    const transcludeEl = superWrapper.querySelector('formly-transclude');
+    transcludeEl.outerHTML = template;
+    return superWrapper.innerHTML;
   }
 
   function getWrapperOption(options) {
