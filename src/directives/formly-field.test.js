@@ -394,6 +394,17 @@ describe('formly-field', function() {
       expect(fieldEl.text()).to.equal(expectedTemplateText);
     });
 
+    it('should allow template property to be an empty string', () => {
+      scope.fields = [
+        {template: ''},
+      ];
+
+      const el = compileAndDigest();
+
+      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      expect(fieldEl.text()).to.equal('');
+    });
+
     it('should allow templateUrl property to be a function', () => {
       scope.fields = [
         {

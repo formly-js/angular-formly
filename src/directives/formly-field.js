@@ -331,17 +331,25 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
   }
 
   function getFieldTemplate(options) {
+    function fromOptionsOrType(key, type){
+      if(angular.isDefined(options[key])){
+        return options[key];
+      } else if(type && angular.isDefined(type[key])){
+        return type[key];
+      }
+    }
+
     let type = formlyConfig.getType(options.type, true, options);
-    let template = options.template || type && type.template;
-    let templateUrl = options.templateUrl || type && type.templateUrl;
-    if (!template && !templateUrl) {
+    let template = fromOptionsOrType('template', type);
+    let templateUrl = fromOptionsOrType('templateUrl', type);
+    if (angular.isUndefined(template) && !templateUrl) {
       throw formlyUsability.getFieldError(
         'type-type-has-no-template',
         `Type '${options.type}' has not template. On element:`, options
       );
     }
 
-    return getTemplate(template || templateUrl, !template, options);
+    return getTemplate(templateUrl || template, angular.isUndefined(template), options);
   }
 
 
