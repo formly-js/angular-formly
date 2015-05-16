@@ -7,7 +7,7 @@ import testUtils from '../test.utils.js';
 const {getNewField, input, basicForm} = testUtils;
 
 describe('formly-field', function() {
-  let $compile, scope, el, formlyConfig, $q;
+  let $compile, scope, el, formlyConfig, $q, isolateScope, field;
 
   beforeEach(window.module('formly'));
   beforeEach(inject((_$compile_, $rootScope, _formlyConfig_, _$q_) => {
@@ -593,7 +593,6 @@ describe('formly-field', function() {
   });
 
   describe(`formControl`, () => {
-    let isolateScope, field;
 
     beforeEach(() => {
       scope.fields = [{template: input}];
@@ -682,14 +681,6 @@ describe('formly-field', function() {
       }
 
     });
-
-
-    function compileAndDigestAndSetIsolateScope() {
-      compileAndDigest();
-      isolateScope = angular.element(el[0].querySelector('.formly-field')).isolateScope();
-      field = scope.fields[0];
-    }
-
   });
 
   describe(`link`, () => {
@@ -766,9 +757,9 @@ describe('formly-field', function() {
     it(`should have a form-controller`, () => {
       const template = `<div ng-model="model[options.key]"> </div>`;
       scope.fields = [getNewField({template: template})];
-      compileAndDigest();
-      const isolateScope = angular.element(el[0].querySelector('.formly-field')).isolateScope();
+      compileAndDigestAndSetIsolateScope();
       expect(isolateScope.fc).to.exist;
+      expect(field.formControl).to.exist;
     });
   });
 
@@ -777,6 +768,13 @@ describe('formly-field', function() {
     scope.$digest();
     return el;
   }
+
+  function compileAndDigestAndSetIsolateScope() {
+    compileAndDigest();
+    isolateScope = angular.element(el[0].querySelector('.formly-field')).isolateScope();
+    field = scope.fields[0];
+  }
+
 
   function shouldWarn(match, test) {
     var originalWarn = console.warn;
