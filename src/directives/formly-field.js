@@ -178,7 +178,6 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
   }
 
 
-
   // link function
   function fieldLink(scope, el) {
     if (scope.options.fieldGroup) {
@@ -192,21 +191,52 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     var type = getFieldType(scope.options);
     var args = arguments;
     var thusly = this;
-    getFieldTemplate(scope.options)
-      .then(runManipulators(formlyConfig.templateManipulators.preWrapper))
-      .then(transcludeInWrappers(scope.options))
-      .then(runManipulators(formlyConfig.templateManipulators.postWrapper))
-      .then(setElementTemplate)
-      .then(watchFormControl)
-      .then(callLinkFunctions)
-      .catch(error => {
-        formlyWarn(
-          'there-was-a-problem-setting-the-template-for-this-field',
-          'There was a problem setting the template for this field ',
-          scope.options,
-          error
-        );
-      });
+
+    if (formlyConfig.extras.syncMode) {
+      runSyncOperations();
+    } else {
+      runAsyncOperations();
+    }
+
+    function runSyncOperations() {
+      const template = getFieldTemplateSync(scope.options);
+      /*
+       template = runManipulatorsSync(formlyConfig.templateManipulators.preWrapper, template);
+       template = transcludeInWrappersSync(scope.options, template);
+       template = runManipulatorsSync(formlyConfig.templateManipulators.postWrapper, template);
+       */
+
+      setElementTemplate(template);
+      watchFormControl();
+      callLinkFunctions();
+
+      function getFieldTemplateSync(options) {
+        let template = fromOptionsOrType('template', options, type);
+        if (angular.isFunction(template)) {
+          template = template(options);
+        }
+        return template;
+      }
+    }
+
+    function runAsyncOperations() {
+      getFieldTemplate(scope.options)
+        .then(runManipulators(formlyConfig.templateManipulators.preWrapper))
+        .then(transcludeInWrappers(scope.options))
+        .then(runManipulators(formlyConfig.templateManipulators.postWrapper))
+        .then(setElementTemplate)
+        .then(watchFormControl)
+        .then(callLinkFunctions)
+        .catch(error => {
+          formlyWarn(
+            'there-was-a-problem-setting-the-template-for-this-field',
+            'There was a problem setting the template for this field ',
+            scope.options,
+            error
+          );
+        });
+    }
+
 
     function setFieldGroupTemplate() {
       checkFieldGroupApi(scope.options);
@@ -332,28 +362,11 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     }
   }
 
-  // stateless util functions
-  function asHtml(el) {
-    var wrapper = angular.element('<a></a>');
-    return wrapper.append(el).html();
-  }
-
-  function getFieldType(options) {
-    return options.type && formlyConfig.getType(options.type);
-  }
 
   function getFieldTemplate(options) {
-    function fromOptionsOrType(key, type){
-      if(angular.isDefined(options[key])){
-        return options[key];
-      } else if(type && angular.isDefined(type[key])){
-        return type[key];
-      }
-    }
-
     let type = formlyConfig.getType(options.type, true, options);
-    let template = fromOptionsOrType('template', type);
-    let templateUrl = fromOptionsOrType('templateUrl', type);
+    let template = fromOptionsOrType('template', options, type);
+    let templateUrl = fromOptionsOrType('templateUrl', options, type);
     if (angular.isUndefined(template) && !templateUrl) {
       throw formlyUsability.getFieldError(
         'type-type-has-no-template',
@@ -493,6 +506,26 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         prefix: `formly-field ${name}`,
         url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
       });
+  }
+
+
+  // stateless util functions
+  function asHtml(el) {
+    var wrapper = angular.element('<a></a>');
+    return wrapper.append(el).html();
+  }
+
+
+  function fromOptionsOrType(key, options, type) {
+    if (angular.isDefined(options[key])) {
+      return options[key];
+    } else if (type && angular.isDefined(type[key])) {
+      return type[key];
+    }
+  }
+
+  function getFieldType(options) {
+    return options.type && formlyConfig.getType(options.type);
   }
 
 }
