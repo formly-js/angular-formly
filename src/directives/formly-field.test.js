@@ -764,18 +764,18 @@ describe('formly-field', function() {
   });
 
   describe(`with syncMode turned on`, () => {
-    before(() => {
+    beforeEach(() => {
       formlyConfig.extras.syncMode = true;
     });
 
     it(`should still compile just fine`, () => {
-      scope.fields = [getNewField()];
-      expect(scope.fields.data).to.not.exist;
-      expect(() => compileAndDigest()).to.not.throw();
-      expect(field.data).to.exist; // it actually compiled
+      scope.fields = [getNewField({template: '<input ng-model="model[options.key]" class="foo" />'})];
+      compileAndDigest();
+      const fieldEl = el[0].querySelector('.foo');
+      expect(fieldEl).to.exist;
     });
 
-    after(() => {
+    afterEach(() => {
       formlyConfig.extras.syncMode = undefined;
     });
 
