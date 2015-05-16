@@ -37,25 +37,21 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       return;
     }
 
-    var opts = $scope.options;
-    var fieldType = opts.type && formlyConfig.getType(opts.type);
-    simplifyLife(opts);
-    mergeFieldOptionsWithTypeDefaults(opts, fieldType);
-    extendOptionsWithDefaults(opts, $scope.index);
-    checkApi(opts);
+    var fieldType = getFieldType($scope.options);
+    simplifyLife($scope.options);
+    mergeFieldOptionsWithTypeDefaults($scope.options, fieldType);
+    extendOptionsWithDefaults($scope.options, $scope.index);
+    checkApi($scope.options);
     // set field id to link labels and fields
-    $scope.id = formlyUtil.getFieldId($scope.formId, opts, $scope.index);
+    $scope.id = formlyUtil.getFieldId($scope.formId, $scope.options, $scope.index);
 
     // initalization
     setDefaultValue();
     setInitialValue();
     runExpressions();
-    addModelWatcher($scope, opts);
-    addValidationMessages(opts);
-    // simplify things
-    // create $scope.to so template authors can reference to instead of $scope.options.templateOptions
-    $scope.to = $scope.options.templateOptions;
-    invokeControllers($scope, opts, fieldType);
+    addModelWatcher($scope, $scope.options);
+    addValidationMessages($scope.options);
+    invokeControllers($scope, $scope.options, fieldType);
 
     // function definitions
     function runExpressions() {
@@ -90,16 +86,18 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         templateOptions: {},
         validation: {}
       });
+      // create $scope.to so template authors can reference to instead of $scope.options.templateOptions
+      $scope.to = $scope.options.templateOptions;
     }
 
     function setDefaultValue() {
-      if (angular.isDefined(opts.defaultValue) && !angular.isDefined($scope.model[opts.key])) {
-        $scope.model[opts.key] = opts.defaultValue;
+      if (angular.isDefined($scope.options.defaultValue) && !angular.isDefined($scope.model[$scope.options.key])) {
+        $scope.model[$scope.options.key] = $scope.options.defaultValue;
       }
     }
 
     function setInitialValue() {
-      opts.initialValue = $scope.model && $scope.model[opts.key];
+      $scope.options.initialValue = $scope.model && $scope.model[$scope.options.key];
     }
 
     function mergeFieldOptionsWithTypeDefaults(options, type) {
@@ -191,7 +189,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     addAttributes();
     addClasses();
 
-    var type = scope.options.type && formlyConfig.getType(scope.options.type);
+    var type = getFieldType(scope.options);
     var args = arguments;
     var thusly = this;
     getFieldTemplate(scope.options)
@@ -338,6 +336,10 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
   function asHtml(el) {
     var wrapper = angular.element('<a></a>');
     return wrapper.append(el).html();
+  }
+
+  function getFieldType(options) {
+    return options.type && formlyConfig.getType(options.type);
   }
 
   function getFieldTemplate(options) {
