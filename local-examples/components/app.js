@@ -5,6 +5,7 @@
   var app = angular.module('app', ['formly', 'formlyBootstrap']).run(function(formlyConfig, formlyVersion) {
     //apiCheck.disable();
     formlyConfig.extras.ngModelAttrsManipulatorPreferBound = true;
+    formlyConfig.extras.syncMode = true;
     var myCheck = window.apiCheck({
       output: {prefix: 'my check'}
     });
@@ -76,13 +77,13 @@
   });
 
   app.run(function(formlyConfig, $http, $templateCache) {
-    formlyConfig.templateManipulators.postWrapper.push(function(template) {
-      return $http.get('components/wrapper.html', {
-        cache: $templateCache
-      }).then(function(response) {
-        return response.data.replace('<my-own-transclude></my-own-transclude>', template);
-      });
-    });
+    //formlyConfig.templateManipulators.postWrapper.push(function(template) {
+    //  return $http.get('components/wrapper.html', {
+    //    cache: $templateCache
+    //  }).then(function(response) {
+    //    return response.data.replace('<my-own-transclude></my-own-transclude>', template);
+    //  });
+    //});
   });
 
   app.controller('MainCtrl', function MainCtrl($timeout, $q) {
