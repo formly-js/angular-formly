@@ -198,18 +198,18 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       runAsyncOperations();
     }
 
+
     function runSyncOperations() {
       let template = getFieldTemplateSync(scope.options);
       template = runManipulatorsSync(formlyConfig.templateManipulators.preWrapper, scope.options, template);
       template = transcludeInWrappersSync(scope.options, template);
-      /*
-       template = runManipulatorsSync(formlyConfig.templateManipulators.postWrapper, scope.options, template);
-       */
+      template = runManipulatorsSync(formlyConfig.templateManipulators.postWrapper, scope.options, template);
 
       setElementTemplate(template);
       watchFormControl();
       callLinkFunctions();
 
+      // sync functions
       function getFieldTemplateSync(options) {
         let template = fromOptionsOrType('template', options, type);
         if (angular.isFunction(template)) {
@@ -258,7 +258,6 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
           );
         });
     }
-
 
     function setFieldGroupTemplate() {
       checkFieldGroupApi(scope.options);

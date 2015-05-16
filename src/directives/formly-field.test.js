@@ -796,6 +796,13 @@ describe('formly-field', function() {
       expect(fieldEl).to.exist;
     });
 
+    it(`should apply post-manipulators`, () => {
+      const manipulator = sinon.spy();
+      formlyConfig.templateManipulators.postWrapper.push(manipulator);
+      compileAndDigest();
+      expect(manipulator).to.have.been.calledOnce;
+    });
+
     afterEach(() => {
       formlyConfig.extras.syncMode = undefined;
     });
