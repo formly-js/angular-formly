@@ -763,16 +763,34 @@ describe('formly-field', function() {
     });
   });
 
+  describe(`with syncMode turned on`, () => {
+    before(() => {
+      formlyConfig.extras.syncMode = true;
+    });
+
+    it(`should still compile just fine`, () => {
+      scope.fields = [getNewField()];
+      expect(scope.fields.data).to.not.exist;
+      expect(() => compileAndDigest()).to.not.throw();
+      expect(field.data).to.exist; // it actually compiled
+    });
+
+    after(() => {
+      formlyConfig.extras.syncMode = undefined;
+    });
+
+  });
+
   function compileAndDigest(template) {
     el = $compile(template || basicForm)(scope);
     scope.$digest();
+    field = scope.fields[0];
     return el;
   }
 
   function compileAndDigestAndSetIsolateScope() {
     compileAndDigest();
     isolateScope = angular.element(el[0].querySelector('.formly-field')).isolateScope();
-    field = scope.fields[0];
   }
 
 
