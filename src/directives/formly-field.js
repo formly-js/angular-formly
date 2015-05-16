@@ -199,11 +199,11 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     }
 
     function runSyncOperations() {
-      const template = getFieldTemplateSync(scope.options);
+      let template = getFieldTemplateSync(scope.options);
+      template = runManipulatorsSync(formlyConfig.templateManipulators.preWrapper, scope.options, template);
       /*
-       template = runManipulatorsSync(formlyConfig.templateManipulators.preWrapper, template);
        template = transcludeInWrappersSync(scope.options, template);
-       template = runManipulatorsSync(formlyConfig.templateManipulators.postWrapper, template);
+       template = runManipulatorsSync(formlyConfig.templateManipulators.postWrapper, scope.options, template);
        */
 
       setElementTemplate(template);
@@ -215,6 +215,13 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         if (angular.isFunction(template)) {
           template = template(options);
         }
+        return template;
+      }
+
+      function runManipulatorsSync(manipulators, options, template) {
+        angular.forEach(manipulators, manipulator => {
+          template = manipulator(template, options, scope);
+        });
         return template;
       }
     }

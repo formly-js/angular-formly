@@ -766,15 +766,21 @@ describe('formly-field', function() {
   describe(`with syncMode turned on`, () => {
     beforeEach(() => {
       formlyConfig.extras.syncMode = true;
+      scope.fields = [getNewField({template: '<input ng-model="model[options.key]" class="foo" />'})];
     });
 
     it(`should still compile just fine`, () => {
-      scope.fields = [getNewField({template: '<input ng-model="model[options.key]" class="foo" />'})];
       compileAndDigest();
       const fieldEl = el[0].querySelector('.foo');
       expect(fieldEl).to.exist;
     });
 
+    it(`should apply pre-manipulators`, () => {
+      const manipulator = sinon.spy();
+      formlyConfig.templateManipulators.preWrapper.push(manipulator);
+      compileAndDigest();
+      expect(manipulator).to.have.been.calledOnce;
+    });
     afterEach(() => {
       formlyConfig.extras.syncMode = undefined;
     });
