@@ -763,6 +763,22 @@ describe('formly-field', function() {
     });
   });
 
+  describe(`with custom errorExistsAndShouldBeVisible expression`, () => {
+    beforeEach(() => {
+      scope.fields = [getNewField({validators: {foo: 'false'}})];
+    });
+
+    it(`should set errorExistsAndShouldBeVisible to true when the expression function says so`, () => {
+      formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = '!!options.data.customExpression';
+      compileAndDigest();
+      expect(field.validation.errorExistsAndShouldBeVisible).to.be.false;
+      field.data.customExpression = true;
+      scope.$digest();
+      expect(field.validation.errorExistsAndShouldBeVisible).to.be.true;
+    });
+
+  });
+
   function compileAndDigest(template) {
     el = $compile(template || basicForm)(scope);
     scope.$digest();

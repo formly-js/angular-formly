@@ -294,11 +294,17 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
 
       function addShowMessagesWatcher() {
         stopWatchingShowError = scope.$watch(function watchShowValidationChange() {
-          if (typeof scope.options.validation.show === 'boolean') {
-            return scope.fc.$invalid && scope.options.validation.show;
+          const customExpression = formlyConfig.extras.errorExistsAndShouldBeVisibleExpression;
+          const {options, fc} = scope;
+          if (!fc.$invalid) {
+            return false;
+          } else if (typeof options.validation.show === 'boolean') {
+            return options.validation.show;
+          } else if (customExpression) {
+            return formlyUtil.formlyEval(scope, customExpression, fc.$modelValue, fc.$viewValue);
           } else {
-            let noTouchedButDirty = (angular.isUndefined(scope.fc.$touched) && scope.fc.$dirty);
-            return scope.fc.$invalid && (scope.fc.$touched || noTouchedButDirty);
+            let noTouchedButDirty = (angular.isUndefined(fc.$touched) && fc.$dirty);
+            return (scope.fc.$touched || noTouchedButDirty);
           }
         }, function onShowValidationChange(show) {
           scope.options.validation.errorExistsAndShouldBeVisible = show;
