@@ -1,3 +1,9 @@
+# 6.5.0
+
+## New Features
+
+- Adding `formlyConfig.extra.errorExistsAndShouldBeVisibleExpression` allowing you to override the default behavior of when `options.validation.errorExistsAndShouldBeVisible` (and it's shortcut: `showError`) is set to true.
+
 # 6.4.2
 
 - Official Release (no changes from 6.4.2-beta.0)
