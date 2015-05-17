@@ -763,24 +763,6 @@ describe('formly-field', function() {
     });
   });
 
-  describe(`with syncMode turned on`, () => {
-    beforeEach(() => {
-      formlyConfig.extras.syncMode = true;
-    });
-
-    it(`should still compile just fine`, () => {
-      scope.fields = [getNewField({template: '<input ng-model="model[options.key]" class="foo" />'})];
-      compileAndDigest();
-      const fieldEl = el[0].querySelector('.foo');
-      expect(fieldEl).to.exist;
-    });
-
-    afterEach(() => {
-      formlyConfig.extras.syncMode = undefined;
-    });
-
-  });
-
   function compileAndDigest(template) {
     el = $compile(template || basicForm)(scope);
     scope.$digest();
