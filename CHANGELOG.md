@@ -1,3 +1,9 @@
+# 6.5.1
+
+## Bug Fixes
+
+- Allowing the use of the `data` prefix for `ng-model` in custom templates. Thanks [tleruitte](https://github.com/tleruitte)!
+
 # 6.5.0
 
 ## New Features
