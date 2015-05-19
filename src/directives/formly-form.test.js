@@ -309,6 +309,28 @@ describe('formly-form', () => {
 
       expect(() => compileAndDigest()).to.not.throw();
     });
+
+    it(`should validate fields in a fieldGroup`, () => {
+      scope.fields = [
+        {
+          className: 'field-group',
+          fieldGroup: [
+            getNewField(),
+            getNewField(),
+            {
+              className: 'field-group',
+              fieldGroup: [
+                getNewField({extra: 'property'}),
+                getNewField(),
+                getNewField()
+              ]
+            }
+          ]
+        }
+      ];
+      expect(() => compileAndDigest()).to.throw();
+    });
+
   });
 
   describe(`options`, () => {
