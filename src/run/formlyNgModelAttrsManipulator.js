@@ -18,7 +18,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig) {
       return template;
     }
     el.innerHTML = template;
-    var modelNodes = el.querySelectorAll('[ng-model]');
+    var modelNodes = el.querySelectorAll('[ng-model], [data-ng-model]');
     if (!modelNodes || !modelNodes.length) {
       return template;
     }
