@@ -1,3 +1,9 @@
+# 6.5.2
+
+## Bug Fixes
+
+- Allowing `fieldGroup`s to be nested.
+
 # 6.5.1
 
 ## Bug Fixes

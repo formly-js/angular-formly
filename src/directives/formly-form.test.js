@@ -288,6 +288,27 @@ describe('formly-form', () => {
       expect(scope.fields[0].hide).to.be.true;
       expect(scope.fields[1].hide).to.be.true;
     });
+
+    it(`should allow a field group inside a field group`, () => {
+      scope.fields = scope.fields = [
+        {
+          className: 'field-group',
+          fieldGroup: [
+            getNewField(),
+            getNewField(),
+            {
+              className: 'field-group',
+              fieldGroup: [
+                getNewField(),
+                getNewField()
+              ]
+            }
+          ]
+        }
+      ];
+
+      expect(() => compileAndDigest()).to.not.throw();
+    });
   });
 
   describe(`options`, () => {
