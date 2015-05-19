@@ -258,7 +258,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var fieldGroup = apiCheck.shape({
 	  $$hashKey: apiCheck.any.optional,
-	  fieldGroup: apiCheck.arrayOf(formlyFieldOptions),
+	  // danger. Nested field groups wont get api-checked...
+	  fieldGroup: apiCheck.arrayOf(apiCheck.oneOfType([formlyFieldOptions, apiCheck.object])),
 	  className: apiCheck.string.optional,
 	  options: formOptionsApi.optional,
 	  hide: apiCheck.bool.optional,
