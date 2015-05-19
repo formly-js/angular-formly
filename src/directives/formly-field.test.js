@@ -763,6 +763,16 @@ describe('formly-field', function() {
     });
   });
 
+  describe(`with a div data-ng-model`,() => {
+    it(`should have a form-controller`, () => {
+      const template = `<div data-ng-model="model[options.key]"> </div>`;
+      scope.fields = [getNewField({template: template})];
+      compileAndDigestAndSetIsolateScope();
+      expect(isolateScope.fc).to.exist;
+      expect(field.formControl).to.exist;
+    });
+  });
+
   describe(`with custom errorExistsAndShouldBeVisible expression`, () => {
     beforeEach(() => {
       scope.fields = [getNewField({validators: {foo: 'false'}})];

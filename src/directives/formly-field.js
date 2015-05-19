@@ -257,7 +257,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         return;
       }
       const templateEl = angular.element(`<div>${templateString}</div>`);
-      const ngModelNode = templateEl[0].querySelector('[ng-model]');
+      const ngModelNode = templateEl[0].querySelector('[ng-model],[data-ng-model]');
       if (ngModelNode && ngModelNode.getAttribute('name')) {
         watchFieldNameOrExistence(ngModelNode.getAttribute('name'));
       }
