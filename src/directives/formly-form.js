@@ -236,9 +236,9 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       }
     },
     link(scope, el, attrs) {
+      const formId = attrs.name;
+      scope.formId = formId;
       if (attrs.form) {
-        const formId = attrs.name;
-        scope.formId = formId;
         $parse(attrs.form).assign(scope.$parent, scope[formId]);
       }
 

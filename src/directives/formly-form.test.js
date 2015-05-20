@@ -115,6 +115,9 @@ describe('formly-form', () => {
 
     expect(scope.parent).to.have.property('formly_0_in_my_ng_repeat');
     expect(scope.parent).to.have.property('formly_1_in_my_ng_repeat');
+    var firstForm = el[0].querySelector('ng-form');
+    var firstFormScope = angular.element(firstForm).isolateScope();
+    expect(firstFormScope.formId).to.eq('formly_0_in_my_ng_repeat');
   });
 
   it(`should allow you to completely swap out the fields`, () => {

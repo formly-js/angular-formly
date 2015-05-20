@@ -1,3 +1,9 @@
+# 6.5.3
+
+## Bug Fixes
+
+- Ensuring that the `formId` is properly set based on the generated (or provided) name.
+
 # 6.5.2
 
 ## Bug Fixes
