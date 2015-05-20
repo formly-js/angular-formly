@@ -791,6 +791,21 @@ describe('formly-field', function() {
 
   describe(`with specified "model" property`, () => {
 
+    it.skip(`should use the specified model for the field which specifies it`, () => {
+      const model = {
+        whatever: 'bad'
+      };
+      scope.fields = [
+        getNewField({model, data: {foo: 'bar'}}),
+        getNewField(),
+        getNewField()
+      ];
+
+      compileAndDigestAndSetIsolateScope();
+      expect(isolateScope.model).to.not.equal(scope.model);
+      expect(isolateScope.model).to.eq(model);
+    });
+
     it(`should allow you to specify "formState" and assign it to the formState property`, () => {
       scope.fields = [
         getNewField({model: 'formState', data: {foo: 'bar'}}),
