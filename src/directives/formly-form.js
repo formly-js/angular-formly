@@ -106,6 +106,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       $scope.model = $scope.model || {};
       $scope.fields = $scope.fields || [];
 
+      angular.forEach($scope.fields, initModel); // initializes the model property if set to 'formState'
       angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
       angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
 
@@ -166,6 +167,12 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
             field.resetModel();
           }
         });
+      }
+
+      function initModel(field) {
+        if (field.model && field.model === 'formState') {
+          field.model = $scope.options.formState;
+        }
       }
 
       function attachKey(field, index) {

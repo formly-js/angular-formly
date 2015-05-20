@@ -63,6 +63,8 @@ const expressionProperties = apiCheck.objectOf(apiCheck.oneOfType([
   }).strict
 ]));
 
+const modelChecker = apiCheck.oneOfType([apiCheck.oneOf(['formState']), apiCheck.object]);
+
 let fieldOptionsApiShape = {
   $$hashKey: apiCheck.any.optional,
   type: apiCheck.shape.ifNot(['template', 'templateUrl'], apiCheck.string).optional,
@@ -75,7 +77,7 @@ let fieldOptionsApiShape = {
     apiCheck.oneOfType([apiCheck.string, apiCheck.func])
   ).optional,
   key: apiCheck.oneOfType([apiCheck.string, apiCheck.number]).optional,
-  model: apiCheck.object.optional,
+  model: modelChecker.optional,
   className: apiCheck.string.optional,
   expressionProperties: expressionProperties.optional,
   data: apiCheck.object.optional,
@@ -153,7 +155,7 @@ const fieldGroup = apiCheck.shape({
   options: formOptionsApi.optional,
   hide: apiCheck.bool.optional,
   hideExpression: formlyExpression.optional,
-  model: apiCheck.object.optional,
+  model: modelChecker.optional,
   form: apiCheck.object.optional,
   elementAttributes: apiCheck.objectOf(apiCheck.string).optional
 }).strict;

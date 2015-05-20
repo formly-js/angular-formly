@@ -789,6 +789,27 @@ describe('formly-field', function() {
 
   });
 
+  describe(`with specified "model" property`, () => {
+
+    it(`should allow you to specify "formState" and assign it to the formState property`, () => {
+      scope.fields = [
+        getNewField({model: 'formState', data: {foo: 'bar'}}),
+        getNewField(),
+        getNewField()
+      ];
+
+      compileAndDigestAndSetIsolateScope();
+      const field1 = getIsolateScope(0);
+      const field2 = getIsolateScope(1);
+      const field3 = getIsolateScope(2);
+
+      expect(field1.model).to.not.equal(field2.model);
+      expect(field1.model).to.equal(field3.formState);
+      expect(field2.model).to.equal(field3.model);
+    });
+
+  });
+
   function compileAndDigest(template) {
     el = $compile(template || basicForm)(scope);
     scope.$digest();
@@ -798,7 +819,11 @@ describe('formly-field', function() {
 
   function compileAndDigestAndSetIsolateScope() {
     compileAndDigest();
-    isolateScope = angular.element(el[0].querySelector('.formly-field')).isolateScope();
+    isolateScope = getIsolateScope(0);
+  }
+
+  function getIsolateScope(index) {
+    return angular.element(el[0].querySelectorAll('.formly-field')[index]).isolateScope();
   }
 
 

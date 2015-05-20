@@ -1,3 +1,9 @@
+# 6.6.0
+
+## New Features
+
+- Adding ability for `model` to be set to `'formState'` allowing easier assignment to a non-model model for fields that are UI related not model related.
+
 # 6.5.4
 
 ## Bug Fixes
