@@ -1,3 +1,9 @@
+# 6.5.4
+
+## Bug Fixes
+
+- Fixed problem with `form` and `formId` not getting set properly.
+
 # 6.5.3
 
 ## Bug Fixes

@@ -18,11 +18,11 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     scope: {
       options: '=',
       model: '=',
-      formId: '@',
+      formId: '@', // TODO remove formId in a breaking release
       index: '=?',
       fields: '=?',
       formState: '=?',
-      form: '=?'
+      form: '=?' // TODO require form in a breaking release
     },
     controller: FormlyFieldController,
     link: fieldLink
@@ -43,7 +43,8 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     extendOptionsWithDefaults($scope.options, $scope.index);
     checkApi($scope.options);
     // set field id to link labels and fields
-    $scope.id = formlyUtil.getFieldId($scope.formId, $scope.options, $scope.index);
+    var formName = ($scope.form && $scope.form.$name) || $scope.formId;
+    $scope.id = formlyUtil.getFieldId(formName, $scope.options, $scope.index);
 
     // initalization
     setDefaultValue();

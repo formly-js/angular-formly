@@ -17,7 +17,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       const rootEl = getRootEl();
       const fieldRootEl = getFieldRootEl();
       const formId = `formly_${currentFormId++}`;
-      let parentFormAttributes;
+      let parentFormAttributes = '';
       if (attrs.hasOwnProperty('isFieldGroup') && el.parent().parent().hasClass('formly')) {
         parentFormAttributes = copyAttributes(el.parent().parent()[0].attributes);
       }
@@ -32,8 +32,8 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
                options="field"
                model="field.model || model"
                fields="fields"
-               form="${formId}"
-               form-id="${formId}"
+               form="theFormlyForm"
+               form-id="${getFormName()}"
                form-state="options.formState"
                index="$index">
           </${fieldRootEl}>
@@ -238,6 +238,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
     link(scope, el, attrs) {
       const formId = attrs.name;
       scope.formId = formId;
+      scope.theFormlyForm = scope[formId];
       if (attrs.form) {
         $parse(attrs.form).assign(scope.$parent, scope[formId]);
       }
