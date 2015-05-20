@@ -793,10 +793,10 @@ describe('formly-field', function() {
 
     it.skip(`should use the specified model for the field which specifies it`, () => {
       const model = {
-        whatever: 'bad'
+        foo: 'bar'
       };
       scope.fields = [
-        getNewField({model, data: {foo: 'bar'}}),
+        getNewField({model, key: 'foo'}),
         getNewField(),
         getNewField()
       ];
