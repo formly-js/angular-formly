@@ -900,11 +900,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    scope: {
 	      options: "=",
 	      model: "=",
-	      formId: "@",
+	      formId: "@", // TODO remove formId in a breaking release
 	      index: "=?",
 	      fields: "=?",
 	      formState: "=?",
-	      form: "=?"
+	      form: "=?" // TODO require form in a breaking release
 	    },
 	    controller: FormlyFieldController,
 	    link: fieldLink
@@ -924,7 +924,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    extendOptionsWithDefaults($scope.options, $scope.index);
 	    checkApi($scope.options);
 	    // set field id to link labels and fields
-	    $scope.id = formlyUtil.getFieldId($scope.formId, $scope.options, $scope.index);
+	    var formName = $scope.form && $scope.form.$name || $scope.formId;
+	    $scope.id = formlyUtil.getFieldId(formName, $scope.options, $scope.index);
 	
 	    // initalization
 	    setDefaultValue();
@@ -1441,11 +1442,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var rootEl = getRootEl();
 	      var fieldRootEl = getFieldRootEl();
 	      var formId = "formly_" + currentFormId++;
-	      var parentFormAttributes = undefined;
+	      var parentFormAttributes = "";
 	      if (attrs.hasOwnProperty("isFieldGroup") && el.parent().parent().hasClass("formly")) {
 	        parentFormAttributes = copyAttributes(el.parent().parent()[0].attributes);
 	      }
-	      return "\n        <" + rootEl + " class=\"formly\"\n                 name=\"" + getFormName() + "\"\n                 role=\"form\" " + parentFormAttributes + ">\n          <" + fieldRootEl + " formly-field\n               ng-repeat=\"field in fields " + getTrackBy() + "\"\n               " + getHideDirective() + "=\"!field.hide\"\n               class=\"formly-field\"\n               options=\"field\"\n               model=\"field.model || model\"\n               fields=\"fields\"\n               form=\"" + formId + "\"\n               form-id=\"" + formId + "\"\n               form-state=\"options.formState\"\n               index=\"$index\">\n          </" + fieldRootEl + ">\n          <div ng-transclude></div>\n        </" + rootEl + ">\n      ";
+	      return "\n        <" + rootEl + " class=\"formly\"\n                 name=\"" + getFormName() + "\"\n                 role=\"form\" " + parentFormAttributes + ">\n          <" + fieldRootEl + " formly-field\n               ng-repeat=\"field in fields " + getTrackBy() + "\"\n               " + getHideDirective() + "=\"!field.hide\"\n               class=\"formly-field\"\n               options=\"field\"\n               model=\"field.model || model\"\n               fields=\"fields\"\n               form=\"theFormlyForm\"\n               form-id=\"" + getFormName() + "\"\n               form-state=\"options.formState\"\n               index=\"$index\">\n          </" + fieldRootEl + ">\n          <div ng-transclude></div>\n        </" + rootEl + ">\n      ";
 	
 	      function getRootEl() {
 	        return attrs.rootEl || "ng-form";
@@ -1648,6 +1649,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    link: function link(scope, el, attrs) {
 	      var formId = attrs.name;
 	      scope.formId = formId;
+	      scope.theFormlyForm = scope[formId];
 	      if (attrs.form) {
 	        $parse(attrs.form).assign(scope.$parent, scope[formId]);
 	      }
