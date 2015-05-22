@@ -1,4 +1,4 @@
-// angular-formly version 6.7.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 6.8.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	ngModule.constant("formlyApiCheck", formlyApiCheck);
 	ngModule.constant("formlyErrorAndWarningsUrlPrefix", formlyErrorAndWarningsUrlPrefix);
-	ngModule.constant("formlyVersion", ("6.7.0")); // <-- webpack variable
+	ngModule.constant("formlyVersion", ("6.8.0")); // <-- webpack variable
 	
 	ngModule.provider("formlyUsability", formlyUsability);
 	ngModule.provider("formlyConfig", formlyConfig);
@@ -304,7 +304,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	
-	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.7.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.8.0") + "/other/ERRORS_AND_WARNINGS.md#";
 
 /***/ },
 /* 4 */
@@ -410,7 +410,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      disableNgModelAttrsManipulator: false,
 	      ngModelAttrsManipulatorPreferUnbound: false,
 	      removeChromeAutoComplete: false,
-	      defaultHideDirective: "ng-if"
+	      defaultHideDirective: "ng-if",
+	      getFieldId: null
 	    },
 	    templateManipulators: {
 	      preWrapper: [],
@@ -927,11 +928,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    extendOptionsWithDefaults($scope.options, $scope.index);
 	    checkApi($scope.options);
 	    // set field id to link labels and fields
-	    var formName = $scope.form && $scope.form.$name || $scope.formId;
-	    $scope.id = formlyUtil.getFieldId(formName, $scope.options, $scope.index);
-	    $scope.options.id = $scope.id;
 	
 	    // initalization
+	    setFieldId();
 	    setDefaultValue();
 	    setInitialValue();
 	    runExpressions();
@@ -974,6 +973,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 	      // create $scope.to so template authors can reference to instead of $scope.options.templateOptions
 	      $scope.to = $scope.options.templateOptions;
+	    }
+	
+	    function setFieldId() {
+	      if (angular.isFunction(formlyConfig.extras.getFieldId)) {
+	        $scope.id = formlyConfig.extras.getFieldId($scope.options, $scope.model, $scope);
+	      } else {
+	        var formName = $scope.form && $scope.form.$name || $scope.formId;
+	        $scope.id = formlyUtil.getFieldId(formName, $scope.options, $scope.index);
+	      }
+	      $scope.options.id = $scope.id;
 	    }
 	
 	    function setDefaultValue() {
