@@ -26,6 +26,7 @@ var baseConfig = {
     libraryTarget: 'umd'
   },
 
+  devtool: 'source-map',
 
   stats: {
     colors: true,
@@ -59,10 +60,7 @@ var baseConfig = {
     ]
   }
 };
-
-var devConfig = {
-  devtool: 'inline-source-map'
-};
+var devConfig = {};
 
 
 var prodConfig = {
@@ -70,7 +68,6 @@ var prodConfig = {
     filename: 'formly.min.js',
     path: here('dist')
   },
-  devtool: 'source-map',
   plugins: [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
@@ -95,42 +92,30 @@ delete testConfig.jshint;
 delete testCIConfig.jshint;
 
 var envContexts = {
-  dev: {
-    ON_DEV: true
-  },
-  prod: {
-    ON_PROD: true
-  },
-  test: {
-    ON_TEST: true
-  },
-  'test:ci': {
-    ON_TEST: true
-  }
+  development: {ON_DEV: true},
+  prod: {ON_PROD: true},
+  test: {ON_TEST: true},
+  'test:ci': {ON_TEST: true}
 };
 
-module.exports = getConfig();
 
-module.exports.getConfig = getConfig;
+var context = process.env.NODE_ENV || 'development';
 
-function getConfig(context) {
-  context = context || 'dev';
-  var configContexts = {
-    dev: devConfig,
-    prod: prodConfig,
-    test: testConfig,
-    'test:ci': testCIConfig
-  };
+var configContexts = {
+  development: devConfig,
+  production: prodConfig,
+  test: testConfig,
+  'test:ci': testCIConfig
+};
 
-  var resultConfig = deepExtend({}, baseConfig, configContexts[context]);
-  var resultVars = deepExtend({}, baseEnvVars, envContexts[context]);
+var resultConfig = deepExtend({}, baseConfig, configContexts[context]);
+var resultVars = deepExtend({}, baseEnvVars, envContexts[context]);
 
-  resultConfig.plugins.push(new webpack.DefinePlugin(resultVars));
-  resultConfig.plugins.push(new webpack.BannerPlugin(getBanner(), {raw: true}));
+resultConfig.plugins.push(new webpack.DefinePlugin(resultVars));
+resultConfig.plugins.push(new webpack.BannerPlugin(getBanner(), {raw: true}));
 
-  console.log('Webpack config is in ' + context + ' mode');
-  return resultConfig;
-}
+console.log('Webpack config is in ' + context + ' mode');
+module.exports = resultConfig;
 
 function getBanner() {
   return '// ' + packageJson.name + ' version ' +

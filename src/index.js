@@ -1,1 +1,2 @@
-module.exports = require('./index.common');
+import index from './index.common';
+export default index;

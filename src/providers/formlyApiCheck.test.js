@@ -1,27 +1,41 @@
 /* jshint maxlen:false */
-module.exports = ngModule => {
-  describe('formlyApiCheck', () => {
-    beforeEach(window.module(ngModule.name));
+import {expect} from 'chai';
 
-    describe('formlyFIeldOptions', () => {
-      let formlyFIeldOptions;
-      beforeEach(inject((formlyApiCheck) => {
-        formlyFIeldOptions = formlyApiCheck.formlyFieldOptions;
-      }));
+describe('formlyApiCheck', () => {
+  beforeEach(window.module('formly'));
 
-      it(`should pass when validation.messages is an object of functions`, () => {
-        const options = {
-          key: '♪┏(・o･)┛♪┗ ( ･o･) ┓♪',
-          validation: {
-            messages: {
-              thing1() {
-              }
-            }
+  describe('formlyFieldOptions', () => {
+    let formlyFieldOptions;
+    beforeEach(inject((formlyApiCheck) => {
+      formlyFieldOptions = formlyApiCheck.formlyFieldOptions;
+    }));
+
+    it(`should pass when validation.messages is an object of functions or strings`, () => {
+      expectPass({
+        key: '♪┏(・o･)┛♪┗ ( ･o･) ┓♪',
+        template: 'hi',
+        validation: {
+          messages: {
+            thing1() {
+            },
+            thing2: '"Formly Expression"'
           }
-        };
-        const result = formlyFIeldOptions(options);
-        expect(result).to.be.undefined;
+        }
       });
     });
+
+    it(`should allow $$hashKey`, () => {
+      expectPass({
+        $$hashKey: 'object:1',
+        template: 'hello',
+        key: 'whatevs'
+      });
+    });
+
+    function expectPass(options) {
+      const result = formlyFieldOptions(options);
+      expect(result).to.be.undefined;
+    }
   });
-};
+
+});

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Manual tests for formly</title>
   <link rel="stylesheet" href="bootstrap.css"/>
+  <link rel="stylesheet" href="styles.css"/>
   <style>.ng-cloak {display: none}</style>
 </head>
 <body ng-app="app" ng-controller="MainCtrl as vm">
@@ -11,12 +12,15 @@
   <h1>Manual tests for formly</h1>
 </div>
 <div class="container ng-cloak">
-  <!--<form name="vm.realForm">-->
-    <!--<formly-form model="vm.user" fields="vm.realFields" form="vm.realForm"></formly-form>-->
-  <!--</form>-->
-  <form name="vm.form">
-    <formly-form model="vm.user" fields="vm.fields" form="vm.form"></formly-form>
+  <form name="vm.form" ng-if="vm.realFields.length">
+    <formly-form model="vm.user" fields="vm.realFields" options="vm.options"></formly-form>
   </form>
+  <form name="vm.form" ng-if="!vm.realFields.length">
+    <formly-form model="vm.user" fields="vm.fields" options="vm.options"></formly-form>
+  </form>
+  <button class="btn btn-default" ng-click="vm.options.resetModel()">Reset Model</button>
+  <button class="btn btn-default" ng-click="vm.options.updateInitialValue()">Update Initial Value</button>
+  <button class="btn btn-default" ng-click="vm.swapFields()">Swap Fields</button>
 
   <h1>User</h1>
   <pre>{{vm.user | json}}</pre>
@@ -25,7 +29,7 @@
   <pre ng-if="vm.form">{{vm.form | json}}</pre>
 </div>
 
-<script src="../node_modules/api-check/dist/apiCheck.js"></script>
+<script src="../node_modules/api-check/dist/api-check.js"></script>
 <script src="angular/angular.js"></script>
 <script src="dist/formly.js"></script>
 <!--<script src="formly-templates/angular-formly-templates-vanilla.js"></script>-->

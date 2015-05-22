@@ -1,7 +1,0 @@
-.fd-example-search .formly-examples .example-link {
-  transition: color .3s;
-}
-
-.fd-example-search .formly-examples .example-link.active {
-  color: #B52E31;
-}

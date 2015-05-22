@@ -15,3 +15,4 @@ karma.conf.ci.js
 karma.conf.js
 webpack.config.js
 webpack.config.minify.js
+other

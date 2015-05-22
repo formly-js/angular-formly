@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "4.1.0",
+  "version": "6.8.0",
   "author": "Astrism <astrisms@gmail.com>",
   "contributors": [
     "Astrism <astrisms@gmail.com>",
@@ -19,15 +19,14 @@
     }
   ],
   "scripts": {
-    "build:dist": "node node_modules/webpack/bin/webpack.js",
-    "build:prod": "node node_modules/webpack/bin/webpack.js --config webpack.config.minify.js",
+    "build:dist": "NODE_ENV=development webpack --progress --colors",
+    "build:prod": "NODE_ENV=production webpack --progress --colors",
     "build": "npm run build:dist; npm run build:prod",
-    "test": "node node_modules/karma/bin/karma start karma.conf.js",
-    "test:single": "node node_modules/karma/bin/karma start karma.conf.js --single-run",
-    "test:ci": "node node_modules/karma/bin/karma start karma.conf.ci.js",
-    "watch": "node node_modules/webpack/bin/webpack.js --watch",
+    "test": "NODE_ENV=test node node_modules/karma/bin/karma start karma.conf.js",
+    "test:single": "NODE_ENV=test node node_modules/karma/bin/karma start karma.conf.js --single-run",
+    "test:ci": "NODE_ENV=test:ci node node_modules/karma/bin/karma start karma.conf.js",
+    "watch": "NODE_ENV=development webpack --watch --progress --colors",
     "start": "npm run watch & npm run test",
-    "deploy": "grunt deploy",
     "release": "git push && npm publish && git push --tags"
   },
   "config": {
@@ -37,13 +36,13 @@
   },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
   "peerDependencies": {
-    "angular": "^1.x",
-    "api-check": "^6.0.10"
+    "angular": "^1.2.x || >= 1.4.0-beta.0 || >= 1.5.0-beta.0",
+    "api-check": "^7.0.0"
   },
   "devDependencies": {
     "angular": "^1.3.11",
     "angular-mocks": "^1.3.11",
-    "api-check": "^6.0.10",
+    "api-check": "^7.2.2",
     "babel-core": "^4.4.6",
     "babel-loader": "^4.0.0",
     "chai": "^1.10.0",

@@ -1,3 +1,374 @@
+# 6.8.0
+
+## New Features
+
+- Adding `formlyConfig.extras.getFieldId` to allow you to specify a function which will be used to generate the field ID for all of the fields.
+
+# 6.7.0
+
+## New Features
+
+- Adding `id` property on the field config object allowing you to specify the name/id for a field (which can be used in templates).
+
+# 6.6.0
+
+## New Features
+
+- Adding ability for `model` to be set to `'formState'` allowing easier assignment to a non-model model for fields that are UI related not model related.
+
+# 6.5.4
+
+## Bug Fixes
+
+- Fixed problem with `form` and `formId` not getting set properly.
+
+# 6.5.3
+
+## Bug Fixes
+
+- Ensuring that the `formId` is properly set based on the generated (or provided) name.
+
+# 6.5.2
+
+## Bug Fixes
+
+- Allowing `fieldGroup`s to be nested.
+
+# 6.5.1
+
+## Bug Fixes
+
+- Allowing the use of the `data` prefix for `ng-model` in custom templates. Thanks [tleruitte](https://github.com/tleruitte)!
+
+# 6.5.0
+
+## New Features
+
+- Adding `formlyConfig.extra.errorExistsAndShouldBeVisibleExpression` allowing you to override the default behavior of when `options.validation.errorExistsAndShouldBeVisible` (and it's shortcut: `showError`) is set to true.
+
+# 6.4.2
+
+- Official Release (no changes from 6.4.2-beta.0)
+
+# 6.4.2-beta.0
+
+## Bug Fixes
+
+- Fixing support for browserify [#186](/../../issues/186) by removing inline sourcemaps.
+
+# 6.4.1
+
+## Bug Fixes
+
+- `extends` and `template`/`templateUrl` issue. Thanks [ckniffen](https://github.com/ckniffen)!
+- `formControl`/`fc` not getting set when the `ng-model` is on a `div`. Thanks [TheMcMurder](https://github.com/TheMcMurder)
+
+# 6.4.0
+
+- Official Release (no changes from 6.4.0-beta.6)
+
+# 6.4.0-beta.6
+
+## Bug Fixes
+
+- Fixing issue with `resetModel` where it wasn't resetting the form's `$touched` and `$dirty` states [#278](/../../issues/278)
+
+# 6.4.0-beta.5
+
+## New Features
+
+- Adding `field-root-el` attribute to `<formly-form>` [#276](/../../issues/276)
+
+# 6.4.0-beta.4
+
+## New Features
+
+- Ability to add custom attributes to a `formly-field` as well as the `ng-form` of a `fieldGroup` using new property called `elementAttributes`
+
+## Improvement
+
+- Making `hideExpression` function more like a `formlyExpression`. Not exactly the same still...
+
+# 6.4.0-beta.3
+
+## New Features
+
+- Adding watch to `formState` to run expressionProperties [#270](/../../issues/270)
+- Adding `hideExpression` to the field to overcome issues with `ng-if` [#271](/../../issues/271)
+
+# 6.4.0-beta.2
+
+## New Features
+
+- Adding `model`, `options`, `hide`, and `form` to a `formGroup` to allow you to control those properties.
+- `formState` is the same object for `formGroup`s as the parent's `formState`.
+
+## Bug Fixes
+
+- Properly handling `resetModel` and `updateInitialValues` for `formGroup`s
+
+# 6.4.0-beta.1
+
+## New Features
+
+- Adding convenience `formly-field-group` class to `formly-field` that has a `fieldGroup`.
+
+# 6.4.0-beta.0
+
+## Improvements
+
+- No longer watching the `field.type` for the field's class because this can't ever change and simply adding the class itself
+
+## New Features
+
+- Adding the ability to specify a `className` on a field which will get added to the `formly-field`.
+- Adding the ability to have `fieldGroups` THIS IS HUGE!!!
+
+# 6.3.4
+
+## Improvements
+
+- No longer need to specify `noFormControl` to be `false`. Formly is smart enough to know if you have an `ng-model` in your template.
+
+# 6.3.3
+
+## Bug Fixes
+
+- Adding the ability to force formly to watch your fields for a `formControl` by setting `noFormControl` to `false`.
+
+# 6.3.2
+
+## Bug Fixes
+
+- Correctly setting the `initialValue` *after* setting the `defaultValue`.
+
+# 6.3.1
+
+## Bug Fixes
+
+- Fixing falsy issue with `defaultValue`
+
+# 6.3.0
+
+## New Features
+
+- Adding `defaultValue` property onto the `field` config. Normally you want to initialize the model, but this allows you to defer that to angular-formly.
+
+# 6.2.0
+
+## New Features
+
+- Adding `track-by` attribute to `formly-form` to allow you to specify how you would like the `formly-form` `ng-repeat` to track your fields. [#246](/../../issues/246)
+- Adding ability to specify a function (which can optionally return a promise) for both `template` and `templateUrl`. Thanks [@ckniffen](https://github.com/ckniffen)!
+
+## Bug Fixes
+
+- Fixing issue [#266](/../../issues/266) where the form control wasn't set when using a custom name.
+
+## Notable Changes (non-breaking)
+
+- Removing default `track by $index` to allow developers to change fields without index issues. Should not break current developers usage.
+
+# 6.1.0
+
+## New Features
+
+- Adding `hide-directive` to give developers control over how the `formly-form` hides fields.
+
+# 6.0.1
+
+## Internal Fixes
+
+- Fixing `api-check` `devDependency` version.
+
+# 6.0.0
+
+- Official release!
+
+# 6.0.0-beta.10
+
+## Features
+
+- You can now specify a name for your form via the `bind-name` property. This is to resolve [#252](/../../issues/252). It only works for >= angular 1.3 and is hopefully not going to be needed commonly.
+
+# 6.0.0-beta.9
+
+## Bug Fixes
+
+- Annotating function properly
+
+# 6.0.0-beta.8
+
+## Internal Changes
+
+- Going all the way with es6 modules with some help from [@sparty02](https://github.com/sparty02) (Thanks!). This should also fix some issues with browserify because we're no longer requiring our tests in the source.
+
+# 6.0.0-beta.7
+
+## Other
+
+- Broke stuff
+
+# 6.0.0-beta.6
+
+## Bug Fixes
+
+- Fixed issue [#239](/../../issues/239) with by adding a `boolean` type for `ngModelAttrs` specifically for `required` and `disabled`.
+
+## Breaking Changes
+
+- Changed `ngModelAttrsManipulatorPreferBound` to `ngModelAttrsManipulatorPreferUnbound` because it's the more common case to want this enabled.
+
+# 6.0.0-beta.5
+
+## Other
+
+- Accidentally released the beta version without the beta tag.
+
+# 6.0.0-beta.4 (deprecated)
+
+## Breaking Changes
+
+- Fixing the Formly Expression string version to be consistent with the change for the function version as far as not using the `|| $modelValue` for the `$viewValue`;
+
+# 6.0.0-beta.3
+
+## Breaking Changes
+
+- Removing deprecated `data.noTouchy` in favor of the new `data.skipNgModelAttrsManipulator`. Makes so much more sense.
+
+# 6.0.0-beta.2
+
+## Bug Fixes
+
+- Updating to the latest beta version of `api-check` which has a bug fix in it.
+
+# 6.0.0-beta.1
+
+## Breaking Changes
+
+- Updated to `api-check` version 7.0.0-beta.1. It should be released to a non-beta version before angular-formly 6.0.0 comes out of beta.
+
+# 6.0.0-beta.0
+
+## Breaking Changes
+
+- A Formly Expression (used for `validators`, `expressionProperties`, and `validation.messages`) when providing a function, used to pass `$viewValue` as the first parameter and was calculated as: `$viewValue || $modelValue`. `$viewValue` is still the first parameter, but it no longer uses `|| $modelValue` so you need to do undefined/null checking.
+- Now using `apiCheck` to check the `options` passed to `formly-form`
+- Now initializing the `model` and `fields` if they haven't been initialized, which will throw an error if the attribute is not present.
+
+# 5.2.1
+
+## Bug Fixes
+
+- Changing `fixChromeAutoComplete` to `removeChromeAutoComplete`. This release is coming immediately after the previous so hopefully nobody's using the feature yet.
+
+# 5.2.0 - deprecated
+
+## Features
+
+- Added `options.fixChromeAutoComplete` to `formly-form` options as well as `formlyConfig.extras.fixChromeAutoComplete`
+
+## Bug Fixes
+
+- Fixing issue with the `resetModel` where if the model is `null` things break.
+
+# 5.2.0-beta.1
+
+## Other changes
+
+- Botched the other beta release...
+
+# 5.2.0-beta.0
+
+## Features
+
+- Adding the ability to reset a form's model back to its original state (also adding the ability to reset what the "original state" is)
+
+# 5.1.2
+
+## Other Fixes
+
+- Changing the peerDependency to include beta versions of angular.
+
+# 5.1.1
+
+## Bug Fixes
+
+- Fixes ([#231](/../../issues/231)). Code borrowed from @koenweyn's PR.
+
+# 5.1.0
+
+## Features
+
+- You can now specify `validation.messages` formly expressions.
+
+## Internal Breaking Changes
+
+- `formly-custom-validation` (internal directive) no longer allows you to specify your own custom validation object but instead simply relies on the scope having an `options.validators` property. It already depended on some other stuff from the scope and it's so specific to angular-formly that this should not cause an issue for anyone.
+
+# 5.0.3
+
+## Bug Fixes
+
+- Removing the requirement to have the `form` attribute.
+
+# 5.0.2
+
+## Bug Fixes
+
+- Really fixed ([#222](/../../issues/222)) this time
+
+# 5.0.1
+
+## Bug Fixes
+
+- Fixed issue where the `form` attribute on the `<formly-form>` directive would not actually do anything :-(
+
+# 5.0.0
+
+## Breaking Changes
+
+- formly-field scope attribute `formId` is now an attribute, not a two-way binding
+- the `form` of a `formly-form` is now generated to avoid siblings overriding each other
+
+## Other
+
+- Removed migration warning about changing from `result` to `model`.
+- Removed migration warning about changing from `name` to `form`.
+
+# 4.2.5
+
+## Other
+
+- Moving where the logos are
+- Ignoring the `other` directory
+
+# 4.2.3
+
+## Other
+
+- Trouble with 4.2.2... :-(
+
+# 4.2.2
+
+## Other
+
+- Had trouble with release 4.2.1
+- Updating documentation... Big time.
+
+# 4.2.1
+
+## Other
+
+- Had trouble release 4.2.0
+
+# 4.2.0
+
+## Improvements
+
+- Thanks to @koenweyn, we now can support IE8 (with polyfills).
+
 # 4.1.0
 
 ## Improvements
