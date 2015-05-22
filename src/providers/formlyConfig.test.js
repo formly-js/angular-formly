@@ -267,7 +267,7 @@ describe('formlyConfig', () => {
           });
 
         });
-        
+
         describe(`template/templateUrl Cases`, () => {
           it('should use templateUrl if type defines it and its parent has template defined', function(){
             setterFn([
@@ -640,7 +640,7 @@ describe('formlyConfig', () => {
 
   describe(`extras`, () => {
 
-    describe(`defaultHideDirective`, () => {
+    describe(`that impact field rendering`, () => {
 
       let scope, $compile, formlyConfig;
 
@@ -651,34 +651,38 @@ describe('formlyConfig', () => {
         formlyConfig = _formlyConfig_;
       }));
 
-      it(`should default formly-form to use ng-if when not specified`, () => {
-        const el = $compile(`
-          <formly-form fields="fields" model="model"></formly-form>
-        `)(scope);
-        scope.$digest();
-        const fieldNode = el[0].querySelector('.formly-field');
-        expect(fieldNode.getAttribute('ng-if')).to.exist;
-      });
+      describe(`defaultHideDirective`, () => {
 
-      it(`should default formly-form to use the specified directive for hiding and showing`, () => {
-        formlyConfig.extras.defaultHideDirective = 'ng-show';
-        const el = $compile(`
-          <formly-form fields="fields" model="model"></formly-form>
-        `)(scope);
-        scope.$digest();
-        const fieldNode = el[0].querySelector('.formly-field');
-        expect(fieldNode.getAttribute('ng-show')).to.exist;
-      });
+        it(`should default formly-form to use ng-if when not specified`, () => {
+          const el = $compile(`
+            <formly-form fields="fields" model="model"></formly-form>
+          `)(scope);
+          scope.$digest();
+          const fieldNode = el[0].querySelector('.formly-field');
+          expect(fieldNode.getAttribute('ng-if')).to.exist;
+        });
 
-      it(`should be overrideable on a per-form basis`, () => {
-        formlyConfig.extras.defaultHideDirective = '(╯°□°)╯︵ ┻━┻';
-        const el = $compile(`
-          <formly-form fields="fields" model="model" hide-directive="ng-show"></formly-form>
-        `)(scope);
-        scope.$digest();
-        const fieldNode = el[0].querySelector('.formly-field');
-        expect(fieldNode.getAttribute('ng-show')).to.exist;
-        expect(fieldNode.getAttribute('(╯°□°)╯︵ ┻━┻')).to.not.exist;
+        it(`should default formly-form to use the specified directive for hiding and showing`, () => {
+          formlyConfig.extras.defaultHideDirective = 'ng-show';
+          const el = $compile(`
+            <formly-form fields="fields" model="model"></formly-form>
+          `)(scope);
+          scope.$digest();
+          const fieldNode = el[0].querySelector('.formly-field');
+          expect(fieldNode.getAttribute('ng-show')).to.exist;
+        });
+
+        it(`should be overrideable on a per-form basis`, () => {
+          formlyConfig.extras.defaultHideDirective = '(╯°□°)╯︵ ┻━┻';
+          const el = $compile(`
+            <formly-form fields="fields" model="model" hide-directive="ng-show"></formly-form>
+          `)(scope);
+          scope.$digest();
+          const fieldNode = el[0].querySelector('.formly-field');
+          expect(fieldNode.getAttribute('ng-show')).to.exist;
+          expect(fieldNode.getAttribute('(╯°□°)╯︵ ┻━┻')).to.not.exist;
+        });
+
       });
 
     });
