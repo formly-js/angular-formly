@@ -1,3 +1,9 @@
+# 6.8.1
+
+## Bug Fixes
+
+- Removing source-maps entirely for the unminified build.
+
 # 6.8.0
 
 ## New Features
