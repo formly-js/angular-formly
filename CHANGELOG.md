@@ -1,3 +1,9 @@
+# 6.1.0
+
+## New Features
+
+- Adding `id` property on the field config object allowing you to specify the name/id for a field (which can be used in templates).
+
 # 6.6.0
 
 ## New Features

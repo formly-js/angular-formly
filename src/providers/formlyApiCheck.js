@@ -79,6 +79,7 @@ let fieldOptionsApiShape = {
   key: apiCheck.oneOfType([apiCheck.string, apiCheck.number]).optional,
   model: modelChecker.optional,
   className: apiCheck.string.optional,
+  id: apiCheck.string.optional,
   expressionProperties: expressionProperties.optional,
   data: apiCheck.object.optional,
   templateOptions: apiCheck.object.optional,

@@ -45,6 +45,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     // set field id to link labels and fields
     var formName = ($scope.form && $scope.form.$name) || $scope.formId;
     $scope.id = formlyUtil.getFieldId(formName, $scope.options, $scope.index);
+    $scope.options.id = $scope.id;
 
     // initalization
     setDefaultValue();

@@ -11,6 +11,9 @@ function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
 }
 
 function getFieldId(formId, options, index) {
+  if (options.id) {
+    return options.id;
+  }
   var type = options.type;
   if (!type && options.template) {
     type = 'template';

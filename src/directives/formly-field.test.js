@@ -501,6 +501,26 @@ describe('formly-field', function() {
     });
   });
 
+  describe(`id property`, () => {
+    it(`should default to a semi-random id that you cannot rely on and don't have to think about`, () => {
+      scope.fields = [getNewField()];
+      compileAndDigest();
+      const fieldNode = getFieldNgModelNode();
+      expect(field.id).to.eq(fieldNode.id);
+      expect(fieldNode.id).to.eq('formly_1_template_0_0');
+      expect(fieldNode.id).to.eq(fieldNode.getAttribute('name'));
+    });
+
+    it(`should allow you to specify a custom id if you want to`, () => {
+      scope.fields = [getNewField({id: 'ᕕ( ᐛ )ᕗ'})];
+      compileAndDigest();
+      const fieldNode = getFieldNgModelNode();
+      expect(field.id).to.eq(fieldNode.id);
+      expect(fieldNode.id).to.eq('ᕕ( ᐛ )ᕗ');
+      expect(fieldNode.id).to.eq(fieldNode.getAttribute('name'));
+    });
+  });
+
   describe(`type apiCheck`, () => {
     let type = 'input';
     beforeEach(() => {
@@ -834,11 +854,19 @@ describe('formly-field', function() {
 
   function compileAndDigestAndSetIsolateScope() {
     compileAndDigest();
-    isolateScope = getIsolateScope(0);
+    isolateScope = getIsolateScope();
   }
 
-  function getIsolateScope(index) {
-    return angular.element(el[0].querySelectorAll('.formly-field')[index]).isolateScope();
+  function getIsolateScope(index = 0) {
+    return angular.element(getFieldNode(index)).isolateScope();
+  }
+
+  function getFieldNode(index = 0) {
+    return el[0].querySelectorAll('.formly-field')[index];
+  }
+
+  function getFieldNgModelNode(index = 0) {
+    return getFieldNode(index).querySelector('[ng-model]');
   }
 
 
