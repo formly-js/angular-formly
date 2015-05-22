@@ -1,4 +1,4 @@
-// angular-formly version 6.6.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 6.7.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	ngModule.constant("formlyApiCheck", formlyApiCheck);
 	ngModule.constant("formlyErrorAndWarningsUrlPrefix", formlyErrorAndWarningsUrlPrefix);
-	ngModule.constant("formlyVersion", ("6.6.0")); // <-- webpack variable
+	ngModule.constant("formlyVersion", ("6.7.0")); // <-- webpack variable
 	
 	ngModule.provider("formlyUsability", formlyUsability);
 	ngModule.provider("formlyConfig", formlyConfig);
@@ -203,6 +203,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  key: apiCheck.oneOfType([apiCheck.string, apiCheck.number]).optional,
 	  model: modelChecker.optional,
 	  className: apiCheck.string.optional,
+	  id: apiCheck.string.optional,
 	  expressionProperties: expressionProperties.optional,
 	  data: apiCheck.object.optional,
 	  templateOptions: apiCheck.object.optional,
@@ -303,7 +304,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	
-	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.6.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.7.0") + "/other/ERRORS_AND_WARNINGS.md#";
 
 /***/ },
 /* 4 */
@@ -928,6 +929,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // set field id to link labels and fields
 	    var formName = $scope.form && $scope.form.$name || $scope.formId;
 	    $scope.id = formlyUtil.getFieldId(formName, $scope.options, $scope.index);
+	    $scope.options.id = $scope.id;
 	
 	    // initalization
 	    setDefaultValue();
@@ -1942,6 +1944,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	
 	function getFieldId(formId, options, index) {
+	  if (options.id) {
+	    return options.id;
+	  }
 	  var type = options.type;
 	  if (!type && options.template) {
 	    type = "template";
