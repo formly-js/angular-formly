@@ -1,3 +1,9 @@
+# 6.8.0
+
+## New Features
+
+- Adding `formlyConfig.extras.getFieldId` to allow you to specify a function which will be used to generate the field ID for all of the fields.
+
 # 6.7.0
 
 ## New Features

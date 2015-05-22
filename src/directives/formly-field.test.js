@@ -507,7 +507,7 @@ describe('formly-field', function() {
       compileAndDigest();
       const fieldNode = getFieldNgModelNode();
       expect(field.id).to.eq(fieldNode.id);
-      expect(fieldNode.id).to.eq('formly_1_template_0_0');
+      expect(fieldNode.id).to.match(/^formly_\d+_template_\d+_\d+$/);
       expect(fieldNode.id).to.eq(fieldNode.getAttribute('name'));
     });
 

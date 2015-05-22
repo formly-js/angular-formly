@@ -43,11 +43,9 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     extendOptionsWithDefaults($scope.options, $scope.index);
     checkApi($scope.options);
     // set field id to link labels and fields
-    var formName = ($scope.form && $scope.form.$name) || $scope.formId;
-    $scope.id = formlyUtil.getFieldId(formName, $scope.options, $scope.index);
-    $scope.options.id = $scope.id;
 
     // initalization
+    setFieldId();
     setDefaultValue();
     setInitialValue();
     runExpressions();
@@ -90,6 +88,16 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       });
       // create $scope.to so template authors can reference to instead of $scope.options.templateOptions
       $scope.to = $scope.options.templateOptions;
+    }
+
+    function setFieldId() {
+      if (angular.isFunction(formlyConfig.extras.getFieldId)) {
+        $scope.id = formlyConfig.extras.getFieldId($scope.options, $scope.model, $scope);
+      } else {
+        const formName = ($scope.form && $scope.form.$name) || $scope.formId;
+        $scope.id = formlyUtil.getFieldId(formName, $scope.options, $scope.index);
+      }
+      $scope.options.id = $scope.id;
     }
 
     function setDefaultValue() {

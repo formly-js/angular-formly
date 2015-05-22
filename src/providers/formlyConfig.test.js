@@ -1,6 +1,10 @@
 /* jshint maxlen:false */
 import sinon from 'sinon';
 import {expect} from 'chai';
+import angular from 'angular-fix';
+import testUtils from '../test.utils.js';
+
+const {getNewField, basicForm} = testUtils;
 
 describe('formlyConfig', () => {
   beforeEach(window.module('formly'));
@@ -642,7 +646,7 @@ describe('formlyConfig', () => {
 
     describe(`that impact field rendering`, () => {
 
-      let scope, $compile, formlyConfig;
+      let scope, $compile, formlyConfig, el, field;
 
       beforeEach(inject(($rootScope, _$compile_, _formlyConfig_) => {
         scope = $rootScope.$new();
@@ -654,36 +658,75 @@ describe('formlyConfig', () => {
       describe(`defaultHideDirective`, () => {
 
         it(`should default formly-form to use ng-if when not specified`, () => {
-          const el = $compile(`
+          compileAndDigest(`
             <formly-form fields="fields" model="model"></formly-form>
-          `)(scope);
-          scope.$digest();
-          const fieldNode = el[0].querySelector('.formly-field');
+          `);
+          const fieldNode = getFieldNode();
           expect(fieldNode.getAttribute('ng-if')).to.exist;
         });
 
         it(`should default formly-form to use the specified directive for hiding and showing`, () => {
           formlyConfig.extras.defaultHideDirective = 'ng-show';
-          const el = $compile(`
+          compileAndDigest(`
             <formly-form fields="fields" model="model"></formly-form>
-          `)(scope);
-          scope.$digest();
-          const fieldNode = el[0].querySelector('.formly-field');
+          `);
+          const fieldNode = getFieldNode();
           expect(fieldNode.getAttribute('ng-show')).to.exist;
         });
 
         it(`should be overrideable on a per-form basis`, () => {
           formlyConfig.extras.defaultHideDirective = '(╯°□°)╯︵ ┻━┻';
-          const el = $compile(`
+          compileAndDigest(`
             <formly-form fields="fields" model="model" hide-directive="ng-show"></formly-form>
-          `)(scope);
-          scope.$digest();
-          const fieldNode = el[0].querySelector('.formly-field');
+          `);
+          const fieldNode = getFieldNode();
           expect(fieldNode.getAttribute('ng-show')).to.exist;
           expect(fieldNode.getAttribute('(╯°□°)╯︵ ┻━┻')).to.not.exist;
         });
 
       });
+
+      describe(`getFieldId`, () => {
+        it(`should allow you to specify your own function for generating the IDs for a field`, () => {
+          scope.fields = [
+            getNewField({id: 'custom'}),
+            getNewField({model: {foo: 'bar', id: '1234'}, key: 'foo'}),
+            getNewField({key: 'bar'})
+          ];
+          formlyConfig.extras.getFieldId = function(options, model, scope) {
+            if (options.id) {
+              return options.id;
+            }
+            return [scope.index, (model && model.id) || 'new-model', options.key].join('_');
+          };
+          compileAndDigest();
+
+          const field0 = getFieldNgModelNode(0);
+          const field1 = getFieldNgModelNode(1);
+          const field2 = getFieldNgModelNode(2);
+
+          expect(field0.id).to.eq('custom');
+          expect(field1.id).to.eq('1_1234_foo');
+          expect(field2.id).to.eq('2_new-model_bar');
+        });
+      });
+
+
+
+      function compileAndDigest(template) {
+        el = $compile(template || basicForm)(scope);
+        scope.$digest();
+        field = scope.fields[0];
+        return el;
+      }
+
+      function getFieldNode(index = 0) {
+        return el[0].querySelectorAll('.formly-field')[index];
+      }
+
+      function getFieldNgModelNode(index = 0) {
+        return getFieldNode(index).querySelector('[ng-model]');
+      }
 
     });
 
