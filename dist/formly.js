@@ -1,4 +1,4 @@
-// angular-formly version 6.8.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 6.8.2 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant("formlyApiCheck", formlyApiCheck);
 	ngModule.constant("formlyErrorAndWarningsUrlPrefix", formlyErrorAndWarningsUrlPrefix);
-	ngModule.constant("formlyVersion", ("6.8.1")); // <-- webpack variable
+	ngModule.constant("formlyVersion", ("6.8.2")); // <-- webpack variable
 
 	ngModule.provider("formlyUsability", formlyUsability);
 	ngModule.provider("formlyConfig", formlyConfig);
@@ -210,7 +210,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  wrapper: specifyWrapperType.optional,
 	  modelOptions: apiCheck.shape({
 	    updateOn: apiCheck.string.optional,
-	    debounce: apiCheck.oneOfType([apiCheck.object, apiCheck.string]).optional,
+	    debounce: apiCheck.oneOfType([apiCheck.objectOf(apiCheck.number), apiCheck.number]).optional,
 	    allowInvalid: apiCheck.bool.optional,
 	    getterSetter: apiCheck.bool.optional,
 	    timezone: apiCheck.string.optional
@@ -304,7 +304,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.8.1") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.8.2") + "/other/ERRORS_AND_WARNINGS.md#";
 
 /***/ },
 /* 4 */
