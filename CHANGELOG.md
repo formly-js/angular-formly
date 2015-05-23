@@ -1,3 +1,9 @@
+# 6.8.2
+
+## Bug Fixes
+
+- Fixing `api-check` for `debounce` in `modelOptions` [#312](/../../issues/312)
+
 # 6.8.1
 
 ## Bug Fixes

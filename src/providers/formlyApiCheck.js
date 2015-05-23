@@ -87,7 +87,7 @@ let fieldOptionsApiShape = {
   modelOptions: apiCheck.shape({
     updateOn: apiCheck.string.optional,
     debounce: apiCheck.oneOfType([
-      apiCheck.object, apiCheck.string
+      apiCheck.objectOf(apiCheck.number), apiCheck.number
     ]).optional,
     allowInvalid: apiCheck.bool.optional,
     getterSetter: apiCheck.bool.optional,

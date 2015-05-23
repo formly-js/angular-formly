@@ -521,6 +521,32 @@ describe('formly-field', function() {
     });
   });
 
+  describe(`modelOptions property`, () => {
+    it(`should be able to handle modelOptions with debouce as a number`, () => {
+      scope.fields = [getNewField({modelOptions: {debounce: 500}})];
+      compileAndDigest();
+      const fieldNode = getFieldNgModelNode();
+      expect(fieldNode.getAttribute('ng-model-options')).to.exist;
+    });
+
+    it(`should be able to compile modelOptions with debounce as an object of numbers`, () => {
+      scope.fields = [getNewField({modelOptions: {debounce: {blur: 500, default: 0}}})];
+      compileAndDigest();
+      const fieldNode = getFieldNgModelNode();
+      expect(fieldNode.getAttribute('ng-model-options')).to.exist;
+    });
+
+    it(`should throw an error when modelOptions with debounce as a string`, () => {
+      scope.fields = [getNewField({modelOptions: {debounce: 'foo'}})];
+      expect(() => compileAndDigest()).to.throw();
+    });
+
+    it(`should throw an error when modelOptions with debounce as an object of strings`, () => {
+      scope.fields = [getNewField({modelOptions: {debounce: {blur: 'foo', default: 'bar'}}})];
+      expect(() => compileAndDigest()).to.throw();
+    });
+  });
+
   describe(`type apiCheck`, () => {
     let type = 'input';
     beforeEach(() => {
