@@ -105,7 +105,7 @@
         }
       },
       {
-        model: 'model.address',
+        key: 'address',
         fieldGroup: [
           {
             key: 'streetnum',

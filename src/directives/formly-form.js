@@ -180,9 +180,7 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       }
 
       function attachKey(field, index) {
-        if (!isFieldGroup(field)) {
-          field.key = field.key || index || 0;
-        }
+        field.key = field.key || index || 0;
       }
 
       function setupWatchers(field, index) {

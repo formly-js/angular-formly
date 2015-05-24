@@ -1,3 +1,9 @@
+# 6.8.4
+
+## New Features
+
+- Allow `key` property for fieldGroup [#311](/../../issues/311)
+
 # 6.8.3
 
 ## New Features
