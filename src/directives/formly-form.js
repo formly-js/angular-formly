@@ -170,8 +170,12 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       }
 
       function initModel(field) {
-        if (field.model && field.model === 'formState') {
-          field.model = $scope.options.formState;
+        if (field.model && typeof(field.model) === 'string') {
+          if(field.model === 'formState') {
+            field.model = $scope.options.formState;
+          } else {
+            field.model = $scope.$eval(field.model);
+          }
         }
       }
 

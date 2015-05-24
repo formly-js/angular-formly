@@ -63,7 +63,7 @@ const expressionProperties = apiCheck.objectOf(apiCheck.oneOfType([
   }).strict
 ]));
 
-const modelChecker = apiCheck.oneOfType([apiCheck.oneOf(['formState']), apiCheck.object]);
+const modelChecker = apiCheck.oneOfType([apiCheck.oneOf(['formState']), apiCheck.object, apiCheck.string]);
 
 let fieldOptionsApiShape = {
   $$hashKey: apiCheck.any.optional,
