@@ -223,7 +223,8 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       el.addClass('formly-field-group');
       let modelAttribute = 'model';
       if (scope.options.key) {
-        modelAttribute = modelAttribute + '[' + scope.options.key + ']';
+        let quote = (typeof(scope.options.key) === 'number')?'':'\'';
+        modelAttribute = modelAttribute + '[' + quote + scope.options.key + quote + ']';
       }
       let extraAttributes = '';
       if (scope.options.elementAttributes) {
