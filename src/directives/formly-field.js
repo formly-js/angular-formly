@@ -221,11 +221,6 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     function setFieldGroupTemplate() {
       checkFieldGroupApi(scope.options);
       el.addClass('formly-field-group');
-      let modelAttribute = 'model';
-      if (scope.options.key) {
-        let quote = (typeof(scope.options.key) === 'number')?'':'\'';
-        modelAttribute = modelAttribute + '[' + quote + scope.options.key + quote + ']';
-      }
       let extraAttributes = '';
       if (scope.options.elementAttributes) {
         extraAttributes = Object.keys(scope.options.elementAttributes).map(key => {
@@ -233,7 +228,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         }).join(' ');
       }
       setElementTemplate(`
-          <formly-form model="${modelAttribute}"
+          <formly-form model="model"
                        fields="options.fieldGroup"
                        options="options.options"
                        form="options.form"

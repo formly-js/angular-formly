@@ -156,7 +156,6 @@ const fieldGroup = apiCheck.shape({
   options: formOptionsApi.optional,
   hide: apiCheck.bool.optional,
   hideExpression: formlyExpression.optional,
-  key: apiCheck.oneOfType([apiCheck.string, apiCheck.number]).optional,
   model: modelChecker.optional,
   form: apiCheck.object.optional,
   elementAttributes: apiCheck.objectOf(apiCheck.string).optional

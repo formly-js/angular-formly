@@ -246,21 +246,19 @@ describe('formly-form', () => {
       expect(el[0].querySelectorAll('ng-form.bar')).to.have.length(0);
     });
 
-    // Commented-out this test since they don't passs
-    // Sorry, I guess I'm setting the model the wrong way
-    // it(`should pass the model to it's children fields`, () => {
-    //   compileAndDigest();
+    it(`should pass the model to it's children fields`, () => {
+      compileAndDigest();
 
-    //   const specificGroup = scope.fields[3];
-    //   const specificField = specificGroup.fieldGroup[1];
-    //   const specificFieldNode = el[0].querySelector('.specific-field');
-    //   expect(specificFieldNode).to.exist;
-    //   specificField.formControl.$setViewValue('foo');
-    //   expect(specificGroup.model[specificField.key]).to.eq('foo');
-    //   expect(specificGroup.model).to.eq(scope.user);
-    //   expect(scope.user[specificField.key]).to.eq('foo');
-    //   expect(angular.element(specificFieldNode).isolateScope().model).to.eq(scope.user);
-    // });
+      const specificGroup = scope.fields[3];
+      const specificField = specificGroup.fieldGroup[1];
+      const specificFieldNode = el[0].querySelector('.specific-field');
+      expect(specificFieldNode).to.exist;
+      specificField.formControl.$setViewValue('foo');
+      expect(specificGroup.model[specificField.key]).to.eq('foo');
+      expect(specificGroup.model).to.eq(scope.user);
+      expect(scope.user[specificField.key]).to.eq('foo');
+      expect(angular.element(specificFieldNode).isolateScope().model).to.eq(scope.user);
+    });
 
     it(`should have a form property`, () => {
       compileAndDigest();

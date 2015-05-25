@@ -12,17 +12,21 @@
   <h1>Manual tests for formly</h1>
 </div>
 <div class="container ng-cloak">
+  <form name="vm.form" ng-if="vm.realFields.length">
+    <formly-form model="vm.user" fields="vm.realFields" options="vm.options"></formly-form>
+  </form>
+  <form name="vm.form" ng-if="!vm.realFields.length">
+    <formly-form model="vm.user" fields="vm.fields" options="vm.options"></formly-form>
+  </form>
+  <button class="btn btn-default" ng-click="vm.options.resetModel()">Reset Model</button>
+  <button class="btn btn-default" ng-click="vm.options.updateInitialValue()">Update Initial Value</button>
+  <button class="btn btn-default" ng-click="vm.swapFields()">Swap Fields</button>
 
-  <div>
-    <h2>Form</h2>
-    <form ng-submit="vm.onSubmit()" novalidate>
-      <formly-form model="vm.formData" fields="vm.formFields">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </formly-form>
-    </form>
-    <h2>Form Data</h2>
-    <pre>{{vm.formData | json}}</pre>
-  </div>
+  <h1>User</h1>
+  <pre>{{vm.user | json}}</pre>
+  <h1>Form</h1>
+  <pre ng-if="vm.realForm">{{vm.realForm | json}}</pre>
+  <pre ng-if="vm.form">{{vm.form | json}}</pre>
 </div>
 
 <script src="../node_modules/api-check/dist/api-check.js"></script>
