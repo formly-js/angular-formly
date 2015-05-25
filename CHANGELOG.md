@@ -1,14 +1,8 @@
-# 6.8.4
+# 6.9.0
 
 ## New Features
 
-- Allow `key` property for fieldGroup [#311](/../../issues/311)
-
-# 6.8.3
-
-## New Features
-
-- Allow strings in `model` property from field configuration object [#311](/../../issues/311)
+- Adding the ability to specify a `model` as a string which will be parsed as an (almost) `formlyExpression` (just like `hideExpression`) and used to assign the model. [#311](/../../issues/311)
 
 # 6.8.2
 

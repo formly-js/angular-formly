@@ -1,4 +1,4 @@
-// angular-formly version 6.8.2 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 6.9.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant("formlyApiCheck", formlyApiCheck);
 	ngModule.constant("formlyErrorAndWarningsUrlPrefix", formlyErrorAndWarningsUrlPrefix);
-	ngModule.constant("formlyVersion", ("6.8.2")); // <-- webpack variable
+	ngModule.constant("formlyVersion", ("6.9.0")); // <-- webpack variable
 
 	ngModule.provider("formlyUsability", formlyUsability);
 	ngModule.provider("formlyConfig", formlyConfig);
@@ -193,7 +193,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  message: formlyExpression.optional
 	}).strict]));
 
-	var modelChecker = apiCheck.oneOfType([apiCheck.oneOf(["formState"]), apiCheck.object]);
+	var modelChecker = apiCheck.oneOfType([apiCheck.string, apiCheck.object]);
 
 	var fieldOptionsApiShape = {
 	  $$hashKey: apiCheck.any.optional,
@@ -304,7 +304,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.8.2") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.9.0") + "/other/ERRORS_AND_WARNINGS.md#";
 
 /***/ },
 /* 4 */
@@ -1446,78 +1446,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @restrict E
 	 */
 	// @ngInject
-	function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
+	function formlyForm(formlyUsability, $parse, formlyConfig) {
 	  var currentFormId = 1;
 	  return {
 	    restrict: "E",
-	    template: function formlyFormGetTemplate(el, attrs) {
-	      /* jshint -W033 */ // this because jshint is broken I guess...
-	      var rootEl = getRootEl();
-	      var fieldRootEl = getFieldRootEl();
-	      var formId = "formly_" + currentFormId++;
-	      var parentFormAttributes = "";
-	      if (attrs.hasOwnProperty("isFieldGroup") && el.parent().parent().hasClass("formly")) {
-	        parentFormAttributes = copyAttributes(el.parent().parent()[0].attributes);
-	      }
-	      return "\n        <" + rootEl + " class=\"formly\"\n                 name=\"" + getFormName() + "\"\n                 role=\"form\" " + parentFormAttributes + ">\n          <" + fieldRootEl + " formly-field\n               ng-repeat=\"field in fields " + getTrackBy() + "\"\n               " + getHideDirective() + "=\"!field.hide\"\n               class=\"formly-field\"\n               options=\"field\"\n               model=\"field.model || model\"\n               fields=\"fields\"\n               form=\"theFormlyForm\"\n               form-id=\"" + getFormName() + "\"\n               form-state=\"options.formState\"\n               index=\"$index\">\n          </" + fieldRootEl + ">\n          <div ng-transclude></div>\n        </" + rootEl + ">\n      ";
-
-	      function getRootEl() {
-	        return attrs.rootEl || "ng-form";
-	      }
-
-	      function getFieldRootEl() {
-	        return attrs.fieldRootEl || "div";
-	      }
-
-	      function getHideDirective() {
-	        return attrs.hideDirective || formlyConfig.extras.defaultHideDirective || "ng-if";
-	      }
-
-	      function getTrackBy() {
-	        if (!attrs.trackBy) {
-	          return "";
-	        } else {
-	          return "track by " + attrs.trackBy;
-	        }
-	      }
-
-	      function getFormName() {
-	        var formName = formId;
-	        var bindName = attrs.bindName;
-	        if (bindName) {
-	          if (angular.version.minor < 3) {
-	            throw formlyUsability.getFormlyError("bind-name attribute on formly-form not allowed in > angular 1.3");
-	          }
-	          // we can do a one-time binding here because we know we're in 1.3.x territory
-	          formName = "{{::'formly_' + " + bindName + "}}";
-	        }
-	        return formName;
-	      }
-
-	      function copyAttributes(attributes) {
-	        var excluded = ["model", "form", "fields", "options", "name", "role", "class"];
-	        var arrayAttrs = [];
-	        angular.forEach(attributes, function (_ref) {
-	          var nodeName = _ref.nodeName;
-	          var nodeValue = _ref.nodeValue;
-
-	          if (nodeName !== "undefined" && excluded.indexOf(nodeName) === -1) {
-	            arrayAttrs.push("" + toKebabCase(nodeName) + "=\"" + nodeValue + "\"");
-	          }
-	        });
-	        return arrayAttrs.join(" ");
-	      }
-
-	      function toKebabCase(string) {
-	        if (string) {
-	          return string.replace(/([A-Z])/g, function ($1) {
-	            return "-" + $1.toLowerCase();
-	          });
-	        } else {
-	          return "";
-	        }
-	      }
-	    },
+	    template: formlyFormGetTemplate,
 	    replace: true,
 	    transclude: true,
 	    scope: {
@@ -1526,170 +1459,257 @@ return /******/ (function(modules) { // webpackBootstrap
 	      form: "=?",
 	      options: "=?"
 	    },
-	    controller: /* @ngInject */["$scope", "formlyUtil", function FormlyFormController($scope, formlyUtil) {
-	      setupOptions();
-	      $scope.model = $scope.model || {};
-	      $scope.fields = $scope.fields || [];
+	    controller: FormlyFormController,
+	    link: formlyFormLink
+	  };
 
-	      angular.forEach($scope.fields, initModel); // initializes the model property if set to 'formState'
-	      angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
-	      angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
+	  function formlyFormGetTemplate(el, attrs) {
+	    /* jshint -W033 */ // this because jshint is broken I guess...
+	    var rootEl = getRootEl();
+	    var fieldRootEl = getFieldRootEl();
+	    var formId = "formly_" + currentFormId++;
+	    var parentFormAttributes = "";
+	    if (attrs.hasOwnProperty("isFieldGroup") && el.parent().parent().hasClass("formly")) {
+	      parentFormAttributes = copyAttributes(el.parent().parent()[0].attributes);
+	    }
+	    return "\n        <" + rootEl + " class=\"formly\"\n                 name=\"" + getFormName() + "\"\n                 role=\"form\" " + parentFormAttributes + ">\n          <" + fieldRootEl + " formly-field\n               ng-repeat=\"field in fields " + getTrackBy() + "\"\n               " + getHideDirective() + "=\"!field.hide\"\n               class=\"formly-field\"\n               options=\"field\"\n               model=\"field.model || model\"\n               fields=\"fields\"\n               form=\"theFormlyForm\"\n               form-id=\"" + getFormName() + "\"\n               form-state=\"options.formState\"\n               index=\"$index\">\n          </" + fieldRootEl + ">\n          <div ng-transclude></div>\n        </" + rootEl + ">\n      ";
 
-	      // watch the model and evaluate watch expressions that depend on it.
-	      $scope.$watch("model", onModelOrFormStateChange, true);
-	      if ($scope.options.formState) {
-	        $scope.$watch("options.formState", onModelOrFormStateChange, true);
-	      }
+	    function getRootEl() {
+	      return attrs.rootEl || "ng-form";
+	    }
 
-	      function onModelOrFormStateChange() {
-	        angular.forEach($scope.fields, function runFieldExpressionProperties(field, index) {
-	          /*jshint -W030 */
-	          var model = field.model || $scope.model;
-	          field.runExpressions && field.runExpressions(model);
-	          if (field.hideExpression) {
-	            // can't use hide with expressionProperties reliably
-	            var val = model[field.key];
-	            // this makes it closer to what a regular expressionProperty would be
-	            var extraLocals = {
-	              options: field,
-	              index: index,
-	              formState: $scope.options.formState,
-	              formId: $scope.formId
-	            };
-	            field.hide = formlyUtil.formlyEval($scope, field.hideExpression, val, val, extraLocals);
-	          }
-	        });
-	      }
+	    function getFieldRootEl() {
+	      return attrs.fieldRootEl || "div";
+	    }
 
-	      function setupOptions() {
-	        formlyApiCheck["throw"]([formlyApiCheck.formOptionsApi.optional], [$scope.options], { prefix: "formly-form options check" });
-	        $scope.options = $scope.options || {};
-	        $scope.options.formState = $scope.options.formState || {};
+	    function getHideDirective() {
+	      return attrs.hideDirective || formlyConfig.extras.defaultHideDirective || "ng-if";
+	    }
 
-	        angular.extend($scope.options, {
-	          updateInitialValue: updateInitialValue,
-	          resetModel: resetModel
-	        });
-	      }
-
-	      function updateInitialValue() {
-	        angular.forEach($scope.fields, function (field) {
-	          if (isFieldGroup(field)) {
-	            field.options.updateInitialValue();
-	          } else {
-	            field.updateInitialValue();
-	          }
-	        });
-	      }
-
-	      function resetModel() {
-	        angular.forEach($scope.fields, function (field) {
-	          if (isFieldGroup(field)) {
-	            field.options.resetModel();
-	          } else {
-	            field.resetModel();
-	          }
-	        });
-	      }
-
-	      function initModel(field) {
-	        if (field.model && field.model === "formState") {
-	          field.model = $scope.options.formState;
-	        }
-	      }
-
-	      function attachKey(field, index) {
-	        if (!isFieldGroup(field)) {
-	          field.key = field.key || index || 0;
-	        }
-	      }
-
-	      function setupWatchers(field, index) {
-	        if (isFieldGroup(field) || !angular.isDefined(field.watcher)) {
-	          return;
-	        }
-	        var watchers = field.watcher;
-	        if (!angular.isArray(watchers)) {
-	          watchers = [watchers];
-	        }
-	        angular.forEach(watchers, function setupWatcher(watcher) {
-	          if (!angular.isDefined(watcher.listener)) {
-	            throw formlyUsability.getFieldError("all-field-watchers-must-have-a-listener", "All field watchers must have a listener", field);
-	          }
-	          var watchExpression = getWatchExpression(watcher, field, index);
-	          var watchListener = getWatchListener(watcher, field, index);
-
-	          var type = watcher.type || "$watch";
-	          watcher.stopWatching = $scope[type](watchExpression, watchListener, watcher.watchDeep);
-	        });
-	      }
-
-	      function getWatchExpression(watcher, field, index) {
-	        var watchExpression = watcher.expression || "model['" + field.key + "']";
-	        if (angular.isFunction(watchExpression)) {
-	          // wrap the field's watch expression so we can call it with the field as the first arg
-	          // and the stop function as the last arg as a helper
-	          var originalExpression = watchExpression;
-	          watchExpression = function formlyWatchExpression() {
-	            var args = modifyArgs.apply(undefined, [watcher, index].concat(_slice.call(arguments)));
-	            return originalExpression.apply(undefined, _toConsumableArray(args));
-	          };
-	          watchExpression.displayName = "Formly Watch Expression for field for " + field.key;
-	        }
-	        return watchExpression;
-	      }
-
-	      function getWatchListener(watcher, field, index) {
-	        var watchListener = watcher.listener;
-	        if (angular.isFunction(watchListener)) {
-	          // wrap the field's watch listener so we can call it with the field as the first arg
-	          // and the stop function as the last arg as a helper
-	          var originalListener = watchListener;
-	          watchListener = function formlyWatchListener() {
-	            var args = modifyArgs.apply(undefined, [watcher, index].concat(_slice.call(arguments)));
-	            return originalListener.apply(undefined, _toConsumableArray(args));
-	          };
-	          watchListener.displayName = "Formly Watch Listener for field for " + field.key;
-	        }
-	        return watchListener;
-	      }
-
-	      function modifyArgs(watcher, index) {
-	        for (var _len = arguments.length, originalArgs = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-	          originalArgs[_key - 2] = arguments[_key];
-	        }
-
-	        return [$scope.fields[index]].concat(originalArgs, [watcher.stopWatching]);
-	      }
-
-	      function isFieldGroup(field) {
-	        return field && !!field.fieldGroup;
-	      }
-	    }],
-	    link: function link(scope, el, attrs) {
-	      var formId = attrs.name;
-	      scope.formId = formId;
-	      scope.theFormlyForm = scope[formId];
-	      if (attrs.form) {
-	        $parse(attrs.form).assign(scope.$parent, scope[formId]);
-	      }
-
-	      // chrome autocomplete lameness
-	      // see https://code.google.com/p/chromium/issues/detail?id=468153#c14
-	      // ლ(ಠ益ಠლ)   (╯°□°)╯︵ ┻━┻    (◞‸◟；)
-	      var global = formlyConfig.extras.removeChromeAutoComplete === true;
-	      var offInstance = scope.options && scope.options.removeChromeAutoComplete === false;
-	      var onInstance = scope.options && scope.options.removeChromeAutoComplete === true;
-	      if (global && !offInstance || onInstance) {
-	        var input = document.createElement("input");
-	        input.setAttribute("autocomplete", "address-level4");
-	        input.setAttribute("hidden", true);
-	        el[0].appendChild(input);
+	    function getTrackBy() {
+	      if (!attrs.trackBy) {
+	        return "";
+	      } else {
+	        return "track by " + attrs.trackBy;
 	      }
 	    }
-	  };
+
+	    function getFormName() {
+	      var formName = formId;
+	      var bindName = attrs.bindName;
+	      if (bindName) {
+	        if (angular.version.minor < 3) {
+	          throw formlyUsability.getFormlyError("bind-name attribute on formly-form not allowed in > angular 1.3");
+	        }
+	        // we can do a one-time binding here because we know we're in 1.3.x territory
+	        formName = "{{::'formly_' + " + bindName + "}}";
+	      }
+	      return formName;
+	    }
+
+	    function copyAttributes(attributes) {
+	      var excluded = ["model", "form", "fields", "options", "name", "role", "class"];
+	      var arrayAttrs = [];
+	      angular.forEach(attributes, function (_ref) {
+	        var nodeName = _ref.nodeName;
+	        var nodeValue = _ref.nodeValue;
+
+	        if (nodeName !== "undefined" && excluded.indexOf(nodeName) === -1) {
+	          arrayAttrs.push("" + toKebabCase(nodeName) + "=\"" + nodeValue + "\"");
+	        }
+	      });
+	      return arrayAttrs.join(" ");
+	    }
+	  }
+
+	  function FormlyFormController($scope, formlyApiCheck, formlyUtil) {
+	    setupOptions();
+	    $scope.model = $scope.model || {};
+	    $scope.fields = $scope.fields || [];
+
+	    angular.forEach($scope.fields, initModel); // initializes the model property if set to 'formState'
+	    angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
+	    angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
+
+	    // watch the model and evaluate watch expressions that depend on it.
+	    $scope.$watch("model", onModelOrFormStateChange, true);
+	    if ($scope.options.formState) {
+	      $scope.$watch("options.formState", onModelOrFormStateChange, true);
+	    }
+
+	    function onModelOrFormStateChange() {
+	      angular.forEach($scope.fields, function runFieldExpressionProperties(field, index) {
+	        /*jshint -W030 */
+	        var model = field.model || $scope.model;
+	        field.runExpressions && field.runExpressions(model);
+	        if (field.hideExpression) {
+	          // can't use hide with expressionProperties reliably
+	          var val = model[field.key];
+	          field.hide = evalCloseToFormlyExpression(field.hideExpression, val, field, index);
+	        }
+	      });
+	    }
+
+	    function setupOptions() {
+	      formlyApiCheck["throw"]([formlyApiCheck.formOptionsApi.optional], [$scope.options], { prefix: "formly-form options check" });
+	      $scope.options = $scope.options || {};
+	      $scope.options.formState = $scope.options.formState || {};
+
+	      angular.extend($scope.options, {
+	        updateInitialValue: updateInitialValue,
+	        resetModel: resetModel
+	      });
+	    }
+
+	    function updateInitialValue() {
+	      angular.forEach($scope.fields, function (field) {
+	        if (isFieldGroup(field)) {
+	          field.options.updateInitialValue();
+	        } else {
+	          field.updateInitialValue();
+	        }
+	      });
+	    }
+
+	    function resetModel() {
+	      angular.forEach($scope.fields, function (field) {
+	        if (isFieldGroup(field)) {
+	          field.options.resetModel();
+	        } else {
+	          field.resetModel();
+	        }
+	      });
+	    }
+
+	    function initModel(field) {
+	      if (angular.isString(field.model)) {
+	        var expression = field.model;
+	        var index = $scope.fields.indexOf(field);
+	        field.model = evalCloseToFormlyExpression(expression, undefined, field, index);
+	        if (!field.model) {
+	          throw formlyUsability.getFieldError("field-model-must-be-initialized", "Field model must be initialized. When specifying a model as a string for a field, the result of the" + " expression must have been initialized ahead of time.", field);
+	        }
+	      }
+	    }
+
+	    function attachKey(field, index) {
+	      if (!isFieldGroup(field)) {
+	        field.key = field.key || index || 0;
+	      }
+	    }
+
+	    function setupWatchers(field, index) {
+	      if (isFieldGroup(field) || !angular.isDefined(field.watcher)) {
+	        return;
+	      }
+	      var watchers = field.watcher;
+	      if (!angular.isArray(watchers)) {
+	        watchers = [watchers];
+	      }
+	      angular.forEach(watchers, function setupWatcher(watcher) {
+	        if (!angular.isDefined(watcher.listener)) {
+	          throw formlyUsability.getFieldError("all-field-watchers-must-have-a-listener", "All field watchers must have a listener", field);
+	        }
+	        var watchExpression = getWatchExpression(watcher, field, index);
+	        var watchListener = getWatchListener(watcher, field, index);
+
+	        var type = watcher.type || "$watch";
+	        watcher.stopWatching = $scope[type](watchExpression, watchListener, watcher.watchDeep);
+	      });
+	    }
+
+	    function getWatchExpression(watcher, field, index) {
+	      var watchExpression = watcher.expression || "model['" + field.key + "']";
+	      if (angular.isFunction(watchExpression)) {
+	        // wrap the field's watch expression so we can call it with the field as the first arg
+	        // and the stop function as the last arg as a helper
+	        var originalExpression = watchExpression;
+	        watchExpression = function formlyWatchExpression() {
+	          var args = modifyArgs.apply(undefined, [watcher, index].concat(_slice.call(arguments)));
+	          return originalExpression.apply(undefined, _toConsumableArray(args));
+	        };
+	        watchExpression.displayName = "Formly Watch Expression for field for " + field.key;
+	      }
+	      return watchExpression;
+	    }
+
+	    function getWatchListener(watcher, field, index) {
+	      var watchListener = watcher.listener;
+	      if (angular.isFunction(watchListener)) {
+	        // wrap the field's watch listener so we can call it with the field as the first arg
+	        // and the stop function as the last arg as a helper
+	        var originalListener = watchListener;
+	        watchListener = function formlyWatchListener() {
+	          var args = modifyArgs.apply(undefined, [watcher, index].concat(_slice.call(arguments)));
+	          return originalListener.apply(undefined, _toConsumableArray(args));
+	        };
+	        watchListener.displayName = "Formly Watch Listener for field for " + field.key;
+	      }
+	      return watchListener;
+	    }
+
+	    function modifyArgs(watcher, index) {
+	      for (var _len = arguments.length, originalArgs = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+	        originalArgs[_key - 2] = arguments[_key];
+	      }
+
+	      return [$scope.fields[index]].concat(originalArgs, [watcher.stopWatching]);
+	    }
+
+	    function evalCloseToFormlyExpression(expression, val, field, index) {
+	      var extraLocals = getFormlyFieldLikeLocals(field, index);
+	      return formlyUtil.formlyEval($scope, expression, val, val, extraLocals);
+	    }
+
+	    function getFormlyFieldLikeLocals(field, index) {
+	      // this makes it closer to what a regular formlyExpression would be
+	      return {
+	        options: field,
+	        index: index,
+	        formState: $scope.options.formState,
+	        formId: $scope.formId
+	      };
+	    }
+	  }
+
+	  function formlyFormLink(scope, el, attrs) {
+	    var formId = attrs.name;
+	    scope.formId = formId;
+	    scope.theFormlyForm = scope[formId];
+	    if (attrs.form) {
+	      $parse(attrs.form).assign(scope.$parent, scope[formId]);
+	    }
+
+	    // chrome autocomplete lameness
+	    // see https://code.google.com/p/chromium/issues/detail?id=468153#c14
+	    // ლ(ಠ益ಠლ)   (╯°□°)╯︵ ┻━┻    (◞‸◟；)
+	    var global = formlyConfig.extras.removeChromeAutoComplete === true;
+	    var offInstance = scope.options && scope.options.removeChromeAutoComplete === false;
+	    var onInstance = scope.options && scope.options.removeChromeAutoComplete === true;
+	    if (global && !offInstance || onInstance) {
+	      var input = document.createElement("input");
+	      input.setAttribute("autocomplete", "address-level4");
+	      input.setAttribute("hidden", true);
+	      el[0].appendChild(input);
+	    }
+	  }
+
+	  // stateless util functions
+	  function toKebabCase(string) {
+	    if (string) {
+	      return string.replace(/([A-Z])/g, function ($1) {
+	        return "-" + $1.toLowerCase();
+	      });
+	    } else {
+	      return "";
+	    }
+	  }
+
+	  function isFieldGroup(field) {
+	    return field && !!field.fieldGroup;
+	  }
 	}
-	formlyForm.$inject = ["formlyUsability", "$parse", "formlyApiCheck", "formlyConfig"];
+	formlyForm.$inject = ["formlyUsability", "$parse", "formlyConfig"];
 
 /***/ },
 /* 13 */

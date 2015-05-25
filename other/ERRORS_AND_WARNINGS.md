@@ -88,6 +88,13 @@ you know that something is wrong with the wrappers if there is.
 - Make sure that there's not an issue in the template itself. Angular will throw a parse error if this is the case, so
 you should know if this is the issue.
 
+# Field model must be initialized
+
+Because of how the `model` property is evaluated when it's a string, it is not possible for angular-formly to initialize
+your model to an empty object for you. Because of this, if your expression evaluates to an undefined value, then this
+will be overridden by the value you specify for `formly-form`. Hence, you must initialize the actual `model` to which
+your expression evaluates.
+
 # Notes
 
 It is recommended to disable warnings in production using `formlyConfigProvider.disableWarnings = true`. Note: This will

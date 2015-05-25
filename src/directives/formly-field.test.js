@@ -7,7 +7,7 @@ import testUtils from '../test.utils.js';
 const {getNewField, input, basicForm} = testUtils;
 
 describe('formly-field', function() {
-  let $compile, scope, el, formlyConfig, $q, isolateScope, field;
+  let $compile, scope, el, node, formlyConfig, $q, isolateScope, field;
 
   beforeEach(window.module('formly'));
   beforeEach(inject((_$compile_, $rootScope, _formlyConfig_, _$q_) => {
@@ -859,7 +859,7 @@ describe('formly-field', function() {
         getNewField()
       ];
 
-      compileAndDigestAndSetIsolateScope();
+      compileAndDigest();
       const field1 = getIsolateScope(0);
       const field2 = getIsolateScope(1);
       const field3 = getIsolateScope(2);
@@ -869,28 +869,66 @@ describe('formly-field', function() {
       expect(field2.model).to.equal(field3.model);
     });
 
-    // // Sorry, not entirely sure how to test both
+    it(`should allow you to specify any expression which will be used to evaluate the model at compile-time`, () => {
+      scope.fields = [
+        getNewField({key: 'foobar', model: 'options.data.foo', data: {foo: { bar: 'foobar'}}})
+      ];
 
-    // it(`should allow you to specify an string and $eval it on the scope`, () => {
-    //   scope.fields = [
-    //     getNewField({model: 'model.another', data: {foo: 'bar'}}),
-    //     getNewField(),
-    //     getNewField()
-    //   ];
+      compileAndDigestAndSetIsolateScope();
+      expect(isolateScope.model).to.equal(field.data.foo);
+    });
 
-    //   expect(scope.fields[0].model).to.equal(scope.model);
-    //   //expect(field1.model).to.equal(field3.model.another);
-    //   //expect(field2.model).to.equal(field3.model);
-    // });
+    it(`should allow you to specify a model for a fieldGroup and have that apply to children fields`, () => {
+      scope.model = {child: {foo: 'bar', baz: {boo: {}}}};
+      scope.fields = [
+        {
+          model: 'model.child',
+          fieldGroup: [
+            getNewField({key: 'foo'}),
+            getNewField({key: 'bar', defaultValue: 'foobar', model: 'model.baz.boo'})
+          ]
+        }
+      ];
 
-    // it(`should allow you set key property for a fieldGroup`, () => {
-    // });
+      compileAndDigest();
+      const fieldGroupNode = node.querySelector('.formly-field-group');
+      expect(fieldGroupNode).to.exist;
+
+      const fieldNode1 = fieldGroupNode.querySelectorAll('.formly-field')[0];
+      expect(fieldNode1).to.exist;
+
+      const fieldNode2 = fieldGroupNode.querySelectorAll('.formly-field')[1];
+      expect(fieldNode2).to.exist;
+
+      const fieldGroup = getIsolateScope(0);
+      const field1 = getIsolateScope(1);
+      const field2 = getIsolateScope(2);
+
+      expect(fieldGroup.model).to.eq(scope.model.child);
+      expect(field1.model).to.eq(scope.model.child);
+      expect(field2.model).to.eq(scope.model.child.baz.boo);
+    });
+
+    it(`should initialize the empty object if the model does not yet exist`, () => {
+      scope.model = {child: {}};
+      scope.fields = [
+        {
+          model: 'model.child',
+          fieldGroup: [
+            getNewField({model: 'model.baz'})
+          ]
+        }
+      ];
+
+      expect(() => compileAndDigest()).to.throw();
+    });
 
   });
 
   function compileAndDigest(template) {
     el = $compile(template || basicForm)(scope);
     scope.$digest();
+    node = el[0];
     field = scope.fields[0];
     return el;
   }
@@ -905,7 +943,7 @@ describe('formly-field', function() {
   }
 
   function getFieldNode(index = 0) {
-    return el[0].querySelectorAll('.formly-field')[index];
+    return node.querySelectorAll('.formly-field')[index];
   }
 
   function getFieldNgModelNode(index = 0) {
