@@ -1,3 +1,9 @@
+# 6.10.0
+
+## New Features
+
+- Adding `key` to `fieldGroup` which allows you to easily handle nested properties of objects.
+
 # 6.9.0
 
 ## New Features

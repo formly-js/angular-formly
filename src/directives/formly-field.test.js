@@ -909,7 +909,7 @@ describe('formly-field', function() {
       expect(field2.model).to.eq(scope.model.child.baz.boo);
     });
 
-    it(`should initialize the empty object if the model does not yet exist`, () => {
+    it(`should throw an error if the model does not exist`, () => {
       scope.model = {child: {}};
       scope.fields = [
         {
@@ -923,6 +923,29 @@ describe('formly-field', function() {
       expect(() => compileAndDigest()).to.throw();
     });
 
+  });
+
+  describe(`fieldGroup with specified "key" property`, () => {
+    it(`should allow you to specify a key which will be used for the model of the field-group`, () => {
+      scope.fields = [
+        {
+          key: 'foo',
+          fieldGroup: [
+            getNewField({key: 'fooChild', defaultValue: 'fooVal'}),
+            {
+              key: 'bar',
+              fieldGroup: [
+                getNewField({key: 'barChild', defaultValue: 'barVal'})
+              ]
+            }
+          ]
+        }
+      ];
+      compileAndDigest();
+
+      expect(scope.model.foo.fooChild).to.eq('fooVal');
+      expect(scope.model.foo.bar.barChild).to.eq('barVal');
+    });
   });
 
   function compileAndDigest(template) {

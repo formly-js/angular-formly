@@ -227,8 +227,12 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
           return `${key}="${scope.options.elementAttributes[key]}"`;
         }).join(' ');
       }
+      let modelValue = 'model';
+      if (scope.options.key) {
+        modelValue = `model['${scope.options.key}']`;
+      }
       setElementTemplate(`
-          <formly-form model="model"
+          <formly-form model="${modelValue}"
                        fields="options.fieldGroup"
                        options="options.options"
                        form="options.form"

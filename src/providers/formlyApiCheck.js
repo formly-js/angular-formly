@@ -150,6 +150,7 @@ const formOptionsApi = apiCheck.shape({
 
 const fieldGroup = apiCheck.shape({
   $$hashKey: apiCheck.any.optional,
+  key: apiCheck.oneOfType([apiCheck.string, apiCheck.number]).optional,
   // danger. Nested field groups wont get api-checked...
   fieldGroup: apiCheck.arrayOf(apiCheck.oneOfType([formlyFieldOptions, apiCheck.object])),
   className: apiCheck.string.optional,
@@ -185,6 +186,7 @@ let formlyTypeOptions = apiCheck.shape({
   apiCheckOptions: apiCheck.object.optional,
   overwriteOk: apiCheck.bool.optional
 }).strict;
+
 angular.extend(apiCheck, {
   formlyTypeOptions, formlyFieldOptions, formlyExpression, formlyWrapperType, fieldGroup, formOptionsApi
 });
