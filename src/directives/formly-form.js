@@ -170,15 +170,17 @@ function formlyForm(formlyUsability, $parse, formlyApiCheck, formlyConfig) {
       }
 
       function initModel(field) {
-        if (field.model && field.model === 'formState') {
-          field.model = $scope.options.formState;
+        if (field.model && typeof(field.model) === 'string') {
+          if(field.model === 'formState') {
+            field.model = $scope.options.formState;
+          } else {
+            field.model = $scope.$eval(field.model);
+          }
         }
       }
 
       function attachKey(field, index) {
-        if (!isFieldGroup(field)) {
-          field.key = field.key || index || 0;
-        }
+        field.key = field.key || index || 0;
       }
 
       function setupWatchers(field, index) {

@@ -869,6 +869,23 @@ describe('formly-field', function() {
       expect(field2.model).to.equal(field3.model);
     });
 
+    // // Sorry, not entirely sure how to test both
+
+    // it(`should allow you to specify an string and $eval it on the scope`, () => {
+    //   scope.fields = [
+    //     getNewField({model: 'model.another', data: {foo: 'bar'}}),
+    //     getNewField(),
+    //     getNewField()
+    //   ];
+
+    //   expect(scope.fields[0].model).to.equal(scope.model);
+    //   //expect(field1.model).to.equal(field3.model.another);
+    //   //expect(field2.model).to.equal(field3.model);
+    // });
+
+    // it(`should allow you set key property for a fieldGroup`, () => {
+    // });
+
   });
 
   function compileAndDigest(template) {

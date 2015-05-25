@@ -1,3 +1,15 @@
+# 6.8.4
+
+## New Features
+
+- Allow `key` property for fieldGroup [#311](/../../issues/311)
+
+# 6.8.3
+
+## New Features
+
+- Allow strings in `model` property from field configuration object [#311](/../../issues/311)
+
 # 6.8.2
 
 ## Bug Fixes

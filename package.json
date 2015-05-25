@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "6.8.2",
+  "version": "6.8.4",
   "author": "Astrism <astrisms@gmail.com>",
   "contributors": [
     "Astrism <astrisms@gmail.com>",
@@ -19,13 +19,13 @@
     }
   ],
   "scripts": {
-    "build:dist": "NODE_ENV=development webpack --progress --colors",
-    "build:prod": "NODE_ENV=production webpack --progress --colors",
+    "build:dist": "set NODE_ENV=development&& webpack --watch --progress --colors",
+    "build:prod": "set NODE_ENV=production&& webpack --watch --progress --colors",
     "build": "npm run build:dist; npm run build:prod",
-    "test": "NODE_ENV=test node node_modules/karma/bin/karma start karma.conf.js",
-    "test:single": "NODE_ENV=test node node_modules/karma/bin/karma start karma.conf.js --single-run",
-    "test:ci": "NODE_ENV=test:ci node node_modules/karma/bin/karma start karma.conf.js",
-    "watch": "NODE_ENV=development webpack --watch --progress --colors",
+    "test": "set NODE_ENV=test&& node node_modules/karma/bin/karma start karma.conf.js",
+    "test:single": "set NODE_ENV=test&& node node_modules/karma/bin/karma start karma.conf.js --single-run",
+    "test:ci": "set NODE_ENV=test:ci&& node node_modules/karma/bin/karma start karma.conf.js",
+    "watch": "set NODE_ENV=development&& webpack --watch --progress --colors",
     "start": "npm run watch & npm run test",
     "release": "git push && npm publish && git push --tags"
   },
