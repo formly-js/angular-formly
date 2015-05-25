@@ -121,14 +121,7 @@ function formlyForm(formlyUsability, $parse, formlyConfig) {
         field.runExpressions && field.runExpressions(model);
         if (field.hideExpression) { // can't use hide with expressionProperties reliably
           const val = model[field.key];
-          // this makes it closer to what a regular expressionProperty would be
-          const extraLocals = {
-            options: field,
-            index: index,
-            formState: $scope.options.formState,
-            formId: $scope.formId
-          };
-          field.hide = formlyUtil.formlyEval($scope, field.hideExpression, val, val, extraLocals);
+          field.hide = evalCloseToFormlyExpression(field.hideExpression, val, field, index);
         }
       });
     }
@@ -168,8 +161,17 @@ function formlyForm(formlyUsability, $parse, formlyConfig) {
     }
 
     function initModel(field) {
-      if (field.model && field.model === 'formState') {
-        field.model = $scope.options.formState;
+      if (angular.isString(field.model)) {
+        const expression = field.model;
+        const index = $scope.fields.indexOf(field);
+        field.model = evalCloseToFormlyExpression(expression, undefined, field, index);
+        if (!field.model) {
+          throw formlyUsability.getFieldError(
+            'field-model-must-be-initialized',
+            'Field model must be initialized. When specifying a model as a string for a field, the result of the' +
+            ' expression must have been initialized ahead of time.',
+            field);
+        }
       }
     }
 
@@ -234,6 +236,21 @@ function formlyForm(formlyUsability, $parse, formlyConfig) {
 
     function modifyArgs(watcher, index, ...originalArgs) {
       return [$scope.fields[index], ...originalArgs, watcher.stopWatching];
+    }
+
+    function evalCloseToFormlyExpression(expression, val, field, index) {
+      const extraLocals = getFormlyFieldLikeLocals(field, index);
+      return formlyUtil.formlyEval($scope, expression, val, val, extraLocals);
+    }
+
+    function getFormlyFieldLikeLocals(field, index) {
+      // this makes it closer to what a regular formlyExpression would be
+      return {
+        options: field,
+        index: index,
+        formState: $scope.options.formState,
+        formId: $scope.formId
+      };
     }
   }
 
