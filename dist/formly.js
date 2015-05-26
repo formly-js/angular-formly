@@ -1,4 +1,4 @@
-// angular-formly version 6.10.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 6.10.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant("formlyApiCheck", formlyApiCheck);
 	ngModule.constant("formlyErrorAndWarningsUrlPrefix", formlyErrorAndWarningsUrlPrefix);
-	ngModule.constant("formlyVersion", ("6.10.0")); // <-- webpack variable
+	ngModule.constant("formlyVersion", ("6.10.1")); // <-- webpack variable
 
 	ngModule.provider("formlyUsability", formlyUsability);
 	ngModule.provider("formlyConfig", formlyConfig);
@@ -306,7 +306,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.10.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.10.1") + "/other/ERRORS_AND_WARNINGS.md#";
 
 /***/ },
 /* 4 */
@@ -1454,6 +1454,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// @ngInject
 	function formlyForm(formlyUsability, $parse, formlyConfig) {
 	  var currentFormId = 1;
+	  FormlyFormController.$inject = ["$scope", "formlyApiCheck", "formlyUtil"];
 	  return {
 	    restrict: "E",
 	    template: formlyFormGetTemplate,
@@ -1528,6 +1529,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
+	  // @ngInject
 	  function FormlyFormController($scope, formlyApiCheck, formlyUtil) {
 	    setupOptions();
 	    $scope.model = $scope.model || {};
