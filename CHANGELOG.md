@@ -1,3 +1,9 @@
+# 6.10.1
+
+## Bug Fixes
+
+- Fixing refactor issue with missing `$inject` annotations for `formly-form`.
+
 # 6.10.0
 
 ## New Features

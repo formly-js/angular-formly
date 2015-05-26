@@ -99,6 +99,7 @@ function formlyForm(formlyUsability, $parse, formlyConfig) {
     }
   }
 
+  // @ngInject
   function FormlyFormController($scope, formlyApiCheck, formlyUtil) {
     setupOptions();
     $scope.model = $scope.model || {};
