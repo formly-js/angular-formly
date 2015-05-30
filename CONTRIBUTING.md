@@ -1,18 +1,30 @@
 # Contributing
 
+## Watch the videos
+
+I've recorded several screencasts to demonstrate how to contribute.
+Here's [a playlist](https://www.youtube.com/playlist?list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH) of them all. You'll find
+individual links by the respective sections
+
 ## Questions/Help
+
+[Watch video](https://www.youtube.com/watch?v=NXqFiSeBE-M&list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH&index=2)
 
 Please post questions to [StackOverflow](http://stackoverflow.com/) using the
 [angular-formly](http://stackoverflow.com/tags/angular-formly/info) tag. There's also the
 [mailing list](https://groups.io/org/groupsio/formly-js) where you can ask/answer questions. Also join us on
 [gitter](https://gitter.im/formly-js/angular-formly). We like to say hi :-)
 
-## Issues
+## Reporting Bugs / Requesting Features
+
+[Watch video](https://www.youtube.com/watch?v=s8IESjbMFXc&list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH&index=3)
 
 If you've found an issue, please submit it in [the issues](https://github.com/formly-js/angular-formly/issues)
 with a link to a jsbin that demonstrates the issue (clone [this template](http://jsbin.com/biqesi/edit))
 
 ## Pull Requests
+
+[Watch video](https://www.youtube.com/watch?v=QOchwBm9W-g&list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH&index=1)
 
 If you would like to add functionality, please submit [an issue](https://github.com/formly-js/angular-formly/issues)
 first to make sure it's a direction we want to take.
