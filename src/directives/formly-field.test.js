@@ -7,14 +7,15 @@ import testUtils from '../test.utils.js';
 const {getNewField, input, basicForm} = testUtils;
 
 describe('formly-field', function() {
-  let $compile, scope, el, node, formlyConfig, $q, isolateScope, field;
+  let $compile, scope, el, node, formlyConfig, $q, isolateScope, field, $timeout;
 
   beforeEach(window.module('formly'));
-  beforeEach(inject((_$compile_, $rootScope, _formlyConfig_, _$q_) => {
+  beforeEach(inject((_$compile_, $rootScope, _formlyConfig_, _$q_, _$timeout_) => {
     $compile = _$compile_;
     scope = $rootScope.$new();
     formlyConfig = _formlyConfig_;
     $q = _$q_;
+    $timeout = _$timeout_;
   }));
 
   describe('with template wrapper', function() {
@@ -945,6 +946,28 @@ describe('formly-field', function() {
 
       expect(scope.model.foo.fooChild).to.eq('fooVal');
       expect(scope.model.foo.bar.barChild).to.eq('barVal');
+    });
+  });
+
+  describe(`runExpressions`, () => {
+    describe(`as functions`, () => {
+      it(`should invoke the expressionProperties with the $viewValue, $modelValue, and scope`, () => {
+        const spy = sinon.spy();
+        scope.model = {
+          foo: 'bar'
+        };
+        scope.fields = [
+          getNewField({
+            key: 'foo',
+            expressionProperties: {
+              'templateOptions.disabled': spy
+            }
+          })
+        ];
+        compileAndDigestAndSetIsolateScope();
+        $timeout.flush(); // <-- runExpressions happens inside a $timeout
+        expect(spy).to.have.been.calledWith('bar', 'bar', isolateScope);
+      });
     });
   });
 

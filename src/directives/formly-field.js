@@ -61,7 +61,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         var currentValue = valueGetterSetter();
         angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
           var setter = $parse(prop).assign;
-          var promise = $q.when(formlyUtil.formlyEval($scope, expression, currentValue));
+          var promise = $q.when(formlyUtil.formlyEval($scope, expression, currentValue, currentValue));
           promise.then(function setFieldValue(value) {
             setter(field, value);
           });

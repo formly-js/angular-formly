@@ -1,3 +1,9 @@
+# 6.10.2
+
+## Bug Fixes
+
+- Fixing issue where the `$viewValue` passed to `expressionProperties` is always `undefined`. Thanks [@maku](https://github.com/maku)! [#322](/../../issues/322)
+
 # 6.10.1
 
 ## Bug Fixes
