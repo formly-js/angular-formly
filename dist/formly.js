@@ -1,15 +1,15 @@
-// angular-formly version 6.10.2 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 6.11.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("api-check"), require("angular"));
+		module.exports = factory(require("angular"), require("api-check"));
 	else if(typeof define === 'function' && define.amd)
-		define(["api-check", "angular"], factory);
+		define(["angular", "api-check"], factory);
 	else if(typeof exports === 'object')
-		exports["ngFormly"] = factory(require("api-check"), require("angular"));
+		exports["ngFormly"] = factory(require("angular"), require("api-check"));
 	else
-		root["ngFormly"] = factory(root["apiCheck"], root["angular"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_16__, __WEBPACK_EXTERNAL_MODULE_17__) {
+		root["ngFormly"] = factory(root["angular"], root["apiCheck"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_6__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -72,33 +72,33 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-	var angular = _interopRequire(__webpack_require__(15));
+	var angular = _interopRequire(__webpack_require__(3));
 
-	var formlyApiCheck = _interopRequire(__webpack_require__(2));
+	var formlyApiCheck = _interopRequire(__webpack_require__(5));
 
-	var formlyErrorAndWarningsUrlPrefix = _interopRequire(__webpack_require__(3));
+	var formlyErrorAndWarningsUrlPrefix = _interopRequire(__webpack_require__(7));
 
-	var formlyUsability = _interopRequire(__webpack_require__(4));
+	var formlyUsability = _interopRequire(__webpack_require__(8));
 
-	var formlyConfig = _interopRequire(__webpack_require__(5));
+	var formlyConfig = _interopRequire(__webpack_require__(9));
 
-	var formlyValidationMessages = _interopRequire(__webpack_require__(6));
+	var formlyValidationMessages = _interopRequire(__webpack_require__(11));
 
-	var formlyUtil = _interopRequire(__webpack_require__(7));
+	var formlyUtil = _interopRequire(__webpack_require__(12));
 
-	var formlyWarn = _interopRequire(__webpack_require__(8));
+	var formlyWarn = _interopRequire(__webpack_require__(2));
 
-	var formlyCustomValidation = _interopRequire(__webpack_require__(9));
+	var formlyCustomValidation = _interopRequire(__webpack_require__(13));
 
-	var formlyField = _interopRequire(__webpack_require__(10));
+	var formlyField = _interopRequire(__webpack_require__(14));
 
-	var formlyFocus = _interopRequire(__webpack_require__(11));
+	var formlyFocus = _interopRequire(__webpack_require__(15));
 
-	var formlyForm = _interopRequire(__webpack_require__(12));
+	var formlyForm = _interopRequire(__webpack_require__(16));
 
-	var formlyNgModelAttrsManipulator = _interopRequire(__webpack_require__(13));
+	var formlyNgModelAttrsManipulator = _interopRequire(__webpack_require__(17));
 
-	var formlyCustomTags = _interopRequire(__webpack_require__(14));
+	var formlyCustomTags = _interopRequire(__webpack_require__(18));
 
 	var ngModuleName = "formly";
 
@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant("formlyApiCheck", formlyApiCheck);
 	ngModule.constant("formlyErrorAndWarningsUrlPrefix", formlyErrorAndWarningsUrlPrefix);
-	ngModule.constant("formlyVersion", ("6.10.2")); // <-- webpack variable
+	ngModule.constant("formlyVersion", ("6.11.0")); // <-- webpack variable
 
 	ngModule.provider("formlyUsability", formlyUsability);
 	ngModule.provider("formlyConfig", formlyConfig);
@@ -131,14 +131,62 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
+	var _toConsumableArray = function (arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } };
+
+	module.exports = formlyWarn;
+
+	// @ngInject
+	function formlyWarn(formlyConfig, formlyErrorAndWarningsUrlPrefix, $log) {
+	  return function warn() {
+	    if (!formlyConfig.disableWarnings) {
+	      var args = Array.prototype.slice.call(arguments);
+	      var warnInfoSlug = args.shift();
+	      args.unshift("Formly Warning:");
+	      args.push("" + formlyErrorAndWarningsUrlPrefix + "" + warnInfoSlug);
+	      $log.warn.apply($log, _toConsumableArray(args));
+	    }
+	  };
+	}
+	formlyWarn.$inject = ["formlyConfig", "formlyErrorAndWarningsUrlPrefix", "$log"];
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-	var apiCheckFactory = _interopRequire(__webpack_require__(16));
+	// some versions of angular don't export the angular module properly,
+	// so we get it from window in this case.
+
+	var angular = _interopRequire(__webpack_require__(4));
+
+	if (!angular.version) {
+	  angular = window.angular;
+	}
+	module.exports = angular;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+	var apiCheckFactory = _interopRequire(__webpack_require__(6));
 
 	var apiCheck = apiCheckFactory({
 	  output: {
 	    prefix: "angular-formly:",
-	    docsBaseUrl: __webpack_require__(3)
+	    docsBaseUrl: __webpack_require__(7)
 	  }
 	});
 
@@ -162,8 +210,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return apiCheck.utils.checkerHelpers.setupChecker(shapeRequiredIfNotDefinition);
 	}
 
+	function nullable(checker) {
+	  return apiCheck.oneOfType([apiCheck.oneOf([null]), checker]);
+	}
+
 	var formlyExpression = apiCheck.oneOfType([apiCheck.string, apiCheck.func]);
-	var specifyWrapperType = apiCheck.oneOfType([apiCheck.oneOf([null]), apiCheck.typeOrArrayOf(apiCheck.string)]);
+	var specifyWrapperType = nullable(apiCheck.typeOrArrayOf(apiCheck.string));
 
 	var apiCheckProperty = apiCheck.objectOf(apiCheck.func);
 
@@ -194,6 +246,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	}).strict]));
 
 	var modelChecker = apiCheck.oneOfType([apiCheck.string, apiCheck.object]);
+
+	var templateManipulators = nullable(apiCheck.shape({
+	  preWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional,
+	  postWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional
+	}).strict);
 
 	var fieldOptionsApiShape = {
 	  $$hashKey: apiCheck.any.optional,
@@ -237,13 +294,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  link: apiCheck.func.optional,
 	  controller: apiCheck.oneOfType([apiCheck.string, apiCheck.func, apiCheck.array]).optional,
 	  validation: apiCheck.shape({
-	    show: apiCheck.oneOfType([apiCheck.bool, apiCheck.oneOf([null])]).optional,
+	    show: nullable(apiCheck.bool).optional,
 	    messages: apiCheck.objectOf(formlyExpression).optional,
 	    errorExistsAndShouldBeVisible: apiCheck.bool.optional
 	  }).optional,
 	  formControl: apiCheck.object.optional,
 	  value: apiCheck.func.optional,
 	  runExpressions: apiCheck.func.optional,
+	  templateManipulators: templateManipulators.optional,
 	  resetModel: apiCheck.func.optional,
 	  updateInitialValue: apiCheck.func.optional,
 	  initialValue: apiCheck.any.optional,
@@ -256,7 +314,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  formState: apiCheck.object.optional,
 	  resetModel: apiCheck.func.optional,
 	  updateInitialValue: apiCheck.func.optional,
-	  removeChromeAutoComplete: apiCheck.bool.optional
+	  removeChromeAutoComplete: apiCheck.bool.optional,
+	  templateManipulators: templateManipulators.optional,
+	  wrapper: specifyWrapperType.optional
 	}).strict;
 
 	var fieldGroup = apiCheck.shape({
@@ -301,22 +361,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = apiCheck;
 
 /***/ },
-/* 3 */
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
+
+/***/ },
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.10.2") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.11.0") + "/other/ERRORS_AND_WARNINGS.md#";
 
 /***/ },
-/* 4 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-	var angular = _interopRequire(__webpack_require__(15));
+	var angular = _interopRequire(__webpack_require__(3));
 
 	module.exports = formlyUsability;
 
@@ -376,16 +442,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	formlyUsability.$inject = ["formlyApiCheck", "formlyErrorAndWarningsUrlPrefix"];
 
 /***/ },
-/* 5 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-	var angular = _interopRequire(__webpack_require__(15));
+	var angular = _interopRequire(__webpack_require__(3));
 
-	var utils = _interopRequire(__webpack_require__(18));
+	var utils = _interopRequire(__webpack_require__(10));
 
 	module.exports = formlyConfig;
 
@@ -684,7 +750,102 @@ return /******/ (function(modules) { // webpackBootstrap
 	formlyConfig.$inject = ["formlyUsabilityProvider", "formlyApiCheck"];
 
 /***/ },
-/* 6 */
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+	var angular = _interopRequire(__webpack_require__(3));
+
+	module.exports = { formlyEval: formlyEval, getFieldId: getFieldId, reverseDeepMerge: reverseDeepMerge, findByNodeName: findByNodeName, arrayify: arrayify, extendFunction: extendFunction };
+
+	function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
+	  if (angular.isFunction(expression)) {
+	    return expression($viewValue, $modelValue, scope, extraLocals);
+	  } else {
+	    return scope.$eval(expression, angular.extend({ $viewValue: $viewValue, $modelValue: $modelValue }, extraLocals));
+	  }
+	}
+
+	function getFieldId(formId, options, index) {
+	  if (options.id) {
+	    return options.id;
+	  }
+	  var type = options.type;
+	  if (!type && options.template) {
+	    type = "template";
+	  } else if (!type && options.templateUrl) {
+	    type = "templateUrl";
+	  }
+
+	  return [formId, type, options.key, index].join("_");
+	}
+
+	function reverseDeepMerge(dest) {
+	  angular.forEach(arguments, function (src, index) {
+	    if (!index) {
+	      return;
+	    }
+	    angular.forEach(src, function (val, prop) {
+	      if (!angular.isDefined(dest[prop])) {
+	        dest[prop] = angular.copy(val);
+	      } else if (objAndSameType(dest[prop], val)) {
+	        reverseDeepMerge(dest[prop], val);
+	      }
+	    });
+	  });
+	}
+
+	function objAndSameType(obj1, obj2) {
+	  return angular.isObject(obj1) && angular.isObject(obj2) && Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2);
+	}
+
+	//recurse down a node tree to find a node with matching nodeName, for custom tags jQuery.find doesn't work in IE8
+	function findByNodeName(el, nodeName) {
+	  if (!el.prop) {
+	    // not a jQuery or jqLite object -> wrap it
+	    el = angular.element(el);
+	  }
+
+	  if (el.prop("nodeName") === nodeName.toUpperCase()) {
+	    return el;
+	  }
+
+	  var c = el.children();
+	  for (var i = 0; c && i < c.length; i++) {
+	    var node = findByNodeName(c[i], nodeName);
+	    if (node) {
+	      return node;
+	    }
+	  }
+	}
+
+	function arrayify(obj) {
+	  if (obj && !angular.isArray(obj)) {
+	    obj = [obj];
+	  } else if (!obj) {
+	    obj = [];
+	  }
+	  return obj;
+	}
+
+	function extendFunction() {
+	  for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
+	    fns[_key] = arguments[_key];
+	  }
+
+	  return function extendedFunction() {
+	    var args = arguments;
+	    fns.forEach(function (fn) {
+	      return fn.apply(null, args);
+	    });
+	  };
+	}
+
+/***/ },
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -724,14 +885,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 7 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-	var utils = _interopRequire(__webpack_require__(18));
+	var utils = _interopRequire(__webpack_require__(10));
 
 	module.exports = formlyUtil;
 
@@ -741,31 +902,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _toConsumableArray = function (arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } };
-
-	module.exports = formlyWarn;
-
-	// @ngInject
-	function formlyWarn(formlyConfig, formlyErrorAndWarningsUrlPrefix, $log) {
-	  return function warn() {
-	    if (!formlyConfig.disableWarnings) {
-	      var args = Array.prototype.slice.call(arguments);
-	      var warnInfoSlug = args.shift();
-	      args.unshift("Formly Warning:");
-	      args.push("" + formlyErrorAndWarningsUrlPrefix + "" + warnInfoSlug);
-	      $log.warn.apply($log, _toConsumableArray(args));
-	    }
-	  };
-	}
-	formlyWarn.$inject = ["formlyConfig", "formlyErrorAndWarningsUrlPrefix", "$log"];
-
-/***/ },
-/* 9 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -879,14 +1016,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	formlyCustomValidation.$inject = ["formlyUtil", "$q"];
 
 /***/ },
-/* 10 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-	var angular = _interopRequire(__webpack_require__(15));
+	var angular = _interopRequire(__webpack_require__(3));
 
 	module.exports = formlyField;
 
@@ -910,6 +1047,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      index: "=?",
 	      fields: "=?",
 	      formState: "=?",
+	      formOptions: "=?",
 	      form: "=?" // TODO require form in a breaking release
 	    },
 	    controller: FormlyFieldController,
@@ -1090,7 +1228,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var type = getFieldType(scope.options);
 	    var args = arguments;
 	    var thusly = this;
-	    getFieldTemplate(scope.options).then(runManipulators(formlyConfig.templateManipulators.preWrapper)).then(transcludeInWrappers(scope.options)).then(runManipulators(formlyConfig.templateManipulators.postWrapper)).then(setElementTemplate).then(watchFormControl).then(callLinkFunctions)["catch"](function (error) {
+	    var manipulators = getManipulators(scope.options, scope.formOptions);
+	    getFieldTemplate(scope.options).then(runManipulators(manipulators.preWrapper)).then(transcludeInWrappers(scope.options, scope.formOptions)).then(runManipulators(manipulators.postWrapper)).then(setElementTemplate).then(watchFormControl).then(callLinkFunctions)["catch"](function (error) {
 	      formlyWarn("there-was-a-problem-setting-the-template-for-this-field", "There was a problem setting the template for this field ", scope.options, error);
 	    });
 
@@ -1220,7 +1359,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
-	  // stateless util functions
+	  // sort-of stateless util functions
 	  function asHtml(el) {
 	    var wrapper = angular.element("<a></a>");
 	    return wrapper.append(el).html();
@@ -1228,6 +1367,30 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function getFieldType(options) {
 	    return options.type && formlyConfig.getType(options.type);
+	  }
+
+	  function getManipulators(options, formOptions) {
+	    var preWrapper = [];
+	    var postWrapper = [];
+	    addManipulators(options.templateManipulators);
+	    addManipulators(formOptions.templateManipulators);
+	    addManipulators(formlyConfig.templateManipulators);
+	    return { preWrapper: preWrapper, postWrapper: postWrapper };
+
+	    function addManipulators(manipulators) {
+	      /* jshint ignore:start */ // it doesn't understand this :-(
+
+	      var _ref = manipulators || {};
+
+	      var _ref$preWrapper = _ref.preWrapper;
+	      var pre = _ref$preWrapper === undefined ? [] : _ref$preWrapper;
+	      var _ref$postWrapper = _ref.postWrapper;
+	      var post = _ref$postWrapper === undefined ? [] : _ref$postWrapper;
+
+	      preWrapper = preWrapper.concat(pre);
+	      postWrapper = postWrapper.concat(post);
+	      /* jshint ignore:end */
+	    }
 	  }
 
 	  function getFieldTemplate(options) {
@@ -1279,8 +1442,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
-	  function transcludeInWrappers(options) {
-	    var wrapper = getWrapperOption(options);
+	  function transcludeInWrappers(options, formOptions) {
+	    var wrapper = getWrapperOption(options, formOptions);
 
 	    return function transcludeTemplate(template) {
 	      if (!wrapper.length) {
@@ -1321,7 +1484,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return superWrapper.html();
 	  }
 
-	  function getWrapperOption(options) {
+	  function getWrapperOption(options, formOptions) {
+	    /* jshint maxcomplexity:6 */
 	    var wrapper = options.wrapper;
 	    // explicit null means no wrapper
 	    if (wrapper === null) {
@@ -1336,11 +1500,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	      wrapper = arrayify(wrapper).map(formlyConfig.getWrapper);
 	    }
 
-	    // get all wrappers for that this type specified that it uses.
+	    // get all wrappers for that the type specified that it uses.
 	    var type = formlyConfig.getType(options.type, true, options);
 	    if (type && type.wrapper) {
 	      var typeWrappers = arrayify(type.wrapper).map(formlyConfig.getWrapper);
 	      wrapper = wrapper.concat(typeWrappers);
+	    }
+
+	    // add form wrappers
+	    if (formOptions.wrapper) {
+	      var formWrappers = arrayify(formOptions.wrapper).map(formlyConfig.getWrapper);
+	      wrapper = wrapper.concat(formWrappers);
 	    }
 
 	    // add the default wrapper last
@@ -1394,7 +1564,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	formlyField.$inject = ["$http", "$q", "$compile", "$templateCache", "formlyConfig", "formlyValidationMessages", "formlyApiCheck", "formlyUtil", "formlyUsability", "formlyWarn"];
 
 /***/ },
-/* 11 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1431,7 +1601,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	formlyFocus.$inject = ["$timeout", "$document"];
 
 /***/ },
-/* 12 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1442,7 +1612,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _slice = Array.prototype.slice;
 
-	var angular = _interopRequire(__webpack_require__(15));
+	var angular = _interopRequire(__webpack_require__(3));
 
 	module.exports = formlyForm;
 
@@ -1479,7 +1649,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (attrs.hasOwnProperty("isFieldGroup") && el.parent().parent().hasClass("formly")) {
 	      parentFormAttributes = copyAttributes(el.parent().parent()[0].attributes);
 	    }
-	    return "\n        <" + rootEl + " class=\"formly\"\n                 name=\"" + getFormName() + "\"\n                 role=\"form\" " + parentFormAttributes + ">\n          <" + fieldRootEl + " formly-field\n               ng-repeat=\"field in fields " + getTrackBy() + "\"\n               " + getHideDirective() + "=\"!field.hide\"\n               class=\"formly-field\"\n               options=\"field\"\n               model=\"field.model || model\"\n               fields=\"fields\"\n               form=\"theFormlyForm\"\n               form-id=\"" + getFormName() + "\"\n               form-state=\"options.formState\"\n               index=\"$index\">\n          </" + fieldRootEl + ">\n          <div ng-transclude></div>\n        </" + rootEl + ">\n      ";
+	    return "\n        <" + rootEl + " class=\"formly\"\n                 name=\"" + getFormName() + "\"\n                 role=\"form\" " + parentFormAttributes + ">\n          <" + fieldRootEl + " formly-field\n               ng-repeat=\"field in fields " + getTrackBy() + "\"\n               " + getHideDirective() + "=\"!field.hide\"\n               class=\"formly-field\"\n               options=\"field\"\n               model=\"field.model || model\"\n               fields=\"fields\"\n               form=\"theFormlyForm\"\n               form-id=\"" + getFormName() + "\"\n               form-state=\"options.formState\"\n               form-options=\"options\"\n               index=\"$index\">\n          </" + fieldRootEl + ">\n          <div ng-transclude></div>\n        </" + rootEl + ">\n      ";
 
 	    function getRootEl() {
 	      return attrs.rootEl || "ng-form";
@@ -1720,14 +1890,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	formlyForm.$inject = ["formlyUsability", "$parse", "formlyConfig"];
 
 /***/ },
-/* 13 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-	var angular = _interopRequire(__webpack_require__(15));
+	var angular = _interopRequire(__webpack_require__(3));
 
 	module.exports = addFormlyNgModelAttrsManipulator;
 
@@ -1900,7 +2070,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// if you want it added via val.bound, then put it in expressionProperties
 
 /***/ },
-/* 14 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1929,131 +2099,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 	addCustomTags.$inject = ["$document"];
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
-
-	// some versions of angular don't export the angular module properly,
-	// so we get it from window in this case.
-
-	var angular = _interopRequire(__webpack_require__(17));
-
-	if (!angular.version) {
-	  angular = window.angular;
-	}
-	module.exports = angular;
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_16__;
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_17__;
-
-/***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
-
-	var angular = _interopRequire(__webpack_require__(15));
-
-	module.exports = { formlyEval: formlyEval, getFieldId: getFieldId, reverseDeepMerge: reverseDeepMerge, findByNodeName: findByNodeName, arrayify: arrayify, extendFunction: extendFunction };
-
-	function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
-	  if (angular.isFunction(expression)) {
-	    return expression($viewValue, $modelValue, scope, extraLocals);
-	  } else {
-	    return scope.$eval(expression, angular.extend({ $viewValue: $viewValue, $modelValue: $modelValue }, extraLocals));
-	  }
-	}
-
-	function getFieldId(formId, options, index) {
-	  if (options.id) {
-	    return options.id;
-	  }
-	  var type = options.type;
-	  if (!type && options.template) {
-	    type = "template";
-	  } else if (!type && options.templateUrl) {
-	    type = "templateUrl";
-	  }
-
-	  return [formId, type, options.key, index].join("_");
-	}
-
-	function reverseDeepMerge(dest) {
-	  angular.forEach(arguments, function (src, index) {
-	    if (!index) {
-	      return;
-	    }
-	    angular.forEach(src, function (val, prop) {
-	      if (!angular.isDefined(dest[prop])) {
-	        dest[prop] = angular.copy(val);
-	      } else if (objAndSameType(dest[prop], val)) {
-	        reverseDeepMerge(dest[prop], val);
-	      }
-	    });
-	  });
-	}
-
-	function objAndSameType(obj1, obj2) {
-	  return angular.isObject(obj1) && angular.isObject(obj2) && Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2);
-	}
-
-	//recurse down a node tree to find a node with matching nodeName, for custom tags jQuery.find doesn't work in IE8
-	function findByNodeName(el, nodeName) {
-	  if (!el.prop) {
-	    // not a jQuery or jqLite object -> wrap it
-	    el = angular.element(el);
-	  }
-
-	  if (el.prop("nodeName") === nodeName.toUpperCase()) {
-	    return el;
-	  }
-
-	  var c = el.children();
-	  for (var i = 0; c && i < c.length; i++) {
-	    var node = findByNodeName(c[i], nodeName);
-	    if (node) {
-	      return node;
-	    }
-	  }
-	}
-
-	function arrayify(obj) {
-	  if (obj && !angular.isArray(obj)) {
-	    obj = [obj];
-	  } else if (!obj) {
-	    obj = [];
-	  }
-	  return obj;
-	}
-
-	function extendFunction() {
-	  for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
-	    fns[_key] = arguments[_key];
-	  }
-
-	  return function extendedFunction() {
-	    var args = arguments;
-	    fns.forEach(function (fn) {
-	      return fn.apply(null, args);
-	    });
-	  };
-	}
 
 /***/ }
 /******/ ])
