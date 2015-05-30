@@ -69,6 +69,11 @@ const expressionProperties = apiCheck.objectOf(apiCheck.oneOfType([
 
 const modelChecker = apiCheck.oneOfType([apiCheck.string, apiCheck.object]);
 
+const templateManipulators = nullable(apiCheck.shape({
+  preWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional,
+  postWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional
+}).strict);
+
 let fieldOptionsApiShape = {
   $$hashKey: apiCheck.any.optional,
   type: apiCheck.shape.ifNot(['template', 'templateUrl'], apiCheck.string).optional,
@@ -132,10 +137,7 @@ let fieldOptionsApiShape = {
   formControl: apiCheck.object.optional,
   value: apiCheck.func.optional,
   runExpressions: apiCheck.func.optional,
-  templateManipulators: nullable(apiCheck.shape({
-    preWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional,
-    postWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional
-  }).strict).optional,
+  templateManipulators: templateManipulators.optional,
   resetModel: apiCheck.func.optional,
   updateInitialValue: apiCheck.func.optional,
   initialValue: apiCheck.any.optional,
@@ -150,7 +152,9 @@ const formOptionsApi = apiCheck.shape({
   formState: apiCheck.object.optional,
   resetModel: apiCheck.func.optional,
   updateInitialValue: apiCheck.func.optional,
-  removeChromeAutoComplete: apiCheck.bool.optional
+  removeChromeAutoComplete: apiCheck.bool.optional,
+  templateManipulators: templateManipulators.optional,
+  wrapper: specifyWrapperType.optional
 }).strict;
 
 

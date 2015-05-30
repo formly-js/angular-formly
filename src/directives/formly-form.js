@@ -48,6 +48,7 @@ function formlyForm(formlyUsability, $parse, formlyConfig) {
                form="theFormlyForm"
                form-id="${getFormName()}"
                form-state="options.formState"
+               form-options="options"
                index="$index">
           </${fieldRootEl}>
           <div ng-transclude></div>

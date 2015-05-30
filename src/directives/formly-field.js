@@ -22,6 +22,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       index: '=?',
       fields: '=?',
       formState: '=?',
+      formOptions: '=?',
       form: '=?' // TODO require form in a breaking release
     },
     controller: FormlyFieldController,
@@ -202,10 +203,10 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     var type = getFieldType(scope.options);
     var args = arguments;
     var thusly = this;
-    const manipulators = getManipulators(scope.options);
+    const manipulators = getManipulators(scope.options, scope.formOptions);
     getFieldTemplate(scope.options)
       .then(runManipulators(manipulators.preWrapper))
-      .then(transcludeInWrappers(scope.options))
+      .then(transcludeInWrappers(scope.options, scope.formOptions))
       .then(runManipulators(manipulators.postWrapper))
       .then(setElementTemplate)
       .then(watchFormControl)
@@ -363,16 +364,21 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     return options.type && formlyConfig.getType(options.type);
   }
 
-  function getManipulators(options) {
-    /* jshint ignore:start */ // it doesn't understand this :-(
-    const {preWrapper = [], postWrapper = []} = formlyConfig.templateManipulators;
-    const {preWrapper:fieldPreWrapper = [], postWrapper:fieldPostWrapper = []} = (options.templateManipulators || {});
+  function getManipulators(options, formOptions) {
+    let preWrapper = [];
+    let postWrapper = [];
+    addManipulators(options.templateManipulators);
+    addManipulators(formOptions.templateManipulators);
+    addManipulators(formlyConfig.templateManipulators);
+    return {preWrapper, postWrapper};
 
-    return {
-      preWrapper: fieldPreWrapper.concat(preWrapper),
-      postWrapper: fieldPostWrapper.concat(postWrapper)
-    };
-    /* jshint ignore:end */
+    function addManipulators(manipulators) {
+      /* jshint ignore:start */ // it doesn't understand this :-(
+      const {preWrapper:pre = [], postWrapper:post = []} = (manipulators || {});
+      preWrapper = preWrapper.concat(pre);
+      postWrapper = postWrapper.concat(post);
+      /* jshint ignore:end */
+    }
   }
 
   function getFieldTemplate(options) {
@@ -423,8 +429,8 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     }
   }
 
-  function transcludeInWrappers(options) {
-    let wrapper = getWrapperOption(options);
+  function transcludeInWrappers(options, formOptions) {
+    let wrapper = getWrapperOption(options, formOptions);
 
     return function transcludeTemplate(template) {
       if (!wrapper.length) {
@@ -463,7 +469,8 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     return superWrapper.html();
   }
 
-  function getWrapperOption(options) {
+  function getWrapperOption(options, formOptions) {
+    /* jshint maxcomplexity:6 */
     let wrapper = options.wrapper;
     // explicit null means no wrapper
     if (wrapper === null) {
@@ -478,11 +485,17 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       wrapper = arrayify(wrapper).map(formlyConfig.getWrapper);
     }
 
-    // get all wrappers for that this type specified that it uses.
+    // get all wrappers for that the type specified that it uses.
     var type = formlyConfig.getType(options.type, true, options);
     if (type && type.wrapper) {
       let typeWrappers = arrayify(type.wrapper).map(formlyConfig.getWrapper);
       wrapper = wrapper.concat(typeWrappers);
+    }
+
+    // add form wrappers
+    if (formOptions.wrapper) {
+      let formWrappers = arrayify(formOptions.wrapper).map(formlyConfig.getWrapper);
+      wrapper = wrapper.concat(formWrappers);
     }
 
     // add the default wrapper last

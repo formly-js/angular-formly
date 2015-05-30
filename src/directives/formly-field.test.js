@@ -7,7 +7,7 @@ const {getNewField, input, basicForm} = testUtils;
 
 describe('formly-field', function() {
   /* jshint maxstatements:100 */
-  /* jshint maxlen:200 */
+  /* jshint maxlen:300 */
   let $compile, scope, el, node, formlyConfig, $q, isolateScope, field, $timeout;
 
   beforeEach(window.module('formly'));
@@ -972,18 +972,38 @@ describe('formly-field', function() {
     });
   });
 
-  describe(`templateManipulators`, () => {
-    it(`should allow you to specify a templateManipulator on a field basis`, () => {
+  describe(`templateManipulators and wrappers`, () => {
+    it(`should allow you to specify a templateManipulator on a field and form basis and they should be applied in the correct order`, () => {
 
       formlyConfig.setWrapper({
-        name: 'myCustomWrapper',
-        template: '__wrapper__<formly-transclude></formly-transclude>'
+        name: 'formWrapper1',
+        template: '__formWrapper1__<formly-transclude></formly-transclude>'
+      });
+
+      formlyConfig.setWrapper({
+        name: 'formWrapper2',
+        template: '__formWrapper2__<formly-transclude></formly-transclude>'
+      });
+
+      formlyConfig.setWrapper({
+        name: 'fieldWrapper1',
+        template: '__fieldWrapper1__<formly-transclude></formly-transclude>'
+      });
+
+      formlyConfig.setWrapper({
+        name: 'fieldWrapper2',
+        template: '__fieldWrapper2__<formly-transclude></formly-transclude>'
       });
 
       const fieldPre1 = sinon.spy(template => `fieldPre1_${template}`);
       const fieldPre2 = sinon.spy(template => `fieldPre2_${template}`);
       const fieldPost1 = sinon.spy(template => `fieldPost1_${template}`);
       const fieldPost2 = sinon.spy(template => `fieldPost2_${template}`);
+
+      const formPre1 = sinon.spy(template => `formPre1_${template}`);
+      const formPre2 = sinon.spy(template => `formPre2_${template}`);
+      const formPost1 = sinon.spy(template => `formPost1_${template}`);
+      const formPost2 = sinon.spy(template => `formPost2_${template}`);
 
       const globalPre1 = sinon.spy(template => `globalPre1_${template}`);
       const globalPre2 = sinon.spy(template => `globalPre2_${template}`);
@@ -995,10 +1015,18 @@ describe('formly-field', function() {
       formlyConfig.templateManipulators.postWrapper.push(globalPost1);
       formlyConfig.templateManipulators.postWrapper.push(globalPost2);
 
+      scope.options = {
+        templateManipulators: {
+          preWrapper: [formPre1, formPre2],
+          postWrapper: [formPost1, formPost2]
+        },
+        wrapper: ['formWrapper1', 'formWrapper2']
+      };
+
       scope.fields = [
         getNewField({
           template: 'foo',
-          wrapper: ['myCustomWrapper'],
+          wrapper: ['fieldWrapper1', 'fieldWrapper2'],
           templateManipulators: {
             preWrapper: [fieldPre1, fieldPre2],
             postWrapper: [fieldPost1, fieldPost2]
@@ -1008,32 +1036,49 @@ describe('formly-field', function() {
 
       compileAndDigest();
 
+      // field pre
       expect(fieldPre1).to.have.been.calledWith('foo', field, isolateScope);
       expect(fieldPre1).to.have.returned('fieldPre1_foo');
 
       expect(fieldPre2).to.have.been.calledWith('fieldPre1_foo', field, isolateScope);
       expect(fieldPre2).to.have.returned('fieldPre2_fieldPre1_foo');
 
-      expect(globalPre1).to.have.been.calledWith('fieldPre2_fieldPre1_foo', field, isolateScope);
-      expect(globalPre1).to.have.returned('globalPre1_fieldPre2_fieldPre1_foo');
+      // form pre
+      expect(formPre1).to.have.been.calledWith('fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(formPre1).to.have.returned('formPre1_fieldPre2_fieldPre1_foo');
 
-      expect(globalPre2).to.have.been.calledWith('globalPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
-      expect(globalPre2).to.have.returned('globalPre2_globalPre1_fieldPre2_fieldPre1_foo');
+      expect(formPre2).to.have.been.calledWith('formPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(formPre2).to.have.returned('formPre2_formPre1_fieldPre2_fieldPre1_foo');
 
+      // global pre
+      expect(globalPre1).to.have.been.calledWith('formPre2_formPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(globalPre1).to.have.returned('globalPre1_formPre2_formPre1_fieldPre2_fieldPre1_foo');
+
+      expect(globalPre2).to.have.been.calledWith('globalPre1_formPre2_formPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(globalPre2).to.have.returned('globalPre2_globalPre1_formPre2_formPre1_fieldPre2_fieldPre1_foo');
 
       // this is where the wrapper runs
 
-      expect(fieldPost1).to.have.been.calledWith('__wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
-      expect(fieldPost1).to.have.returned('fieldPost1___wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo');
+      // field post
+      expect(fieldPost1).to.have.been.calledWith('__formWrapper2____formWrapper1____fieldWrapper2____fieldWrapper1__globalPre2_globalPre1_formPre2_formPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(fieldPost1).to.have.returned('fieldPost1___formWrapper2____formWrapper1____fieldWrapper2____fieldWrapper1__globalPre2_globalPre1_formPre2_formPre1_fieldPre2_fieldPre1_foo');
 
-      expect(fieldPost2).to.have.been.calledWith('fieldPost1___wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
-      expect(fieldPost2).to.have.returned('fieldPost2_fieldPost1___wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo');
+      expect(fieldPost2).to.have.been.calledWith('fieldPost1___formWrapper2____formWrapper1____fieldWrapper2____fieldWrapper1__globalPre2_globalPre1_formPre2_formPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(fieldPost2).to.have.returned('fieldPost2_fieldPost1___formWrapper2____formWrapper1____fieldWrapper2____fieldWrapper1__globalPre2_globalPre1_formPre2_formPre1_fieldPre2_fieldPre1_foo');
 
-      expect(globalPost1).to.have.been.calledWith('fieldPost2_fieldPost1___wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
-      expect(globalPost1).to.have.returned('globalPost1_fieldPost2_fieldPost1___wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo');
+      // form post
+      expect(formPost1).to.have.been.calledWith('fieldPost2_fieldPost1___formWrapper2____formWrapper1____fieldWrapper2____fieldWrapper1__globalPre2_globalPre1_formPre2_formPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(formPost1).to.have.returned('formPost1_fieldPost2_fieldPost1___formWrapper2____formWrapper1____fieldWrapper2____fieldWrapper1__globalPre2_globalPre1_formPre2_formPre1_fieldPre2_fieldPre1_foo');
 
-      expect(globalPost2).to.have.been.calledWith('globalPost1_fieldPost2_fieldPost1___wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
-      expect(globalPost2).to.have.returned('globalPost2_globalPost1_fieldPost2_fieldPost1___wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo');
+      expect(formPost2).to.have.been.calledWith('formPost1_fieldPost2_fieldPost1___formWrapper2____formWrapper1____fieldWrapper2____fieldWrapper1__globalPre2_globalPre1_formPre2_formPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(formPost2).to.have.returned('formPost2_formPost1_fieldPost2_fieldPost1___formWrapper2____formWrapper1____fieldWrapper2____fieldWrapper1__globalPre2_globalPre1_formPre2_formPre1_fieldPre2_fieldPre1_foo');
+
+      // global post
+      expect(globalPost1).to.have.been.calledWith('formPost2_formPost1_fieldPost2_fieldPost1___formWrapper2____formWrapper1____fieldWrapper2____fieldWrapper1__globalPre2_globalPre1_formPre2_formPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(globalPost1).to.have.returned('globalPost1_formPost2_formPost1_fieldPost2_fieldPost1___formWrapper2____formWrapper1____fieldWrapper2____fieldWrapper1__globalPre2_globalPre1_formPre2_formPre1_fieldPre2_fieldPre1_foo');
+
+      expect(globalPost2).to.have.been.calledWith('globalPost1_formPost2_formPost1_fieldPost2_fieldPost1___formWrapper2____formWrapper1____fieldWrapper2____fieldWrapper1__globalPre2_globalPre1_formPre2_formPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(globalPost2).to.have.returned('globalPost2_globalPost1_formPost2_formPost1_fieldPost2_fieldPost1___formWrapper2____formWrapper1____fieldWrapper2____fieldWrapper1__globalPre2_globalPre1_formPre2_formPre1_fieldPre2_fieldPre1_foo');
     });
   });
 

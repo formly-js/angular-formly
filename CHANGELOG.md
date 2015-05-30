@@ -3,6 +3,8 @@
 ## New Features
 
 - Adding `templateManipulators` object of functions to the field config object [#309](/../../issues/309)
+- Adding `templateManipulators` object to form options which will apply to all fields in the form. [#309](/../../issues/309)
+- Adding `wrapper` to form options which will apply to all fields in the form. [#309](/../../issues/309)
 
 # 6.10.2
 
