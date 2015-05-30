@@ -1,3 +1,9 @@
+# 6.11.0
+
+## New Features
+
+- Adding `templateManipulators` object of functions to the field config object [#309](/../../issues/309)
+
 # 6.10.2
 
 ## Bug Fixes

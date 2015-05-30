@@ -1,12 +1,13 @@
 import sinon from 'sinon';
 import apiCheck from 'api-check';
 import {expect} from 'chai';
-
 import testUtils from '../test.utils.js';
 
 const {getNewField, input, basicForm} = testUtils;
 
 describe('formly-field', function() {
+  /* jshint maxstatements:100 */
+  /* jshint maxlen:200 */
   let $compile, scope, el, node, formlyConfig, $q, isolateScope, field, $timeout;
 
   beforeEach(window.module('formly'));
@@ -646,12 +647,12 @@ describe('formly-field', function() {
     });
 
     it(`should be placed onto field's options`, () => {
-      compileAndDigestAndSetIsolateScope();
+      compileAndDigest();
       expect(field.formControl).to.exist;
     });
 
     it(`should be placed onto the isolate scope for the formly-field`, () => {
-      compileAndDigestAndSetIsolateScope();
+      compileAndDigest();
       expect(isolateScope.fc).to.exist;
     });
 
@@ -659,7 +660,7 @@ describe('formly-field', function() {
       const template = '<input ng-model="model[options.key]" ng-if="to.if" />';
       const field = {template, templateOptions: {if: false}};
       scope.fields = [field];
-      compileAndDigestAndSetIsolateScope();
+      compileAndDigest();
       expect(isolateScope.fc).to.not.exist;
       field.templateOptions.if = true;
       scope.$digest();
@@ -689,14 +690,14 @@ describe('formly-field', function() {
           }
         }
       ];
-      compileAndDigestAndSetIsolateScope();
+      compileAndDigest();
       expect(isolateScope.fc).to.exist;
     });
 
     describe(`noFormControl`, () => {
       it(`should skip adding the formControl if set to true`, () => {
         scope.fields = [{template: input, noFormControl: true}];
-        compileAndDigestAndSetIsolateScope();
+        compileAndDigest();
         expect(isolateScope.fc).to.not.exist;
       });
 
@@ -704,19 +705,19 @@ describe('formly-field', function() {
 
     describe(`name`, () => {
       it(`should be almost random`, () => {
-        compileAndDigestAndSetIsolateScope();
+        compileAndDigest();
         expect(field.formControl.$name).to.match(/formly_\d+_template_.*?_\d+/);
       });
 
       it(`should be overrideable when a different name is specified`, () => {
         scope.fields[0].template = `<input ng-model="model[options.key]" name="myCustomName" />`;
-        compileAndDigestAndSetIsolateScope();
+        compileAndDigest();
         makeNameExpectations('myCustomName');
       });
 
       it(`should handle interpolated names`, () => {
         scope.fields[0].template = `<input ng-model="model[options.key]" name="{{'myCustomName'}}" />`;
-        compileAndDigestAndSetIsolateScope();
+        compileAndDigest();
         makeNameExpectations('myCustomName');
       });
 
@@ -804,7 +805,7 @@ describe('formly-field', function() {
     it(`should have a form-controller`, () => {
       const template = `<div ng-model="model[options.key]"> </div>`;
       scope.fields = [getNewField({template: template})];
-      compileAndDigestAndSetIsolateScope();
+      compileAndDigest();
       expect(isolateScope.fc).to.exist;
       expect(field.formControl).to.exist;
     });
@@ -814,7 +815,7 @@ describe('formly-field', function() {
     it(`should have a form-controller`, () => {
       const template = `<div data-ng-model="model[options.key]"> </div>`;
       scope.fields = [getNewField({template: template})];
-      compileAndDigestAndSetIsolateScope();
+      compileAndDigest();
       expect(isolateScope.fc).to.exist;
       expect(field.formControl).to.exist;
     });
@@ -848,7 +849,7 @@ describe('formly-field', function() {
         getNewField()
       ];
 
-      compileAndDigestAndSetIsolateScope();
+      compileAndDigest();
       expect(isolateScope.model).to.not.equal(scope.model);
       expect(isolateScope.model).to.eq(model);
     });
@@ -875,7 +876,7 @@ describe('formly-field', function() {
         getNewField({key: 'foobar', model: 'options.data.foo', data: {foo: { bar: 'foobar'}}})
       ];
 
-      compileAndDigestAndSetIsolateScope();
+      compileAndDigest();
       expect(isolateScope.model).to.equal(field.data.foo);
     });
 
@@ -964,10 +965,75 @@ describe('formly-field', function() {
             }
           })
         ];
-        compileAndDigestAndSetIsolateScope();
+        compileAndDigest();
         $timeout.flush(); // <-- runExpressions happens inside a $timeout
         expect(spy).to.have.been.calledWith('bar', 'bar', isolateScope);
       });
+    });
+  });
+
+  describe(`templateManipulators`, () => {
+    it(`should allow you to specify a templateManipulator on a field basis`, () => {
+
+      formlyConfig.setWrapper({
+        name: 'myCustomWrapper',
+        template: '__wrapper__<formly-transclude></formly-transclude>'
+      });
+
+      const fieldPre1 = sinon.spy(template => `fieldPre1_${template}`);
+      const fieldPre2 = sinon.spy(template => `fieldPre2_${template}`);
+      const fieldPost1 = sinon.spy(template => `fieldPost1_${template}`);
+      const fieldPost2 = sinon.spy(template => `fieldPost2_${template}`);
+
+      const globalPre1 = sinon.spy(template => `globalPre1_${template}`);
+      const globalPre2 = sinon.spy(template => `globalPre2_${template}`);
+      const globalPost1 = sinon.spy(template => `globalPost1_${template}`);
+      const globalPost2 = sinon.spy(template => `globalPost2_${template}`);
+
+      formlyConfig.templateManipulators.preWrapper.push(globalPre1);
+      formlyConfig.templateManipulators.preWrapper.push(globalPre2);
+      formlyConfig.templateManipulators.postWrapper.push(globalPost1);
+      formlyConfig.templateManipulators.postWrapper.push(globalPost2);
+
+      scope.fields = [
+        getNewField({
+          template: 'foo',
+          wrapper: ['myCustomWrapper'],
+          templateManipulators: {
+            preWrapper: [fieldPre1, fieldPre2],
+            postWrapper: [fieldPost1, fieldPost2]
+          }
+        })
+      ];
+
+      compileAndDigest();
+
+      expect(fieldPre1).to.have.been.calledWith('foo', field, isolateScope);
+      expect(fieldPre1).to.have.returned('fieldPre1_foo');
+
+      expect(fieldPre2).to.have.been.calledWith('fieldPre1_foo', field, isolateScope);
+      expect(fieldPre2).to.have.returned('fieldPre2_fieldPre1_foo');
+
+      expect(globalPre1).to.have.been.calledWith('fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(globalPre1).to.have.returned('globalPre1_fieldPre2_fieldPre1_foo');
+
+      expect(globalPre2).to.have.been.calledWith('globalPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(globalPre2).to.have.returned('globalPre2_globalPre1_fieldPre2_fieldPre1_foo');
+
+
+      // this is where the wrapper runs
+
+      expect(fieldPost1).to.have.been.calledWith('__wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(fieldPost1).to.have.returned('fieldPost1___wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo');
+
+      expect(fieldPost2).to.have.been.calledWith('fieldPost1___wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(fieldPost2).to.have.returned('fieldPost2_fieldPost1___wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo');
+
+      expect(globalPost1).to.have.been.calledWith('fieldPost2_fieldPost1___wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(globalPost1).to.have.returned('globalPost1_fieldPost2_fieldPost1___wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo');
+
+      expect(globalPost2).to.have.been.calledWith('globalPost1_fieldPost2_fieldPost1___wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo', field, isolateScope);
+      expect(globalPost2).to.have.returned('globalPost2_globalPost1_fieldPost2_fieldPost1___wrapper__globalPre2_globalPre1_fieldPre2_fieldPre1_foo');
     });
   });
 
@@ -976,12 +1042,8 @@ describe('formly-field', function() {
     scope.$digest();
     node = el[0];
     field = scope.fields[0];
-    return el;
-  }
-
-  function compileAndDigestAndSetIsolateScope() {
-    compileAndDigest();
     isolateScope = getIsolateScope();
+    return el;
   }
 
   function getIsolateScope(index = 0) {

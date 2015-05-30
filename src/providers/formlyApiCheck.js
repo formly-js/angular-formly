@@ -27,10 +27,14 @@ function shapeRequiredIfNot(otherProps, propChecker) {
   return apiCheck.utils.checkerHelpers.setupChecker(shapeRequiredIfNotDefinition);
 }
 
+function nullable(checker) {
+  return apiCheck.oneOfType([
+    apiCheck.oneOf([null]), checker
+  ]);
+}
+
 let formlyExpression = apiCheck.oneOfType([apiCheck.string, apiCheck.func]);
-let specifyWrapperType = apiCheck.oneOfType([
-  apiCheck.oneOf([null]), apiCheck.typeOrArrayOf(apiCheck.string)
-]);
+let specifyWrapperType = nullable(apiCheck.typeOrArrayOf(apiCheck.string));
 
 const apiCheckProperty = apiCheck.objectOf(apiCheck.func);
 
@@ -121,15 +125,17 @@ let fieldOptionsApiShape = {
     apiCheck.string, apiCheck.func, apiCheck.array
   ]).optional,
   validation: apiCheck.shape({
-    show: apiCheck.oneOfType([
-      apiCheck.bool, apiCheck.oneOf([null])
-    ]).optional,
+    show: nullable(apiCheck.bool).optional,
     messages: apiCheck.objectOf(formlyExpression).optional,
     errorExistsAndShouldBeVisible: apiCheck.bool.optional
   }).optional,
   formControl: apiCheck.object.optional,
   value: apiCheck.func.optional,
   runExpressions: apiCheck.func.optional,
+  templateManipulators: nullable(apiCheck.shape({
+    preWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional,
+    postWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional
+  }).strict).optional,
   resetModel: apiCheck.func.optional,
   updateInitialValue: apiCheck.func.optional,
   initialValue: apiCheck.any.optional,

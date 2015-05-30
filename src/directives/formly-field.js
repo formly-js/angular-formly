@@ -202,10 +202,11 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     var type = getFieldType(scope.options);
     var args = arguments;
     var thusly = this;
+    const manipulators = getManipulators(scope.options);
     getFieldTemplate(scope.options)
-      .then(runManipulators(formlyConfig.templateManipulators.preWrapper))
+      .then(runManipulators(manipulators.preWrapper))
       .then(transcludeInWrappers(scope.options))
-      .then(runManipulators(formlyConfig.templateManipulators.postWrapper))
+      .then(runManipulators(manipulators.postWrapper))
       .then(setElementTemplate)
       .then(watchFormControl)
       .then(callLinkFunctions)
@@ -352,7 +353,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     }
   }
 
-  // stateless util functions
+  // sort-of stateless util functions
   function asHtml(el) {
     var wrapper = angular.element('<a></a>');
     return wrapper.append(el).html();
@@ -360,6 +361,18 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
 
   function getFieldType(options) {
     return options.type && formlyConfig.getType(options.type);
+  }
+
+  function getManipulators(options) {
+    /* jshint ignore:start */ // it doesn't understand this :-(
+    const {preWrapper = [], postWrapper = []} = formlyConfig.templateManipulators;
+    const {preWrapper:fieldPreWrapper = [], postWrapper:fieldPostWrapper = []} = (options.templateManipulators || {});
+
+    return {
+      preWrapper: fieldPreWrapper.concat(preWrapper),
+      postWrapper: fieldPostWrapper.concat(postWrapper)
+    };
+    /* jshint ignore:end */
   }
 
   function getFieldTemplate(options) {
