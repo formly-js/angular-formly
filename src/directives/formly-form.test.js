@@ -61,31 +61,6 @@ describe('formly-form', () => {
     expect(scope.vm.myForm).to.have.property('$name');
   });
 
-
-  it(`should not require a form attribute`, () => {
-    expect(() => {
-      compileAndDigest(`
-        <formly-form model="model" fields="fields"></formly-form>
-      `);
-    }).to.not.throw();
-  });
-
-  it(`should require the model attribute`, () => {
-    expect(() => {
-      compileAndDigest(`
-        <formly-form fields="fields"></formly-form>
-      `);
-    }).to.throw();
-  });
-
-  it(`should require the fields attribute`, () => {
-    expect(() => {
-      compileAndDigest(`
-        <formly-form model="model"></formly-form>
-      `);
-    }).to.throw();
-  });
-
   it(`should initialize the model and the fields if not provided`, () => {
     compileAndDigest(`
       <formly-form model="model" fields="fields"></formly-form>
