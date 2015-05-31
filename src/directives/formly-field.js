@@ -8,8 +8,8 @@ export default formlyField;
  * @restrict AE
  */
 // @ngInject
-function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyValidationMessages, formlyApiCheck,
-                     formlyUtil, formlyUsability, formlyWarn) {
+function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyConfig, formlyValidationMessages,
+                     formlyApiCheck, formlyUtil, formlyUsability, formlyWarn) {
   const {arrayify} = formlyUtil;
 
   return {
@@ -152,10 +152,28 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     function resetModel() {
       $scope.model[$scope.options.key] = $scope.options.initialValue;
       if ($scope.options.formControl) {
-        $scope.options.formControl.$setViewValue($scope.model[$scope.options.key]);
-        $scope.options.formControl.$render();
-        $scope.options.formControl.$setUntouched();
-        $scope.options.formControl.$setPristine();
+        if(angular.isArray($scope.options.formControl)){
+          angular.forEach($scope.options.formControl, function(formControl){
+            resetFormControl(formControl, true);
+          });
+        } else {
+          resetFormControl($scope.options.formControl);
+        }
+      }
+    }
+
+    function resetFormControl(formControl, isMultiNgModel){
+      if(!isMultiNgModel){
+        formControl.$setViewValue($scope.model[$scope.options.key]);
+      }
+      
+      formControl.$render();
+      formControl.$setUntouched();
+      formControl.$setPristine();
+
+      // To prevent breaking change requiring a digest to reset $viewModel
+      if(!$scope.$root.$$phase){
+        $scope.$digest();
       }
     }
 
@@ -203,6 +221,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
     var type = getFieldType(scope.options);
     var args = arguments;
     var thusly = this;
+    var fieldCount = 0;
     const manipulators = getManipulators(scope.options, scope.formOptions);
     getFieldTemplate(scope.options)
       .then(runManipulators(manipulators.preWrapper))
@@ -273,35 +292,37 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
         return;
       }
       const templateEl = angular.element(`<div>${templateString}</div>`);
-      const ngModelNode = templateEl[0].querySelector('[ng-model],[data-ng-model]');
-      if (ngModelNode && ngModelNode.getAttribute('name')) {
-        watchFieldNameOrExistence(ngModelNode.getAttribute('name'));
+      const ngModelNodes = templateEl[0].querySelectorAll('[ng-model],[data-ng-model]');
+
+
+      if (ngModelNodes) {
+        angular.forEach(ngModelNodes, function(ngModelNode) {
+          fieldCount++;
+          watchFieldNameOrExistence(ngModelNode.getAttribute('name'));
+        });
       }
 
       function watchFieldNameOrExistence(name) {
         const nameExpressionRegex = /\{\{(.*?)}}/;
         const nameExpression = nameExpressionRegex.exec(name);
         if (nameExpression) {
-          watchFieldName(nameExpression[1]);
-        } else {
-          watchFieldExistence(name);
+          name = $interpolate(name)(scope);
         }
-      }
-
-      function watchFieldName(expression) {
-        scope.$watch(expression, function oneFieldNameChange(name) {
-          if (name) {
-            stopWatchingField();
-            watchFieldExistence(name);
-          }
-        });
+        watchFieldExistence(name);
       }
 
       function watchFieldExistence(name) {
         stopWatchingField = scope.$watch(`form["${name}"]`, function formControlChange(formControl) {
           if (formControl) {
-            scope.fc = formControl; // shortcut for template authors
-            scope.options.formControl = formControl;
+            if(fieldCount > 1){
+              if(!scope.options.formControl){
+                scope.options.formControl = [];
+              }
+              scope.options.formControl.push(formControl);
+            } else {
+              scope.options.formControl = formControl;
+            }
+            scope.fc = scope.options.formControl; // shortcut for template authors
             stopWatchingShowError();
             addShowMessagesWatcher();
           }
