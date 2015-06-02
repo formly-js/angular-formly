@@ -56,6 +56,20 @@ See the [issues labeled enhancement](https://github.com/formly-js/angular-formly
 
 Please see the [CONTRIBUTING Guidelines](CONTRIBUTING.md).
 
+## Bookmark Links
+
+
+## Additional Links:
+
+You can bookmark these :-)
+
+- [http://new-example.angular-formly.com](http://new-example.angular-formly.com)
+- [http://egghead.angular-formly.com](http://egghead.angular-formly.com)
+- [http://changelog.angular-formly.com](http://changelog.angular-formly.com)
+- [http://chat.angular-formly.com](http://chat.angular-formly.com)
+- [http://mailing-list.angular-formly.com](http://mailing-list.angular-formly.com)
+- [http://learn.angular-formly.com](http://learn.angular-formly.com)
+
 ## Thanks
 
 A special thanks to [Nimbly](http://gonimbly.com) for creating angular-formly.
