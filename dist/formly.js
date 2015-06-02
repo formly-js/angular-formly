@@ -1,4 +1,4 @@
-// angular-formly version 6.11.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 6.11.2 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant("formlyApiCheck", formlyApiCheck);
 	ngModule.constant("formlyErrorAndWarningsUrlPrefix", formlyErrorAndWarningsUrlPrefix);
-	ngModule.constant("formlyVersion", ("6.11.1")); // <-- webpack variable
+	ngModule.constant("formlyVersion", ("6.11.2")); // <-- webpack variable
 
 	ngModule.provider("formlyUsability", formlyUsability);
 	ngModule.provider("formlyConfig", formlyConfig);
@@ -372,7 +372,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.11.1") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.11.2") + "/other/ERRORS_AND_WARNINGS.md#";
 
 /***/ },
 /* 8 */
@@ -1677,7 +1677,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var bindName = attrs.bindName;
 	      if (bindName) {
 	        if (angular.version.minor < 3) {
-	          throw formlyUsability.getFormlyError("bind-name attribute on formly-form not allowed in > angular 1.3");
+	          throw formlyUsability.getFormlyError("bind-name attribute on formly-form not allowed in < angular 1.3");
 	        }
 	        // we can do a one-time binding here because we know we're in 1.3.x territory
 	        formName = "{{::'formly_' + " + bindName + "}}";
@@ -1864,12 +1864,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var setter = getter.assign;
 	        var parentForm = getter(scope.$parent);
 	        if (parentForm) {
-	          scope.form = parentForm;
+	          scope.theFormlyForm = parentForm;
+	          scope.formId = scope.theFormlyForm.$name;
 	        } else {
 	          setter(scope.$parent, scope[formId]);
 	        }
 	      }
-	      if (!scope[formId]) {
+	      if (!scope.theFormlyForm) {
 	        console.warn(formlyUsability.getErrorMessage("formly-form-has-no-formcontroller", "A formly-form does not have a `form` property. Many functions of the form (like validation) may not work"));
 	      }
 	    }
