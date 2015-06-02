@@ -839,12 +839,12 @@ describe('formly-field', function() {
 
   describe(`with specified "model" property`, () => {
 
-    it.skip(`should use the specified model for the field which specifies it`, () => {
+    it(`should use the specified model for the field which specifies it`, () => {
       const model = {
         foo: 'bar'
       };
       scope.fields = [
-        getNewField({model, key: 'foo'}),
+        {template: input, model, key: 'foo'}, // do not use getNewField() here because _.merge creates a copy of model
         getNewField(),
         getNewField()
       ];
