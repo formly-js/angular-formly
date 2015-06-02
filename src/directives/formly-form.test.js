@@ -60,7 +60,7 @@ describe('formly-form', () => {
       </div>
     `);
     const isolateScope = angular.element(el[0].querySelector('#my-formly-form')).isolateScope();
-    expect(scope.theForm).to.eq(isolateScope.form);
+    expect(scope.theForm).to.eq(isolateScope.theFormlyForm);
   });
 
   it(`should warn if there's no FormController to be assigned`, () => {
@@ -71,6 +71,18 @@ describe('formly-form', () => {
     `);
     expect(console.warn).to.have.been.called;
     console.warn = originalWarn;
+  });
+
+  it(`should put the formControl on the field's scope when using a different form root element`, () => {
+    scope.fields = [getNewField()];
+    const el = compileAndDigest(`
+      <form name="theForm">
+        <formly-form model="model" fields="fields" form="theForm" root-el="div"></formly-form>
+      </form>
+    `);
+
+    const fieldScope = angular.element(el[0].querySelector('.formly-field')).isolateScope();
+    expect(fieldScope.fc).to.exist;
   });
 
   it(`should not allow sibling forms to override each other on a parent form`, () => {

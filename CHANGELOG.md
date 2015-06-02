@@ -1,3 +1,9 @@
+# 6.11.2
+
+# Bug Fixes
+
+- Fixing issue where the `formly-form` was setting the incorrect property for the `form`. [#328](/../../328)
+
 # 6.11.1
 
 # Bug Fixes

@@ -80,7 +80,7 @@ function formlyForm(formlyUsability, $parse, formlyConfig) {
       const bindName = attrs.bindName;
       if (bindName) {
         if (angular.version.minor < 3) {
-          throw formlyUsability.getFormlyError('bind-name attribute on formly-form not allowed in > angular 1.3');
+          throw formlyUsability.getFormlyError('bind-name attribute on formly-form not allowed in < angular 1.3');
         }
         // we can do a one-time binding here because we know we're in 1.3.x territory
         formName = `{{::'formly_' + ${bindName}}}`;
@@ -269,12 +269,13 @@ function formlyForm(formlyUsability, $parse, formlyConfig) {
         const setter = getter.assign;
         const parentForm = getter(scope.$parent);
         if (parentForm) {
-          scope.form = parentForm;
+          scope.theFormlyForm = parentForm;
+          scope.formId = scope.theFormlyForm.$name;
         } else {
           setter(scope.$parent, scope[formId]);
         }
       }
-      if (!scope[formId]) {
+      if (!scope.theFormlyForm) {
         console.warn(formlyUsability.getErrorMessage(
           'formly-form-has-no-formcontroller',
           'A formly-form does not have a `form` property. Many functions of the form (like validation) may not work'
