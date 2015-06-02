@@ -17,7 +17,7 @@ Please post questions to [StackOverflow](http://stackoverflow.com/) using the
 
 ## Reporting Bugs / Requesting Features
 
-[Watch video](https://www.youtube.com/watch?v=s8IESjbMFXc&list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH&index=3)
+[Watch video](https://www.youtube.com/watch?v=Kw9fVgc3Tzk&index=6&list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH)
 
 If you've found an issue, please submit it in [the issues](https://github.com/formly-js/angular-formly/issues)
 with a link to a jsbin that demonstrates the issue (clone [this template](http://jsbin.com/biqesi/edit))
