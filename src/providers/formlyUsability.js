@@ -5,10 +5,11 @@ export default formlyUsability;
 // @ngInject
 function formlyUsability(formlyApiCheck, formlyErrorAndWarningsUrlPrefix) {
   angular.extend(this, {
-    getFormlyError: getFormlyError,
-    getFieldError: getFieldError,
-    checkWrapper: checkWrapper,
-    checkWrapperTemplate: checkWrapperTemplate,
+    getFormlyError,
+    getFieldError,
+    checkWrapper,
+    checkWrapperTemplate,
+    getErrorMessage,
     $get: () => this
   });
 

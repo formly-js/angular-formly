@@ -257,24 +257,47 @@ function formlyForm(formlyUsability, $parse, formlyConfig) {
   }
 
   function formlyFormLink(scope, el, attrs) {
-    const formId = attrs.name;
-    scope.formId = formId;
-    scope.theFormlyForm = scope[formId];
-    if (attrs.form) {
-      $parse(attrs.form).assign(scope.$parent, scope[formId]);
+    setFormController();
+    fixChromeAutocomplete();
+
+    function setFormController() {
+      const formId = attrs.name;
+      scope.formId = formId;
+      scope.theFormlyForm = scope[formId];
+      if (attrs.form) {
+        const getter = $parse(attrs.form);
+        const setter = getter.assign;
+        const parentForm = getter(scope.$parent);
+        if (parentForm) {
+          scope.form = parentForm;
+        } else {
+          setter(scope.$parent, scope[formId]);
+        }
+      }
+      if (!scope[formId]) {
+        console.warn(formlyUsability.getErrorMessage(
+          'formly-form-has-no-formcontroller',
+          'A formly-form does not have a `form` property. Many functions of the form (like validation) may not work'
+        ));
+      }
     }
 
-    // chrome autocomplete lameness
-    // see https://code.google.com/p/chromium/issues/detail?id=468153#c14
-    // ლ(ಠ益ಠლ)   (╯°□°)╯︵ ┻━┻    (◞‸◟；)
-    const global = formlyConfig.extras.removeChromeAutoComplete === true;
-    const offInstance = scope.options && scope.options.removeChromeAutoComplete === false;
-    const onInstance = scope.options && scope.options.removeChromeAutoComplete === true;
-    if ((global && !offInstance) || onInstance) {
-      const input = document.createElement('input');
-      input.setAttribute('autocomplete', 'address-level4');
-      input.setAttribute('hidden', true);
-      el[0].appendChild(input);
+    /**
+     * chrome autocomplete lameness
+     * see https://code.google.com/p/chromium/issues/detail?id=468153#c14
+     * ლ(ಠ益ಠლ)   (╯°□°)╯︵ ┻━┻    (◞‸◟；)
+     */
+    function fixChromeAutocomplete() {
+      const global = formlyConfig.extras.removeChromeAutoComplete === true;
+      const offInstance = scope.options && scope.options.removeChromeAutoComplete === false;
+      const onInstance = scope.options && scope.options.removeChromeAutoComplete === true;
+      if ((global && !offInstance) || onInstance) {
+        const input = document.createElement('input');
+        input.setAttribute('autocomplete', 'address-level4');
+        input.setAttribute('hidden', true);
+        el[0].appendChild(input);
+      }
+
     }
   }
 

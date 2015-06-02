@@ -88,6 +88,18 @@ you know that something is wrong with the wrappers if there is.
 - Make sure that there's not an issue in the template itself. Angular will throw a parse error if this is the case, so
 you should know if this is the issue.
 
+# formly-form has no FormController
+
+This can happen when you are specifying your own `root-el` on the `formly-form` and you don't pass an existing
+`FormController` (from another `<form>` or `<ng-form>`) to the `formly-form`. To fix the problem, make sure that if you
+must use a different `root-el` that you pass it an existing `FormController` like so:
+
+```javascript
+<form name="vm.myForm">
+  <formly-form model="vm.model" fields="vm.fields" form="vm.myForm" root-el="div"></formly-form>
+</form>
+```
+
 # Field model must be initialized
 
 Because of how the `model` property is evaluated when it's a string, it is not possible for angular-formly to initialize

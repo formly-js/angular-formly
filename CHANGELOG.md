@@ -1,3 +1,9 @@
+# 6.11.1
+
+# Bug Fixes
+
+- Fixing issue with the form not getting set properly. Also resolving confusion with passing an existing `FormController` to `formly-form` by simply assigning `formly-form`'s `form` to the existing one rather than overriding it. [#328](/../../328)
+
 # 6.11.0
 
 ## New Features

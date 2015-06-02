@@ -42,6 +42,42 @@ describe('formly-form', () => {
     expect(el[0].querySelector('area.formly-field')).to.exist;
   });
 
+  it(`should assign the scope's "form" property to the given FormController if it has a value`, () => {
+    const el = compileAndDigest(`
+      <form name="theForm">
+        <formly-form model="model" fields="fields" form="theForm" id="my-formly-form"></formly-form>
+      </form>
+    `);
+    const isolateScope = angular.element(el[0].querySelector('#my-formly-form')).isolateScope();
+    expect(scope.theForm).to.eq(isolateScope.form);
+    expect(scope.theForm.$name).to.eq('theForm');
+  });
+
+  it(`should assign the scope's "form" property to its own FormController if it doesn't have a value`, () => {
+    const el = compileAndDigest(`
+      <div>
+        <formly-form model="model" fields="fields" form="theForm" id="my-formly-form"></formly-form>
+      </div>
+    `);
+    const isolateScope = angular.element(el[0].querySelector('#my-formly-form')).isolateScope();
+    expect(scope.theForm).to.eq(isolateScope.form);
+  });
+
+  it(`should warn if there's no FormController to be assigned`, () => {
+    const originalWarn = console.warn;
+    console.warn = sinon.spy();
+    compileAndDigest(`
+      <formly-form model="model" fields="fields" form="theForm" id="my-formly-form" root-el="div"></formly-form>
+    `);
+    expect(console.warn).to.have.been.calledWith([
+      'Formly Error: A formly-form does not have a `form` property. Many functions of the form (like validation)',
+      ' may not work. ',
+      'https://github.com/formly-js/angular-formly/blob/6.11.0/other/ERRORS_AND_WARNINGS.md',
+      '#formly-form-has-no-formcontroller'
+    ].join(''));
+    console.warn = originalWarn;
+  });
+
   it(`should not allow sibling forms to override each other on a parent form`, () => {
     compileAndDigest(`
       <form name="parent">
