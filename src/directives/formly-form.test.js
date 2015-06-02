@@ -69,12 +69,7 @@ describe('formly-form', () => {
     compileAndDigest(`
       <formly-form model="model" fields="fields" form="theForm" id="my-formly-form" root-el="div"></formly-form>
     `);
-    expect(console.warn).to.have.been.calledWith([
-      'Formly Error: A formly-form does not have a `form` property. Many functions of the form (like validation)',
-      ' may not work. ',
-      'https://github.com/formly-js/angular-formly/blob/6.11.0/other/ERRORS_AND_WARNINGS.md',
-      '#formly-form-has-no-formcontroller'
-    ].join(''));
+    expect(console.warn).to.have.been.called;
     console.warn = originalWarn;
   });
 
