@@ -973,6 +973,19 @@ describe('formly-field', function() {
   });
 
   describe(`templateManipulators and wrappers`, () => {
+    it(`should not cause a problem when you don't pass form-options`, () => {
+      var fieldScope = scope.$new();
+      fieldScope.field = {template: 'foo', model: {}};
+      fieldScope.fields = [fieldScope.field];
+      expect(() => {
+        compileAndDigest(`<div formly-field
+                               class="formly-field"
+                               options="field"
+                               model="field.model || model"></div>`,
+          fieldScope);
+      }).to.not.throw();
+    });
+
     it(`should allow you to specify a templateManipulator on a field and form basis and they should be applied in the correct order`, () => {
 
       formlyConfig.setWrapper({
@@ -1082,11 +1095,11 @@ describe('formly-field', function() {
     });
   });
 
-  function compileAndDigest(template) {
-    el = $compile(template || basicForm)(scope);
-    scope.$digest();
+  function compileAndDigest(template = basicForm, context = scope) {
+    el = $compile(template)(context);
+    context.$digest();
     node = el[0];
-    field = scope.fields[0];
+    field = context.fields[0];
     isolateScope = getIsolateScope();
     return el;
   }

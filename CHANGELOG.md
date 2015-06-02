@@ -1,12 +1,18 @@
 # 6.11.2
 
-# Bug Fixes
+## Bug Fixes
+
+- Fixing issue when someone uses `formly-field` explicitly without passing `formOptions`, you get an error thrown from `templateManipulators`
+
+# 6.11.2
+
+## Bug Fixes
 
 - Fixing issue where the `formly-form` was setting the incorrect property for the `form`. [#328](/../../328)
 
 # 6.11.1
 
-# Bug Fixes
+## Bug Fixes
 
 - Fixing issue with the form not getting set properly. Also resolving confusion with passing an existing `FormController` to `formly-form` by simply assigning `formly-form`'s `form` to the existing one rather than overriding it. [#328](/../../328)
 

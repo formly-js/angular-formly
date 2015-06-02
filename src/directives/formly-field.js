@@ -89,6 +89,7 @@ function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyVa
       });
       // create $scope.to so template authors can reference to instead of $scope.options.templateOptions
       $scope.to = $scope.options.templateOptions;
+      $scope.formOptions = $scope.formOptions || {};
     }
 
     function setFieldId() {
