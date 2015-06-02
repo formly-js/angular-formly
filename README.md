@@ -58,9 +58,6 @@ Please see the [CONTRIBUTING Guidelines](CONTRIBUTING.md).
 
 ## Bookmark Links
 
-
-## Additional Links:
-
 You can bookmark these :-)
 
 - [http://new-example.angular-formly.com](http://new-example.angular-formly.com)
