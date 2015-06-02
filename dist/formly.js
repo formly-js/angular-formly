@@ -1,4 +1,4 @@
-// angular-formly version 6.11.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 6.11.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant("formlyApiCheck", formlyApiCheck);
 	ngModule.constant("formlyErrorAndWarningsUrlPrefix", formlyErrorAndWarningsUrlPrefix);
-	ngModule.constant("formlyVersion", ("6.11.0")); // <-- webpack variable
+	ngModule.constant("formlyVersion", ("6.11.1")); // <-- webpack variable
 
 	ngModule.provider("formlyUsability", formlyUsability);
 	ngModule.provider("formlyConfig", formlyConfig);
@@ -372,7 +372,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.11.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.11.1") + "/other/ERRORS_AND_WARNINGS.md#";
 
 /***/ },
 /* 8 */
@@ -395,6 +395,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    getFieldError: getFieldError,
 	    checkWrapper: checkWrapper,
 	    checkWrapperTemplate: checkWrapperTemplate,
+	    getErrorMessage: getErrorMessage,
 	    $get: function () {
 	      return _this;
 	    }
@@ -1851,24 +1852,43 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function formlyFormLink(scope, el, attrs) {
-	    var formId = attrs.name;
-	    scope.formId = formId;
-	    scope.theFormlyForm = scope[formId];
-	    if (attrs.form) {
-	      $parse(attrs.form).assign(scope.$parent, scope[formId]);
+	    setFormController();
+	    fixChromeAutocomplete();
+
+	    function setFormController() {
+	      var formId = attrs.name;
+	      scope.formId = formId;
+	      scope.theFormlyForm = scope[formId];
+	      if (attrs.form) {
+	        var getter = $parse(attrs.form);
+	        var setter = getter.assign;
+	        var parentForm = getter(scope.$parent);
+	        if (parentForm) {
+	          scope.form = parentForm;
+	        } else {
+	          setter(scope.$parent, scope[formId]);
+	        }
+	      }
+	      if (!scope[formId]) {
+	        console.warn(formlyUsability.getErrorMessage("formly-form-has-no-formcontroller", "A formly-form does not have a `form` property. Many functions of the form (like validation) may not work"));
+	      }
 	    }
 
-	    // chrome autocomplete lameness
-	    // see https://code.google.com/p/chromium/issues/detail?id=468153#c14
-	    // ლ(ಠ益ಠლ)   (╯°□°)╯︵ ┻━┻    (◞‸◟；)
-	    var global = formlyConfig.extras.removeChromeAutoComplete === true;
-	    var offInstance = scope.options && scope.options.removeChromeAutoComplete === false;
-	    var onInstance = scope.options && scope.options.removeChromeAutoComplete === true;
-	    if (global && !offInstance || onInstance) {
-	      var input = document.createElement("input");
-	      input.setAttribute("autocomplete", "address-level4");
-	      input.setAttribute("hidden", true);
-	      el[0].appendChild(input);
+	    /**
+	     * chrome autocomplete lameness
+	     * see https://code.google.com/p/chromium/issues/detail?id=468153#c14
+	     * ლ(ಠ益ಠლ)   (╯°□°)╯︵ ┻━┻    (◞‸◟；)
+	     */
+	    function fixChromeAutocomplete() {
+	      var global = formlyConfig.extras.removeChromeAutoComplete === true;
+	      var offInstance = scope.options && scope.options.removeChromeAutoComplete === false;
+	      var onInstance = scope.options && scope.options.removeChromeAutoComplete === true;
+	      if (global && !offInstance || onInstance) {
+	        var input = document.createElement("input");
+	        input.setAttribute("autocomplete", "address-level4");
+	        input.setAttribute("hidden", true);
+	        el[0].appendChild(input);
+	      }
 	    }
 	  }
 
