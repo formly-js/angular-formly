@@ -1,3 +1,15 @@
+# 6.11.4
+
+## Bug Fixes
+
+- Fixing issue related to [#287](/../../287) by completely removing all references to the `FormController` that formly-form creates if a `FormController` is passed to `<formly-form>` thus making it much easier to reason about due to some poor design choices on the API for nested `FormControllers` (specifically `$submitted` not propagating down to children forms).
+
+# 6.11.3
+
+## Bug Fixes
+
+- Fixing issue when you don't pass `form-options` to `formly-field`
+
 # 6.11.2
 
 ## Bug Fixes
