@@ -1,3 +1,13 @@
+# 6.12.0-beta.0
+
+## New Features
+
+- Adding the ability to specify multiple `ng-model`s in a single template. The `options.formControl` and `fc` shortcut in this scenario will be an array of `NgModelController`s. Huge thanks to [ckniffen](https://github.com/ckniffen) for implementing this!
+
+## Other Improvements
+
+- Seriously simplifying how the `formControl` is set. Another huge thanks to [ckniffen](https://github.com/ckniffen)!
+
 # 6.11.4
 
 ## Bug Fixes
