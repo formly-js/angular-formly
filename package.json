@@ -63,7 +63,7 @@
     "ghooks": "^0.2.4",
     "glob": "^5.0.10",
     "istanbul": "^0.3.14",
-    "karma": "^0.12.31",
+    "karma": "^0.12.35",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.1.7",
     "karma-coverage": "^0.3.1",

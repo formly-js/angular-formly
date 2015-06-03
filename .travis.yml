@@ -13,7 +13,7 @@ before_script:
 script:
 - npm run ci
 after_success:
-- npm run get-and-report-coverage
+- COVERAGE=true NODE_ENV=test karma start --single-run && istanbul check-coverage --statements 95 --branches 81 --functions 95 --lines 95 && cat coverage/lcov.info | coveralls
 notifications:
   slack:
     secure: V/CXlCkFJ4AKLpyovKdCAa8OeSMcLrSDr5oL3V8FoR1jWuGwcNQQsF+O6qw3VDpjjbmqARUWdnSu0jgB+QJRvCG/CwmqRx4cnkVlMAal2XtxCiCse2uPQJ2mbJv/boFWtzbJgwcYCww0WXSDIhBMNDxkwCqVxn9BpgABgtIi8iw=
