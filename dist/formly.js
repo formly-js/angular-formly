@@ -1,4 +1,4 @@
-// angular-formly version 6.11.4 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 6.12.0-beta.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant("formlyApiCheck", formlyApiCheck);
 	ngModule.constant("formlyErrorAndWarningsUrlPrefix", formlyErrorAndWarningsUrlPrefix);
-	ngModule.constant("formlyVersion", ("6.11.4")); // <-- webpack variable
+	ngModule.constant("formlyVersion", ("6.12.0-beta.0")); // <-- webpack variable
 
 	ngModule.provider("formlyUsability", formlyUsability);
 	ngModule.provider("formlyConfig", formlyConfig);
@@ -372,7 +372,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.11.4") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.12.0-beta.0") + "/other/ERRORS_AND_WARNINGS.md#";
 
 /***/ },
 /* 8 */
@@ -1034,7 +1034,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @restrict AE
 	 */
 	// @ngInject
-	function formlyField($http, $q, $compile, $templateCache, formlyConfig, formlyValidationMessages, formlyApiCheck, formlyUtil, formlyUsability, formlyWarn) {
+	function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyConfig, formlyValidationMessages, formlyApiCheck, formlyUtil, formlyUsability, formlyWarn) {
 	  var arrayify = formlyUtil.arrayify;
 
 	  FormlyFieldController.$inject = ["$scope", "$timeout", "$parse", "$controller"];
@@ -1178,10 +1178,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function resetModel() {
 	      $scope.model[$scope.options.key] = $scope.options.initialValue;
 	      if ($scope.options.formControl) {
-	        $scope.options.formControl.$setViewValue($scope.model[$scope.options.key]);
-	        $scope.options.formControl.$render();
-	        $scope.options.formControl.$setUntouched();
-	        $scope.options.formControl.$setPristine();
+	        if (angular.isArray($scope.options.formControl)) {
+	          angular.forEach($scope.options.formControl, function (formControl) {
+	            resetFormControl(formControl, true);
+	          });
+	        } else {
+	          resetFormControl($scope.options.formControl);
+	        }
+	      }
+	    }
+
+	    function resetFormControl(formControl, isMultiNgModel) {
+	      if (!isMultiNgModel) {
+	        formControl.$setViewValue($scope.model[$scope.options.key]);
+	      }
+
+	      formControl.$render();
+	      formControl.$setUntouched();
+	      formControl.$setPristine();
+
+	      // To prevent breaking change requiring a digest to reset $viewModel
+	      if (!$scope.$root.$$phase) {
+	        $scope.$digest();
 	      }
 	    }
 
@@ -1230,6 +1248,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var type = getFieldType(scope.options);
 	    var args = arguments;
 	    var thusly = this;
+	    var fieldCount = 0;
 	    var manipulators = getManipulators(scope.options, scope.formOptions);
 	    getFieldTemplate(scope.options).then(runManipulators(manipulators.preWrapper)).then(transcludeInWrappers(scope.options, scope.formOptions)).then(runManipulators(manipulators.postWrapper)).then(setElementTemplate).then(watchFormControl).then(callLinkFunctions)["catch"](function (error) {
 	      formlyWarn("there-was-a-problem-setting-the-template-for-this-field", "There was a problem setting the template for this field ", scope.options, error);
@@ -1279,35 +1298,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return;
 	      }
 	      var templateEl = angular.element("<div>" + templateString + "</div>");
-	      var ngModelNode = templateEl[0].querySelector("[ng-model],[data-ng-model]");
-	      if (ngModelNode && ngModelNode.getAttribute("name")) {
-	        watchFieldNameOrExistence(ngModelNode.getAttribute("name"));
+	      var ngModelNodes = templateEl[0].querySelectorAll("[ng-model],[data-ng-model]");
+
+	      if (ngModelNodes) {
+	        angular.forEach(ngModelNodes, function (ngModelNode) {
+	          fieldCount++;
+	          watchFieldNameOrExistence(ngModelNode.getAttribute("name"));
+	        });
 	      }
 
 	      function watchFieldNameOrExistence(name) {
 	        var nameExpressionRegex = /\{\{(.*?)}}/;
 	        var nameExpression = nameExpressionRegex.exec(name);
 	        if (nameExpression) {
-	          watchFieldName(nameExpression[1]);
-	        } else {
-	          watchFieldExistence(name);
+	          name = $interpolate(name)(scope);
 	        }
-	      }
-
-	      function watchFieldName(expression) {
-	        scope.$watch(expression, function oneFieldNameChange(name) {
-	          if (name) {
-	            stopWatchingField();
-	            watchFieldExistence(name);
-	          }
-	        });
+	        watchFieldExistence(name);
 	      }
 
 	      function watchFieldExistence(name) {
 	        stopWatchingField = scope.$watch("form[\"" + name + "\"]", function formControlChange(formControl) {
 	          if (formControl) {
-	            scope.fc = formControl; // shortcut for template authors
-	            scope.options.formControl = formControl;
+	            if (fieldCount > 1) {
+	              if (!scope.options.formControl) {
+	                scope.options.formControl = [];
+	              }
+	              scope.options.formControl.push(formControl);
+	            } else {
+	              scope.options.formControl = formControl;
+	            }
+	            scope.fc = scope.options.formControl; // shortcut for template authors
 	            stopWatchingShowError();
 	            addShowMessagesWatcher();
 	          }
@@ -1563,7 +1583,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  }
 	}
-	formlyField.$inject = ["$http", "$q", "$compile", "$templateCache", "formlyConfig", "formlyValidationMessages", "formlyApiCheck", "formlyUtil", "formlyUsability", "formlyWarn"];
+	formlyField.$inject = ["$http", "$q", "$compile", "$templateCache", "$interpolate", "formlyConfig", "formlyValidationMessages", "formlyApiCheck", "formlyUtil", "formlyUsability", "formlyWarn"];
 
 /***/ },
 /* 15 */
