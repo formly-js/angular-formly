@@ -71,3 +71,4 @@ You can bookmark these :-)
 
 A special thanks to [Nimbly](http://gonimbly.com) for creating angular-formly.
 Thanks to [Kent C. Dodds](https://github.com/kentcdodds) for his continued support on the project.
+
