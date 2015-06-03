@@ -835,6 +835,19 @@ describe('formly-field', function() {
       expect(field.validation.errorExistsAndShouldBeVisible).to.be.true;
     });
 
+    it(`should be able to work with form.$submitted`, () => {
+      formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = 'form.$submitted';
+      compileAndDigest(`
+        <form name="theForm">
+          <formly-form form="theForm" model="model" fields="fields" options="options"></formly-form>
+        </form>
+      `);
+      expect(field.validation.errorExistsAndShouldBeVisible).to.be.false;
+      scope.theForm.$setSubmitted(true);
+      scope.$digest();
+      expect(field.validation.errorExistsAndShouldBeVisible).to.be.true;
+    });
+
   });
 
   describe(`with specified "model" property`, () => {
