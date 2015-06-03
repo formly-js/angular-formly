@@ -25,7 +25,7 @@
     "ci": "npm run code-checks && npm run test:ci && npm run build",
     "pre-commit": "npm run ci && npm run check-coverage",
     "test": "NODE_ENV=test node node_modules/karma/bin/karma start karma.conf.js",
-    "test:single": "npm run test -- --single-run",
+    "test:single": "npm test -- --single-run",
     "test:ci": "NODE_ENV=test:ci node node_modules/karma/bin/karma start karma.conf.js",
     "watch": "NODE_ENV=development webpack --watch --progress --colors",
     "start": "npm run test",
