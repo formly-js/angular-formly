@@ -11,7 +11,10 @@ before_install:
 before_script:
 - npm install
 script:
-- npm run ci
+- npm run code-checks
+- npm run test:ci
+- npm run check-coverage
+- npm run build
 notifications:
   slack:
     secure: V/CXlCkFJ4AKLpyovKdCAa8OeSMcLrSDr5oL3V8FoR1jWuGwcNQQsF+O6qw3VDpjjbmqARUWdnSu0jgB+QJRvCG/CwmqRx4cnkVlMAal2XtxCiCse2uPQJ2mbJv/boFWtzbJgwcYCww0WXSDIhBMNDxkwCqVxn9BpgABgtIi8iw=

@@ -22,7 +22,6 @@
     "build:dist": "NODE_ENV=development webpack --progress --colors",
     "build:prod": "NODE_ENV=production webpack --progress --colors",
     "build": "npm run build:dist; npm run build:prod",
-    "ci": "npm run code-checks && npm run test:ci && npm run check-coverage && npm run build",
     "test": "NODE_ENV=test karma start",
     "test:single": "npm test -- --single-run",
     "test:ci": "NODE_ENV=test:ci karma start",
@@ -36,7 +35,7 @@
   },
   "config": {
     "ghooks": {
-      "pre-commit": "npm run ci"
+      "pre-commit": "npm run code-checks && npm run test:ci && npm run check-coverage && npm run build"
     }
   },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
