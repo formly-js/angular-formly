@@ -25,7 +25,8 @@
     "build:test:single": "NODE_ENV=test webpack --progress --colors",
     "build:test:ci": "NODE_ENV=test:ci webpack --progress --colors",
     "build": "npm run build:dist; npm run build:prod",
-    "ci": "npm run code-checks && npm run test:ci && npm run check-coverage && npm run build",
+    "ci": "npm run code-checks && npm run test:ci && npm run build",
+    "pre-commit": "npm run ci && npm run check-coverage",
     "karma": "NODE_ENV=test node node_modules/karma/bin/karma start karma.conf.js",
     "test": "npm run build:test:single && scripts/parallel_commands \"npm run build:test\" \"npm run karma\"",
     "test:single": "npm run build:test:single && npm run karma -- --single-run",
@@ -34,6 +35,7 @@
     "start": "npm run test",
     "check-coverage": "COVERAGE=true npm run test:single && ./node_modules/istanbul/lib/cli.js check-coverage --statements 95 --branches 81 --functions 95 --lines 95",
     "coveralls": "cat coverage/lcov.info | coveralls",
+    "get-and-report-coverage": "npm run check-coverage && npm run coveralls",
     "only-check": "node scripts/only-check.js",
     "console-check": "node scripts/console-check.js",
     "code-checks": "npm run only-check && npm run console-check",
@@ -41,7 +43,7 @@
   },
   "config": {
     "ghooks": {
-      "pre-commit": "npm run ci"
+      "pre-commit": "npm run pre-commit"
     }
   },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
