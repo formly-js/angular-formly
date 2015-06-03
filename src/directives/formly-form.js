@@ -8,7 +8,7 @@ export default formlyForm;
  * @restrict E
  */
 // @ngInject
-function formlyForm(formlyUsability, $parse, formlyConfig) {
+function formlyForm(formlyUsability, $parse, formlyConfig, $interpolate) {
   var currentFormId = 1;
   return {
     restrict: 'E',
@@ -83,7 +83,7 @@ function formlyForm(formlyUsability, $parse, formlyConfig) {
           throw formlyUsability.getFormlyError('bind-name attribute on formly-form not allowed in < angular 1.3');
         }
         // we can do a one-time binding here because we know we're in 1.3.x territory
-        formName = `{{::'formly_' + ${bindName}}}`;
+        formName = `${$interpolate.startSymbol()}::'formly_' + ${bindName}${$interpolate.endSymbol()}`;
       }
       return formName;
     }

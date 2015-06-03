@@ -1,3 +1,9 @@
+# 6.12.0-beta.1
+
+## Bug Fixes
+
+- No longer hard coding `{{` and `}}` and instead using the `$interpolateProvider` [#331](/../../issues/331)
+
 # 6.12.0-beta.0
 
 ## New Features
