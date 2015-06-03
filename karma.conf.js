@@ -79,7 +79,7 @@ function getTestWebpackConfig() {
     testWebpackConfig.module.loaders.push({
       test: /^((?!\.test\.).)*$/i, // all files not containing ".test."
       include: here('src'),
-      loader: 'ng-annotate!isparta',
+      loader: 'isparta',
       exclude: testUtilsRegex
     });
 
