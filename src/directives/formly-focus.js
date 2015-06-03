@@ -2,7 +2,6 @@ export default formlyFocus;
 
 // @ngInject
 function formlyFocus($timeout, $document) {
-  /* jshint -W052 */
   return {
     restrict: 'A',
     link: function formlyFocusLink(scope, element, attrs) {

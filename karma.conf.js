@@ -75,11 +75,12 @@ function getTestWebpackConfig() {
     // I can't think of a more appropriate name that matches the file naming convention... meh...
     var testUtilsRegex = /test\.utils\.js/;
 
-    testWebpackConfig.module.loaders[1].exclude = /node_modules|^((?!\.test\.).)*$/i; // only run this through test files
+    // only run this through test files
+    testWebpackConfig.module.loaders[1].exclude = /node_modules|^((?!\.test\.).)*$/i;
     testWebpackConfig.module.loaders.push({
       test: /^((?!\.test\.).)*$/i, // all files not containing ".test."
       include: here('src'),
-      loader: 'isparta',
+      loader: 'isparta!ng-annotate',
       exclude: testUtilsRegex
     });
 

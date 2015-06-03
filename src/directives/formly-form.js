@@ -26,7 +26,6 @@ function formlyForm(formlyUsability, $parse, formlyConfig, $interpolate) {
   };
 
   function formlyFormGetTemplate(el, attrs) {
-    /* jshint -W033 */ // this because jshint is broken I guess...
     const rootEl = getRootEl();
     const fieldRootEl = getFieldRootEl();
     const formId = `formly_${currentFormId++}`;
@@ -309,7 +308,7 @@ function formlyForm(formlyUsability, $parse, formlyConfig, $interpolate) {
       if ((global && !offInstance) || onInstance) {
         const input = document.createElement('input');
         input.setAttribute('autocomplete', 'address-level4');
-        input.setAttribute('hidden', true);
+        input.setAttribute('hidden', 'true');
         el[0].appendChild(input);
       }
 
