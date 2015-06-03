@@ -1,4 +1,4 @@
-// angular-formly version 6.12.0-beta.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 6.12.0-beta.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant("formlyApiCheck", formlyApiCheck);
 	ngModule.constant("formlyErrorAndWarningsUrlPrefix", formlyErrorAndWarningsUrlPrefix);
-	ngModule.constant("formlyVersion", ("6.12.0-beta.0")); // <-- webpack variable
+	ngModule.constant("formlyVersion", ("6.12.0-beta.1")); // <-- webpack variable
 
 	ngModule.provider("formlyUsability", formlyUsability);
 	ngModule.provider("formlyConfig", formlyConfig);
@@ -374,7 +374,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.12.0-beta.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.12.0-beta.1") + "/other/ERRORS_AND_WARNINGS.md#";
 
 /***/ },
 /* 8 */
@@ -1651,7 +1651,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @restrict E
 	 */
 	// @ngInject
-	function formlyForm(formlyUsability, $parse, formlyConfig) {
+	function formlyForm(formlyUsability, $parse, formlyConfig, $interpolate) {
 	  var currentFormId = 1;
 	  FormlyFormController.$inject = ["$scope", "formlyApiCheck", "formlyUtil"];
 	  return {
@@ -1708,7 +1708,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          throw formlyUsability.getFormlyError("bind-name attribute on formly-form not allowed in < angular 1.3");
 	        }
 	        // we can do a one-time binding here because we know we're in 1.3.x territory
-	        formName = "{{::'formly_' + " + bindName + "}}";
+	        formName = "" + $interpolate.startSymbol() + "::'formly_' + " + bindName + "" + $interpolate.endSymbol();
 	      }
 	      return formName;
 	    }
@@ -1950,7 +1950,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return field && !!field.fieldGroup;
 	  }
 	}
-	formlyForm.$inject = ["formlyUsability", "$parse", "formlyConfig"];
+	formlyForm.$inject = ["formlyUsability", "$parse", "formlyConfig", "$interpolate"];
 
 /***/ },
 /* 17 */
@@ -1965,7 +1965,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = addFormlyNgModelAttrsManipulator;
 
 	// @ngInject
-	function addFormlyNgModelAttrsManipulator(formlyConfig) {
+	function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
 	  if (formlyConfig.extras.disableNgModelAttrsManipulator) {
 	    return;
 	  }
@@ -2052,7 +2052,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          attrVal = ref;
 	        } else if ((val.attribute || val.boolean) && inEp) {
 	          attrName = val.attribute || val.boolean;
-	          attrVal = "{{" + ref + "}}";
+	          attrVal = "" + $interpolate.startSymbol() + "" + ref + "" + $interpolate.endSymbol();
 	        } else if (val.attribute && inTo) {
 	          attrName = val.attribute;
 	          attrVal = toVal;
@@ -2126,7 +2126,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  }
 	}
-	addFormlyNgModelAttrsManipulator.$inject = ["formlyConfig"];
+	addFormlyNgModelAttrsManipulator.$inject = ["formlyConfig", "$interpolate"];
 
 	/* eslint no-empty:0 */
 	// empty to illustrate that a boolean will not be added via val.bound
