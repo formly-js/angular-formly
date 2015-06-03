@@ -13,6 +13,7 @@ Links:
 [![Documentation](https://img.shields.io/badge/API-Docs-red.svg?style=flat-square)](http://docs.angular-formly.com)
 [![Examples](https://img.shields.io/badge/formly-examples-green.svg?style=flat-square)](http://angular-formly.com)
 [![mailing list](https://img.shields.io/badge/mailing-list-orange.svg?style=flat-square)](https://groups.io/org/groupsio/formly-js)
+[![egghead.io lessons](https://img.shields.io/badge/egghead-lessons-blue.svg?style=flat-square)](https://egghead.io/playlists/advanced-angular-forms-with-angular-formly)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/formly-js/angular-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 angular-formly is an AngularJS module which has a directive to help customize and render JavaScript/JSON configured forms.
