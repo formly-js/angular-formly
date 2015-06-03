@@ -270,7 +270,20 @@ function formlyForm(formlyUsability, $parse, formlyConfig) {
         const parentForm = getter(scope.$parent);
         if (parentForm) {
           scope.theFormlyForm = parentForm;
-          scope.formId = scope.theFormlyForm.$name;
+          if (scope[formId]) {
+            scope.theFormlyForm.$removeControl(scope[formId]);
+          }
+
+          // this next line is probably one of the more dangerous things that angular-formly does to improve the
+          // API for angular-formly forms. It ensures that the NgModelControllers inside of formly-form will be
+          // attached to the form that is passed to formly-form rather than the one that formly-form creates
+          // this is necessary because it's confusing to have a step between the form you pass in
+          // and the fields in that form. It also is because angular doesn't propagate properties like $submitted down
+          // to children forms :-( This line was added to solve this issue:
+          // https://github.com/formly-js/angular-formly/issues/287
+          // luckily, this is how the formController has been accessed by the NgModelController since angular 1.0.0
+          // so I expect it will remain this way for the life of angular 1.x
+          el.removeData('$formController');
         } else {
           setter(scope.$parent, scope[formId]);
         }
