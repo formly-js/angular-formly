@@ -23,7 +23,7 @@
     "build:prod": "NODE_ENV=production webpack --progress --colors",
     "build": "npm run build:dist; npm run build:prod",
     "test": "NODE_ENV=test karma start",
-    "test:single": "npm test -- --single-run",
+    "test:single": "NODE_ENV=test karma start --single-run",
     "test:ci": "NODE_ENV=test:ci karma start",
     "watch": "NODE_ENV=development webpack --watch --progress --colors",
     "start": "npm run test",
