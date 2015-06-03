@@ -21,24 +21,20 @@
   "ignore": [
     "node_modules",
     "tests",
-    "demo",
     "local-examples",
-    "loaders",
     ".editorconfig",
     ".gitignore",
-    ".jshintrc",
+    ".eslintrc",
     ".npmignore",
-    ".grunt",
     ".travis.yml",
     "CONTRIBUTING.md",
-    "Gruntfile.js",
-    "karma.conf.ci.js",
     "karma.conf.js",
     "src",
     "webpack.config.js",
-    "webpack.config.minify.js",
     "coverage",
-    "other"
+    "other",
+    ".test",
+    "scripts"
   ],
   "dependencies": {
     "angular": "^1.2.x",

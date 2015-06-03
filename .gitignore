@@ -1,9 +1,10 @@
 # generic (system) files/extensions we don't want
 *.log
-.idea/*
 *.iml
 *.DS_Store
 
 node_modules
 
 coverage
+.test
+.idea

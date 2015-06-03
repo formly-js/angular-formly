@@ -1,3 +1,4 @@
+import angular from 'angular-fix';
 import apiCheckFactory from 'api-check';
 
 let apiCheck = apiCheckFactory({

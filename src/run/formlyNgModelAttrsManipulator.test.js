@@ -1,4 +1,5 @@
 /* jshint maxlen:false */
+import angular from 'angular';
 import {expect} from 'chai';
 
 describe('formlyNgModelAttrsManipulator', () => {

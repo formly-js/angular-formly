@@ -1,122 +1,150 @@
+/* eslint-env node */
 var webpack = require('webpack');
-var deepExtend = require('deep-extend');
+var WebpackNotifierPlugin = require('webpack-notifier');
+var _ = require('lodash');
 var fs = require('fs');
 var path = require('path');
 
-var exclude = /node_modules/;
-
 var packageJsonString = fs.readFileSync('package.json', 'utf8');
 var packageJson = JSON.parse(packageJsonString);
-console.log('building version', packageJson.version);
-
-var baseEnvVars = {
-  ON_DEV: false,
-  ON_TEST: false,
-  ON_PROD: false,
-  VERSION: JSON.stringify(packageJson.version)
-};
-
-var baseConfig = {
-  context: here('src'),
-  entry: './index.js',
-  output: {
-    filename: 'formly.js',
-    path: here('dist'),
-    library: 'ngFormly',
-    libraryTarget: 'umd'
-  },
-
-  stats: {
-    colors: true,
-    reasons: true
-  },
-
-  externals: {
-    angular: 'angular',
-    'api-check': {
-      root: 'apiCheck',
-      amd: 'api-check',
-      commonjs2: 'api-check',
-      commonjs: 'api-check'
-    }
-  },
-
-  plugins: [],
-
-  resolve: {
-    extensions: ['', '.js'],
-    alias: {
-      'angular-fix': here('src/angular-fix')
-    }
-  },
-
-  module: {
-    loaders: [
-      {test: /\.html$/, loader: 'raw', exclude: exclude},
-      {test: /\.js$/, loader: 'ng-annotate!babel!jshint', exclude: exclude},
-      {test: /sinon.*\.js$/, loader: 'imports?define=>false'}
-    ]
-  }
-};
-var devConfig = {};
-
-
-var prodConfig = {
-  output: {
-    filename: 'formly.min.js',
-    path: here('dist')
-  },
-
-  devtool: 'source-map',
-
-  plugins: [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      exclude: /\.test\.js$/,
-      compress: {
-        warnings: false
-      }
-    })
-  ],
-  jshint: {
-    failOnHint: true,
-    emitErrors: true
-  }
-};
-
-var testCIConfig = deepExtend({}, prodConfig);
-var testConfig = deepExtend({}, devConfig);
-delete testConfig.jshint;
-
-delete testCIConfig.jshint;
-
-var envContexts = {
-  development: {ON_DEV: true},
-  prod: {ON_PROD: true},
-  test: {ON_TEST: true},
-  'test:ci': {ON_TEST: true}
-};
 
 
 var context = process.env.NODE_ENV || 'development';
 
-var configContexts = {
-  development: devConfig,
-  production: prodConfig,
-  test: testConfig,
-  'test:ci': testCIConfig
+var configFns = {
+  development: getDevConfig,
+  production: getProdConfig,
+  test: getTestConfig,
+  'test:ci': getTestCIConfig
 };
 
-var resultConfig = deepExtend({}, baseConfig, configContexts[context]);
-var resultVars = deepExtend({}, baseEnvVars, envContexts[context]);
+var config = configFns[context]();
+addCommonPlugins(config);
 
-resultConfig.plugins.push(new webpack.DefinePlugin(resultVars));
-resultConfig.plugins.push(new webpack.BannerPlugin(getBanner(), {raw: true}));
+console.log('building version %s in %s mode', packageJson.version, context);
+module.exports = config;
 
-console.log('Webpack config is in ' + context + ' mode');
-module.exports = resultConfig;
+
+function getDevConfig() {
+  var exclude = /node_modules/;
+  var devConfig = {
+    context: here('src'),
+    entry: './index.js',
+    output: {
+      filename: 'formly.js',
+      path: here('dist'),
+      library: 'ngFormly',
+      libraryTarget: 'umd'
+    },
+
+    stats: {
+      colors: true,
+      reasons: true
+    },
+
+    externals: {
+      angular: 'angular',
+      'api-check': {
+        root: 'apiCheck',
+        amd: 'api-check',
+        commonjs2: 'api-check',
+        commonjs: 'api-check'
+      },
+      chai: 'chai',
+      'sinon-chai': 'sinonChai',
+      sinon: 'sinon',
+      lodash: '_'
+    },
+
+    plugins: [],
+
+    resolve: {
+      extensions: ['', '.js'],
+      alias: {
+        'angular-fix': here('src/angular-fix')
+      }
+    },
+
+    module: {
+      loaders: [
+        {test: /\.html$/, loader: 'raw', exclude: exclude},
+        {test: /\.js$/, loader: 'ng-annotate!babel!eslint', exclude: exclude}
+      ]
+    },
+    eslint: {
+      emitError: false,
+      failOnError: false,
+      failOnWarning: false,
+      quiet: true
+    }
+  };
+
+  if (process.env.ON_TRAVIS !== 'true') {
+    devConfig.plugins = [
+      new WebpackNotifierPlugin({
+        title: 'ATAC',
+        contentImage: here('other/logo.png')
+      })
+    ];
+  }
+  return devConfig;
+}
+
+function getProdConfig() {
+  var prodConfig = _.merge({}, getDevConfig(), {
+    output: {
+      filename: 'formly.min.js',
+      path: here('dist')
+    },
+    devtool: 'source-map',
+    eslint: {
+      emitError: true,
+      failOnError: true
+    }
+  });
+
+  prodConfig.plugins = [
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.AggressiveMergingPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {warnings: false}
+    })
+  ];
+  return prodConfig;
+}
+
+function getTestConfig() {
+  return _.merge({}, getDevConfig(), {
+    entry: './index.test.js',
+    output: {
+      path: here('.test')
+    },
+    plugins: []
+  });
+}
+
+function getTestCIConfig() {
+  return _.merge({}, getProdConfig(), {
+    entry: './index.test.js',
+    output: {
+      path: here('.test')
+    }
+  });
+}
+
+function addCommonPlugins(theConfig) {
+  theConfig.plugins = theConfig.plugins || [];
+  // put the global variables before everything else
+  theConfig.plugins.unshift(new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    VERSION: JSON.stringify(packageJson.version)
+  }));
+
+  // make sure to add the banner last so it's not removed by uglify
+  theConfig.plugins.push(new webpack.BannerPlugin(getBanner(), {raw: true}));
+
+}
 
 function getBanner() {
   return '// ' + packageJson.name + ' version ' +

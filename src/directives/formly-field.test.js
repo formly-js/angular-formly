@@ -1,4 +1,8 @@
-import sinon from 'sinon';
+/* eslint no-shadow:0 */
+/* eslint max-statements:50 */
+/* eslint max-len:0 */
+/* eslint no-console:0 */
+import angular from 'angular-fix';
 import apiCheck from 'api-check';
 import {expect} from 'chai';
 import testUtils from '../test.utils.js';
@@ -729,7 +733,7 @@ describe('formly-field', function() {
       }
 
     });
-    
+
     describe(`multiple ng-models`, () => {
       it(`should be an array`, () => {
         scope.fields = [{
@@ -739,7 +743,7 @@ describe('formly-field', function() {
         compileAndDigest();
         expect(isolateScope.fc).to.be.instanceof(Array);
       });
-    }); 
+    });
   });
 
   describe(`link`, () => {
@@ -856,7 +860,7 @@ describe('formly-field', function() {
     });
   });
 
-  describe(`with a div ng-model`,() => {
+  describe(`with a div ng-model`, () => {
     it(`should have a form-controller`, () => {
       const template = `<div ng-model="model[options.key]"> </div>`;
       scope.fields = [getNewField({template: template})];
@@ -866,7 +870,7 @@ describe('formly-field', function() {
     });
   });
 
-  describe(`with a div data-ng-model`,() => {
+  describe(`with a div data-ng-model`, () => {
     it(`should have a form-controller`, () => {
       const template = `<div data-ng-model="model[options.key]"> </div>`;
       scope.fields = [getNewField({template: template})];

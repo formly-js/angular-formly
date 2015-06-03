@@ -181,6 +181,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+	var angular = _interopRequire(__webpack_require__(3));
+
 	var apiCheckFactory = _interopRequire(__webpack_require__(6));
 
 	var apiCheck = apiCheckFactory({
@@ -576,9 +578,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var optionsFn = options.validateOptions;
 	    var originalDefaultOptions = options.defaultOptions;
 	    if (angular.isDefined(optionsFn)) {
-	      options.validateOptions = function (options) {
-	        optionsFn(options);
-	        var mergedOptions = angular.copy(options);
+	      options.validateOptions = function (opts) {
+	        optionsFn(opts);
+	        var mergedOptions = angular.copy(opts);
 	        var defaultOptions = originalDefaultOptions;
 	        if (defaultOptions) {
 	          if (angular.isFunction(defaultOptions)) {
@@ -602,10 +604,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var optionsDOIsFn = angular.isFunction(optionsDO);
 	    var extendsDOIsFn = angular.isFunction(extendsDO);
 	    if (extendsDOIsFn) {
-	      options.defaultOptions = function defaultOptions(options) {
-	        var extendsDefaultOptions = extendsDO(options);
+	      options.defaultOptions = function defaultOptions(opts) {
+	        var extendsDefaultOptions = extendsDO(opts);
 	        var mergedDefaultOptions = {};
-	        utils.reverseDeepMerge(mergedDefaultOptions, options, extendsDefaultOptions);
+	        utils.reverseDeepMerge(mergedDefaultOptions, opts, extendsDefaultOptions);
 	        var extenderOptionsDefaultOptions = optionsDO;
 	        if (optionsDOIsFn) {
 	          extenderOptionsDefaultOptions = extenderOptionsDefaultOptions(mergedDefaultOptions);
@@ -614,9 +616,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return extendsDefaultOptions;
 	      };
 	    } else if (optionsDOIsFn) {
-	      options.defaultOptions = function defaultOptions(options) {
+	      options.defaultOptions = function defaultOptions(opts) {
 	        var newDefaultOptions = {};
-	        utils.reverseDeepMerge(newDefaultOptions, options, extendsDO);
+	        utils.reverseDeepMerge(newDefaultOptions, opts, extendsDO);
 	        return optionsDO(newDefaultOptions);
 	      };
 	    }
@@ -730,7 +732,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function removeWrappersForType(type) {
 	    var wrappers = getWrapperByType(type);
 	    if (!wrappers) {
-	      return;
+	      return undefined;
 	    }
 	    if (!angular.isArray(wrappers)) {
 	      return removeWrapperByName(wrappers.name);
@@ -744,6 +746,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function warn() {
 	    if (!_this.disableWarnings) {
+	      /* eslint no-console:0 */
 	      console.warn.apply(console, arguments);
 	    }
 	  }
@@ -803,7 +806,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return angular.isObject(obj1) && angular.isObject(obj2) && Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2);
 	}
 
-	//recurse down a node tree to find a node with matching nodeName, for custom tags jQuery.find doesn't work in IE8
+	// recurse down a node tree to find a node with matching nodeName, for custom tags jQuery.find doesn't work in IE8
 	function findByNodeName(el, nodeName) {
 	  if (!el.prop) {
 	    // not a jQuery or jqLite object -> wrap it
@@ -907,6 +910,10 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+	var angular = _interopRequire(__webpack_require__(3));
 
 	module.exports = formlyCustomValidation;
 
@@ -1057,7 +1064,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // @ngInject
 	  function FormlyFieldController($scope, $timeout, $parse, $controller) {
-	    /* jshint maxstatements:31 */
+	    /* eslint max-statements:31 */
 	    if ($scope.options.fieldGroup) {
 	      setupFieldGroup();
 	      return;
@@ -1097,7 +1104,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    function valueGetterSetter(newVal) {
 	      if (!$scope.model || !$scope.options.key) {
-	        return;
+	        return undefined;
 	      }
 	      if (angular.isDefined(newVal)) {
 	        $scope.model[$scope.options.key] = newVal;
@@ -1249,8 +1256,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var args = arguments;
 	    var thusly = this;
 	    var fieldCount = 0;
-	    var manipulators = getManipulators(scope.options, scope.formOptions);
-	    getFieldTemplate(scope.options).then(runManipulators(manipulators.preWrapper)).then(transcludeInWrappers(scope.options, scope.formOptions)).then(runManipulators(manipulators.postWrapper)).then(setElementTemplate).then(watchFormControl).then(callLinkFunctions)["catch"](function (error) {
+	    var fieldManipulators = getManipulators(scope.options, scope.formOptions);
+	    getFieldTemplate(scope.options).then(runManipulators(fieldManipulators.preWrapper)).then(transcludeInWrappers(scope.options, scope.formOptions)).then(runManipulators(fieldManipulators.postWrapper)).then(setElementTemplate).then(watchFormControl).then(callLinkFunctions)["catch"](function (error) {
 	      formlyWarn("there-was-a-problem-setting-the-template-for-this-field", "There was a problem setting the template for this field ", scope.options, error);
 	    });
 
@@ -1367,8 +1374,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function runManipulators(manipulators) {
-	      return function runManipulatorsOnTemplate(template) {
-	        var chain = $q.when(template);
+	      return function runManipulatorsOnTemplate(templateToManipulate) {
+	        var chain = $q.when(templateToManipulate);
 	        angular.forEach(manipulators, function (manipulator) {
 	          chain = chain.then(function (template) {
 	            return $q.when(manipulator(template, scope.options, scope)).then(function (newTemplate) {
@@ -1400,7 +1407,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return { preWrapper: preWrapper, postWrapper: postWrapper };
 
 	    function addManipulators(manipulators) {
-	      /* jshint ignore:start */ // it doesn't understand this :-(
+	      /* eslint-disable */ // it doesn't understand this :-(
 
 	      var _ref = manipulators || {};
 
@@ -1411,16 +1418,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      preWrapper = preWrapper.concat(pre);
 	      postWrapper = postWrapper.concat(post);
-	      /* jshint ignore:end */
+	      /* eslint-enable */
 	    }
 	  }
 
 	  function getFieldTemplate(options) {
-	    function fromOptionsOrType(key, type) {
+	    function fromOptionsOrType(key, fieldType) {
 	      if (angular.isDefined(options[key])) {
 	        return options[key];
-	      } else if (type && angular.isDefined(type[key])) {
-	        return type[key];
+	      } else if (fieldType && angular.isDefined(fieldType[key])) {
+	        return fieldType[key];
 	      }
 	    }
 
@@ -1472,10 +1479,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return $q.when(template);
 	      }
 
-	      wrapper.forEach(function (wrapper) {
-	        formlyUsability.checkWrapper(wrapper, options);
-	        wrapper.validateOptions && wrapper.validateOptions(options);
-	        runApiCheck(wrapper, options);
+	      wrapper.forEach(function (aWrapper) {
+	        formlyUsability.checkWrapper(aWrapper, options);
+	        aWrapper.validateOptions && aWrapper.validateOptions(options);
+	        runApiCheck(aWrapper, options);
 	      });
 	      var promises = wrapper.map(function (w) {
 	        return getTemplate(w.template || w.templateUrl, !w.template);
@@ -1499,7 +1506,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    superWrapper.append(wrapper);
 	    var transcludeEl = superWrapper.find("formly-transclude");
 	    if (!transcludeEl.length) {
-	      //try it using our custom find function
+	      // try it using our custom find function
 	      transcludeEl = formlyUtil.findByNodeName(superWrapper, "formly-transclude");
 	    }
 	    transcludeEl.replaceWith(template);
@@ -1507,7 +1514,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function getWrapperOption(options, formOptions) {
-	    /* jshint maxcomplexity:6 */
+	    /* eslint complexity:[6, 2] */
 	    var wrapper = options.wrapper;
 	    // explicit null means no wrapper
 	    if (wrapper === null) {
@@ -1904,7 +1911,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          setter(scope.$parent, scope[formId]);
 	        }
 	      }
-	      if (!scope.theFormlyForm) {
+	      if (!scope.theFormlyForm && !formlyConfig.disableWarnings) {
+	        /* eslint no-console:0 */
 	        console.warn(formlyUsability.getErrorMessage("formly-form-has-no-formcontroller", "A formly-form does not have a `form` property. Many functions of the form (like validation) may not work"));
 	      }
 	    }
@@ -2017,7 +2025,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      // Feel free to make this more simple :-)
 	      angular.forEach(ngModelAttributes, function (val, name) {
-	        /* jshint maxcomplexity:14 */
+	        /* eslint complexity:[2, 14] */
 	        var attrVal = undefined;
 	        var attrName = undefined;
 	        var ref = "options.templateOptions['" + name + "']";
@@ -2120,7 +2128,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	addFormlyNgModelAttrsManipulator.$inject = ["formlyConfig"];
 
-	// jshint -W035
+	/* eslint no-empty:0 */
 	// empty to illustrate that a boolean will not be added via val.bound
 	// if you want it added via val.bound, then put it in expressionProperties
 
@@ -2130,13 +2138,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+	var angular = _interopRequire(__webpack_require__(3));
+
 	module.exports = addCustomTags;
 
 	// @ngInject
 	function addCustomTags($document) {
 	  if ($document && $document.get) {
 	    (function () {
-	      //IE8 check ->
+	      // IE8 check ->
 	      // http://stackoverflow.com/questions/10964966/detect-ie-version-prior-to-v9-in-javascript/10965203#10965203
 	      var document = $document.get(0);
 	      var div = document.createElement("div");
@@ -2144,7 +2156,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var isIeLessThan9 = div.getElementsByTagName("i").length === 1;
 
 	      if (isIeLessThan9) {
-	        //add the custom elements that we need for formly
+	        // add the custom elements that we need for formly
 	        var customElements = ["formly-field", "formly-form", "formly-custom-validation", "formly-focus", "formly-transpose"];
 	        angular.forEach(customElements, function (el) {
 	          document.createElement(el);

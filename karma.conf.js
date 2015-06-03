@@ -1,44 +1,52 @@
+/* eslint-env node */
 // Karma configuration
-var deepExtend = require('deep-extend');
-var path = require('path');
-
-
 var ci = process.env.NODE_ENV === 'test:ci';
 
-var webpackConfig = require('./webpack.config');
-var testConfig = deepExtend({}, webpackConfig, {
-  watch: !ci,
-  entry: './index.test.js'
-});
-var entry = path.join(testConfig.context, testConfig.entry);
-var preprocessors = {};
-preprocessors[entry] = ['webpack'];
+var preprocessors;
+var reporters = ['progress'];
+var files = [
+  './node_modules/lodash/index.js',
+  './node_modules/api-check/dist/api-check.js',
+  './node_modules/angular/angular.js',
+  './node_modules/angular-mocks/angular-mocks.js',
+  './node_modules/chai/chai.js',
+  './node_modules/sinon-chai/lib/sinon-chai.js'
+];
+if (ci) {
+  files.push('./.test/formly.min.js');
+} else {
+  files.push('./.test/formly.js');
+  preprocessors = {
+    '**/*.js': ['sourcemap']
+  };
+  if (process.env.COVERAGE === 'true') {
+    preprocessors['.test/**/*.js'] = ['coverage'];
+    reporters.push('coverage');
+  }
+}
 
 module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: './',
-    frameworks: ['mocha'],
-    files: [
-      './node_modules/api-check/dist/api-check.js',
-      './node_modules/angular/angular.js',
-      entry
-    ],
+    frameworks: ['mocha', 'sinon'],
+    files: files,
     exclude: [],
 
-
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: preprocessors,
-
-    webpack: testConfig,
-
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: reporters,
+
+    coverageReporter: {
+      reporters: [
+        {type: 'lcov', dir: 'coverage/', subdir: '.'},
+        {type: 'json', dir: 'coverage/', subdir: '.'}
+      ]
+    },
 
 
     // web server port
@@ -70,9 +78,11 @@ module.exports = function(config) {
     browserNoActivityTimeout: 180000,
 
     plugins: [
-      require('karma-webpack'),
       'karma-mocha',
+      'karma-sinon',
       'karma-chai',
+      'karma-coverage',
+      'karma-sourcemap-loader',
       'karma-chrome-launcher',
       'karma-firefox-launcher'
     ]

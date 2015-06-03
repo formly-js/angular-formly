@@ -288,7 +288,8 @@ function formlyForm(formlyUsability, $parse, formlyConfig) {
           setter(scope.$parent, scope[formId]);
         }
       }
-      if (!scope.theFormlyForm) {
+      if (!scope.theFormlyForm && !formlyConfig.disableWarnings) {
+        /* eslint no-console:0 */
         console.warn(formlyUsability.getErrorMessage(
           'formly-form-has-no-formcontroller',
           'A formly-form does not have a `form` property. Many functions of the form (like validation) may not work'

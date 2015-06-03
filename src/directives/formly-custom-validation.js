@@ -1,3 +1,4 @@
+import angular from 'angular-fix';
 export default formlyCustomValidation;
 
 // @ngInject

@@ -120,9 +120,9 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
     const optionsFn = options.validateOptions;
     const originalDefaultOptions = options.defaultOptions;
     if (angular.isDefined(optionsFn)) {
-      options.validateOptions = function (options) {
-        optionsFn(options);
-        let mergedOptions = angular.copy(options);
+      options.validateOptions = function (opts) {
+        optionsFn(opts);
+        let mergedOptions = angular.copy(opts);
         let defaultOptions = originalDefaultOptions;
         if (defaultOptions) {
           if (angular.isFunction(defaultOptions)) {
@@ -146,10 +146,10 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
     const optionsDOIsFn = angular.isFunction(optionsDO);
     const extendsDOIsFn = angular.isFunction(extendsDO);
     if (extendsDOIsFn) {
-      options.defaultOptions = function defaultOptions(options) {
-        const extendsDefaultOptions = extendsDO(options);
+      options.defaultOptions = function defaultOptions(opts) {
+        const extendsDefaultOptions = extendsDO(opts);
         const mergedDefaultOptions = {};
-        utils.reverseDeepMerge(mergedDefaultOptions, options, extendsDefaultOptions);
+        utils.reverseDeepMerge(mergedDefaultOptions, opts, extendsDefaultOptions);
         let extenderOptionsDefaultOptions = optionsDO;
         if (optionsDOIsFn) {
           extenderOptionsDefaultOptions = extenderOptionsDefaultOptions(mergedDefaultOptions);
@@ -158,9 +158,9 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
         return extendsDefaultOptions;
       };
     } else if (optionsDOIsFn) {
-      options.defaultOptions = function defaultOptions(options) {
+      options.defaultOptions = function defaultOptions(opts) {
         let newDefaultOptions = {};
-        utils.reverseDeepMerge(newDefaultOptions, options, extendsDO);
+        utils.reverseDeepMerge(newDefaultOptions, opts, extendsDO);
         return optionsDO(newDefaultOptions);
       };
     }
@@ -268,7 +268,7 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
   function removeWrappersForType(type) {
     var wrappers = getWrapperByType(type);
     if (!wrappers) {
-      return;
+      return undefined;
     }
     if (!angular.isArray(wrappers)) {
       return removeWrapperByName(wrappers.name);
@@ -281,6 +281,7 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
 
   function warn() {
     if (!_this.disableWarnings) {
+      /* eslint no-console:0 */
       console.warn(...arguments);
     }
   }

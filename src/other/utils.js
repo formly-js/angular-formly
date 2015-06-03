@@ -45,7 +45,7 @@ function objAndSameType(obj1, obj2) {
     Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2);
 }
 
-//recurse down a node tree to find a node with matching nodeName, for custom tags jQuery.find doesn't work in IE8
+// recurse down a node tree to find a node with matching nodeName, for custom tags jQuery.find doesn't work in IE8
 function findByNodeName(el, nodeName) {
   if (!el.prop) { // not a jQuery or jqLite object -> wrap it
     el = angular.element(el);

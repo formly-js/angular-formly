@@ -1,3 +1,4 @@
+import angular from 'angular-fix';
 import {expect} from 'chai';
 
 describe(`formly-custom-validation`, function() {
@@ -9,7 +10,7 @@ describe(`formly-custom-validation`, function() {
     $timeout = _$timeout_;
     $q = _$q_;
     scope = $rootScope.$new();
-    scope.options = {validation:{}, validators: {}};
+    scope.options = {validation: {}, validators: {}};
   }));
 
   describe(`using parsers`, () => {

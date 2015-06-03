@@ -1,7 +1,10 @@
+/* eslint no-shadow:0 */
+/* eslint no-console:0 */
+/* eslint max-len:0 */
+/* eslint max-nested-callbacks:0 */
 import {expect} from 'chai';
 import testUtils from '../test.utils.js';
 import angular from 'angular-fix';
-import sinon from 'sinon';
 
 const {getNewField, input, basicForm} = testUtils;
 
