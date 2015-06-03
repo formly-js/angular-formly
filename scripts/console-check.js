@@ -1,5 +1,5 @@
-/* jshint node:true */
-'use strict';
+/* eslint-env node */
+/* eslint no-console:0 */
 var glob = require('glob');
 var async = require('async');
 var fs = require('fs');

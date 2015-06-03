@@ -90,7 +90,7 @@ function getDevConfig() {
   return devConfig;
 }
 
-function getProdConfig() {
+function getProdConfig(noUglify) {
   var prodConfig = _.merge({}, getDevConfig(), {
     output: {
       filename: 'formly.min.js',
@@ -106,11 +106,17 @@ function getProdConfig() {
   prodConfig.plugins = [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {warnings: false}
-    })
+    new webpack.optimize.AggressiveMergingPlugin()
   ];
+
+
+  // allow getting rid of the UglifyJsPlugin
+  // https://github.com/webpack/webpack/issues/1079
+  if (!noUglify) {
+    prodConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
+      compress: {warnings: false}
+    }));
+  }
   return prodConfig;
 }
 
@@ -125,10 +131,19 @@ function getTestConfig() {
 }
 
 function getTestCIConfig() {
-  return _.merge({}, getProdConfig(), {
+  var noUglify = true;
+  return _.merge({}, getProdConfig(noUglify), {
     entry: './index.test.js',
     output: {
       path: here('.test')
+    },
+    module: {
+      postLoaders: [
+        {test: /\.js$/, loader: 'uglify', exclude: /\.test\.js$/}
+      ]
+    },
+    'uglify-loader': {
+      compress: {warnings: false}
     }
   });
 }
