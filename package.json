@@ -22,16 +22,13 @@
     "build:dist": "NODE_ENV=development webpack --progress --colors",
     "build:prod": "NODE_ENV=production webpack --progress --colors",
     "build": "npm run build:dist; npm run build:prod",
-    "ci": "npm run code-checks && npm run test:ci && npm run build",
-    "pre-commit": "npm run ci && npm run check-coverage",
-    "test": "NODE_ENV=test node node_modules/karma/bin/karma start karma.conf.js",
+    "ci": "npm run code-checks && npm run test:ci && npm run check-coverage && npm run build",
+    "test": "NODE_ENV=test karma start",
     "test:single": "npm test -- --single-run",
-    "test:ci": "NODE_ENV=test:ci node node_modules/karma/bin/karma start karma.conf.js",
+    "test:ci": "NODE_ENV=test:ci karma start",
     "watch": "NODE_ENV=development webpack --watch --progress --colors",
     "start": "npm run test",
-    "check-coverage": "COVERAGE=true npm run test:single && ./node_modules/istanbul/lib/cli.js check-coverage --statements 95 --branches 81 --functions 95 --lines 95",
-    "coveralls": "cat coverage/lcov.info | coveralls",
-    "get-and-report-coverage": "npm run check-coverage && npm run coveralls",
+    "check-coverage": "COVERAGE=true npm run test:single && istanbul check-coverage --statements 90 --branches 84 --functions 88 --lines 89",
     "only-check": "node scripts/only-check.js",
     "console-check": "node scripts/console-check.js",
     "code-checks": "npm run only-check && npm run console-check",
@@ -39,7 +36,7 @@
   },
   "config": {
     "ghooks": {
-      "pre-commit": "npm run pre-commit"
+      "pre-commit": "npm run ci"
     }
   },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
@@ -62,11 +59,13 @@
     "eslint-loader": "^0.11.2",
     "ghooks": "^0.2.4",
     "glob": "^5.0.10",
+    "isparta-loader": "^0.2.0",
     "istanbul": "^0.3.14",
     "karma": "^0.12.35",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.1.7",
     "karma-coverage": "^0.3.1",
+    "karma-coveralls": "^1.0.1",
     "karma-firefox-launcher": "^0.1.4",
     "karma-mocha": "^0.1.10",
     "karma-sinon": "^1.0.4",
