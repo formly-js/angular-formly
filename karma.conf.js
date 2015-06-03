@@ -1,29 +1,32 @@
 /* eslint-env node */
 // Karma configuration
 var ci = process.env.NODE_ENV === 'test:ci';
+var path = require('path');
 
-var preprocessors;
+var webpackConfig = require('./webpack.config');
+var entry = path.join(webpackConfig.context, webpackConfig.entry);
+
+
 var reporters = ['progress'];
+
+var preprocessors = {};
+preprocessors[entry] = ['sourcemap', 'webpack'];
+
+if (process.env.COVERAGE === 'true') {
+  console.log('-- Adding coverage reporter --');
+  preprocessors[entry].push('coverage');
+  reporters.push('coverage');
+}
+
 var files = [
   './node_modules/lodash/index.js',
   './node_modules/api-check/dist/api-check.js',
   './node_modules/angular/angular.js',
   './node_modules/angular-mocks/angular-mocks.js',
   './node_modules/chai/chai.js',
-  './node_modules/sinon-chai/lib/sinon-chai.js'
+  './node_modules/sinon-chai/lib/sinon-chai.js',
+  entry
 ];
-if (ci) {
-  files.push('./.test/formly.min.js');
-} else {
-  files.push('./.test/formly.js');
-  preprocessors = {
-    '**/*.js': ['sourcemap']
-  };
-  if (process.env.COVERAGE === 'true') {
-    preprocessors['.test/**/*.js'] = ['coverage'];
-    reporters.push('coverage');
-  }
-}
 
 module.exports = function(config) {
   config.set({
@@ -36,10 +39,9 @@ module.exports = function(config) {
 
     preprocessors: preprocessors,
 
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: reporters,
+
+    webpack: webpackConfig,
 
     coverageReporter: {
       reporters: [
@@ -78,6 +80,7 @@ module.exports = function(config) {
     browserNoActivityTimeout: 180000,
 
     plugins: [
+      'karma-webpack',
       'karma-mocha',
       'karma-sinon',
       'karma-chai',

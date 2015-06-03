@@ -123,9 +123,6 @@ function getProdConfig(noUglify) {
 function getTestConfig() {
   return _.merge({}, getDevConfig(), {
     entry: './index.test.js',
-    output: {
-      path: here('.test')
-    },
     plugins: []
   });
 }
@@ -134,9 +131,6 @@ function getTestCIConfig() {
   var noUglify = true;
   return _.merge({}, getProdConfig(noUglify), {
     entry: './index.test.js',
-    output: {
-      path: here('.test')
-    },
     module: {
       postLoaders: [
         {test: /\.js$/, loader: 'uglify', exclude: /\.test\.js$/}
