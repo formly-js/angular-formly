@@ -3,7 +3,7 @@ import apiCheck from 'api-check';
 import {expect} from 'chai';
 import testUtils from '../test.utils.js';
 
-const {getNewField, input, basicForm} = testUtils;
+const {getNewField, input, basicForm, multiNgModelField} = testUtils;
 
 describe('formly-field', function() {
   /* jshint maxstatements:100 */
@@ -729,6 +729,17 @@ describe('formly-field', function() {
       }
 
     });
+    
+    describe(`multiple ng-models`, () => {
+      it(`should be an array`, () => {
+        scope.fields = [{
+          template: multiNgModelField
+        }];
+
+        compileAndDigest();
+        expect(isolateScope.fc).to.be.instanceof(Array);
+      });
+    }); 
   });
 
   describe(`link`, () => {
@@ -798,6 +809,50 @@ describe('formly-field', function() {
       expect(field.formControl.$modelValue).to.be.empty;
       expect(field.formControl.$touched).to.be.false;
       expect(field.formControl.$dirty).to.be.false;
+    });
+
+    it(`should reset the form state for an field with multiple ng-models`, () => {
+      const field = {
+        key: 'multiNgModel',
+        template: multiNgModelField
+      };
+      scope.fields = [field];
+      compileAndDigest();
+
+      // initial state
+      expect(field.formControl[0].$dirty).to.be.false;
+      expect(field.formControl[0].$touched).to.be.false;
+      expect(field.formControl[1].$dirty).to.be.false;
+      expect(field.formControl[1].$touched).to.be.false;
+
+      scope.model.multiNgModel = {
+        start: 0,
+        stop: 20
+      };
+      field.formControl[0].$setDirty();
+      field.formControl[0].$setTouched();
+      field.formControl[1].$setDirty();
+      field.formControl[1].$setTouched();
+      scope.$digest();
+
+      // expect modification
+      expect(field.formControl[0].$dirty).to.be.true;
+      expect(field.formControl[0].$touched).to.be.true;
+      expect(field.formControl[0].$modelValue).to.eq(0);
+      expect(field.formControl[1].$dirty).to.be.true;
+      expect(field.formControl[1].$touched).to.be.true;
+      expect(field.formControl[1].$modelValue).to.eq(20);
+
+      // reset state
+      field.resetModel();
+
+      // expect reset
+      expect(field.formControl[0].$modelValue).to.be.empty;
+      expect(field.formControl[0].$touched).to.be.false;
+      expect(field.formControl[0].$dirty).to.be.false;
+      expect(field.formControl[1].$modelValue).to.be.empty;
+      expect(field.formControl[1].$touched).to.be.false;
+      expect(field.formControl[1].$dirty).to.be.false;
     });
   });
 
