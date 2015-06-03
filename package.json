@@ -41,7 +41,7 @@
   },
   "config": {
     "ghooks": {
-      "pre-commit": "npm run test:single"
+      "pre-commit": "npm run check-coverage"
     }
   },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
