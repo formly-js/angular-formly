@@ -31,12 +31,11 @@ application's forms.
 
 From there, it's just JavaScript. Allowing for DRY, maintainable, reusable forms.
 
-## Learning
+## [Learning](http://learn.angular-formly.com)
 
 ### Egghead.io Lessons
 
-- [Introduction](https://egghead.io/lessons/angularjs-introduction-to-angular-formly)
-- [Bug me](/../../issues/219) for more...
+I'm an [egghead.io](https://egghead.io/) author and I have made a handful of lessons available there for free [here](https://egghead.io/playlists/advanced-angular-forms-with-angular-formly)
 
 ### NG-NL Talk
 
@@ -45,6 +44,10 @@ From there, it's just JavaScript. Allowing for DRY, maintainable, reusable forms
 ### Examples
 
 [The website](http://formly-js.github.io/angular-formly/) is full of tons of examples.
+
+### More
+
+Find more resources at [learn.angular-formly.com](http://learn.angular-formly.com)
 
 ## Documentation
 
@@ -72,5 +75,6 @@ You can bookmark these :-)
 ## Thanks
 
 A special thanks to [Nimbly](http://gonimbly.com) for creating angular-formly.
-Thanks to [Kent C. Dodds](https://github.com/kentcdodds) for his continued support on the project.
+This library is maintained (with love) by me, [Kent C. Dodds](https://twitter.com/kentcdodds).
+Thanks to all [contributors](https://github.com/formly-js/angular-formly/graphs/contributors)!
 
