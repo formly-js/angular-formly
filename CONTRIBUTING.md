@@ -29,8 +29,6 @@ with a link to a jsbin that demonstrates the issue (clone [this template](http:/
 If you would like to add functionality, please submit [an issue](https://github.com/formly-js/angular-formly/issues)
 first to make sure it's a direction we want to take.
 
-When submitting a Pull Request please submit it to the `master` branch.
-
 Please do the following:
 * Follow the existing styles (we have an `.editorconfig` file)
 * Document your changes in the README (try to follow the convention you see in the rest of the file)
@@ -38,11 +36,14 @@ Please do the following:
 
 ### Development
 
-1. `git checkout master`
-	1. run `npm install`
-	2. run `npm start` (if you're on a windows machine, see [this issue](https://github.com/formly-js/angular-formly/issues/305))
-	3. Write tests & code in ES6 goodness :-)
-	4. commit your changes to the `src/` directory only please.
+1. run `npm install`
+2. run `npm start` (if you're on a windows machine, see [this issue](https://github.com/formly-js/angular-formly/issues/305))
+3. write tests & code in ES6 goodness :-)
+4. commit your changes to the `src/` directory only please. Also, please keep PRs changing only what the specific issue is addressing. In your commit message, add a reference to the issue it's addressing (i.e. Fixes issue with templateManipulators #153)
+5. notice that there's a pre-commit hook that runs to ensure tests pass and coverage doesn't drop to prevent the build from breaking :-)
+6. push your changes
+7. create a PR with a link to the original issue
+8. wait patiently :-)
 
 *Note:* Please don't commit any changes to the `dist/` directory. This is only committed for releases.
 
