@@ -1,4 +1,4 @@
-// angular-formly version 6.12.0-beta.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 6.12.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant("formlyApiCheck", formlyApiCheck);
 	ngModule.constant("formlyErrorAndWarningsUrlPrefix", formlyErrorAndWarningsUrlPrefix);
-	ngModule.constant("formlyVersion", ("6.12.0-beta.1")); // <-- webpack variable
+	ngModule.constant("formlyVersion", ("6.12.0")); // <-- webpack variable
 
 	ngModule.provider("formlyUsability", formlyUsability);
 	ngModule.provider("formlyConfig", formlyConfig);
@@ -153,14 +153,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
-
 	// some versions of angular don't export the angular module properly,
 	// so we get it from window in this case.
+	"use strict";
 
-	var angular = _interopRequire(__webpack_require__(4));
+	var angular = __webpack_require__(4);
 
 	if (!angular.version) {
 	  angular = window.angular;
@@ -374,7 +371,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.12.0-beta.1") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.12.0") + "/other/ERRORS_AND_WARNINGS.md#";
 
 /***/ },
 /* 8 */
@@ -1064,7 +1061,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // @ngInject
 	  function FormlyFieldController($scope, $timeout, $parse, $controller) {
-	    /* eslint max-statements:31 */
+	    /* eslint max-statements:[2, 31] */
 	    if ($scope.options.fieldGroup) {
 	      setupFieldGroup();
 	      return;
@@ -1299,7 +1296,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function watchFormControl(templateString) {
-	      var stopWatchingField = angular.noop;
 	      var stopWatchingShowError = angular.noop;
 	      if (scope.options.noFormControl) {
 	        return;
@@ -1324,7 +1320,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      function watchFieldExistence(name) {
-	        stopWatchingField = scope.$watch("form[\"" + name + "\"]", function formControlChange(formControl) {
+	        scope.$watch("form[\"" + name + "\"]", function formControlChange(formControl) {
 	          if (formControl) {
 	            if (fieldCount > 1) {
 	              if (!scope.options.formControl) {
@@ -1602,7 +1598,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// @ngInject
 	function formlyFocus($timeout, $document) {
-	  /* jshint -W052 */
 	  return {
 	    restrict: "A",
 	    link: function formlyFocusLink(scope, element, attrs) {
@@ -1670,7 +1665,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  function formlyFormGetTemplate(el, attrs) {
-	    /* jshint -W033 */ // this because jshint is broken I guess...
 	    var rootEl = getRootEl();
 	    var fieldRootEl = getFieldRootEl();
 	    var formId = "formly_" + currentFormId++;
@@ -1929,7 +1923,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (global && !offInstance || onInstance) {
 	        var input = document.createElement("input");
 	        input.setAttribute("autocomplete", "address-level4");
-	        input.setAttribute("hidden", true);
+	        input.setAttribute("hidden", "true");
 	        el[0].appendChild(input);
 	      }
 	    }
