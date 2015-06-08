@@ -40,11 +40,9 @@ Please do the following:
 
 1. `git checkout master`
 	1. run `npm install`
-	2. change your directory to the demo and test your code using `npm start` which runs webpack and hosts the app locally at `http://localhost:8080`
-	3. Write your code in ES6 goodness :-)
-	4. commit your changes
-2. update `README.md`, `CHANGELOG.md`, and do any other final polishing to prepare for publishing
-	1. commit changes
+	2. run `npm start` (if you're on a windows machine, see [this issue](https://github.com/formly-js/angular-formly/issues/305))
+	3. Write tests & code in ES6 goodness :-)
+	4. commit your changes to the `src/` directory only please.
 
 *Note:* Please don't commit any changes to the `dist/` directory. This is only committed for releases.
 
