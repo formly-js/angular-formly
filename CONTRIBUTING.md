@@ -53,5 +53,5 @@ Please do the following:
 
 ### What do you need help with?
 
-* Any of the issues in GitHub, let us know if you have some time to fix one. Especially those labeld [PR Please!](https://github.com/formly-js/angular-formly/labels/PRs%20please%21)
+* Any of the issues in GitHub, let us know if you have some time to fix one. Especially those labeled [PR Please!](https://github.com/formly-js/angular-formly/labels/PRs%20please%21)
 * Examples, examples, examples! The website is driven by examples. Please follow the instructions in [this file](https://github.com/formly-js/angular-formly/edit/master/demo/app/states/root/components/data/examples.js) for what you need to do!
