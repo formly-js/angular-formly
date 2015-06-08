@@ -1,3 +1,10 @@
+# 6.12.0
+
+## Other Improvements
+
+- Fixing some issues with eslint
+- Officially releasing 6.12.0
+
 # 6.12.0-beta.1
 
 ## Bug Fixes

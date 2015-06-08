@@ -32,7 +32,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
   // @ngInject
   function FormlyFieldController($scope, $timeout, $parse, $controller) {
-    /* eslint max-statements:31 */
+    /* eslint max-statements:[2, 31] */
     if ($scope.options.fieldGroup) {
       setupFieldGroup();
       return;
@@ -287,7 +287,6 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     }
 
     function watchFormControl(templateString) {
-      let stopWatchingField = angular.noop;
       let stopWatchingShowError = angular.noop;
       if (scope.options.noFormControl) {
         return;
@@ -313,7 +312,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       }
 
       function watchFieldExistence(name) {
-        stopWatchingField = scope.$watch(`form["${name}"]`, function formControlChange(formControl) {
+        scope.$watch(`form["${name}"]`, function formControlChange(formControl) {
           if (formControl) {
             if(fieldCount > 1){
               if(!scope.options.formControl){
