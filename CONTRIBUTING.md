@@ -45,9 +45,11 @@ Please do the following:
 7. create a PR with a link to the original issue
 8. wait patiently :-)
 
-*Note:* Please don't commit any changes to the `dist/` directory. This is only committed for releases.
+#### Notes
 
-*Another Note:* Due to some inconsistencies with angular versions, always use `require('angular-fix')` rather than simply `require('angular')`
+- Please don't commit any changes to the `dist/` directory. This is only committed for releases.
+- Due to some inconsistencies with angular versions, always use `require('angular-fix')` rather than simply `require('angular')`
+- If you wish to view your changes visually, you can play around with it in the `local-examples` directory. Don't commit anything in this directory, but it's a good sanity check. It's just straight JavaScript with an `index.html`. I recommend `http-server`.
 
 ### What do you need help with?
 
