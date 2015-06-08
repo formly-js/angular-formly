@@ -2,6 +2,7 @@
 /* eslint max-nested-callbacks:0 */
 /* eslint no-shadow:0 */
 /* eslint no-console:0 */
+/* eslint no-unused-vars:0 */
 import {expect} from 'chai';
 import angular from 'angular-fix';
 import testUtils from '../test.utils.js';

@@ -1,3 +1,4 @@
+/* eslint no-unused-vars:0 */
 import utils from './utils.js';
 import sinon from 'sinon';
 import {expect} from 'chai';
