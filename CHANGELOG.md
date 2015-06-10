@@ -1,3 +1,9 @@
+# 6.13.0
+
+## Bug Fixes
+
+- Adding the ability to specify a `name` property on a field [#341](/../../issues/341)
+
 # 6.12.0
 
 ## Other Improvements
