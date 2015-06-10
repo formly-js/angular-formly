@@ -46,7 +46,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     // set field id to link labels and fields
 
     // initalization
-    setFieldId();
+    setFieldIdAndName();
     setDefaultValue();
     setInitialValue();
     runExpressions();
@@ -92,7 +92,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       $scope.formOptions = $scope.formOptions || {};
     }
 
-    function setFieldId() {
+    function setFieldIdAndName() {
       if (angular.isFunction(formlyConfig.extras.getFieldId)) {
         $scope.id = formlyConfig.extras.getFieldId($scope.options, $scope.model, $scope);
       } else {
@@ -100,6 +100,8 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
         $scope.id = formlyUtil.getFieldId(formName, $scope.options, $scope.index);
       }
       $scope.options.id = $scope.id;
+      $scope.name = $scope.options.name || $scope.options.id;
+      $scope.options.name = $scope.name;
     }
 
     function setDefaultValue() {

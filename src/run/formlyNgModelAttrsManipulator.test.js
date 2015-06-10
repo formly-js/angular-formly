@@ -42,6 +42,23 @@ describe('formlyNgModelAttrsManipulator', () => {
     expect(resultEl.attr('id')).to.eq('id');
   });
 
+  describe(`name`, () => {
+    it(`should automatically be added when id is specified`, () => {
+      scope.id = 'some_random_id';
+      manipulate();
+      expect(resultEl.attr('name')).to.eq('some_random_id');
+      expect(resultEl.attr('id')).to.eq('some_random_id');
+    });
+
+    it(`should allow to be set in scope`, () => {
+      scope.id = 'some_random_id';
+      scope.name = 'some_random_name';
+      manipulate();
+      expect(resultEl.attr('name')).to.eq('some_random_name');
+      expect(resultEl.attr('id')).to.eq('some_random_id');
+    });
+  });
+
   describe(`ng-model-options`, () => {
     it(`should be added if modelOptions is specified`, () => {
       field.modelOptions = {};
