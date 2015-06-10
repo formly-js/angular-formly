@@ -12,12 +12,7 @@
     "url": "git://github.com/formly-js/angular-formly.git"
   },
   "main": "dist/formly.js",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://raw.githubusercontent.com/formly-js/angular-formly/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "scripts": {
     "build:dist": "NODE_ENV=development webpack --progress --colors",
     "build:prod": "NODE_ENV=production webpack --progress --colors",
@@ -78,7 +73,7 @@
     "ng-annotate-loader": "0.0.2",
     "node-libs-browser": "^0.5.2",
     "raw-loader": "^0.5.1",
-    "sinon": "^1.14.1",
+    "sinon": "1.14.1",
     "sinon-chai": "^2.6.0",
     "source-map": "^0.2.0",
     "uglify-loader": "^1.2.0",
