@@ -1,4 +1,4 @@
-// angular-formly version 6.12.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 6.13.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant("formlyApiCheck", formlyApiCheck);
 	ngModule.constant("formlyErrorAndWarningsUrlPrefix", formlyErrorAndWarningsUrlPrefix);
-	ngModule.constant("formlyVersion", ("6.12.0")); // <-- webpack variable
+	ngModule.constant("formlyVersion", ("6.13.0")); // <-- webpack variable
 
 	ngModule.provider("formlyUsability", formlyUsability);
 	ngModule.provider("formlyConfig", formlyConfig);
@@ -260,6 +260,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  model: modelChecker.optional,
 	  className: apiCheck.string.optional,
 	  id: apiCheck.string.optional,
+	  name: apiCheck.string.optional,
 	  expressionProperties: expressionProperties.optional,
 	  data: apiCheck.object.optional,
 	  templateOptions: apiCheck.object.optional,
@@ -371,7 +372,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.12.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.13.0") + "/other/ERRORS_AND_WARNINGS.md#";
 
 /***/ },
 /* 8 */
@@ -1075,7 +1076,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // set field id to link labels and fields
 
 	    // initalization
-	    setFieldId();
+	    setFieldIdAndName();
 	    setDefaultValue();
 	    setInitialValue();
 	    runExpressions();
@@ -1121,7 +1122,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      $scope.formOptions = $scope.formOptions || {};
 	    }
 
-	    function setFieldId() {
+	    function setFieldIdAndName() {
 	      if (angular.isFunction(formlyConfig.extras.getFieldId)) {
 	        $scope.id = formlyConfig.extras.getFieldId($scope.options, $scope.model, $scope);
 	      } else {
@@ -1129,6 +1130,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        $scope.id = formlyUtil.getFieldId(formName, $scope.options, $scope.index);
 	      }
 	      $scope.options.id = $scope.id;
+	      $scope.name = $scope.options.name || $scope.options.id;
+	      $scope.options.name = $scope.name;
 	    }
 
 	    function setDefaultValue() {
@@ -1979,7 +1982,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    addIfNotPresent(modelNodes, "id", scope.id);
-	    addIfNotPresent(modelNodes, "name", scope.id);
+	    addIfNotPresent(modelNodes, "name", scope.name || scope.id);
 
 	    addValidation();
 	    addModelOptions();
