@@ -24,7 +24,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
     }
 
     addIfNotPresent(modelNodes, 'id', scope.id);
-    addIfNotPresent(modelNodes, 'name', scope.id);
+    addIfNotPresent(modelNodes, 'name', scope.name || scope.id);
 
     addValidation();
     addModelOptions();
