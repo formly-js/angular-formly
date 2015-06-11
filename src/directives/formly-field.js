@@ -252,6 +252,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
         }).join(' ');
       }
       let modelValue = 'model';
+      scope.options.form = scope.form;
       if (scope.options.key) {
         modelValue = `model['${scope.options.key}']`;
       }

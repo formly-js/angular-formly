@@ -999,7 +999,29 @@ describe('formly-field', function() {
 
   });
 
-  describe(`fieldGroup with specified "key" property`, () => {
+  describe(`fieldGroup`, () => {
+    it(`should share the form with a fieldGroup`, () => {
+      scope.model = {child: {foo: 'bar'}};
+      scope.fields = [
+        {
+          model: 'model.child',
+          fieldGroup: [
+            getNewField({key: 'foo'})
+          ]
+        }
+      ];
+
+      compileAndDigest();
+      const fieldGroupNode = node.querySelector('.formly-field-group');
+      expect(fieldGroupNode).to.exist;
+
+      const fieldGroup = getIsolateScope(0);
+
+      expect(fieldGroup.model).to.eq(scope.model.child);
+
+      expect(fieldGroup.options.form).to.eq(fieldGroup.form);
+    });
+
     it(`should allow you to specify a key which will be used for the model of the field-group`, () => {
       scope.fields = [
         {
