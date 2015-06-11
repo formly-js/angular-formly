@@ -1,3 +1,9 @@
+# 6.13.1
+
+## Bug Fixes
+
+- Fixing issue where `fieldGroup` was not sharing it's parent's form. Thanks [@benoror](https://github.com/benoror) [#347](/../../issues/347)
+
 # 6.13.0
 
 ## Bug Fixes
