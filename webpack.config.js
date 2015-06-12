@@ -144,19 +144,17 @@ function getTestCIConfig() {
 
 function addCommonPlugins(theConfig) {
   theConfig.plugins = theConfig.plugins || [];
+
+  theConfig.plugins.unshift(new webpack.BannerPlugin(getBanner(), {raw: true}));
   // put the global variables before everything else
   theConfig.plugins.unshift(new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     VERSION: JSON.stringify(packageJson.version)
   }));
-
-  // make sure to add the banner last so it's not removed by uglify
-  theConfig.plugins.push(new webpack.BannerPlugin(getBanner(), {raw: true}));
-
 }
 
 function getBanner() {
-  return '// ' + packageJson.name + ' version ' +
+  return '//! ' + packageJson.name + ' version ' +
     packageJson.version +
     ' built with ♥ by ' +
     packageJson.contributors.join(', ') +
