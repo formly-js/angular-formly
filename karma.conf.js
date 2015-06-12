@@ -37,7 +37,7 @@ module.exports = function(config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: !ci,
-    browsers: ci ? ['Firefox'] : ['Chrome'],
+    browsers: ['Firefox'],
     singleRun: ci,
     browserNoActivityTimeout: 180000,
     plugins: [

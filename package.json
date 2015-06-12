@@ -20,6 +20,7 @@
     "test": "NODE_ENV=test karma start",
     "test:single": "NODE_ENV=test karma start --single-run",
     "test:ci": "NODE_ENV=test:ci karma start",
+    "test:chrome": "NODE_ENV=test karma start --browsers Chrome",
     "watch": "NODE_ENV=development webpack --watch --progress --colors",
     "start": "npm run test",
     "check-coverage": "COVERAGE=true NODE_ENV=test karma start --browsers Firefox --single-run && istanbul check-coverage --statements 90 --branches 84 --functions 88 --lines 89",
