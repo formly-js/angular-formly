@@ -1,4 +1,4 @@
-// angular-formly version 6.13.2 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 6.14.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant("formlyApiCheck", formlyApiCheck);
 	ngModule.constant("formlyErrorAndWarningsUrlPrefix", formlyErrorAndWarningsUrlPrefix);
-	ngModule.constant("formlyVersion", ("6.13.2")); // <-- webpack variable
+	ngModule.constant("formlyVersion", ("6.14.0")); // <-- webpack variable
 
 	ngModule.provider("formlyUsability", formlyUsability);
 	ngModule.provider("formlyConfig", formlyConfig);
@@ -316,7 +316,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  updateInitialValue: apiCheck.func.optional,
 	  removeChromeAutoComplete: apiCheck.bool.optional,
 	  templateManipulators: templateManipulators.optional,
-	  wrapper: specifyWrapperType.optional
+	  wrapper: specifyWrapperType.optional,
+	  fieldTransform: apiCheck.func.optional,
+	  data: apiCheck.object.optional
 	}).strict;
 
 	var fieldGroup = apiCheck.shape({
@@ -372,7 +374,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.13.2") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.14.0") + "/other/ERRORS_AND_WARNINGS.md#";
 
 /***/ },
 /* 8 */
@@ -1733,11 +1735,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function FormlyFormController($scope, formlyApiCheck, formlyUtil) {
 	    setupOptions();
 	    $scope.model = $scope.model || {};
-	    $scope.fields = $scope.fields || [];
-
-	    angular.forEach($scope.fields, initModel); // initializes the model property if set to 'formState'
-	    angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
-	    angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
+	    setupFields();
 
 	    // watch the model and evaluate watch expressions that depend on it.
 	    $scope.$watch("model", onModelOrFormStateChange, true);
@@ -1756,6 +1754,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	          field.hide = evalCloseToFormlyExpression(field.hideExpression, val, field, index);
 	        }
 	      });
+	    }
+
+	    function setupFields() {
+	      $scope.fields = $scope.fields || [];
+	      var fieldTransform = $scope.options.fieldTransform || formlyConfig.extras.fieldTransform;
+
+	      if (fieldTransform) {
+	        $scope.fields = fieldTransform($scope.fields, $scope.model, $scope.options, $scope.form);
+	        if (!$scope.fields) {
+	          throw formlyUsability.getFormlyError("fieldTransform must return an array of fields");
+	        }
+	      }
+
+	      angular.forEach($scope.fields, initModel); // initializes the model property if set to 'formState'
+	      angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
+	      angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
 	    }
 
 	    function setupOptions() {
