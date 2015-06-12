@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "6.13.1",
+  "version": "6.13.2",
   "author": "Astrism <astrisms@gmail.com>",
   "contributors": [
     "Astrism <astrisms@gmail.com>",
@@ -47,6 +47,7 @@
     "babel-core": "^4.4.6",
     "babel-eslint": "^3.1.10",
     "babel-loader": "^4.0.0",
+    "babel-runtime": "5.5.6",
     "chai": "^1.10.0",
     "chalk": "^1.0.0",
     "codecov.io": "0.1.2",

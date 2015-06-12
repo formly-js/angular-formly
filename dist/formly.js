@@ -1,4 +1,4 @@
-// angular-formly version 6.13.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+// angular-formly version 6.13.2 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant("formlyApiCheck", formlyApiCheck);
 	ngModule.constant("formlyErrorAndWarningsUrlPrefix", formlyErrorAndWarningsUrlPrefix);
-	ngModule.constant("formlyVersion", ("6.13.1")); // <-- webpack variable
+	ngModule.constant("formlyVersion", ("6.13.2")); // <-- webpack variable
 
 	ngModule.provider("formlyUsability", formlyUsability);
 	ngModule.provider("formlyConfig", formlyConfig);
@@ -372,7 +372,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.13.1") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.13.2") + "/other/ERRORS_AND_WARNINGS.md#";
 
 /***/ },
 /* 8 */
@@ -1563,6 +1563,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      runApiCheck(type, options);
 	    }
+	    if (options.expressionProperties && options.expressionProperties.hide) {
+	      formlyWarn("dont-use-expressionproperties.hide-use-hideexpression-instead", "You have specified `hide` in `expressionProperties`. Use `hideExpression` instead", options);
+	    }
 	  }
 
 	  function checkFieldGroupApi(options) {
@@ -1650,7 +1653,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @restrict E
 	 */
 	// @ngInject
-	function formlyForm(formlyUsability, $parse, formlyConfig, $interpolate) {
+	function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpolate) {
 	  var currentFormId = 1;
 	  FormlyFormController.$inject = ["$scope", "formlyApiCheck", "formlyUtil"];
 	  return {
@@ -1911,7 +1914,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      if (!scope.theFormlyForm && !formlyConfig.disableWarnings) {
 	        /* eslint no-console:0 */
-	        console.warn(formlyUsability.getErrorMessage("formly-form-has-no-formcontroller", "A formly-form does not have a `form` property. Many functions of the form (like validation) may not work"));
+	        formlyWarn("formly-form-has-no-formcontroller", "Your formly-form does not have a `form` property. Many functions of the form (like validation) may not work", el, scope);
 	      }
 	    }
 
@@ -1948,7 +1951,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return field && !!field.fieldGroup;
 	  }
 	}
-	formlyForm.$inject = ["formlyUsability", "$parse", "formlyConfig", "$interpolate"];
+	formlyForm.$inject = ["formlyUsability", "formlyWarn", "$parse", "formlyConfig", "$interpolate"];
 
 /***/ },
 /* 17 */
