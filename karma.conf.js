@@ -13,14 +13,12 @@ var entry = path.join(webpackConfig.context, webpackConfig.entry);
 module.exports = function(config) {
   config.set({
     basePath: './',
-    frameworks: ['mocha', 'sinon'],
+    frameworks: ['sinon-chai', 'chai', 'mocha', 'sinon'],
     files: [
       './node_modules/lodash/index.js',
       './node_modules/api-check/dist/api-check.js',
       './node_modules/angular/angular.js',
       './node_modules/angular-mocks/angular-mocks.js',
-      './node_modules/chai/chai.js',
-      './node_modules/sinon-chai/lib/sinon-chai.js',
       entry
     ],
     exclude: [],
@@ -45,11 +43,10 @@ module.exports = function(config) {
     plugins: [
       'karma-webpack',
       'karma-mocha',
+      'karma-sinon-chai',
       'karma-sinon',
       'karma-chai',
       'karma-coverage',
-      'karma-coveralls',
-      'karma-sourcemap-loader',
       'karma-chrome-launcher',
       'karma-firefox-launcher'
     ]
@@ -60,10 +57,6 @@ function getReporters() {
   var reps = ['progress'];
   if (coverage) {
     reps.push('coverage');
-  }
-  if (process.env.COVERALLS_REPO_TOKEN) {
-    console.log('-- adding report to coveralls --');
-    reps.push('coveralls');
   }
   return reps;
 }
