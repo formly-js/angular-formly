@@ -543,6 +543,13 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       }
       runApiCheck(type, options);
     }
+    if (options.expressionProperties && options.expressionProperties.hide) {
+      formlyWarn(
+        'dont-use-expressionproperties.hide-use-hideexpression-instead',
+        'You have specified `hide` in `expressionProperties`. Use `hideExpression` instead',
+        options
+      );
+    }
   }
 
   function checkFieldGroupApi(options) {

@@ -1,3 +1,10 @@
+# 6.13.2
+
+## Enhancements
+
+- Adding warning when you use `expressionProperties.hide` indicating you should use `hideExpression` instead.
+- Fixing warning in `formly-form` to use `formlyWarn` instead so it is properly disabled.
+
 # 6.13.1
 
 ## Bug Fixes

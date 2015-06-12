@@ -107,6 +107,22 @@ your model to an empty object for you. Because of this, if your expression evalu
 will be overridden by the value you specify for `formly-form`. Hence, you must initialize the actual `model` to which
 your expression evaluates.
 
+# Don't use expressionProperties.hide, use hideExpression instead
+
+This is due to limitations with expressionProperties and ng-if not working together very nicely. Essentially, if you are
+initializing your field to be hidden, then its controller function never runs, which means its `runExpressions` function
+is never initialized, which means the condition you specify in `expressionProperties.hide` will never be evaluated and
+the field will always remain hidden.
+
+To get around this, use `hideExpression` instead which is run on the `formly-form` level rather than the `formly-field`
+level. It's almost exactly the same API as a normal `formly-field` `expressionProperty` and you should never notice a
+difference. The main difference is that the `$scope` on which it is evaluated is not the `formly-field` scope like a
+normal `expressionProperties` expression, but rather the `formly-form` scope, which means that in the function version
+of the expression, the scope you're passed wont have all the properties you may be expecting.
+
+See documentation [here](http://docs.angular-formly.com/docs/field-configuration-object#hideexpression-string--function)
+and an example [here](http://angular-formly.com/#/example/field-options/hide-fields)
+
 # Notes
 
 It is recommended to disable warnings in production using `formlyConfigProvider.disableWarnings = true`. Note: This will

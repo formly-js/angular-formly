@@ -66,15 +66,15 @@ describe('formly-form', () => {
     expect(scope.theForm).to.eq(isolateScope.theFormlyForm);
   });
 
-  it(`should warn if there's no FormController to be assigned`, () => {
-    const originalWarn = console.warn;
-    console.warn = sinon.spy();
+  it(`should warn if there's no FormController to be assigned`, inject(($log) => {
     compileAndDigest(`
       <formly-form model="model" fields="fields" form="theForm" id="my-formly-form" root-el="div"></formly-form>
     `);
-    expect(console.warn).to.have.been.called;
-    console.warn = originalWarn;
-  });
+    const log = $log.warn.logs[0];
+    expect($log.warn.logs).to.have.length(1);
+    expect(log[0]).to.equal('Formly Warning:');
+    expect(log[1]).to.equal('Your formly-form does not have a `form` property. Many functions of the form (like validation) may not work');
+  }));
 
   it(`should put the formControl on the field's scope when using a different form root element`, () => {
     scope.fields = [getNewField()];

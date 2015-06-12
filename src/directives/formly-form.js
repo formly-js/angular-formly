@@ -8,7 +8,7 @@ export default formlyForm;
  * @restrict E
  */
 // @ngInject
-function formlyForm(formlyUsability, $parse, formlyConfig, $interpolate) {
+function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpolate) {
   var currentFormId = 1;
   return {
     restrict: 'E',
@@ -289,10 +289,12 @@ function formlyForm(formlyUsability, $parse, formlyConfig, $interpolate) {
       }
       if (!scope.theFormlyForm && !formlyConfig.disableWarnings) {
         /* eslint no-console:0 */
-        console.warn(formlyUsability.getErrorMessage(
+        formlyWarn(
           'formly-form-has-no-formcontroller',
-          'A formly-form does not have a `form` property. Many functions of the form (like validation) may not work'
-        ));
+          'Your formly-form does not have a `form` property. Many functions of the form (like validation) may not work',
+          el,
+          scope
+        );
       }
     }
 
