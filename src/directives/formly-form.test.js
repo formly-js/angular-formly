@@ -651,6 +651,13 @@ describe('formly-form', () => {
         });
       }
     });
+
+    describe(`data`, () => {
+      it(`should allow you to put whatever you want in data`, () => {
+        scope.options.data = {foo: 'bar'};
+        expect(compileAndDigest).to.not.throw();
+      });
+    });
   });
 
   function compileAndDigest(template) {
