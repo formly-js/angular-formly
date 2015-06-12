@@ -5,6 +5,7 @@
 import {expect} from 'chai';
 import testUtils from '../test.utils.js';
 import angular from 'angular-fix';
+import _ from 'lodash';
 
 const {getNewField, input, basicForm} = testUtils;
 
@@ -538,59 +539,117 @@ describe('formly-form', () => {
       }
     });
 
-    describe(`options`, () => {
-      describe(`updateInitialValue`, () => {
+    describe(`updateInitialValue`, () => {
 
-        it(`should update the initial value of the fields`, () => {
-          compileAndDigest(template);
-          const field = scope.fields[0];
-          expect(field.initialValue).to.equal('myFoo');
-          scope.model.foo = 'otherValue';
-          scope.options.updateInitialValue();
-          expect(field.initialValue).to.equal('otherValue');
-        });
-
-        it(`should reset to the updated initial value`, () => {
-          compileAndDigest(template);
-          const field = scope.fields[0];
-          scope.model.foo = 'otherValue';
-          scope.options.updateInitialValue();
-          scope.model.foo = 'otherValueAgain';
-          scope.options.resetModel();
-          expect(field.initialValue).to.equal('otherValue');
-          expect(scope.model.foo).to.equal('otherValue');
-        });
+      it(`should update the initial value of the fields`, () => {
+        compileAndDigest(template);
+        const field = scope.fields[0];
+        expect(field.initialValue).to.equal('myFoo');
+        scope.model.foo = 'otherValue';
+        scope.options.updateInitialValue();
+        expect(field.initialValue).to.equal('otherValue');
       });
 
-      describe(`removeChromeAutoComplete`, () => {
-        it(`should not have a hidden input when nothing is specified`, () => {
-          const el = compileAndDigest(template);
-          const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
-          expect(autoCompleteFixEl).to.be.null;
-        });
-
-        it(`should add a hidden input when specified as true`, () => {
-          scope.options.removeChromeAutoComplete = true;
-          const el = compileAndDigest(template);
-          const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
-          expect(autoCompleteFixEl).to.exist;
-        });
-
-        it(`should override the 'true' global configuration`, inject((formlyConfig) => {
-          formlyConfig.extras.removeChromeAutoComplete = true;
-          scope.options.removeChromeAutoComplete = false;
-          const el = compileAndDigest(template);
-          const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
-          expect(autoCompleteFixEl).to.be.null;
-        }));
-
-        it(`should be added regardless of the option if the global config is set`, inject((formlyConfig) => {
-          formlyConfig.extras.removeChromeAutoComplete = true;
-          const el = compileAndDigest(template);
-          const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
-          expect(autoCompleteFixEl).to.exist;
-        }));
+      it(`should reset to the updated initial value`, () => {
+        compileAndDigest(template);
+        const field = scope.fields[0];
+        scope.model.foo = 'otherValue';
+        scope.options.updateInitialValue();
+        scope.model.foo = 'otherValueAgain';
+        scope.options.resetModel();
+        expect(field.initialValue).to.equal('otherValue');
+        expect(scope.model.foo).to.equal('otherValue');
       });
+    });
+
+    describe(`removeChromeAutoComplete`, () => {
+      it(`should not have a hidden input when nothing is specified`, () => {
+        const el = compileAndDigest(template);
+        const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
+        expect(autoCompleteFixEl).to.be.null;
+      });
+
+      it(`should add a hidden input when specified as true`, () => {
+        scope.options.removeChromeAutoComplete = true;
+        const el = compileAndDigest(template);
+        const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
+        expect(autoCompleteFixEl).to.exist;
+      });
+
+      it(`should override the 'true' global configuration`, inject((formlyConfig) => {
+        formlyConfig.extras.removeChromeAutoComplete = true;
+        scope.options.removeChromeAutoComplete = false;
+        const el = compileAndDigest(template);
+        const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
+        expect(autoCompleteFixEl).to.be.null;
+      }));
+
+      it(`should be added regardless of the option if the global config is set`, inject((formlyConfig) => {
+        formlyConfig.extras.removeChromeAutoComplete = true;
+        const el = compileAndDigest(template);
+        const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
+        expect(autoCompleteFixEl).to.exist;
+      }));
+    });
+
+    describe.skip(`fieldTransform`, () => {
+      beforeEach(() => {
+        formlyConfig.extras.fieldTransform = fieldTransform;
+      });
+
+      it(`should throw an error if something is passed in and nothing is returned`, () => {
+        scope.fields = [getNewField()];
+        scope.options.fieldTransform = function() {
+          // I return nothing...
+        };
+        expect(() => compileAndDigest()).to.throw(/Formly Error: fieldTransform must return an array of fields/);
+      });
+
+      it(`should allow you to transform field configuration`, () => {
+        scope.options.fieldTransform = fieldTransform;
+        const spy = sinon.spy(scope.options, 'fieldTransform');
+        doExpectations(spy);
+      });
+
+      it(`should use formlyConfig.extras.fieldTransform when not specified on options`, () => {
+        const spy = sinon.spy(formlyConfig.extras, 'fieldTransform');
+        doExpectations(spy);
+      });
+
+      function doExpectations(spy) {
+        const originalFields = [{
+          key: 'keyProp',
+          template: '<hr />',
+          customThing: 'foo',
+          otherCustomThing: {
+            whatever: '|-o-|'
+          }
+        }];
+        scope.fields = originalFields;
+        compileAndDigest();
+        expect(spy).to.have.been.calledWith(originalFields, scope.model, scope.options, scope.form);
+        const field = scope.fields[0];
+
+        expect(field).to.not.have.property('customThing');
+        expect(field).to.not.have.property('otherCustomThing');
+        expect(field).to.have.deep.property('data.customThing');
+        expect(field).to.have.deep.property('data.otherCustomThing');
+      }
+
+      function fieldTransform(fields) {
+        const extraKeys = ['customThing', 'otherCustomThing'];
+        return _.map(fields, field => {
+          var newField = {data: {}};
+          _.each(field, (val, name) => {
+            if (_.contains(extraKeys, name)) {
+              newField.data[name] = val;
+            } else {
+              newField[name] = val;
+            }
+          });
+          return newField;
+        });
+      }
     });
   });
 
