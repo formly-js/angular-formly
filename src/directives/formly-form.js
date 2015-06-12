@@ -103,11 +103,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
   function FormlyFormController($scope, formlyApiCheck, formlyUtil) {
     setupOptions();
     $scope.model = $scope.model || {};
-    $scope.fields = $scope.fields || [];
-
-    angular.forEach($scope.fields, initModel); // initializes the model property if set to 'formState'
-    angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
-    angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
+    setupFields();
 
     // watch the model and evaluate watch expressions that depend on it.
     $scope.$watch('model', onModelOrFormStateChange, true);
@@ -126,6 +122,23 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
         }
       });
     }
+
+    function setupFields() {
+      $scope.fields = $scope.fields || [];
+      const fieldTransform = $scope.options.fieldTransform || formlyConfig.extras.fieldTransform;
+
+      if (fieldTransform) {
+        $scope.fields = fieldTransform($scope.fields, $scope.model, $scope.options, $scope.form);
+        if (!$scope.fields) {
+          throw formlyUsability.getFormlyError('fieldTransform must return an array of fields');
+        }
+      }
+
+      angular.forEach($scope.fields, initModel); // initializes the model property if set to 'formState'
+      angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
+      angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
+    }
+
 
     function setupOptions() {
       formlyApiCheck.throw(

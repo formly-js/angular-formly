@@ -156,7 +156,8 @@ const formOptionsApi = apiCheck.shape({
   updateInitialValue: apiCheck.func.optional,
   removeChromeAutoComplete: apiCheck.bool.optional,
   templateManipulators: templateManipulators.optional,
-  wrapper: specifyWrapperType.optional
+  wrapper: specifyWrapperType.optional,
+  fieldTransform: apiCheck.func.optional
 }).strict;
 
 
