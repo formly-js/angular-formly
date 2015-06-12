@@ -1,3 +1,10 @@
+# 6.14.0
+
+## New Features
+
+- Added `fieldTransform` to the `formly-form` options as well as `formlyConfig.extras` to allow you to modify/convert the fields before angular-formly handles them or validates them. So you can now have your own custom field configuration and then simply use this function to modify them into something that angular-formly recognizes. Big thanks to [@stevebluck](https://github.com/stevebluck) for this one! (His first open source contribution!) [#343](/../../issues/343)
+- Added `data` property to `formly-form` options.
+
 # 6.13.2
 
 ## Enhancements
