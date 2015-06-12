@@ -592,7 +592,7 @@ describe('formly-form', () => {
       }));
     });
 
-    describe.skip(`fieldTransform`, () => {
+    describe(`fieldTransform`, () => {
       beforeEach(() => {
         formlyConfig.extras.fieldTransform = fieldTransform;
       });
@@ -602,7 +602,7 @@ describe('formly-form', () => {
         scope.options.fieldTransform = function() {
           // I return nothing...
         };
-        expect(() => compileAndDigest()).to.throw(/Formly Error: fieldTransform must return an array of fields/);
+        expect(() => compileAndDigest()).to.throw(/^Formly Error: fieldTransform must return an array of fields/);
       });
 
       it(`should allow you to transform field configuration`, () => {
