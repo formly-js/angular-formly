@@ -30,7 +30,8 @@ module.exports = function(config) {
     coverageReporter: {
       reporters: [
         {type: 'lcov', dir: 'coverage/', subdir: '.'},
-        {type: 'json', dir: 'coverage/', subdir: '.'}
+        {type: 'json', dir: 'coverage/', subdir: '.'},
+        {type: 'text-summary'}
       ]
     },
     port: 9876,
