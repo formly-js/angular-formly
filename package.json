@@ -23,7 +23,7 @@
     "watch": "NODE_ENV=development webpack --watch --progress --colors",
     "start": "npm run test",
     "check-coverage": "COVERAGE=true NODE_ENV=test karma start --browsers Firefox --single-run && istanbul check-coverage --statements 90 --branches 84 --functions 88 --lines 89",
-    "report-coverage": "echo 'Reporting coverage stats' && cat ./coverage/coverage-final.json | codecov",
+    "report-coverage": "echo 'Reporting coverage stats' && cat ./coverage/lcov.info | codecov",
     "only-check": "node scripts/only-check.js",
     "console-check": "node scripts/console-check.js",
     "code-checks": "npm run only-check && npm run console-check",
