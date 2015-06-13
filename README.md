@@ -78,3 +78,4 @@ A special thanks to [Nimbly](http://gonimbly.com) for creating angular-formly.
 This library is maintained (with love) by me, [Kent C. Dodds](https://twitter.com/kentcdodds).
 Thanks to all [contributors](https://github.com/formly-js/angular-formly/graphs/contributors)!
 
+
