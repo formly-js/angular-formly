@@ -71,7 +71,7 @@
     "lodash": "3.9.3",
     "mocha": "2.2.5",
     "ng-annotate": "1.0.0",
-    "ng-annotate-loader": "0.0.2",
+    "ng-annotate-loader": "0.0.4",
     "node-libs-browser": "0.5.2",
     "raw-loader": "0.5.1",
     "sinon": "1.15.3",

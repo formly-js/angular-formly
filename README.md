@@ -6,7 +6,7 @@ Status:
 [![bower version](https://img.shields.io/bower/v/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly)
 [![npm version](https://img.shields.io/npm/v/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly)
 [![npm downloads](https://img.shields.io/npm/dm/angular-formly.svg?style=flat-square)](http://npm-stat.com/charts.html?package=angular-formly&from=2015-01-01)
-[![Build Status](https://img.shields.io/travis/formly-js/angular-formly.svg?style=flat-square)](https://travis-ci.org/formly-js/angular-formly)
+[![Build Status](https://img.shields.io/codeship/c6ae7d40-f3c0-0132-0819-16cf317d1634.svg?style=flat-square)](https://codeship.com/projects/85475)
 [![Code Coverage](https://img.shields.io/codecov/c/github/formly-js/angular-formly.svg?style=flat-square)](https://codecov.io/github/formly-js/angular-formly)
 
 Links:
@@ -77,5 +77,4 @@ You can bookmark these :-)
 A special thanks to [Nimbly](http://gonimbly.com) for creating angular-formly.
 This library is maintained (with love) by me, [Kent C. Dodds](https://twitter.com/kentcdodds).
 Thanks to all [contributors](https://github.com/formly-js/angular-formly/graphs/contributors)!
-
 
