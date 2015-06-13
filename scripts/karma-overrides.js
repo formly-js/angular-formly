@@ -7,7 +7,6 @@ module.exports = function(defaultConfig) {
     here('./node_modules/angular/angular.js'),
     here('./node_modules/angular-mocks/angular-mocks.js')
   ], defaultConfig.files);
-  console.log('stuff', defaultConfig.webpack.module.loaders);
   return defaultConfig;
 };
 
