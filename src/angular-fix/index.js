@@ -2,6 +2,7 @@
 // so we get it from window in this case.
 var angular = require('angular');
 
+/* istanbul ignore next */
 if (!angular.version) {
   angular = window.angular;
 }

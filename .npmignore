@@ -1,12 +1,1 @@
-.idea
-node_modules
-coverage
-local-examples
-.editorconfig
-.gitignore
-.travis.yml
-CONTRIBUTING.md
-karma.conf.js
-webpack.config.js
-other
-.test
+node_modules/kcd-common-tools/shared/link/npmignore

@@ -1,10 +1,1 @@
-# generic (system) files/extensions we don't want
-*.log
-*.iml
-*.DS_Store
-
-node_modules
-
-coverage
-.test
-.idea
+node_modules/kcd-common-tools/shared/link/gitignore
