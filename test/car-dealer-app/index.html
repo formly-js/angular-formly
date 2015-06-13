@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Car Dealer App</title>
+</head>
+<body ng-app="app" ng-controller="MainCtrl as vm">
+<form name="vm.form" ng-submit="vm.onSubmit()">
+  <formly-form model="vm.model" fields="vm.fields" form="vm.form">
+    <button type="submit" ng-disabled="vm.form.$invalid">Submit</button>
+  </formly-form>
+</form>
+
+<div ng-if="vm.form.$submitted" class="results">
+  <pre>{{vm.model | json}}</pre>
+</div>
+
+<script src="../../node_modules/api-check/dist/api-check.js"></script>
+<script src="../../node_modules/angular/angular.js"></script>
+<script src="../../dist/formly.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
