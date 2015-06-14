@@ -13,7 +13,6 @@
   },
   "main": "dist/formly.js",
   "license": "MIT",
-  "karma": "./node_modules/kcd-common-tools/shared/karma.conf.js",
   "webpack": "./node_modules/kcd-common-tools/shared/webpack.config.js",
   "scripts": {
     "build:dist": "NODE_ENV=development webpack --config $npm_package_webpack --progress --colors",
@@ -31,7 +30,7 @@
     "only-check": "node node_modules/kcd-common-tools/shared/scripts/only-check.js",
     "console-check": "node node_modules/kcd-common-tools/shared/scripts/console-check.js",
     "code-checks": "npm run only-check && npm run console-check",
-    "release": "git push && npm publish && git push --tags"
+    "release": "npm run build && with-package git commit -am pkg.version && with-package git tag pkg.version && git push && npm publish && git push --tags"
   },
   "config": {
     "ghooks": {
@@ -79,7 +78,8 @@
     "sinon": "1.15.3",
     "sinon-chai": "2.8.0",
     "uglify-loader": "1.2.0",
-    "webpack": "1.9.10"
+    "webpack": "1.9.10",
+    "with-package": "0.1.0"
   },
   "jspm": {
     "peerDependencies": {
