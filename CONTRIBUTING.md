@@ -53,5 +53,6 @@ Please do the following:
 
 ### What do you need help with?
 
+* Tests are always helpful! [Watch video](https://youtu.be/CQ766-miGQ4?list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH)
 * Any of the issues in GitHub, let us know if you have some time to fix one. Especially those labeled [PR Please!](https://github.com/formly-js/angular-formly/labels/PRs%20please%21)
-* Examples, examples, examples! The website is driven by examples. Please follow the instructions in [this file](https://github.com/formly-js/angular-formly/edit/master/demo/app/states/root/components/data/examples.js) for what you need to do!
+* Examples, examples, examples! The website is driven by examples. [Watch video](https://www.youtube.com/watch?v=4dsXXTPET4A&list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH&index=3)
