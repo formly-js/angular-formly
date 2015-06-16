@@ -1,4 +1,4 @@
-// angular-formly version 6.14.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 6.14.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -56,84 +56,128 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
-	var index = _interopRequire(__webpack_require__(1));
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	module.exports = index;
+	var _indexCommon = __webpack_require__(1);
+
+	var _indexCommon2 = _interopRequireDefault(_indexCommon);
+
+	exports['default'] = _indexCommon2['default'];
+	module.exports = exports['default'];
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
-	var angular = _interopRequire(__webpack_require__(3));
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var formlyApiCheck = _interopRequire(__webpack_require__(5));
+	var _angularFix = __webpack_require__(3);
 
-	var formlyErrorAndWarningsUrlPrefix = _interopRequire(__webpack_require__(7));
+	var _angularFix2 = _interopRequireDefault(_angularFix);
 
-	var formlyUsability = _interopRequire(__webpack_require__(8));
+	var _providersFormlyApiCheck = __webpack_require__(5);
 
-	var formlyConfig = _interopRequire(__webpack_require__(9));
+	var _providersFormlyApiCheck2 = _interopRequireDefault(_providersFormlyApiCheck);
 
-	var formlyValidationMessages = _interopRequire(__webpack_require__(11));
+	var _otherDocsBaseUrl = __webpack_require__(7);
 
-	var formlyUtil = _interopRequire(__webpack_require__(12));
+	var _otherDocsBaseUrl2 = _interopRequireDefault(_otherDocsBaseUrl);
 
-	var formlyWarn = _interopRequire(__webpack_require__(2));
+	var _providersFormlyUsability = __webpack_require__(8);
 
-	var formlyCustomValidation = _interopRequire(__webpack_require__(13));
+	var _providersFormlyUsability2 = _interopRequireDefault(_providersFormlyUsability);
 
-	var formlyField = _interopRequire(__webpack_require__(14));
+	var _providersFormlyConfig = __webpack_require__(9);
 
-	var formlyFocus = _interopRequire(__webpack_require__(15));
+	var _providersFormlyConfig2 = _interopRequireDefault(_providersFormlyConfig);
 
-	var formlyForm = _interopRequire(__webpack_require__(16));
+	var _providersFormlyValidationMessages = __webpack_require__(11);
 
-	var formlyNgModelAttrsManipulator = _interopRequire(__webpack_require__(17));
+	var _providersFormlyValidationMessages2 = _interopRequireDefault(_providersFormlyValidationMessages);
 
-	var formlyCustomTags = _interopRequire(__webpack_require__(18));
+	var _servicesFormlyUtil = __webpack_require__(12);
 
-	var ngModuleName = "formly";
+	var _servicesFormlyUtil2 = _interopRequireDefault(_servicesFormlyUtil);
 
-	module.exports = ngModuleName;
+	var _servicesFormlyWarn = __webpack_require__(2);
 
-	var ngModule = angular.module(ngModuleName, []);
+	var _servicesFormlyWarn2 = _interopRequireDefault(_servicesFormlyWarn);
 
-	ngModule.constant("formlyApiCheck", formlyApiCheck);
-	ngModule.constant("formlyErrorAndWarningsUrlPrefix", formlyErrorAndWarningsUrlPrefix);
-	ngModule.constant("formlyVersion", ("6.14.0")); // <-- webpack variable
+	var _directivesFormlyCustomValidation = __webpack_require__(13);
 
-	ngModule.provider("formlyUsability", formlyUsability);
-	ngModule.provider("formlyConfig", formlyConfig);
+	var _directivesFormlyCustomValidation2 = _interopRequireDefault(_directivesFormlyCustomValidation);
 
-	ngModule.factory("formlyValidationMessages", formlyValidationMessages);
-	ngModule.factory("formlyUtil", formlyUtil);
-	ngModule.factory("formlyWarn", formlyWarn);
+	var _directivesFormlyField = __webpack_require__(14);
 
-	ngModule.directive("formlyCustomValidation", formlyCustomValidation);
-	ngModule.directive("formlyField", formlyField);
-	ngModule.directive("formlyFocus", formlyFocus);
-	ngModule.directive("formlyForm", formlyForm);
+	var _directivesFormlyField2 = _interopRequireDefault(_directivesFormlyField);
 
-	ngModule.run(formlyNgModelAttrsManipulator);
-	ngModule.run(formlyCustomTags);
+	var _directivesFormlyFocus = __webpack_require__(15);
+
+	var _directivesFormlyFocus2 = _interopRequireDefault(_directivesFormlyFocus);
+
+	var _directivesFormlyForm = __webpack_require__(16);
+
+	var _directivesFormlyForm2 = _interopRequireDefault(_directivesFormlyForm);
+
+	var _runFormlyNgModelAttrsManipulator = __webpack_require__(17);
+
+	var _runFormlyNgModelAttrsManipulator2 = _interopRequireDefault(_runFormlyNgModelAttrsManipulator);
+
+	var _runFormlyCustomTags = __webpack_require__(18);
+
+	var _runFormlyCustomTags2 = _interopRequireDefault(_runFormlyCustomTags);
+
+	var ngModuleName = 'formly';
+
+	exports['default'] = ngModuleName;
+
+	var ngModule = _angularFix2['default'].module(ngModuleName, []);
+
+	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
+	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
+	ngModule.constant('formlyVersion', ("6.14.1")); // <-- webpack variable
+
+	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
+	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
+
+	ngModule.factory('formlyValidationMessages', _providersFormlyValidationMessages2['default']);
+	ngModule.factory('formlyUtil', _servicesFormlyUtil2['default']);
+	ngModule.factory('formlyWarn', _servicesFormlyWarn2['default']);
+
+	ngModule.directive('formlyCustomValidation', _directivesFormlyCustomValidation2['default']);
+	ngModule.directive('formlyField', _directivesFormlyField2['default']);
+	ngModule.directive('formlyFocus', _directivesFormlyFocus2['default']);
+	ngModule.directive('formlyForm', _directivesFormlyForm2['default']);
+
+	ngModule.run(_runFormlyNgModelAttrsManipulator2['default']);
+	ngModule.run(_runFormlyCustomTags2['default']);
+	module.exports = exports['default'];
 
 /***/ },
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var _toConsumableArray = function (arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } };
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
-	module.exports = formlyWarn;
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
+	exports['default'] = formlyWarn;
 
 	// @ngInject
 	function formlyWarn(formlyConfig, formlyErrorAndWarningsUrlPrefix, $log) {
@@ -141,13 +185,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!formlyConfig.disableWarnings) {
 	      var args = Array.prototype.slice.call(arguments);
 	      var warnInfoSlug = args.shift();
-	      args.unshift("Formly Warning:");
-	      args.push("" + formlyErrorAndWarningsUrlPrefix + "" + warnInfoSlug);
+	      args.unshift('Formly Warning:');
+	      args.push('' + formlyErrorAndWarningsUrlPrefix + '' + warnInfoSlug);
 	      $log.warn.apply($log, _toConsumableArray(args));
 	    }
 	  };
 	}
 	formlyWarn.$inject = ["formlyConfig", "formlyErrorAndWarningsUrlPrefix", "$log"];
+	module.exports = exports['default'];
 
 /***/ },
 /* 3 */
@@ -155,14 +200,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// some versions of angular don't export the angular module properly,
 	// so we get it from window in this case.
-	"use strict";
+	'use strict';
 
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 	var angular = __webpack_require__(4);
 
+	/* istanbul ignore next */
 	if (!angular.version) {
 	  angular = window.angular;
 	}
-	module.exports = angular;
+	exports['default'] = angular;
+	module.exports = exports['default'];
 
 /***/ },
 /* 4 */
@@ -174,26 +224,34 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
-	var angular = _interopRequire(__webpack_require__(3));
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var apiCheckFactory = _interopRequire(__webpack_require__(6));
+	var _angularFix = __webpack_require__(3);
 
-	var apiCheck = apiCheckFactory({
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	var _apiCheck = __webpack_require__(6);
+
+	var _apiCheck2 = _interopRequireDefault(_apiCheck);
+
+	var apiCheck = (0, _apiCheck2['default'])({
 	  output: {
-	    prefix: "angular-formly:",
+	    prefix: 'angular-formly:',
 	    docsBaseUrl: __webpack_require__(7)
 	  }
 	});
 
 	function shapeRequiredIfNot(otherProps, propChecker) {
-	  if (!angular.isArray(otherProps)) {
+	  if (!_angularFix2['default'].isArray(otherProps)) {
 	    otherProps = [otherProps];
 	  }
-	  var type = "specified if these are not specified: `" + otherProps.join(", ") + "` (otherwise it's optional)";
+	  var type = 'specified if these are not specified: `' + otherProps.join(', ') + '` (otherwise it\'s optional)';
 	  function shapeRequiredIfNotDefinition(prop, propName, location, obj) {
 	    var propExists = obj && obj.hasOwnProperty(propName);
 	    var otherPropsExist = otherProps.some(function (otherProp) {
@@ -218,18 +276,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var apiCheckProperty = apiCheck.objectOf(apiCheck.func);
 
-	var apiCheckInstanceProperty = apiCheck.shape.onlyIf("apiCheck", apiCheck.func.withProperties({
+	var apiCheckInstanceProperty = apiCheck.shape.onlyIf('apiCheck', apiCheck.func.withProperties({
 	  warn: apiCheck.func,
-	  "throw": apiCheck.func,
+	  'throw': apiCheck.func,
 	  shape: apiCheck.func
 	}));
 
-	var apiCheckFunctionProperty = apiCheck.shape.onlyIf("apiCheck", apiCheck.oneOf(["throw", "warn"]));
+	var apiCheckFunctionProperty = apiCheck.shape.onlyIf('apiCheck', apiCheck.oneOf(['throw', 'warn']));
 
 	var formlyWrapperType = apiCheck.shape({
-	  name: shapeRequiredIfNot("types", apiCheck.string).optional,
-	  template: apiCheck.shape.ifNot("templateUrl", apiCheck.string).optional,
-	  templateUrl: apiCheck.shape.ifNot("template", apiCheck.string).optional,
+	  name: shapeRequiredIfNot('types', apiCheck.string).optional,
+	  template: apiCheck.shape.ifNot('templateUrl', apiCheck.string).optional,
+	  templateUrl: apiCheck.shape.ifNot('template', apiCheck.string).optional,
 	  types: apiCheck.typeOrArrayOf(apiCheck.string).optional,
 	  overwriteOk: apiCheck.bool.optional,
 	  validateOptions: apiCheck.func.optional,
@@ -253,9 +311,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var fieldOptionsApiShape = {
 	  $$hashKey: apiCheck.any.optional,
-	  type: apiCheck.shape.ifNot(["template", "templateUrl"], apiCheck.string).optional,
-	  template: apiCheck.shape.ifNot(["type", "templateUrl"], apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
-	  templateUrl: apiCheck.shape.ifNot(["type", "template"], apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
+	  type: apiCheck.shape.ifNot(['template', 'templateUrl'], apiCheck.string).optional,
+	  template: apiCheck.shape.ifNot(['type', 'templateUrl'], apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
+	  templateUrl: apiCheck.shape.ifNot(['type', 'template'], apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
 	  key: apiCheck.oneOfType([apiCheck.string, apiCheck.number]).optional,
 	  model: modelChecker.optional,
 	  className: apiCheck.string.optional,
@@ -284,10 +342,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  hide: apiCheck.bool.optional,
 	  hideExpression: formlyExpression.optional,
 	  ngModelAttrs: apiCheck.objectOf(apiCheck.shape({
-	    expression: apiCheck.shape.ifNot(["value", "attribute", "bound"], apiCheck.any).optional,
-	    value: apiCheck.shape.ifNot("expression", apiCheck.any).optional,
-	    attribute: apiCheck.shape.ifNot("expression", apiCheck.any).optional,
-	    bound: apiCheck.shape.ifNot("expression", apiCheck.any).optional
+	    expression: apiCheck.shape.ifNot(['value', 'attribute', 'bound'], apiCheck.any).optional,
+	    value: apiCheck.shape.ifNot('expression', apiCheck.any).optional,
+	    attribute: apiCheck.shape.ifNot('expression', apiCheck.any).optional,
+	    bound: apiCheck.shape.ifNot('expression', apiCheck.any).optional
 	  }).strict).optional,
 	  elementAttributes: apiCheck.objectOf(apiCheck.string).optional,
 	  optionsTypes: apiCheck.typeOrArrayOf(apiCheck.string).optional,
@@ -298,7 +356,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    messages: apiCheck.objectOf(formlyExpression).optional,
 	    errorExistsAndShouldBeVisible: apiCheck.bool.optional
 	  }).optional,
-	  formControl: apiCheck.object.optional,
+	  formControl: apiCheck.typeOrArrayOf(apiCheck.object).optional,
 	  value: apiCheck.func.optional,
 	  runExpressions: apiCheck.func.optional,
 	  templateManipulators: templateManipulators.optional,
@@ -335,17 +393,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  elementAttributes: apiCheck.objectOf(apiCheck.string).optional
 	}).strict;
 
-	var typeOptionsDefaultOptions = angular.copy(fieldOptionsApiShape);
+	var typeOptionsDefaultOptions = _angularFix2['default'].copy(fieldOptionsApiShape);
 	typeOptionsDefaultOptions.key = apiCheck.string.optional;
 
 	var formlyTypeOptions = apiCheck.shape({
 	  name: apiCheck.string,
-	  template: apiCheck.shape.ifNot("templateUrl", apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
-	  templateUrl: apiCheck.shape.ifNot("template", apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
+	  template: apiCheck.shape.ifNot('templateUrl', apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
+	  templateUrl: apiCheck.shape.ifNot('template', apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
 	  controller: apiCheck.oneOfType([apiCheck.func, apiCheck.string, apiCheck.array]).optional,
 	  link: apiCheck.func.optional,
 	  defaultOptions: apiCheck.oneOfType([apiCheck.func, apiCheck.shape(typeOptionsDefaultOptions)]).optional,
-	  "extends": apiCheck.string.optional,
+	  'extends': apiCheck.string.optional,
 	  wrapper: specifyWrapperType.optional,
 	  data: apiCheck.object.optional,
 	  validateOptions: apiCheck.func.optional,
@@ -356,11 +414,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  overwriteOk: apiCheck.bool.optional
 	}).strict;
 
-	angular.extend(apiCheck, {
+	_angularFix2['default'].extend(apiCheck, {
 	  formlyTypeOptions: formlyTypeOptions, formlyFieldOptions: formlyFieldOptions, formlyExpression: formlyExpression, formlyWrapperType: formlyWrapperType, fieldGroup: fieldGroup, formOptionsApi: formOptionsApi
 	});
 
-	module.exports = apiCheck;
+	exports['default'] = apiCheck;
+	module.exports = exports['default'];
 
 /***/ },
 /* 6 */
@@ -374,31 +433,41 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	module.exports = "https://github.com/formly-js/angular-formly/blob/" + ("6.14.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.14.1") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = exports["default"];
 
 /***/ },
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
-	var angular = _interopRequire(__webpack_require__(3));
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	module.exports = formlyUsability;
+	var _angularFix = __webpack_require__(3);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	exports['default'] = formlyUsability;
 
 	// @ngInject
 	function formlyUsability(formlyApiCheck, formlyErrorAndWarningsUrlPrefix) {
 	  var _this = this;
 
-	  angular.extend(this, {
+	  _angularFix2['default'].extend(this, {
 	    getFormlyError: getFormlyError,
 	    getFieldError: getFieldError,
 	    checkWrapper: checkWrapper,
 	    checkWrapperTemplate: checkWrapperTemplate,
 	    getErrorMessage: getErrorMessage,
-	    $get: function () {
+	    $get: function $get() {
 	      return _this;
 	    }
 	  });
@@ -409,7 +478,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      message = errorInfoSlug;
 	      errorInfoSlug = null;
 	    }
-	    return new Error(getErrorMessage(errorInfoSlug, message) + (" Field definition: " + angular.toJson(field)));
+	    return new Error(getErrorMessage(errorInfoSlug, message) + (' Field definition: ' + _angularFix2['default'].toJson(field)));
 	  }
 
 	  function getFormlyError(errorInfoSlug, message) {
@@ -421,42 +490,51 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function getErrorMessage(errorInfoSlug, message) {
-	    var url = "";
+	    var url = '';
 	    if (errorInfoSlug !== null) {
-	      url = "" + formlyErrorAndWarningsUrlPrefix + "" + errorInfoSlug;
+	      url = '' + formlyErrorAndWarningsUrlPrefix + '' + errorInfoSlug;
 	    }
-	    return "Formly Error: " + message + ". " + url;
+	    return 'Formly Error: ' + message + '. ' + url;
 	  }
 
 	  function checkWrapper(wrapper) {
-	    formlyApiCheck["throw"](formlyApiCheck.formlyWrapperType, wrapper, {
-	      prefix: "formlyConfig.setWrapper",
-	      urlSuffix: "setwrapper-validation-failed"
+	    formlyApiCheck['throw'](formlyApiCheck.formlyWrapperType, wrapper, {
+	      prefix: 'formlyConfig.setWrapper',
+	      urlSuffix: 'setwrapper-validation-failed'
 	    });
 	  }
 
 	  function checkWrapperTemplate(template, additionalInfo) {
-	    var formlyTransclude = "<formly-transclude></formly-transclude>";
+	    var formlyTransclude = '<formly-transclude></formly-transclude>';
 	    if (template.indexOf(formlyTransclude) === -1) {
-	      throw getFormlyError("Template wrapper templates must use \"" + formlyTransclude + "\" somewhere in them. " + ("This one does not have \"<formly-transclude></formly-transclude>\" in it: " + template) + "\n" + ("Additional information: " + JSON.stringify(additionalInfo)));
+	      throw getFormlyError('Template wrapper templates must use "' + formlyTransclude + '" somewhere in them. ' + ('This one does not have "<formly-transclude></formly-transclude>" in it: ' + template) + '\n' + ('Additional information: ' + JSON.stringify(additionalInfo)));
 	    }
 	  }
 	}
 	formlyUsability.$inject = ["formlyApiCheck", "formlyErrorAndWarningsUrlPrefix"];
+	module.exports = exports['default'];
 
 /***/ },
 /* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
-	var angular = _interopRequire(__webpack_require__(3));
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var utils = _interopRequire(__webpack_require__(10));
+	var _angularFix = __webpack_require__(3);
 
-	module.exports = formlyConfig;
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	var _otherUtils = __webpack_require__(10);
+
+	var _otherUtils2 = _interopRequireDefault(_otherUtils);
+
+	exports['default'] = formlyConfig;
 
 	// @ngInject
 	function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
@@ -464,11 +542,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  var typeMap = {};
 	  var templateWrappersMap = {};
-	  var defaultWrapperName = "default";
+	  var defaultWrapperName = 'default';
 	  var _this = this;
 	  var getError = formlyUsabilityProvider.getFormlyError;
 
-	  angular.extend(this, {
+	  _angularFix2['default'].extend(this, {
 	    setType: setType,
 	    getType: getType,
 	    setWrapper: setWrapper,
@@ -481,51 +559,51 @@ return /******/ (function(modules) { // webpackBootstrap
 	      disableNgModelAttrsManipulator: false,
 	      ngModelAttrsManipulatorPreferUnbound: false,
 	      removeChromeAutoComplete: false,
-	      defaultHideDirective: "ng-if",
+	      defaultHideDirective: 'ng-if',
 	      getFieldId: null
 	    },
 	    templateManipulators: {
 	      preWrapper: [],
 	      postWrapper: []
 	    },
-	    $get: function () {
+	    $get: function $get() {
 	      return _this2;
 	    }
 	  });
 
 	  function setType(options) {
-	    if (angular.isArray(options)) {
-	      angular.forEach(options, setType);
-	    } else if (angular.isObject(options)) {
+	    if (_angularFix2['default'].isArray(options)) {
+	      _angularFix2['default'].forEach(options, setType);
+	    } else if (_angularFix2['default'].isObject(options)) {
 	      checkType(options);
-	      if (options["extends"]) {
+	      if (options['extends']) {
 	        extendTypeOptions(options);
 	      }
 	      typeMap[options.name] = options;
 	    } else {
-	      throw getError("You must provide an object or array for setType. You provided: " + JSON.stringify(arguments));
+	      throw getError('You must provide an object or array for setType. You provided: ' + JSON.stringify(arguments));
 	    }
 	  }
 
 	  function checkType(options) {
-	    formlyApiCheck["throw"](formlyApiCheck.formlyTypeOptions, options, {
-	      prefix: "formlyConfig.setType",
-	      url: "settype-validation-failed"
+	    formlyApiCheck['throw'](formlyApiCheck.formlyTypeOptions, options, {
+	      prefix: 'formlyConfig.setType',
+	      url: 'settype-validation-failed'
 	    });
 	    if (!options.overwriteOk) {
-	      checkOverwrite(options.name, typeMap, options, "types");
+	      checkOverwrite(options.name, typeMap, options, 'types');
 	    } else {
 	      options.overwriteOk = undefined;
 	    }
 	  }
 
 	  function extendTypeOptions(options) {
-	    var extendsType = getType(options["extends"], true, options);
+	    var extendsType = getType(options['extends'], true, options);
 	    extendTypeControllerFunction(options, extendsType);
 	    extendTypeLinkFunction(options, extendsType);
 	    extendTypeValidateOptionsFunction(options, extendsType);
 	    extendTypeDefaultOptions(options, extendsType);
-	    utils.reverseDeepMerge(options, extendsType);
+	    _otherUtils2['default'].reverseDeepMerge(options, extendsType);
 	    extendTemplate(options, extendsType);
 	  }
 
@@ -539,16 +617,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function extendTypeControllerFunction(options, extendsType) {
 	    var extendsCtrl = extendsType.controller;
-	    if (!angular.isDefined(extendsCtrl)) {
+	    if (!_angularFix2['default'].isDefined(extendsCtrl)) {
 	      return;
 	    }
 	    var optionsCtrl = options.controller;
-	    if (angular.isDefined(optionsCtrl)) {
+	    if (_angularFix2['default'].isDefined(optionsCtrl)) {
 	      options.controller = function ($scope, $controller) {
 	        $controller(extendsCtrl, { $scope: $scope });
 	        $controller(optionsCtrl, { $scope: $scope });
 	      };
-	      options.controller.$inject = ["$scope", "$controller"];
+	      options.controller.$inject = ['$scope', '$controller'];
 	    } else {
 	      options.controller = extendsCtrl;
 	    }
@@ -556,11 +634,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function extendTypeLinkFunction(options, extendsType) {
 	    var extendsFn = extendsType.link;
-	    if (!angular.isDefined(extendsFn)) {
+	    if (!_angularFix2['default'].isDefined(extendsFn)) {
 	      return;
 	    }
 	    var optionsFn = options.link;
-	    if (angular.isDefined(optionsFn)) {
+	    if (_angularFix2['default'].isDefined(optionsFn)) {
 	      options.link = function () {
 	        extendsFn.apply(undefined, arguments);
 	        optionsFn.apply(undefined, arguments);
@@ -572,21 +650,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function extendTypeValidateOptionsFunction(options, extendsType) {
 	    var extendsFn = extendsType.validateOptions;
-	    if (!angular.isDefined(extendsFn)) {
+	    if (!_angularFix2['default'].isDefined(extendsFn)) {
 	      return;
 	    }
 	    var optionsFn = options.validateOptions;
 	    var originalDefaultOptions = options.defaultOptions;
-	    if (angular.isDefined(optionsFn)) {
+	    if (_angularFix2['default'].isDefined(optionsFn)) {
 	      options.validateOptions = function (opts) {
 	        optionsFn(opts);
-	        var mergedOptions = angular.copy(opts);
+	        var mergedOptions = _angularFix2['default'].copy(opts);
 	        var defaultOptions = originalDefaultOptions;
 	        if (defaultOptions) {
-	          if (angular.isFunction(defaultOptions)) {
+	          if (_angularFix2['default'].isFunction(defaultOptions)) {
 	            defaultOptions = defaultOptions(mergedOptions);
 	          }
-	          utils.reverseDeepMerge(mergedOptions, defaultOptions);
+	          _otherUtils2['default'].reverseDeepMerge(mergedOptions, defaultOptions);
 	        }
 	        extendsFn(mergedOptions);
 	      };
@@ -597,28 +675,28 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function extendTypeDefaultOptions(options, extendsType) {
 	    var extendsDO = extendsType.defaultOptions;
-	    if (!angular.isDefined(extendsDO)) {
+	    if (!_angularFix2['default'].isDefined(extendsDO)) {
 	      return;
 	    }
 	    var optionsDO = options.defaultOptions;
-	    var optionsDOIsFn = angular.isFunction(optionsDO);
-	    var extendsDOIsFn = angular.isFunction(extendsDO);
+	    var optionsDOIsFn = _angularFix2['default'].isFunction(optionsDO);
+	    var extendsDOIsFn = _angularFix2['default'].isFunction(extendsDO);
 	    if (extendsDOIsFn) {
 	      options.defaultOptions = function defaultOptions(opts) {
 	        var extendsDefaultOptions = extendsDO(opts);
 	        var mergedDefaultOptions = {};
-	        utils.reverseDeepMerge(mergedDefaultOptions, opts, extendsDefaultOptions);
+	        _otherUtils2['default'].reverseDeepMerge(mergedDefaultOptions, opts, extendsDefaultOptions);
 	        var extenderOptionsDefaultOptions = optionsDO;
 	        if (optionsDOIsFn) {
 	          extenderOptionsDefaultOptions = extenderOptionsDefaultOptions(mergedDefaultOptions);
 	        }
-	        utils.reverseDeepMerge(extendsDefaultOptions, extenderOptionsDefaultOptions);
+	        _otherUtils2['default'].reverseDeepMerge(extendsDefaultOptions, extenderOptionsDefaultOptions);
 	        return extendsDefaultOptions;
 	      };
 	    } else if (optionsDOIsFn) {
 	      options.defaultOptions = function defaultOptions(opts) {
 	        var newDefaultOptions = {};
-	        utils.reverseDeepMerge(newDefaultOptions, opts, extendsDO);
+	        _otherUtils2['default'].reverseDeepMerge(newDefaultOptions, opts, extendsDO);
 	        return optionsDO(newDefaultOptions);
 	      };
 	    }
@@ -630,7 +708,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    var type = typeMap[name];
 	    if (!type && throwError === true) {
-	      throw getError("There is no type by the name of \"" + name + "\": " + JSON.stringify(errorContext));
+	      throw getError('There is no type by the name of "' + name + '": ' + JSON.stringify(errorContext));
 	    } else {
 	      return type;
 	    }
@@ -640,21 +718,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _again = true;
 
 	    _function: while (_again) {
-	      _again = false;
 	      var options = _x,
 	          name = _x2;
+	      _again = false;
 
-	      if (angular.isArray(options)) {
+	      if (_angularFix2['default'].isArray(options)) {
 	        return options.map(function (wrapperOptions) {
 	          return setWrapper(wrapperOptions);
 	        });
-	      } else if (angular.isObject(options)) {
+	      } else if (_angularFix2['default'].isObject(options)) {
 	        options.types = getOptionsTypes(options);
 	        options.name = getOptionsName(options, name);
 	        checkWrapperAPI(options);
 	        templateWrappersMap[options.name] = options;
 	        return options;
-	      } else if (angular.isString(options)) {
+	      } else if (_angularFix2['default'].isString(options)) {
 	        _x = {
 	          template: options,
 	          name: name
@@ -666,10 +744,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function getOptionsTypes(options) {
-	    if (angular.isString(options.types)) {
+	    if (_angularFix2['default'].isString(options.types)) {
 	      return [options.types];
 	    }
-	    if (!angular.isDefined(options.types)) {
+	    if (!_angularFix2['default'].isDefined(options.types)) {
 	      return [];
 	    } else {
 	      return options.types;
@@ -677,7 +755,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function getOptionsName(options, name) {
-	    return options.name || name || options.types.join(" ") || defaultWrapperName;
+	    return options.name || name || options.types.join(' ') || defaultWrapperName;
 	  }
 
 	  function checkWrapperAPI(options) {
@@ -686,7 +764,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      formlyUsabilityProvider.checkWrapperTemplate(options.template, options);
 	    }
 	    if (!options.overwriteOk) {
-	      checkOverwrite(options.name, templateWrappersMap, options, "templateWrappers");
+	      checkOverwrite(options.name, templateWrappersMap, options, 'templateWrappers');
 	    } else {
 	      delete options.overwriteOk;
 	    }
@@ -694,15 +772,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function checkWrapperTypes(options) {
-	    var shouldThrow = !angular.isArray(options.types) || !options.types.every(angular.isString);
+	    var shouldThrow = !_angularFix2['default'].isArray(options.types) || !options.types.every(_angularFix2['default'].isString);
 	    if (shouldThrow) {
-	      throw getError("Attempted to create a template wrapper with types that is not a string or an array of strings");
+	      throw getError('Attempted to create a template wrapper with types that is not a string or an array of strings');
 	    }
 	  }
 
 	  function checkOverwrite(property, object, newValue, objectName) {
 	    if (object.hasOwnProperty(property)) {
-	      warn(["Attempting to overwrite " + property + " on " + objectName + " which is currently", "" + JSON.stringify(object[property]) + " with " + JSON.stringify(newValue), "To supress this warning, specify the property \"overwriteOk: true\""].join(" "));
+	      warn(['Attempting to overwrite ' + property + ' on ' + objectName + ' which is currently', '' + JSON.stringify(object[property]) + ' with ' + JSON.stringify(newValue), 'To supress this warning, specify the property "overwriteOk: true"'].join(' '));
 	    }
 	  }
 
@@ -734,7 +812,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!wrappers) {
 	      return undefined;
 	    }
-	    if (!angular.isArray(wrappers)) {
+	    if (!_angularFix2['default'].isArray(wrappers)) {
 	      return removeWrapperByName(wrappers.name);
 	    } else {
 	      wrappers.forEach(function (wrapper) {
@@ -752,24 +830,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 	formlyConfig.$inject = ["formlyUsabilityProvider", "formlyApiCheck"];
+	module.exports = exports['default'];
 
 /***/ },
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
-	var angular = _interopRequire(__webpack_require__(3));
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	module.exports = { formlyEval: formlyEval, getFieldId: getFieldId, reverseDeepMerge: reverseDeepMerge, findByNodeName: findByNodeName, arrayify: arrayify, extendFunction: extendFunction };
+	var _angularFix = __webpack_require__(3);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	exports['default'] = { formlyEval: formlyEval, getFieldId: getFieldId, reverseDeepMerge: reverseDeepMerge, findByNodeName: findByNodeName, arrayify: arrayify, extendFunction: extendFunction };
 
 	function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
-	  if (angular.isFunction(expression)) {
+	  if (_angularFix2['default'].isFunction(expression)) {
 	    return expression($viewValue, $modelValue, scope, extraLocals);
 	  } else {
-	    return scope.$eval(expression, angular.extend({ $viewValue: $viewValue, $modelValue: $modelValue }, extraLocals));
+	    return scope.$eval(expression, _angularFix2['default'].extend({ $viewValue: $viewValue, $modelValue: $modelValue }, extraLocals));
 	  }
 	}
 
@@ -779,22 +864,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  var type = options.type;
 	  if (!type && options.template) {
-	    type = "template";
+	    type = 'template';
 	  } else if (!type && options.templateUrl) {
-	    type = "templateUrl";
+	    type = 'templateUrl';
 	  }
 
-	  return [formId, type, options.key, index].join("_");
+	  return [formId, type, options.key, index].join('_');
 	}
 
 	function reverseDeepMerge(dest) {
-	  angular.forEach(arguments, function (src, index) {
+	  _angularFix2['default'].forEach(arguments, function (src, index) {
 	    if (!index) {
 	      return;
 	    }
-	    angular.forEach(src, function (val, prop) {
-	      if (!angular.isDefined(dest[prop])) {
-	        dest[prop] = angular.copy(val);
+	    _angularFix2['default'].forEach(src, function (val, prop) {
+	      if (!_angularFix2['default'].isDefined(dest[prop])) {
+	        dest[prop] = _angularFix2['default'].copy(val);
 	      } else if (objAndSameType(dest[prop], val)) {
 	        reverseDeepMerge(dest[prop], val);
 	      }
@@ -803,17 +888,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function objAndSameType(obj1, obj2) {
-	  return angular.isObject(obj1) && angular.isObject(obj2) && Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2);
+	  return _angularFix2['default'].isObject(obj1) && _angularFix2['default'].isObject(obj2) && Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2);
 	}
 
 	// recurse down a node tree to find a node with matching nodeName, for custom tags jQuery.find doesn't work in IE8
 	function findByNodeName(el, nodeName) {
 	  if (!el.prop) {
 	    // not a jQuery or jqLite object -> wrap it
-	    el = angular.element(el);
+	    el = _angularFix2['default'].element(el);
 	  }
 
-	  if (el.prop("nodeName") === nodeName.toUpperCase()) {
+	  if (el.prop('nodeName') === nodeName.toUpperCase()) {
 	    return el;
 	  }
 
@@ -827,7 +912,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function arrayify(obj) {
-	  if (obj && !angular.isArray(obj)) {
+	  if (obj && !_angularFix2['default'].isArray(obj)) {
 	    obj = [obj];
 	  } else if (!obj) {
 	    obj = [];
@@ -847,6 +932,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  };
 	}
+	module.exports = exports['default'];
 
 /***/ },
 /* 11 */
@@ -854,7 +940,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	module.exports = formlyValidationMessages;
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports["default"] = formlyValidationMessages;
 
 	// @ngInject
 	function formlyValidationMessages() {
@@ -887,63 +976,77 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  }
 	}
+	module.exports = exports["default"];
 
 /***/ },
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
-	var utils = _interopRequire(__webpack_require__(10));
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	module.exports = formlyUtil;
+	var _otherUtils = __webpack_require__(10);
+
+	var _otherUtils2 = _interopRequireDefault(_otherUtils);
+
+	exports['default'] = formlyUtil;
 
 	// @ngInject
 	function formlyUtil() {
-	  return utils;
+	  return _otherUtils2['default'];
 	}
+	module.exports = exports['default'];
 
 /***/ },
 /* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
-	var angular = _interopRequire(__webpack_require__(3));
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	module.exports = formlyCustomValidation;
+	var _angularFix = __webpack_require__(3);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	exports['default'] = formlyCustomValidation;
 
 	// @ngInject
 	function formlyCustomValidation(formlyUtil, $q) {
 	  return {
-	    restrict: "A",
-	    require: "ngModel",
+	    restrict: 'A',
+	    require: 'ngModel',
 	    link: function formlyCustomValidationLink(scope, el, attrs, ctrl) {
 	      var opts = scope.options;
 	      if (opts.validators) {
 	        checkValidators(opts.validators);
 	      }
 	      opts.validation.messages = opts.validation.messages || {};
-	      angular.forEach(opts.validation.messages, function (message, key) {
+	      _angularFix2['default'].forEach(opts.validation.messages, function (message, key) {
 	        opts.validation.messages[key] = function () {
 	          return formlyUtil.formlyEval(scope, message, ctrl.$modelValue, ctrl.$viewValue);
 	        };
 	      });
 
-	      var useNewValidatorsApi = ctrl.hasOwnProperty("$validators") && !attrs.hasOwnProperty("useParsers");
-	      angular.forEach(opts.validators, function addValidatorToPipeline(validator, name) {
+	      var useNewValidatorsApi = ctrl.hasOwnProperty('$validators') && !attrs.hasOwnProperty('useParsers');
+	      _angularFix2['default'].forEach(opts.validators, function addValidatorToPipeline(validator, name) {
 	        var message = validator.message;
 	        if (message) {
 	          opts.validation.messages[name] = function () {
 	            return formlyUtil.formlyEval(scope, message, ctrl.$modelValue, ctrl.$viewValue);
 	          };
 	        }
-	        validator = angular.isObject(validator) ? validator.expression : validator;
-	        var isPossiblyAsync = !angular.isString(validator);
+	        validator = _angularFix2['default'].isObject(validator) ? validator.expression : validator;
+	        var isPossiblyAsync = !_angularFix2['default'].isString(validator);
 	        if (useNewValidatorsApi) {
 	          setupWithValidators();
 	        } else {
@@ -951,7 +1054,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        function setupWithValidators() {
-	          var validatorCollection = isPossiblyAsync ? "$asyncValidators" : "$validators";
+	          var validatorCollection = isPossiblyAsync ? '$asyncValidators' : '$validators';
 	          ctrl[validatorCollection][name] = function evalValidity(modelValue, viewValue) {
 	            var value = formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
 	            if (isPossiblyAsync) {
@@ -974,11 +1077,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                if (inFlightValidator === isValid) {
 	                  ctrl.$setValidity(name, true);
 	                }
-	              })["catch"](function () {
+	              })['catch'](function () {
 	                if (inFlightValidator === isValid) {
 	                  ctrl.$setValidity(name, false);
 	                }
-	              })["finally"](function () {
+	              })['finally'](function () {
 	                if (Object.keys(ctrl.$pending).length === 1) {
 	                  delete ctrl.$pending;
 	                } else {
@@ -996,18 +1099,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  function isPromiseLike(obj) {
-	    return obj && angular.isFunction(obj.then);
+	    return obj && _angularFix2['default'].isFunction(obj.then);
 	  }
 
 	  function checkValidators(validators) {
-	    var allowedProperties = ["expression", "message"];
+	    var allowedProperties = ['expression', 'message'];
 	    var validatorsWithExtraProps = {};
-	    angular.forEach(validators, function (validator, name) {
-	      if (angular.isString(validator)) {
+	    _angularFix2['default'].forEach(validators, function (validator, name) {
+	      if (_angularFix2['default'].isString(validator)) {
 	        return;
 	      }
 	      var extraProps = [];
-	      angular.forEach(validator, function (v, key) {
+	      _angularFix2['default'].forEach(validator, function (v, key) {
 	        if (allowedProperties.indexOf(key) === -1) {
 	          extraProps.push(key);
 	        }
@@ -1017,23 +1120,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    });
 	    if (Object.keys(validatorsWithExtraProps).length) {
-	      throw new Error(["Validators are only allowed to be functions or objects that have " + allowedProperties.join(", ") + ".", "You provided some extra properties: " + JSON.stringify(validatorsWithExtraProps)].join(" "));
+	      throw new Error(['Validators are only allowed to be functions or objects that have ' + allowedProperties.join(', ') + '.', 'You provided some extra properties: ' + JSON.stringify(validatorsWithExtraProps)].join(' '));
 	    }
 	  }
 	}
 	formlyCustomValidation.$inject = ["formlyUtil", "$q"];
+	module.exports = exports['default'];
 
 /***/ },
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
-	var angular = _interopRequire(__webpack_require__(3));
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	module.exports = formlyField;
+	var _angularFix = __webpack_require__(3);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	exports['default'] = formlyField;
 
 	/**
 	 * @ngdoc directive
@@ -1046,17 +1156,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  FormlyFieldController.$inject = ["$scope", "$timeout", "$parse", "$controller"];
 	  return {
-	    restrict: "AE",
+	    restrict: 'AE',
 	    transclude: true,
 	    scope: {
-	      options: "=",
-	      model: "=",
-	      formId: "@", // TODO remove formId in a breaking release
-	      index: "=?",
-	      fields: "=?",
-	      formState: "=?",
-	      formOptions: "=?",
-	      form: "=?" // TODO require form in a breaking release
+	      options: '=',
+	      model: '=',
+	      formId: '@', // TODO remove formId in a breaking release
+	      index: '=?',
+	      fields: '=?',
+	      formState: '=?',
+	      formOptions: '=?',
+	      form: '=?' // TODO require form in a breaking release
 	    },
 	    controller: FormlyFieldController,
 	    link: fieldLink
@@ -1092,7 +1202,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      $timeout(function runExpressionsOnNextTick() {
 	        var field = $scope.options;
 	        var currentValue = valueGetterSetter();
-	        angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
+	        _angularFix2['default'].forEach(field.expressionProperties, function runExpression(expression, prop) {
 	          var setter = $parse(prop).assign;
 	          var promise = $q.when(formlyUtil.formlyEval($scope, expression, currentValue, currentValue));
 	          promise.then(function setFieldValue(value) {
@@ -1106,7 +1216,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (!$scope.model || !$scope.options.key) {
 	        return undefined;
 	      }
-	      if (angular.isDefined(newVal)) {
+	      if (_angularFix2['default'].isDefined(newVal)) {
 	        $scope.model[$scope.options.key] = newVal;
 	      }
 	      return $scope.model[$scope.options.key];
@@ -1125,7 +1235,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function setFieldIdAndName() {
-	      if (angular.isFunction(formlyConfig.extras.getFieldId)) {
+	      if (_angularFix2['default'].isFunction(formlyConfig.extras.getFieldId)) {
 	        $scope.id = formlyConfig.extras.getFieldId($scope.options, $scope.model, $scope);
 	      } else {
 	        var formName = $scope.form && $scope.form.$name || $scope.formId;
@@ -1137,7 +1247,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function setDefaultValue() {
-	      if (angular.isDefined($scope.options.defaultValue) && !angular.isDefined($scope.model[$scope.options.key])) {
+	      if (_angularFix2['default'].isDefined($scope.options.defaultValue) && !_angularFix2['default'].isDefined($scope.model[$scope.options.key])) {
 	        $scope.model[$scope.options.key] = $scope.options.defaultValue;
 	      }
 	    }
@@ -1151,14 +1261,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        mergeOptions(options, type.defaultOptions);
 	      }
 	      var properOrder = arrayify(options.optionsTypes).reverse(); // so the right things are overridden
-	      angular.forEach(properOrder, function (typeName) {
+	      _angularFix2['default'].forEach(properOrder, function (typeName) {
 	        mergeOptions(options, formlyConfig.getType(typeName, true, options).defaultOptions);
 	      });
 	    }
 
 	    function mergeOptions(options, extraOptions) {
 	      if (extraOptions) {
-	        if (angular.isFunction(extraOptions)) {
+	        if (_angularFix2['default'].isFunction(extraOptions)) {
 	          extraOptions = extraOptions(options);
 	        }
 	        formlyUtil.reverseDeepMerge(options, extraOptions);
@@ -1167,7 +1277,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    function extendOptionsWithDefaults(options, index) {
 	      var key = options.key || index || 0;
-	      angular.extend(options, {
+	      _angularFix2['default'].extend(options, {
 	        // attach the key in case the formly-field directive is used directly
 	        key: key,
 	        value: valueGetterSetter,
@@ -1180,15 +1290,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // initialization functions
 	    function addModelWatcher(scope, options) {
 	      if (options.model) {
-	        scope.$watch("options.model", runExpressions, true);
+	        scope.$watch('options.model', runExpressions, true);
 	      }
 	    }
 
 	    function resetModel() {
 	      $scope.model[$scope.options.key] = $scope.options.initialValue;
 	      if ($scope.options.formControl) {
-	        if (angular.isArray($scope.options.formControl)) {
-	          angular.forEach($scope.options.formControl, function (formControl) {
+	        if (_angularFix2['default'].isArray($scope.options.formControl)) {
+	          _angularFix2['default'].forEach($scope.options.formControl, function (formControl) {
 	            resetFormControl(formControl, true);
 	          });
 	        } else {
@@ -1218,7 +1328,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    function addValidationMessages(options) {
 	      options.validation.messages = options.validation.messages || {};
-	      angular.forEach(formlyValidationMessages.messages, function createFunctionForMessage(expression, name) {
+	      _angularFix2['default'].forEach(formlyValidationMessages.messages, function createFunctionForMessage(expression, name) {
 	        if (!options.validation.messages[name]) {
 	          options.validation.messages[name] = function evaluateMessage(viewValue, modelValue, scope) {
 	            return formlyUtil.formlyEval(scope, expression, modelValue, viewValue);
@@ -1231,7 +1341,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var options = arguments[1] === undefined ? {} : arguments[1];
 	      var type = arguments[2] === undefined ? {} : arguments[2];
 
-	      angular.forEach([type.controller, options.controller], function (controller) {
+	      _angularFix2['default'].forEach([type.controller, options.controller], function (controller) {
 	        if (controller) {
 	          $controller(controller, { $scope: scope });
 	        }
@@ -1259,25 +1369,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var thusly = this;
 	    var fieldCount = 0;
 	    var fieldManipulators = getManipulators(scope.options, scope.formOptions);
-	    getFieldTemplate(scope.options).then(runManipulators(fieldManipulators.preWrapper)).then(transcludeInWrappers(scope.options, scope.formOptions)).then(runManipulators(fieldManipulators.postWrapper)).then(setElementTemplate).then(watchFormControl).then(callLinkFunctions)["catch"](function (error) {
-	      formlyWarn("there-was-a-problem-setting-the-template-for-this-field", "There was a problem setting the template for this field ", scope.options, error);
+	    getFieldTemplate(scope.options).then(runManipulators(fieldManipulators.preWrapper)).then(transcludeInWrappers(scope.options, scope.formOptions)).then(runManipulators(fieldManipulators.postWrapper)).then(setElementTemplate).then(watchFormControl).then(callLinkFunctions)['catch'](function (error) {
+	      formlyWarn('there-was-a-problem-setting-the-template-for-this-field', 'There was a problem setting the template for this field ', scope.options, error);
 	    });
 
 	    function setFieldGroupTemplate() {
 	      checkFieldGroupApi(scope.options);
-	      el.addClass("formly-field-group");
-	      var extraAttributes = "";
+	      el.addClass('formly-field-group');
+	      var extraAttributes = '';
 	      if (scope.options.elementAttributes) {
 	        extraAttributes = Object.keys(scope.options.elementAttributes).map(function (key) {
-	          return "" + key + "=\"" + scope.options.elementAttributes[key] + "\"";
-	        }).join(" ");
+	          return '' + key + '="' + scope.options.elementAttributes[key] + '"';
+	        }).join(' ');
 	      }
-	      var modelValue = "model";
+	      var modelValue = 'model';
 	      scope.options.form = scope.form;
 	      if (scope.options.key) {
-	        modelValue = "model['" + scope.options.key + "']";
+	        modelValue = 'model[\'' + scope.options.key + '\']';
 	      }
-	      setElementTemplate("\n          <formly-form model=\"" + modelValue + "\"\n                       fields=\"options.fieldGroup\"\n                       options=\"options.options\"\n                       form=\"options.form\"\n                       class=\"" + scope.options.className + "\"\n                       " + extraAttributes + "\n                       is-field-group>\n          </formly-form>\n        ");
+	      setElementTemplate('\n          <formly-form model="' + modelValue + '"\n                       fields="options.fieldGroup"\n                       options="options.options"\n                       form="options.form"\n                       class="' + scope.options.className + '"\n                       ' + extraAttributes + '\n                       is-field-group>\n          </formly-form>\n        ');
 	    }
 
 	    function addAttributes() {
@@ -1291,7 +1401,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        el.addClass(scope.options.className);
 	      }
 	      if (scope.options.type) {
-	        el.addClass("formly-field-" + scope.options.type);
+	        el.addClass('formly-field-' + scope.options.type);
 	      }
 	    }
 
@@ -1302,17 +1412,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function watchFormControl(templateString) {
-	      var stopWatchingShowError = angular.noop;
+	      var stopWatchingShowError = _angularFix2['default'].noop;
 	      if (scope.options.noFormControl) {
 	        return;
 	      }
-	      var templateEl = angular.element("<div>" + templateString + "</div>");
-	      var ngModelNodes = templateEl[0].querySelectorAll("[ng-model],[data-ng-model]");
+	      var templateEl = _angularFix2['default'].element('<div>' + templateString + '</div>');
+	      var ngModelNodes = templateEl[0].querySelectorAll('[ng-model],[data-ng-model]');
 
 	      if (ngModelNodes) {
-	        angular.forEach(ngModelNodes, function (ngModelNode) {
+	        _angularFix2['default'].forEach(ngModelNodes, function (ngModelNode) {
 	          fieldCount++;
-	          watchFieldNameOrExistence(ngModelNode.getAttribute("name"));
+	          watchFieldNameOrExistence(ngModelNode.getAttribute('name'));
 	        });
 	      }
 
@@ -1326,7 +1436,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      function watchFieldExistence(name) {
-	        scope.$watch("form[\"" + name + "\"]", function formControlChange(formControl) {
+	        scope.$watch('form["' + name + '"]', function formControlChange(formControl) {
 	          if (formControl) {
 	            if (fieldCount > 1) {
 	              if (!scope.options.formControl) {
@@ -1351,12 +1461,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	          if (!fc.$invalid) {
 	            return false;
-	          } else if (typeof options.validation.show === "boolean") {
+	          } else if (typeof options.validation.show === 'boolean') {
 	            return options.validation.show;
 	          } else if (customExpression) {
 	            return formlyUtil.formlyEval(scope, customExpression, fc.$modelValue, fc.$viewValue);
 	          } else {
-	            var noTouchedButDirty = angular.isUndefined(fc.$touched) && fc.$dirty;
+	            var noTouchedButDirty = _angularFix2['default'].isUndefined(fc.$touched) && fc.$dirty;
 	            return scope.fc.$touched || noTouchedButDirty;
 	          }
 	        }, function onShowValidationChange(show) {
@@ -1378,10 +1488,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function runManipulators(manipulators) {
 	      return function runManipulatorsOnTemplate(templateToManipulate) {
 	        var chain = $q.when(templateToManipulate);
-	        angular.forEach(manipulators, function (manipulator) {
+	        _angularFix2['default'].forEach(manipulators, function (manipulator) {
 	          chain = chain.then(function (template) {
 	            return $q.when(manipulator(template, scope.options, scope)).then(function (newTemplate) {
-	              return angular.isString(newTemplate) ? newTemplate : asHtml(newTemplate);
+	              return _angularFix2['default'].isString(newTemplate) ? newTemplate : asHtml(newTemplate);
 	            });
 	          });
 	        });
@@ -1392,7 +1502,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // sort-of stateless util functions
 	  function asHtml(el) {
-	    var wrapper = angular.element("<a></a>");
+	    var wrapper = _angularFix2['default'].element('<a></a>');
 	    return wrapper.append(el).html();
 	  }
 
@@ -1426,26 +1536,26 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function getFieldTemplate(options) {
 	    function fromOptionsOrType(key, fieldType) {
-	      if (angular.isDefined(options[key])) {
+	      if (_angularFix2['default'].isDefined(options[key])) {
 	        return options[key];
-	      } else if (fieldType && angular.isDefined(fieldType[key])) {
+	      } else if (fieldType && _angularFix2['default'].isDefined(fieldType[key])) {
 	        return fieldType[key];
 	      }
 	    }
 
 	    var type = formlyConfig.getType(options.type, true, options);
-	    var template = fromOptionsOrType("template", type);
-	    var templateUrl = fromOptionsOrType("templateUrl", type);
-	    if (angular.isUndefined(template) && !templateUrl) {
-	      throw formlyUsability.getFieldError("type-type-has-no-template", "Type '" + options.type + "' has not template. On element:", options);
+	    var template = fromOptionsOrType('template', type);
+	    var templateUrl = fromOptionsOrType('templateUrl', type);
+	    if (_angularFix2['default'].isUndefined(template) && !templateUrl) {
+	      throw formlyUsability.getFieldError('type-type-has-no-template', 'Type \'' + options.type + '\' has not template. On element:', options);
 	    }
 
-	    return getTemplate(templateUrl || template, angular.isUndefined(template), options);
+	    return getTemplate(templateUrl || template, _angularFix2['default'].isUndefined(template), options);
 	  }
 
 	  function getTemplate(template, isUrl, options) {
 	    var templatePromise = undefined;
-	    if (angular.isFunction(template)) {
+	    if (_angularFix2['default'].isFunction(template)) {
 	      templatePromise = $q.when(template(options));
 	    } else {
 	      templatePromise = $q.when(template);
@@ -1461,15 +1571,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return $http.get(url, httpOptions);
 	          }).then(function (response) {
 	            return response.data;
-	          })["catch"](function handleErrorGettingATemplate(error) {
-	            formlyWarn("problem-loading-template-for-templateurl", "Problem loading template for " + template, error);
+	          })['catch'](function handleErrorGettingATemplate(error) {
+	            formlyWarn('problem-loading-template-for-templateurl', 'Problem loading template for ' + template, error);
 	          })
 	        };
 	      })();
 
-	      if (typeof _ret === "object") {
-	        return _ret.v;
-	      }
+	      if (typeof _ret === 'object') return _ret.v;
 	    }
 	  }
 
@@ -1504,12 +1612,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function doTransclusion(wrapper, template) {
-	    var superWrapper = angular.element("<a></a>"); // this allows people not have to have a single root in wrappers
+	    var superWrapper = _angularFix2['default'].element('<a></a>'); // this allows people not have to have a single root in wrappers
 	    superWrapper.append(wrapper);
-	    var transcludeEl = superWrapper.find("formly-transclude");
+	    var transcludeEl = superWrapper.find('formly-transclude');
 	    if (!transcludeEl.length) {
 	      // try it using our custom find function
-	      transcludeEl = formlyUtil.findByNodeName(superWrapper, "formly-transclude");
+	      transcludeEl = formlyUtil.findByNodeName(superWrapper, 'formly-transclude');
 	    }
 	    transcludeEl.replaceWith(template);
 	    return superWrapper.html();
@@ -1553,9 +1661,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function checkApi(options) {
-	    formlyApiCheck["throw"](formlyApiCheck.formlyFieldOptions, options, {
-	      prefix: "formly-field directive",
-	      url: "formly-field-directive-validation-failed"
+	    formlyApiCheck['throw'](formlyApiCheck.formlyFieldOptions, options, {
+	      prefix: 'formly-field directive',
+	      url: 'formly-field-directive-validation-failed'
 	    });
 	    // validate with the type
 	    var type = options.type && formlyConfig.getType(options.type);
@@ -1566,63 +1674,67 @@ return /******/ (function(modules) { // webpackBootstrap
 	      runApiCheck(type, options);
 	    }
 	    if (options.expressionProperties && options.expressionProperties.hide) {
-	      formlyWarn("dont-use-expressionproperties.hide-use-hideexpression-instead", "You have specified `hide` in `expressionProperties`. Use `hideExpression` instead", options);
+	      formlyWarn('dont-use-expressionproperties.hide-use-hideexpression-instead', 'You have specified `hide` in `expressionProperties`. Use `hideExpression` instead', options);
 	    }
 	  }
 
 	  function checkFieldGroupApi(options) {
-	    formlyApiCheck["throw"](formlyApiCheck.fieldGroup, options, {
-	      prefix: "formly-field directive",
-	      url: "formly-field-directive-validation-failed"
+	    formlyApiCheck['throw'](formlyApiCheck.fieldGroup, options, {
+	      prefix: 'formly-field directive',
+	      url: 'formly-field-directive-validation-failed'
 	    });
 	  }
 
-	  function runApiCheck(_ref, options) {
-	    var apiCheck = _ref.apiCheck;
-	    var apiCheckInstance = _ref.apiCheckInstance;
-	    var apiCheckFunction = _ref.apiCheckFunction;
-	    var apiCheckOptions = _ref.apiCheckOptions;
+	  function runApiCheck(_ref2, options) {
+	    var apiCheck = _ref2.apiCheck;
+	    var apiCheckInstance = _ref2.apiCheckInstance;
+	    var apiCheckFunction = _ref2.apiCheckFunction;
+	    var apiCheckOptions = _ref2.apiCheckOptions;
 
 	    if (!apiCheck) {
 	      return;
 	    }
 	    var instance = apiCheckInstance || formlyApiCheck;
-	    var fn = apiCheckFunction || "warn";
+	    var fn = apiCheckFunction || 'warn';
 	    var shape = instance.shape(apiCheck);
 	    instance[fn](shape, options, apiCheckOptions || {
-	      prefix: "formly-field " + name,
-	      url: formlyApiCheck.config.output.docsBaseUrl + "formly-field-type-apicheck-failed"
+	      prefix: 'formly-field ' + name,
+	      url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
 	    });
 	  }
 	}
 	formlyField.$inject = ["$http", "$q", "$compile", "$templateCache", "$interpolate", "formlyConfig", "formlyValidationMessages", "formlyApiCheck", "formlyUtil", "formlyUsability", "formlyWarn"];
+	module.exports = exports['default'];
 
 /***/ },
 /* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	module.exports = formlyFocus;
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports['default'] = formlyFocus;
 
 	// @ngInject
 	function formlyFocus($timeout, $document) {
 	  return {
-	    restrict: "A",
+	    restrict: 'A',
 	    link: function formlyFocusLink(scope, element, attrs) {
 	      var previousEl = null;
 	      var el = element[0];
 	      var doc = $document[0];
-	      attrs.$observe("formlyFocus", function respondToFocusExpressionChange(value) {
-	        if (value === "true") {
+	      attrs.$observe('formlyFocus', function respondToFocusExpressionChange(value) {
+	        if (value === 'true') {
 	          $timeout(function setElementFocus() {
 	            previousEl = doc.activeElement;
 	            el.focus();
 	          }, ~ ~attrs.focusWait);
-	        } else if (value === "false") {
+	        } else if (value === 'false') {
 	          if (doc.activeElement === el) {
 	            el.blur();
-	            if (attrs.hasOwnProperty("refocus") && previousEl) {
+	            if (attrs.hasOwnProperty('refocus') && previousEl) {
 	              previousEl.focus();
 	            }
 	          }
@@ -1632,22 +1744,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	}
 	formlyFocus.$inject = ["$timeout", "$document"];
+	module.exports = exports['default'];
 
 /***/ },
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
-
-	var _toConsumableArray = function (arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } };
-
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 	var _slice = Array.prototype.slice;
 
-	var angular = _interopRequire(__webpack_require__(3));
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	module.exports = formlyForm;
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
+	var _angularFix = __webpack_require__(3);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	exports['default'] = formlyForm;
 
 	/**
 	 * @ngdoc directive
@@ -1659,15 +1777,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var currentFormId = 1;
 	  FormlyFormController.$inject = ["$scope", "formlyApiCheck", "formlyUtil"];
 	  return {
-	    restrict: "E",
+	    restrict: 'E',
 	    template: formlyFormGetTemplate,
 	    replace: true,
 	    transclude: true,
 	    scope: {
-	      fields: "=",
-	      model: "=",
-	      form: "=?",
-	      options: "=?"
+	      fields: '=',
+	      model: '=',
+	      form: '=?',
+	      options: '=?'
 	    },
 	    controller: FormlyFormController,
 	    link: formlyFormLink
@@ -1676,30 +1794,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function formlyFormGetTemplate(el, attrs) {
 	    var rootEl = getRootEl();
 	    var fieldRootEl = getFieldRootEl();
-	    var formId = "formly_" + currentFormId++;
-	    var parentFormAttributes = "";
-	    if (attrs.hasOwnProperty("isFieldGroup") && el.parent().parent().hasClass("formly")) {
+	    var formId = 'formly_' + currentFormId++;
+	    var parentFormAttributes = '';
+	    if (attrs.hasOwnProperty('isFieldGroup') && el.parent().parent().hasClass('formly')) {
 	      parentFormAttributes = copyAttributes(el.parent().parent()[0].attributes);
 	    }
-	    return "\n        <" + rootEl + " class=\"formly\"\n                 name=\"" + getFormName() + "\"\n                 role=\"form\" " + parentFormAttributes + ">\n          <" + fieldRootEl + " formly-field\n               ng-repeat=\"field in fields " + getTrackBy() + "\"\n               " + getHideDirective() + "=\"!field.hide\"\n               class=\"formly-field\"\n               options=\"field\"\n               model=\"field.model || model\"\n               fields=\"fields\"\n               form=\"theFormlyForm\"\n               form-id=\"" + getFormName() + "\"\n               form-state=\"options.formState\"\n               form-options=\"options\"\n               index=\"$index\">\n          </" + fieldRootEl + ">\n          <div ng-transclude></div>\n        </" + rootEl + ">\n      ";
+	    return '\n        <' + rootEl + ' class="formly"\n                 name="' + getFormName() + '"\n                 role="form" ' + parentFormAttributes + '>\n          <' + fieldRootEl + ' formly-field\n               ng-repeat="field in fields ' + getTrackBy() + '"\n               ' + getHideDirective() + '="!field.hide"\n               class="formly-field"\n               options="field"\n               model="field.model || model"\n               fields="fields"\n               form="theFormlyForm"\n               form-id="' + getFormName() + '"\n               form-state="options.formState"\n               form-options="options"\n               index="$index">\n          </' + fieldRootEl + '>\n          <div ng-transclude></div>\n        </' + rootEl + '>\n      ';
 
 	    function getRootEl() {
-	      return attrs.rootEl || "ng-form";
+	      return attrs.rootEl || 'ng-form';
 	    }
 
 	    function getFieldRootEl() {
-	      return attrs.fieldRootEl || "div";
+	      return attrs.fieldRootEl || 'div';
 	    }
 
 	    function getHideDirective() {
-	      return attrs.hideDirective || formlyConfig.extras.defaultHideDirective || "ng-if";
+	      return attrs.hideDirective || formlyConfig.extras.defaultHideDirective || 'ng-if';
 	    }
 
 	    function getTrackBy() {
 	      if (!attrs.trackBy) {
-	        return "";
+	        return '';
 	      } else {
-	        return "track by " + attrs.trackBy;
+	        return 'track by ' + attrs.trackBy;
 	      }
 	    }
 
@@ -1707,27 +1825,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var formName = formId;
 	      var bindName = attrs.bindName;
 	      if (bindName) {
-	        if (angular.version.minor < 3) {
-	          throw formlyUsability.getFormlyError("bind-name attribute on formly-form not allowed in < angular 1.3");
+	        if (_angularFix2['default'].version.minor < 3) {
+	          throw formlyUsability.getFormlyError('bind-name attribute on formly-form not allowed in < angular 1.3');
 	        }
 	        // we can do a one-time binding here because we know we're in 1.3.x territory
-	        formName = "" + $interpolate.startSymbol() + "::'formly_' + " + bindName + "" + $interpolate.endSymbol();
+	        formName = '' + $interpolate.startSymbol() + '::\'formly_\' + ' + bindName + '' + $interpolate.endSymbol();
 	      }
 	      return formName;
 	    }
 
 	    function copyAttributes(attributes) {
-	      var excluded = ["model", "form", "fields", "options", "name", "role", "class"];
+	      var excluded = ['model', 'form', 'fields', 'options', 'name', 'role', 'class'];
 	      var arrayAttrs = [];
-	      angular.forEach(attributes, function (_ref) {
+	      _angularFix2['default'].forEach(attributes, function (_ref) {
 	        var nodeName = _ref.nodeName;
 	        var nodeValue = _ref.nodeValue;
 
-	        if (nodeName !== "undefined" && excluded.indexOf(nodeName) === -1) {
-	          arrayAttrs.push("" + toKebabCase(nodeName) + "=\"" + nodeValue + "\"");
+	        if (nodeName !== 'undefined' && excluded.indexOf(nodeName) === -1) {
+	          arrayAttrs.push('' + toKebabCase(nodeName) + '="' + nodeValue + '"');
 	        }
 	      });
-	      return arrayAttrs.join(" ");
+	      return arrayAttrs.join(' ');
 	    }
 	  }
 
@@ -1738,13 +1856,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    setupFields();
 
 	    // watch the model and evaluate watch expressions that depend on it.
-	    $scope.$watch("model", onModelOrFormStateChange, true);
+	    $scope.$watch('model', onModelOrFormStateChange, true);
 	    if ($scope.options.formState) {
-	      $scope.$watch("options.formState", onModelOrFormStateChange, true);
+	      $scope.$watch('options.formState', onModelOrFormStateChange, true);
 	    }
 
 	    function onModelOrFormStateChange() {
-	      angular.forEach($scope.fields, function runFieldExpressionProperties(field, index) {
+	      _angularFix2['default'].forEach($scope.fields, function runFieldExpressionProperties(field, index) {
 	        /*jshint -W030 */
 	        var model = field.model || $scope.model;
 	        field.runExpressions && field.runExpressions(model);
@@ -1763,28 +1881,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (fieldTransform) {
 	        $scope.fields = fieldTransform($scope.fields, $scope.model, $scope.options, $scope.form);
 	        if (!$scope.fields) {
-	          throw formlyUsability.getFormlyError("fieldTransform must return an array of fields");
+	          throw formlyUsability.getFormlyError('fieldTransform must return an array of fields');
 	        }
 	      }
 
-	      angular.forEach($scope.fields, initModel); // initializes the model property if set to 'formState'
-	      angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
-	      angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
+	      _angularFix2['default'].forEach($scope.fields, initModel); // initializes the model property if set to 'formState'
+	      _angularFix2['default'].forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
+	      _angularFix2['default'].forEach($scope.fields, setupWatchers); // setup watchers for all fields
 	    }
 
 	    function setupOptions() {
-	      formlyApiCheck["throw"]([formlyApiCheck.formOptionsApi.optional], [$scope.options], { prefix: "formly-form options check" });
+	      formlyApiCheck['throw']([formlyApiCheck.formOptionsApi.optional], [$scope.options], { prefix: 'formly-form options check' });
 	      $scope.options = $scope.options || {};
 	      $scope.options.formState = $scope.options.formState || {};
 
-	      angular.extend($scope.options, {
+	      _angularFix2['default'].extend($scope.options, {
 	        updateInitialValue: updateInitialValue,
 	        resetModel: resetModel
 	      });
 	    }
 
 	    function updateInitialValue() {
-	      angular.forEach($scope.fields, function (field) {
+	      _angularFix2['default'].forEach($scope.fields, function (field) {
 	        if (isFieldGroup(field)) {
 	          field.options.updateInitialValue();
 	        } else {
@@ -1794,7 +1912,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function resetModel() {
-	      angular.forEach($scope.fields, function (field) {
+	      _angularFix2['default'].forEach($scope.fields, function (field) {
 	        if (isFieldGroup(field)) {
 	          field.options.resetModel();
 	        } else {
@@ -1804,12 +1922,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function initModel(field) {
-	      if (angular.isString(field.model)) {
+	      if (_angularFix2['default'].isString(field.model)) {
 	        var expression = field.model;
 	        var index = $scope.fields.indexOf(field);
 	        field.model = evalCloseToFormlyExpression(expression, undefined, field, index);
 	        if (!field.model) {
-	          throw formlyUsability.getFieldError("field-model-must-be-initialized", "Field model must be initialized. When specifying a model as a string for a field, the result of the" + " expression must have been initialized ahead of time.", field);
+	          throw formlyUsability.getFieldError('field-model-must-be-initialized', 'Field model must be initialized. When specifying a model as a string for a field, the result of the' + ' expression must have been initialized ahead of time.', field);
 	        }
 	      }
 	    }
@@ -1821,28 +1939,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function setupWatchers(field, index) {
-	      if (isFieldGroup(field) || !angular.isDefined(field.watcher)) {
+	      if (isFieldGroup(field) || !_angularFix2['default'].isDefined(field.watcher)) {
 	        return;
 	      }
 	      var watchers = field.watcher;
-	      if (!angular.isArray(watchers)) {
+	      if (!_angularFix2['default'].isArray(watchers)) {
 	        watchers = [watchers];
 	      }
-	      angular.forEach(watchers, function setupWatcher(watcher) {
-	        if (!angular.isDefined(watcher.listener)) {
-	          throw formlyUsability.getFieldError("all-field-watchers-must-have-a-listener", "All field watchers must have a listener", field);
+	      _angularFix2['default'].forEach(watchers, function setupWatcher(watcher) {
+	        if (!_angularFix2['default'].isDefined(watcher.listener)) {
+	          throw formlyUsability.getFieldError('all-field-watchers-must-have-a-listener', 'All field watchers must have a listener', field);
 	        }
 	        var watchExpression = getWatchExpression(watcher, field, index);
 	        var watchListener = getWatchListener(watcher, field, index);
 
-	        var type = watcher.type || "$watch";
+	        var type = watcher.type || '$watch';
 	        watcher.stopWatching = $scope[type](watchExpression, watchListener, watcher.watchDeep);
 	      });
 	    }
 
 	    function getWatchExpression(watcher, field, index) {
-	      var watchExpression = watcher.expression || "model['" + field.key + "']";
-	      if (angular.isFunction(watchExpression)) {
+	      var watchExpression = watcher.expression || 'model[\'' + field.key + '\']';
+	      if (_angularFix2['default'].isFunction(watchExpression)) {
 	        // wrap the field's watch expression so we can call it with the field as the first arg
 	        // and the stop function as the last arg as a helper
 	        var originalExpression = watchExpression;
@@ -1850,14 +1968,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	          var args = modifyArgs.apply(undefined, [watcher, index].concat(_slice.call(arguments)));
 	          return originalExpression.apply(undefined, _toConsumableArray(args));
 	        };
-	        watchExpression.displayName = "Formly Watch Expression for field for " + field.key;
+	        watchExpression.displayName = 'Formly Watch Expression for field for ' + field.key;
 	      }
 	      return watchExpression;
 	    }
 
 	    function getWatchListener(watcher, field, index) {
 	      var watchListener = watcher.listener;
-	      if (angular.isFunction(watchListener)) {
+	      if (_angularFix2['default'].isFunction(watchListener)) {
 	        // wrap the field's watch listener so we can call it with the field as the first arg
 	        // and the stop function as the last arg as a helper
 	        var originalListener = watchListener;
@@ -1865,7 +1983,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          var args = modifyArgs.apply(undefined, [watcher, index].concat(_slice.call(arguments)));
 	          return originalListener.apply(undefined, _toConsumableArray(args));
 	        };
-	        watchListener.displayName = "Formly Watch Listener for field for " + field.key;
+	        watchListener.displayName = 'Formly Watch Listener for field for ' + field.key;
 	      }
 	      return watchListener;
 	    }
@@ -1921,14 +2039,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	          // https://github.com/formly-js/angular-formly/issues/287
 	          // luckily, this is how the formController has been accessed by the NgModelController since angular 1.0.0
 	          // so I expect it will remain this way for the life of angular 1.x
-	          el.removeData("$formController");
+	          el.removeData('$formController');
 	        } else {
 	          setter(scope.$parent, scope[formId]);
 	        }
 	      }
 	      if (!scope.theFormlyForm && !formlyConfig.disableWarnings) {
 	        /* eslint no-console:0 */
-	        formlyWarn("formly-form-has-no-formcontroller", "Your formly-form does not have a `form` property. Many functions of the form (like validation) may not work", el, scope);
+	        formlyWarn('formly-form-has-no-formcontroller', 'Your formly-form does not have a `form` property. Many functions of the form (like validation) may not work', el, scope);
 	      }
 	    }
 
@@ -1942,9 +2060,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var offInstance = scope.options && scope.options.removeChromeAutoComplete === false;
 	      var onInstance = scope.options && scope.options.removeChromeAutoComplete === true;
 	      if (global && !offInstance || onInstance) {
-	        var input = document.createElement("input");
-	        input.setAttribute("autocomplete", "address-level4");
-	        input.setAttribute("hidden", "true");
+	        var input = document.createElement('input');
+	        input.setAttribute('autocomplete', 'address-level4');
+	        input.setAttribute('hidden', 'true');
 	        el[0].appendChild(input);
 	      }
 	    }
@@ -1954,10 +2072,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function toKebabCase(string) {
 	    if (string) {
 	      return string.replace(/([A-Z])/g, function ($1) {
-	        return "-" + $1.toLowerCase();
+	        return '-' + $1.toLowerCase();
 	      });
 	    } else {
-	      return "";
+	      return '';
 	    }
 	  }
 
@@ -1966,18 +2084,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 	formlyForm.$inject = ["formlyUsability", "formlyWarn", "$parse", "formlyConfig", "$interpolate"];
+	module.exports = exports['default'];
 
 /***/ },
 /* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
-	var angular = _interopRequire(__webpack_require__(3));
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	module.exports = addFormlyNgModelAttrsManipulator;
+	var _angularFix = __webpack_require__(3);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	exports['default'] = addFormlyNgModelAttrsManipulator;
 
 	// @ngInject
 	function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
@@ -1988,19 +2113,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function ngModelAttrsManipulator(template, options, scope) {
 	    /* jshint maxcomplexity:6 */
-	    var el = document.createElement("div");
+	    var el = document.createElement('div');
 	    var data = options.data;
 	    if (data.skipNgModelAttrsManipulator === true) {
 	      return template;
 	    }
 	    el.innerHTML = template;
-	    var modelNodes = el.querySelectorAll("[ng-model], [data-ng-model]");
+	    var modelNodes = el.querySelectorAll('[ng-model], [data-ng-model]');
 	    if (!modelNodes || !modelNodes.length) {
 	      return template;
 	    }
 
-	    addIfNotPresent(modelNodes, "id", scope.id);
-	    addIfNotPresent(modelNodes, "name", scope.name || scope.id);
+	    addIfNotPresent(modelNodes, 'id', scope.id);
+	    addIfNotPresent(modelNodes, 'name', scope.name || scope.id);
 
 	    addValidation();
 	    addModelOptions();
@@ -2009,17 +2134,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return el.innerHTML;
 
 	    function addValidation() {
-	      if (angular.isDefined(options.validators) || angular.isDefined(options.validation.messages)) {
-	        addIfNotPresent(modelNodes, "formly-custom-validation", "");
+	      if (_angularFix2['default'].isDefined(options.validators) || _angularFix2['default'].isDefined(options.validation.messages)) {
+	        addIfNotPresent(modelNodes, 'formly-custom-validation', '');
 	      }
 	    }
 
 	    function addModelOptions() {
-	      if (angular.isDefined(options.modelOptions)) {
-	        addIfNotPresent(modelNodes, "ng-model-options", "options.modelOptions");
+	      if (_angularFix2['default'].isDefined(options.modelOptions)) {
+	        addIfNotPresent(modelNodes, 'ng-model-options', 'options.modelOptions');
 	        if (options.modelOptions.getterSetter) {
-	          angular.forEach(modelNodes, function (node) {
-	            node.setAttribute("ng-model", "options.value");
+	          _angularFix2['default'].forEach(modelNodes, function (node) {
+	            node.setAttribute('ng-model', 'options.value');
 	          });
 	        }
 	      }
@@ -2036,38 +2161,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var ngModelAttributes = getBuiltInAttributes();
 
 	      // extend with the user's specifications winning
-	      angular.extend(ngModelAttributes, options.ngModelAttrs);
+	      _angularFix2['default'].extend(ngModelAttributes, options.ngModelAttrs);
 
 	      // Feel free to make this more simple :-)
-	      angular.forEach(ngModelAttributes, function (val, name) {
+	      _angularFix2['default'].forEach(ngModelAttributes, function (val, name) {
 	        /* eslint complexity:[2, 14] */
 	        var attrVal = undefined;
 	        var attrName = undefined;
-	        var ref = "options.templateOptions['" + name + "']";
+	        var ref = 'options.templateOptions[\'' + name + '\']';
 	        var toVal = to[name];
 	        var epVal = getEpValue(ep, name);
 
-	        var inTo = angular.isDefined(toVal);
-	        var inEp = angular.isDefined(epVal);
+	        var inTo = _angularFix2['default'].isDefined(toVal);
+	        var inEp = _angularFix2['default'].isDefined(epVal);
 	        if (val.value) {
 	          // I realize this looks backwards, but it's right, trust me...
 	          attrName = val.value;
 	          attrVal = name;
 	        } else if (val.expression && inTo) {
 	          attrName = val.expression;
-	          if (angular.isString(to[name])) {
-	            attrVal = "$eval(" + ref + ")";
-	          } else if (angular.isFunction(to[name])) {
-	            attrVal = "" + ref + "(model[options.key], options, this, $event)";
+	          if (_angularFix2['default'].isString(to[name])) {
+	            attrVal = '$eval(' + ref + ')';
+	          } else if (_angularFix2['default'].isFunction(to[name])) {
+	            attrVal = '' + ref + '(model[options.key], options, this, $event)';
 	          } else {
-	            throw new Error("options.templateOptions." + name + " must be a string or function: " + JSON.stringify(options));
+	            throw new Error('options.templateOptions.' + name + ' must be a string or function: ' + JSON.stringify(options));
 	          }
 	        } else if (val.bound && inEp) {
 	          attrName = val.bound;
 	          attrVal = ref;
 	        } else if ((val.attribute || val.boolean) && inEp) {
 	          attrName = val.attribute || val.boolean;
-	          attrVal = "" + $interpolate.startSymbol() + "" + ref + "" + $interpolate.endSymbol();
+	          attrVal = '' + $interpolate.startSymbol() + '' + ref + '' + $interpolate.endSymbol();
 	        } else if (val.attribute && inTo) {
 	          attrName = val.attribute;
 	          attrVal = toVal;
@@ -2081,7 +2206,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          attrVal = ref;
 	        }
 
-	        if (angular.isDefined(attrName) && angular.isDefined(attrVal)) {
+	        if (_angularFix2['default'].isDefined(attrName) && _angularFix2['default'].isDefined(attrVal)) {
 	          addIfNotPresent(modelNodes, attrName, attrVal);
 	        }
 	      });
@@ -2092,49 +2217,49 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function getBuiltInAttributes() {
 	    var ngModelAttributes = {
 	      focus: {
-	        attribute: "formly-focus"
+	        attribute: 'formly-focus'
 	      }
 	    };
 	    var boundOnly = [];
-	    var bothBooleanAndBound = ["required", "disabled"];
-	    var bothAttributeAndBound = ["pattern", "minlength"];
-	    var expressionOnly = ["change", "keydown", "keyup", "keypress", "click", "focus", "blur"];
-	    var attributeOnly = ["placeholder", "min", "max", "tabindex", "type"];
+	    var bothBooleanAndBound = ['required', 'disabled'];
+	    var bothAttributeAndBound = ['pattern', 'minlength'];
+	    var expressionOnly = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
+	    var attributeOnly = ['placeholder', 'min', 'max', 'tabindex', 'type'];
 	    if (formlyConfig.extras.ngModelAttrsManipulatorPreferUnbound) {
-	      bothAttributeAndBound.push("maxlength");
+	      bothAttributeAndBound.push('maxlength');
 	    } else {
-	      boundOnly.push("maxlength");
+	      boundOnly.push('maxlength');
 	    }
 
-	    angular.forEach(boundOnly, function (item) {
-	      ngModelAttributes[item] = { bound: "ng-" + item };
+	    _angularFix2['default'].forEach(boundOnly, function (item) {
+	      ngModelAttributes[item] = { bound: 'ng-' + item };
 	    });
 
-	    angular.forEach(bothBooleanAndBound, function (item) {
-	      ngModelAttributes[item] = { boolean: item, bound: "ng-" + item };
+	    _angularFix2['default'].forEach(bothBooleanAndBound, function (item) {
+	      ngModelAttributes[item] = { boolean: item, bound: 'ng-' + item };
 	    });
 
-	    angular.forEach(bothAttributeAndBound, function (item) {
-	      ngModelAttributes[item] = { attribute: item, bound: "ng-" + item };
+	    _angularFix2['default'].forEach(bothAttributeAndBound, function (item) {
+	      ngModelAttributes[item] = { attribute: item, bound: 'ng-' + item };
 	    });
 
-	    angular.forEach(expressionOnly, function (item) {
-	      var propName = "on" + item.substr(0, 1).toUpperCase() + item.substr(1);
-	      ngModelAttributes[propName] = { expression: "ng-" + item };
+	    _angularFix2['default'].forEach(expressionOnly, function (item) {
+	      var propName = 'on' + item.substr(0, 1).toUpperCase() + item.substr(1);
+	      ngModelAttributes[propName] = { expression: 'ng-' + item };
 	    });
 
-	    angular.forEach(attributeOnly, function (item) {
+	    _angularFix2['default'].forEach(attributeOnly, function (item) {
 	      ngModelAttributes[item] = { attribute: item };
 	    });
 	    return ngModelAttributes;
 	  }
 
 	  function getEpValue(ep, name) {
-	    return ep["templateOptions." + name] || ep["templateOptions['" + name + "']"] || ep["templateOptions[\"" + name + "\"]"];
+	    return ep['templateOptions.' + name] || ep['templateOptions[\'' + name + '\']'] || ep['templateOptions["' + name + '"]'];
 	  }
 
 	  function addIfNotPresent(nodes, attr, val) {
-	    angular.forEach(nodes, function (node) {
+	    _angularFix2['default'].forEach(nodes, function (node) {
 	      if (!node.getAttribute(attr)) {
 	        node.setAttribute(attr, val);
 	      }
@@ -2142,6 +2267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 	addFormlyNgModelAttrsManipulator.$inject = ["formlyConfig", "$interpolate"];
+	module.exports = exports['default'];
 
 	/* eslint no-empty:0 */
 	// empty to illustrate that a boolean will not be added via val.bound
@@ -2151,13 +2277,19 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
-	var angular = _interopRequire(__webpack_require__(3));
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	module.exports = addCustomTags;
+	var _angularFix = __webpack_require__(3);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	exports['default'] = addCustomTags;
 
 	// @ngInject
 	function addCustomTags($document) {
@@ -2166,14 +2298,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // IE8 check ->
 	      // http://stackoverflow.com/questions/10964966/detect-ie-version-prior-to-v9-in-javascript/10965203#10965203
 	      var document = $document.get(0);
-	      var div = document.createElement("div");
-	      div.innerHTML = "<!--[if lt IE 9]><i></i><![endif]-->";
-	      var isIeLessThan9 = div.getElementsByTagName("i").length === 1;
+	      var div = document.createElement('div');
+	      div.innerHTML = '<!--[if lt IE 9]><i></i><![endif]-->';
+	      var isIeLessThan9 = div.getElementsByTagName('i').length === 1;
 
 	      if (isIeLessThan9) {
 	        // add the custom elements that we need for formly
-	        var customElements = ["formly-field", "formly-form", "formly-custom-validation", "formly-focus", "formly-transpose"];
-	        angular.forEach(customElements, function (el) {
+	        var customElements = ['formly-field', 'formly-form', 'formly-custom-validation', 'formly-focus', 'formly-transpose'];
+	        _angularFix2['default'].forEach(customElements, function (el) {
 	          document.createElement(el);
 	        });
 	      }
@@ -2181,6 +2313,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	}
 	addCustomTags.$inject = ["$document"];
+	module.exports = exports['default'];
 
 /***/ }
 /******/ ])

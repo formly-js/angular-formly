@@ -1,3 +1,13 @@
+# 6.14.1
+
+## Bug Fixes
+
+- `api-check` didn't handle an array of `formControl`s on field options which was introduced in `6.12.0-beta.0`
+
+## Internal Changes
+
+- npm scripts which use environment variables now use `better-npm-run` by [@benoror](https://github.com/benoror) so it can run cross platform [#305](/../../issues/305)
+
 # 6.14.0
 
 ## New Features
