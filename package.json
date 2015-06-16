@@ -13,29 +13,74 @@
   },
   "main": "dist/formly.js",
   "license": "MIT",
-  "webpack": "./node_modules/kcd-common-tools/shared/webpack.config.js",
   "scripts": {
-    "build:dist": "NODE_ENV=development webpack --config $npm_package_webpack --progress --colors",
-    "build:prod": "NODE_ENV=production webpack --config $npm_package_webpack --progress --colors",
-    "build": "npm run build:dist; npm run build:prod",
-    "test": "NODE_ENV=test karma start",
-    "test:single": "NODE_ENV=test karma start --single-run",
-    "test:coverage": "COVERAGE=true NODE_ENV=test karma start",
-    "test:ci": "NODE_ENV=test:ci karma start",
-    "test:e2e": "scripts/test.e2e",
-    "test:chrome": "NODE_ENV=test karma start --browsers Chrome",
-    "watch": "NODE_ENV=development webpack --config $npm_package_webpack --watch --progress --colors",
+    "build:dist": "better-npm-run build:dist",
+    "build:prod": "better-npm-run build:prod",
+    "build": "npm run build:dist & npm run build:prod",
+    "test": "better-npm-run test",
+    "test:single": "better-npm-run test:single",
+    "test:debug": "better-npm-run test:debug",
+    "test:ci": "better-npm-run test:ci",
+    "test:chrome": "better-npm-run test:chrome",
     "start": "npm run test",
     "check-coverage": "istanbul check-coverage --statements 91 --branches 85 --functions 89 --lines 90",
     "report-coverage": "echo 'Reporting coverage stats' && cat ./coverage/lcov.info | codecov",
     "only-check": "node node_modules/kcd-common-tools/shared/scripts/only-check.js",
     "console-check": "node node_modules/kcd-common-tools/shared/scripts/console-check.js",
     "code-checks": "npm run only-check && npm run console-check",
-    "release": "npm run build && with-package git commit -am pkg.version && with-package git tag pkg.version && git push && npm publish && git push --tags"
+    "release": "npm run build && with-package git commit -am pkg.version && with-package git tag pkg.version && git push && npm publish && git push --tags",
+    "release:beta": "npm run release && npm run tag:beta",
+    "tag:beta": "with-package npm dist-tag add pkg.name@pkg.version beta"
+  },
+  "betterScripts": {
+    "build:dist": {
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "command": "webpack --config node_modules/kcd-common-tools/shared/webpack.config.js --progress --colors"
+    },
+    "build:prod": {
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "command": "webpack --config node_modules/kcd-common-tools/shared/webpack.config.js --progress --colors"
+    },
+    "test": {
+      "env": {
+        "COVERAGE": "true",
+        "NODE_ENV": "test"
+      },
+      "command": "karma start"
+    },
+    "test:single": {
+      "env": {
+        "COVERAGE": "true",
+        "NODE_ENV": "test"
+      },
+      "command": "karma start --single-run"
+    },
+    "test:debug": {
+      "env": {
+        "NODE_ENV": "test"
+      },
+      "command": "karma start"
+    },
+    "test:ci": {
+      "env": {
+        "NODE_ENV": "test:ci"
+      },
+      "command": "karma start"
+    },
+    "test:chrome": {
+      "env": {
+        "NODE_ENV": "test"
+      },
+      "command": "karma start --browsers Chrome"
+    }
   },
   "config": {
     "ghooks": {
-      "pre-commit": "npm run code-checks && npm run test:coverage -- --single-run && npm run check-coverage"
+      "pre-commit": "npm run code-checks && npm run test:single && npm run check-coverage"
     }
   },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
@@ -51,6 +96,7 @@
     "babel-core": "5.5.7",
     "babel-eslint": "3.1.15",
     "babel-loader": "5.1.4",
+    "better-npm-run": "0.0.1",
     "chai": "3.0.0",
     "codecov.io": "0.1.2",
     "eslint": "0.22.1",
