@@ -136,7 +136,7 @@ let fieldOptionsApiShape = {
     messages: apiCheck.objectOf(formlyExpression).optional,
     errorExistsAndShouldBeVisible: apiCheck.bool.optional
   }).optional,
-  formControl: apiCheck.object.optional,
+  formControl: apiCheck.typeOrArrayOf(apiCheck.object).optional,
   value: apiCheck.func.optional,
   runExpressions: apiCheck.func.optional,
   templateManipulators: templateManipulators.optional,
