@@ -96,7 +96,7 @@
     "babel-core": "5.5.7",
     "babel-eslint": "3.1.15",
     "babel-loader": "5.1.4",
-    "better-npm-run": "0.0.1",
+    "better-npm-run": "benoror/better-npm-run#0.0.1",
     "chai": "3.0.0",
     "codecov.io": "0.1.2",
     "eslint": "0.22.1",
