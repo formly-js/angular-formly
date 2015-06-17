@@ -53,6 +53,22 @@ Please do the following:
 
 ### What do you need help with?
 
-* Tests are always helpful! [Watch video](https://youtu.be/CQ766-miGQ4?list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH)
-* Any of the issues in GitHub, let us know if you have some time to fix one. Especially those labeled [PR Please!](https://github.com/formly-js/angular-formly/labels/PRs%20please%21)
-* Examples, examples, examples! The website is driven by examples. [Watch video](https://www.youtube.com/watch?v=4dsXXTPET4A&list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH&index=3)
+#### Helping others!
+
+There are a lot of questions from people as they get started using angular-formly. If you could **please do the following things**, that would really help:
+
+- Subscribe to the `angular-formly` questions [RSS Feed](http://stackoverflow.com/feeds/tag?tagnames=angular-formly&sort=newest) on StackOverflow. You can use this free service: [Blogtrottr](https://blogtrottr.com) to have it email you with new questions.
+- Hang out on [the chat](http://chat.angular-formly.com)
+- Sign up on [the mailing list](http://mailing-list.angular-formly.com)
+- Watch the [angular-formly repositories](https://github.com/formly-js) for issues or requests that you could help with (like [angular-formly-website](https://github.com/formly-js/angular-formly-website) for requests for examples).
+ 
+#### Contributing to community
+
+- Write blog posts! Like [this one](https://scotch.io/tutorials/easy-angularjs-forms-with-angular-formly) or [this one](http://www.erwan-datin.com/tips/how-do-I-store-angular-formly-fields-model-into-database)
+- Record screencasts
+- Write examples. The website is driven by examples. [Watch video](https://www.youtube.com/watch?v=4dsXXTPET4A&list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH&index=3)
+
+#### Contributing to the core
+
+- Tests are always helpful! [Watch video](https://youtu.be/CQ766-miGQ4?list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH)
+- Any of the issues in GitHub, let us know if you have some time to fix one. Especially those labeled [PR Please!](https://github.com/formly-js/angular-formly/labels/PRs%20please%21)
