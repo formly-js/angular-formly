@@ -1,3 +1,9 @@
+# 6.15.1
+
+## Bug Fixes
+
+- Adding `LICENSE` back to the repo directly rather than using a symbolic link because it doesn't quite work well that way...
+
 # 6.15.0
 
 ## New Features
