@@ -4,12 +4,13 @@ import {expect} from 'chai';
 describe('formlyApiCheck', () => {
   beforeEach(window.module('formly'));
 
-  describe('formlyFieldOptions', () => {
-    let formlyFieldOptions;
-    beforeEach(inject((formlyApiCheck) => {
-      formlyFieldOptions = formlyApiCheck.formlyFieldOptions;
-    }));
+  let formlyApiCheck;
 
+  beforeEach(inject((_formlyApiCheck_) => {
+    formlyApiCheck = _formlyApiCheck_;
+  }));
+
+  describe('formlyFieldOptions', () => {
     it(`should pass when validation.messages is an object of functions or strings`, () => {
       expectPass({
         key: '♪┏(・o･)┛♪┗ ( ･o･) ┓♪',
@@ -21,7 +22,7 @@ describe('formlyApiCheck', () => {
             thing2: '"Formly Expression"'
           }
         }
-      });
+      }, 'formlyFieldOptions');
     });
 
     it(`should allow $$hashKey`, () => {
@@ -29,13 +30,22 @@ describe('formlyApiCheck', () => {
         $$hashKey: 'object:1',
         template: 'hello',
         key: 'whatevs'
-      });
+      }, 'formlyFieldOptions');
     });
-
-    function expectPass(options) {
-      const result = formlyFieldOptions(options);
-      expect(result).to.be.undefined;
-    }
   });
+
+  describe(`fieldGroup`, () => {
+    it(`should pass when specifying data`, () => {
+      expectPass({
+        fieldGroup: [],
+        data: {foo: 'bar'}
+      }, 'fieldGroup');
+    });
+  });
+
+  function expectPass(options, checker) {
+    const result = formlyApiCheck[checker](options);
+    expect(result).to.be.undefined;
+  }
 
 });

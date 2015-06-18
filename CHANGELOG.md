@@ -1,3 +1,9 @@
+# 6.15.0
+
+## New Features
+
+- `fieldGroup` can now have a `data` object. It should always have had one...
+
 # 6.14.1
 
 ## Bug Fixes
