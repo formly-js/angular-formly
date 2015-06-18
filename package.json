@@ -21,7 +21,6 @@
     "test:single": "better-npm-run test:single",
     "test:debug": "better-npm-run test:debug",
     "test:ci": "better-npm-run test:ci",
-    "test:chrome": "better-npm-run test:chrome",
     "start": "npm run test",
     "check-coverage": "istanbul check-coverage --statements 91 --branches 85 --functions 89 --lines 90",
     "report-coverage": "echo 'Reporting coverage stats' && cat ./coverage/lcov.info | codecov",
@@ -63,19 +62,13 @@
       "env": {
         "NODE_ENV": "test"
       },
-      "command": "karma start"
+      "command": "karma start --browsers Chrome"
     },
     "test:ci": {
       "env": {
         "NODE_ENV": "test:ci"
       },
       "command": "karma start"
-    },
-    "test:chrome": {
-      "env": {
-        "NODE_ENV": "test"
-      },
-      "command": "karma start --browsers Chrome"
     }
   },
   "config": {
