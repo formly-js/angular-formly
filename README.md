@@ -65,12 +65,15 @@ Please see the [CONTRIBUTING Guidelines](CONTRIBUTING.md).
 
 You can bookmark these :-)
 
+- [http://help.angular-formly.com](http://help.angular-formly.com)
+- [http://question.angular-formly.com](http://question.angular-formly.com)
 - [http://new-example.angular-formly.com](http://new-example.angular-formly.com)
 - [http://egghead.angular-formly.com](http://egghead.angular-formly.com)
 - [http://changelog.angular-formly.com](http://changelog.angular-formly.com)
 - [http://chat.angular-formly.com](http://chat.angular-formly.com)
 - [http://mailing-list.angular-formly.com](http://mailing-list.angular-formly.com)
 - [http://learn.angular-formly.com](http://learn.angular-formly.com)
+- [http://questions.angular-formly.com](http://questions.angular-formly.com)
 
 ## Thanks
 
