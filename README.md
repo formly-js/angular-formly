@@ -71,6 +71,7 @@ You can bookmark these :-)
 
 - [http://help.angular-formly.com](http://help.angular-formly.com)
 - [http://question.angular-formly.com](http://question.angular-formly.com)
+- [http://issue.angular-formly.com](http://issue.angular-formly.com)
 - [http://new-example.angular-formly.com](http://new-example.angular-formly.com)
 - [http://egghead.angular-formly.com](http://egghead.angular-formly.com)
 - [http://changelog.angular-formly.com](http://changelog.angular-formly.com)
