@@ -10,10 +10,15 @@ individual links by the respective sections
 
 [Watch video](https://www.youtube.com/watch?v=NXqFiSeBE-M&list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH&index=2)
 
+An example will get you help faster than anything else you do. Create an example by going to
+[help.angular-formly.com](http://help.angular-formly.com)
+
 Please post questions to [StackOverflow](http://stackoverflow.com/) using the
 [angular-formly](http://stackoverflow.com/tags/angular-formly/info) tag. There's also the
 [mailing list](https://groups.io/org/groupsio/formly-js) where you can ask/answer questions. Also join us on
-[gitter](https://gitter.im/formly-js/angular-formly). We like to say hi :-)
+[gitter](https://gitter.im/formly-js/angular-formly).
+
+If you file an issue with a question, it will be closed. I'm not trying to be mean. I'm just trying to stay sane. :-)
 
 ## Reporting Bugs / Requesting Features
 
