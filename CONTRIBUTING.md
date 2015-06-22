@@ -25,7 +25,7 @@ If you file an issue with a question, it will be closed. I'm not trying to be me
 [Watch video](https://www.youtube.com/watch?v=Kw9fVgc3Tzk&index=6&list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH)
 
 If you've found an issue, please submit it in [the issues](https://github.com/formly-js/angular-formly/issues)
-with a link to a jsbin that demonstrates the issue (clone [this template](http://jsbin.com/biqesi/edit))
+with a link to a jsbin that demonstrates the issue with [issue.angular-formly.com](http://issue.angular-formly.com)
 
 ## Pull Requests
 
