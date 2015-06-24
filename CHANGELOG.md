@@ -1,3 +1,9 @@
+# 6.15.2
+
+## Bug Fixes
+
+- Support copying `data-` prefixed `formly-form` attributes for `fieldGroups`.
+
 # 6.15.1
 
 ## Bug Fixes
