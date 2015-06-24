@@ -88,7 +88,8 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
     }
 
     function copyAttributes(attributes) {
-      const excluded = ['model', 'form', 'fields', 'options', 'name', 'role', 'class'];
+      const excluded = ['model', 'form', 'fields', 'options', 'name', 'role', 'class',
+        'data-model', 'data-form', 'data-fields', 'data-options', 'data-name'];
       const arrayAttrs = [];
       angular.forEach(attributes, ({nodeName, nodeValue}) => {
         if (nodeName !== 'undefined' && excluded.indexOf(nodeName) === -1) {
