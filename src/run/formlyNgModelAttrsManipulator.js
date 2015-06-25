@@ -14,11 +14,18 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
     /* jshint maxcomplexity:6 */
     var el = document.createElement('div');
     var data = options.data;
+    var elementFilter = ':not([formly-skip-ng-model-attrs-manipulator])';
     if (data.skipNgModelAttrsManipulator === true) {
       return template;
     }
+    else if (data.skipNgModelAttrsManipulator !== false) {
+      elementFilter += ':not(' + data.skipNgModelAttrsManipulator + ')';
+    }
+
     el.innerHTML = template;
-    var modelNodes = el.querySelectorAll('[ng-model], [data-ng-model]');
+
+    var modelNodes = el.querySelectorAll('[ng-model]' + elementFilter +
+                    ', [data-ng-model]' + elementFilter);
     if (!modelNodes || !modelNodes.length) {
       return template;
     }
