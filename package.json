@@ -26,7 +26,7 @@
     "report-coverage": "echo 'Reporting coverage stats' && cat ./coverage/lcov.info | codecov",
     "only-check": "node node_modules/kcd-common-tools/shared/scripts/only-check.js",
     "console-check": "node node_modules/kcd-common-tools/shared/scripts/console-check.js",
-    "code-checks": "npm run only-check && npm run console-check",
+    "code-checks": "npm run only-check && eslint src/ --quiet",
     "release": "npm run build && with-package git commit -am pkg.version && with-package git tag pkg.version && git push && npm publish && git push --tags",
     "release:beta": "npm run release && npm run tag:beta",
     "tag:beta": "with-package npm dist-tag add pkg.name@pkg.version beta"
