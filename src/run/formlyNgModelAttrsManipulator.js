@@ -17,8 +17,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
     var elementFilter = ':not([formly-skip-ng-model-attrs-manipulator])';
     if (data.skipNgModelAttrsManipulator === true) {
       return template;
-    }
-    else if (data.skipNgModelAttrsManipulator !== false) {
+    } else if (data.skipNgModelAttrsManipulator !== false) {
       elementFilter += ':not(' + data.skipNgModelAttrsManipulator + ')';
     }
 
