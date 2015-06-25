@@ -1,4 +1,4 @@
-/* jshint maxlen:false */
+/* eslint max-len:0 */
 import angular from 'angular';
 import {expect} from 'chai';
 
@@ -20,10 +20,41 @@ describe('formlyNgModelAttrsManipulator', () => {
     };
   }));
 
-  it(`should allow you to skip the manipulator`, () => {
-    field.data.skipNgModelAttrsManipulator = true;
-    manipulate();
-    expect(result).to.equal(template);
+  describe(`skipping`, () => {
+    it(`should allow you to skip the manipulator wholesale for the field`, () => {
+      field.data.skipNgModelAttrsManipulator = true;
+      manipulate();
+      expect(result).to.equal(template);
+    });
+
+    it.skip(`should allow you to specify a selector for specific elements to skip`, () => {
+      field.templateOptions.required = true;
+      field.data.skipNgModelAttrsManipulator = '.ignored-thing';
+      manipulate(`
+        <div>
+          <input class="first-thing" ng-model="model[options.key]" />
+          <input class="ignored-thing" ng-model="model[options.key]" />
+        </div>
+      `);
+      const firstInput = angular.element(resultNode.querySelector('.first-thing'));
+      const secondInput = angular.element(resultNode.querySelector('.ignored-thing'));
+      expect(firstInput.attr('required')).to.exist;
+      expect(secondInput.attr('required')).to.not.exist;
+    });
+
+    it.skip(`should allow you to place the attribute formly-skip-ng-model-attrs-manipulator on an ng-model to have it skip`, () => {
+      field.templateOptions.required = true;
+      manipulate(`
+        <div>
+          <input ng-model="model[options.key]" />
+          <input ng-model="model[options.key]" formly-skip-ng-model-attrs-manipulator />
+        </div>
+      `);
+      const firstInput = angular.element(resultNode.querySelector('.first-thing'));
+      const secondInput = angular.element(resultNode.querySelector('[formly-skip-ng-model-attrs-manipulator]'));
+      expect(firstInput.attr('required')).to.exist;
+      expect(secondInput.attr('required')).to.not.exist;
+    });
   });
 
   it(`should have a limited number of automatically added attributes without any specific options`, () => {
@@ -195,8 +226,8 @@ describe('formlyNgModelAttrsManipulator', () => {
   });
 
 
-  function manipulate() {
-    result = manipulator(template, field, scope);
+  function manipulate(theTemplate = template) {
+    result = manipulator(theTemplate, field, scope);
     resultEl = angular.element(result);
     resultNode = resultEl[0];
   }
