@@ -46,7 +46,7 @@ describe('formlyNgModelAttrsManipulator', () => {
       field.templateOptions.required = true;
       manipulate(`
         <div>
-          <input ng-model="model[options.key]" />
+          <input class="first-thing" ng-model="model[options.key]" />
           <input ng-model="model[options.key]" formly-skip-ng-model-attrs-manipulator />
         </div>
       `);
@@ -54,6 +54,24 @@ describe('formlyNgModelAttrsManipulator', () => {
       const secondInput = angular.element(resultNode.querySelector('[formly-skip-ng-model-attrs-manipulator]'));
       expect(firstInput.attr('required')).to.exist;
       expect(secondInput.attr('required')).to.not.exist;
+    });
+
+    it.skip(`should allow you to skip using both the special attribute and the custom selector`, () => {
+      field.templateOptions.required = true;
+      field.data.skipNgModelAttrsManipulator = '.ignored-thing';
+      manipulate(`
+        <div>
+          <input class="first-thing" ng-model="model[options.key]" />
+          <input class="ignored-thing" ng-model="model[options.key]" />
+          <input ng-model="model[options.key]" formly-skip-ng-model-attrs-manipulator />
+        </div>
+      `);
+      const firstInput = angular.element(resultNode.querySelector('.first-thing'));
+      const secondInput = angular.element(resultNode.querySelector('.ignored-thing'));
+      const thirdInput = angular.element(resultNode.querySelector('[formly-skip-ng-model-attrs-manipulator]'));
+      expect(firstInput.attr('required')).to.exist;
+      expect(secondInput.attr('required')).to.not.exist;
+      expect(thirdInput.attr('required')).to.not.exist;
     });
   });
 
