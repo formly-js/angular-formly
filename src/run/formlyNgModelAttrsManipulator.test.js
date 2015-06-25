@@ -27,7 +27,7 @@ describe('formlyNgModelAttrsManipulator', () => {
       expect(result).to.equal(template);
     });
 
-    it.skip(`should allow you to specify a selector for specific elements to skip`, () => {
+    it(`should allow you to specify a selector for specific elements to skip`, () => {
       field.templateOptions.required = true;
       field.data.skipNgModelAttrsManipulator = '.ignored-thing';
       manipulate(`
@@ -42,7 +42,7 @@ describe('formlyNgModelAttrsManipulator', () => {
       expect(secondInput.attr('required')).to.not.exist;
     });
 
-    it.skip(`should allow you to place the attribute formly-skip-ng-model-attrs-manipulator on an ng-model to have it skip`, () => {
+    it(`should allow you to place the attribute formly-skip-ng-model-attrs-manipulator on an ng-model to have it skip`, () => {
       field.templateOptions.required = true;
       manipulate(`
         <div>
@@ -56,7 +56,7 @@ describe('formlyNgModelAttrsManipulator', () => {
       expect(secondInput.attr('required')).to.not.exist;
     });
 
-    it.skip(`should allow you to skip using both the special attribute and the custom selector`, () => {
+    it(`should allow you to skip using both the special attribute and the custom selector`, () => {
       field.templateOptions.required = true;
       field.data.skipNgModelAttrsManipulator = '.ignored-thing';
       manipulate(`
