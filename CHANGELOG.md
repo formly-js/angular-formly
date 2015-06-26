@@ -1,3 +1,9 @@
+# 6.16.0
+
+## New Features
+
+- You can now force the built-in `ngModelAttrsManipulator` to skip specific `ng-model` elements by specifying `data.skipNgModelAttrsManipulator = 'query-selector'` or placing the attribute `formly-skip-ng-model-attrs-manipulator` on the element. [#358](/../../issues/358) closed by [@douglas-mason](https://github.com/douglas-mason) (His first open source contribution!)
+
 # 6.15.2
 
 ## Bug Fixes
