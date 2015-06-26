@@ -1,4 +1,4 @@
-//! angular-formly version 6.15.2 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 6.16.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("6.15.2")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("6.16.0")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -437,7 +437,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.15.2") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.16.0") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -2113,14 +2113,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  formlyConfig.templateManipulators.preWrapper.push(ngModelAttrsManipulator);
 
 	  function ngModelAttrsManipulator(template, options, scope) {
-	    /* jshint maxcomplexity:6 */
-	    var el = document.createElement('div');
+	    var node = document.createElement('div');
 	    var data = options.data;
 	    if (data.skipNgModelAttrsManipulator === true) {
 	      return template;
 	    }
-	    el.innerHTML = template;
-	    var modelNodes = el.querySelectorAll('[ng-model], [data-ng-model]');
+
+	    node.innerHTML = template;
+
+	    var modelNodes = getNgModelNodes(node, data.skipNgModelAttrsManipulator);
 	    if (!modelNodes || !modelNodes.length) {
 	      return template;
 	    }
@@ -2132,7 +2133,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    addModelOptions();
 	    addTemplateOptionsAttrs();
 
-	    return el.innerHTML;
+	    return node.innerHTML;
 
 	    function addValidation() {
 	      if (_angularFix2['default'].isDefined(options.validators) || _angularFix2['default'].isDefined(options.validation.messages)) {
@@ -2144,8 +2145,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (_angularFix2['default'].isDefined(options.modelOptions)) {
 	        addIfNotPresent(modelNodes, 'ng-model-options', 'options.modelOptions');
 	        if (options.modelOptions.getterSetter) {
-	          _angularFix2['default'].forEach(modelNodes, function (node) {
-	            node.setAttribute('ng-model', 'options.value');
+	          _angularFix2['default'].forEach(modelNodes, function (modelNode) {
+	            modelNode.setAttribute('ng-model', 'options.value');
 	          });
 	        }
 	      }
@@ -2215,6 +2216,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  // Utility functions
+	  function getNgModelNodes(node, skip) {
+	    var selectorNot = _angularFix2['default'].isString(skip) ? ':not(' + skip + ')' : '';
+	    var skipNot = ':not([formly-skip-ng-model-attrs-manipulator])';
+	    var query = '[ng-model]' + selectorNot + '' + skipNot + ', [data-ng-model]' + selectorNot + '' + skipNot;
+	    return node.querySelectorAll(query);
+	  }
+
 	  function getBuiltInAttributes() {
 	    var ngModelAttributes = {
 	      focus: {
