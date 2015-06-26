@@ -11,20 +11,15 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
 
 
   function ngModelAttrsManipulator(template, options, scope) {
-    /* jshint maxcomplexity:6 */
-    var el = document.createElement('div');
+    var node = document.createElement('div');
     var data = options.data;
-    var elementFilter = ':not([formly-skip-ng-model-attrs-manipulator])';
     if (data.skipNgModelAttrsManipulator === true) {
       return template;
-    } else if (data.skipNgModelAttrsManipulator !== false) {
-      elementFilter += ':not(' + data.skipNgModelAttrsManipulator + ')';
     }
 
-    el.innerHTML = template;
+    node.innerHTML = template;
 
-    var modelNodes = el.querySelectorAll('[ng-model]' + elementFilter +
-                    ', [data-ng-model]' + elementFilter);
+    const modelNodes = getNgModelNodes(node, data.skipNgModelAttrsManipulator);
     if (!modelNodes || !modelNodes.length) {
       return template;
     }
@@ -37,7 +32,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
     addTemplateOptionsAttrs();
 
 
-    return el.innerHTML;
+    return node.innerHTML;
 
 
     function addValidation() {
@@ -50,8 +45,8 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
       if (angular.isDefined(options.modelOptions)) {
         addIfNotPresent(modelNodes, 'ng-model-options', 'options.modelOptions');
         if (options.modelOptions.getterSetter) {
-          angular.forEach(modelNodes, node => {
-            node.setAttribute('ng-model', 'options.value');
+          angular.forEach(modelNodes, modelNode => {
+            modelNode.setAttribute('ng-model', 'options.value');
           });
         }
       }
@@ -127,6 +122,13 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
   }
 
   // Utility functions
+  function getNgModelNodes(node, skip) {
+    const selectorNot = angular.isString(skip) ? `:not(${skip})` : '';
+    const skipNot = ':not([formly-skip-ng-model-attrs-manipulator])';
+    const query = `[ng-model]${selectorNot}${skipNot}, [data-ng-model]${selectorNot}${skipNot}`;
+    return node.querySelectorAll(query);
+  }
+
   function getBuiltInAttributes() {
     let ngModelAttributes = {
       focus: {
