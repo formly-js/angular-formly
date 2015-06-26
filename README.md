@@ -43,7 +43,7 @@ I'm an [egghead.io](https://egghead.io/) author and I have made a handful of les
 
 ### Examples
 
-[The website](http://formly-js.github.io/angular-formly/) is full of tons of examples.
+[The website](http://angular-formly.com/) is full of tons of examples.
 
 ### More
 
