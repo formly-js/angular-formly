@@ -359,7 +359,6 @@ describe('formly-form', () => {
   });
 
   describe(`options`, () => {
-    const template = '<formly-form options="options" model="model" fields="fields"></formly-form>';
     beforeEach(() => {
       scope.model = {
         foo: 'myFoo',
@@ -382,9 +381,7 @@ describe('formly-form', () => {
     it(`should throw an error with extra options`, () => {
       expect(() => {
         scope.options = {extra: true};
-        compileAndDigest(`
-          <formly-form model="model" fields="fields" options="options"></formly-form>
-        `);
+        compileAndDigest();
       }).to.throw();
     });
 
@@ -398,7 +395,7 @@ describe('formly-form', () => {
         }
       };
       scope.fields = [field];
-      compileAndDigest(template);
+      compileAndDigest();
       scope.options.formState.foo = 'eggs';
       scope.$digest();
       $timeout.flush();
@@ -407,7 +404,7 @@ describe('formly-form', () => {
 
     describe(`resetModel`, () => {
       it(`should reset the model that's given`, () => {
-        compileAndDigest(template);
+        compileAndDigest();
         expect(typeof scope.options.resetModel).to.eq('function');
         const previousFoo = scope.model.foo;
         scope.model.foo = 'newFoo';
@@ -416,7 +413,7 @@ describe('formly-form', () => {
       });
 
       it(`should reset the $viewValue of fields`, () => {
-        compileAndDigest(template);
+        compileAndDigest();
         const previousFoobar = scope.model.foobar;
         scope.fields[2].formControl.$setViewValue('not-an-email');
         scope.options.resetModel();
@@ -427,7 +424,7 @@ describe('formly-form', () => {
         scope.fields.push({
           template: input, key: 'baz', templateOptions: {required: true}
         });
-        compileAndDigest(template);
+        compileAndDigest();
         const fc = scope.fields[scope.fields.length - 1].formControl;
         scope.model.baz = 'hello world';
         scope.$digest();
@@ -440,7 +437,7 @@ describe('formly-form', () => {
       });
 
       it(`should rerender the ng-model element`, () => {
-        const el = compileAndDigest(template);
+        const el = compileAndDigest();
         const ngModelNode = el[0].querySelector('[ng-model]');
         scope.model.foo = 'hey there!';
         scope.$digest();
@@ -454,7 +451,7 @@ describe('formly-form', () => {
           template: input, key: 'baz', model: scope.fieldModel
         });
 
-        compileAndDigest(template);
+        compileAndDigest();
 
         scope.fieldModel.baz = true;
         scope.options.resetModel();
@@ -542,7 +539,7 @@ describe('formly-form', () => {
     describe(`updateInitialValue`, () => {
 
       it(`should update the initial value of the fields`, () => {
-        compileAndDigest(template);
+        compileAndDigest();
         const field = scope.fields[0];
         expect(field.initialValue).to.equal('myFoo');
         scope.model.foo = 'otherValue';
@@ -551,7 +548,7 @@ describe('formly-form', () => {
       });
 
       it(`should reset to the updated initial value`, () => {
-        compileAndDigest(template);
+        compileAndDigest();
         const field = scope.fields[0];
         scope.model.foo = 'otherValue';
         scope.options.updateInitialValue();
@@ -564,14 +561,14 @@ describe('formly-form', () => {
 
     describe(`removeChromeAutoComplete`, () => {
       it(`should not have a hidden input when nothing is specified`, () => {
-        const el = compileAndDigest(template);
+        const el = compileAndDigest();
         const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
         expect(autoCompleteFixEl).to.be.null;
       });
 
       it(`should add a hidden input when specified as true`, () => {
         scope.options.removeChromeAutoComplete = true;
-        const el = compileAndDigest(template);
+        const el = compileAndDigest();
         const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
         expect(autoCompleteFixEl).to.exist;
       });
@@ -579,14 +576,14 @@ describe('formly-form', () => {
       it(`should override the 'true' global configuration`, inject((formlyConfig) => {
         formlyConfig.extras.removeChromeAutoComplete = true;
         scope.options.removeChromeAutoComplete = false;
-        const el = compileAndDigest(template);
+        const el = compileAndDigest();
         const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
         expect(autoCompleteFixEl).to.be.null;
       }));
 
       it(`should be added regardless of the option if the global config is set`, inject((formlyConfig) => {
         formlyConfig.extras.removeChromeAutoComplete = true;
-        const el = compileAndDigest(template);
+        const el = compileAndDigest();
         const autoCompleteFixEl = el[0].querySelector('[autocomplete="address-level4"]');
         expect(autoCompleteFixEl).to.exist;
       }));
