@@ -157,7 +157,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
 
     function updateInitialValue() {
       angular.forEach($scope.fields, field => {
-        if (isFieldGroup(field)) {
+        if (isFieldGroup(field) && field.options) {
           field.options.updateInitialValue();
         } else {
           field.updateInitialValue();
@@ -167,7 +167,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
 
     function resetModel() {
       angular.forEach($scope.fields, field => {
-        if (isFieldGroup(field)) {
+        if (isFieldGroup(field) && field.options) {
           field.options.resetModel();
         } else {
           field.resetModel();
