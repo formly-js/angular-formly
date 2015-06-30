@@ -169,7 +169,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
       angular.forEach($scope.fields, field => {
         if (isFieldGroup(field) && field.options) {
           field.options.resetModel();
-        } else {
+        } else if (field.resetModel) {
           field.resetModel();
         }
       });

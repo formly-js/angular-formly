@@ -1,3 +1,10 @@
+# 6.16.1
+
+## Bug Fixes
+
+- [@zeddever](https://github.com/zeddever) found and fixed a bug [#377](/../../pull/377) with `resetModel` and fieldGroups which have yet to be initialized.
+- Fixed the same bug with fields which have yet to be initialized.
+
 # 6.16.0
 
 ## New Features
