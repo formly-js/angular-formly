@@ -457,6 +457,20 @@ describe('formly-form', () => {
         scope.options.resetModel();
         expect(scope.fieldModel.baz).to.be.false;
       });
+
+      it.skip(`should not break if a fieldGroup has yet to be initialized`, () => {
+        scope.fields = [
+          {fieldGroup: [getNewField()], hide: true}
+        ];
+        compileAndDigest();
+        expect(() => scope.options.resetModel()).to.not.throw();
+      });
+
+      it.skip(`should not break if a field has yet to be initialized`, () => {
+        scope.fields = [getNewField({hide: true})];
+        compileAndDigest();
+        expect(() => scope.options.resetModel()).to.not.throw();
+      });
     });
 
     describe(`hide-directive attribute`, () => {
