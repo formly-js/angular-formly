@@ -138,7 +138,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       angular.extend(options, {
         // attach the key in case the formly-field directive is used directly
         key,
-        value: valueGetterSetter,
+        value: options.value || valueGetterSetter,
         runExpressions,
         resetModel,
         updateInitialValue
