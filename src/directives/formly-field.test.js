@@ -551,6 +551,14 @@ describe('formly-field', function() {
       scope.fields = [getNewField({modelOptions: {debounce: {blur: 'foo', default: 'bar'}}})];
       expect(() => compileAndDigest()).to.throw();
     });
+
+    it(`should not replace options.value when gettersetter is set`, () => {
+      var testfn = function(){};
+      scope.fields = [getNewField({modelOptions: {getterSetter: true}, value: testfn})];
+      compileAndDigest();
+      expect(getIsolateScope().options.value).to.eq(testfn);
+    });
+
   });
 
   describe(`type apiCheck`, () => {
