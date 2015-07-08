@@ -1,3 +1,9 @@
+# 6.17.0
+
+## New Features
+
+- Thanks to [@prokilogrammer](https://github.com/prokilogrammer), you can now specify your own custom getterSetter function using `value`.
+
 # 6.16.1
 
 ## Bug Fixes
