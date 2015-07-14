@@ -1,4 +1,4 @@
-//! angular-formly version 6.17.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 6.18.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("6.17.0")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("6.18.0")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -309,6 +309,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  postWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional
 	}).strict);
 
+	var validatorChecker = apiCheck.objectOf(apiCheck.oneOfType([formlyExpression, apiCheck.shape({
+	  expression: formlyExpression,
+	  message: formlyExpression.optional
+	}).strict]));
+
 	var fieldOptionsApiShape = {
 	  $$hashKey: apiCheck.any.optional,
 	  type: apiCheck.shape.ifNot(['template', 'templateUrl'], apiCheck.string).optional,
@@ -334,10 +339,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    expression: formlyExpression.optional,
 	    listener: formlyExpression
 	  })).optional,
-	  validators: apiCheck.objectOf(apiCheck.oneOfType([formlyExpression, apiCheck.shape({
-	    expression: formlyExpression,
-	    message: formlyExpression.optional
-	  }).strict])).optional,
+	  validators: validatorChecker.optional,
+	  asyncValidators: validatorChecker.optional,
 	  noFormControl: apiCheck.bool.optional,
 	  hide: apiCheck.bool.optional,
 	  hideExpression: formlyExpression.optional,
@@ -437,7 +440,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.17.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.18.0") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -561,7 +564,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      ngModelAttrsManipulatorPreferUnbound: false,
 	      removeChromeAutoComplete: false,
 	      defaultHideDirective: 'ng-if',
-	      getFieldId: null
+	      getFieldId: null,
+	      explicitAsync: false
 	    },
 	    templateManipulators: {
 	      preWrapper: [],
@@ -824,7 +828,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function warn() {
-	    if (!_this.disableWarnings) {
+	    if (!_this.disableWarnings && console.warn) {
 	      /* eslint no-console:0 */
 	      console.warn.apply(console, arguments);
 	    }
@@ -1022,15 +1026,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports['default'] = formlyCustomValidation;
 
 	// @ngInject
-	function formlyCustomValidation(formlyUtil, $q) {
+	function formlyCustomValidation(formlyConfig, formlyUtil, $q, formlyWarn) {
 	  return {
 	    restrict: 'A',
 	    require: 'ngModel',
 	    link: function formlyCustomValidationLink(scope, el, attrs, ctrl) {
 	      var opts = scope.options;
-	      if (opts.validators) {
-	        checkValidators(opts.validators);
-	      }
+	      var warnedValidators = [];
 	      opts.validation.messages = opts.validation.messages || {};
 	      _angularFix2['default'].forEach(opts.validation.messages, function (message, key) {
 	        opts.validation.messages[key] = function () {
@@ -1039,93 +1041,105 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 
 	      var useNewValidatorsApi = ctrl.hasOwnProperty('$validators') && !attrs.hasOwnProperty('useParsers');
-	      _angularFix2['default'].forEach(opts.validators, function addValidatorToPipeline(validator, name) {
+	      _angularFix2['default'].forEach(opts.validators, addValidatorToPipeline.bind(null, false));
+	      _angularFix2['default'].forEach(opts.asyncValidators, addValidatorToPipeline.bind(null, true));
+
+	      function addValidatorToPipeline(isAsync, validator, name) {
+	        setupMessage(validator, name);
+	        validator = _angularFix2['default'].isObject(validator) ? validator.expression : validator;
+	        if (useNewValidatorsApi) {
+	          setupWithValidators(validator, name, isAsync);
+	        } else {
+	          setupWithParsers(validator, name, isAsync);
+	        }
+	      }
+
+	      function setupMessage(validator, name) {
 	        var message = validator.message;
 	        if (message) {
 	          opts.validation.messages[name] = function () {
 	            return formlyUtil.formlyEval(scope, message, ctrl.$modelValue, ctrl.$viewValue);
 	          };
 	        }
-	        validator = _angularFix2['default'].isObject(validator) ? validator.expression : validator;
+	      }
+
+	      function setupWithValidators(validator, name, isAsync) {
 	        var isPossiblyAsync = !_angularFix2['default'].isString(validator);
-	        if (useNewValidatorsApi) {
-	          setupWithValidators();
-	        } else {
-	          setupWithParsers();
+	        var validatorCollection = isPossiblyAsync || isAsync ? '$asyncValidators' : '$validators';
+
+	        // this is temporary until we can have a breaking change. Allow people to get the wins of the explicitAsync api
+	        if (formlyConfig.extras.explicitAsync && !isAsync) {
+	          validatorCollection = '$validators';
 	        }
 
-	        function setupWithValidators() {
-	          var validatorCollection = isPossiblyAsync ? '$asyncValidators' : '$validators';
-	          ctrl[validatorCollection][name] = function evalValidity(modelValue, viewValue) {
-	            var value = formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
-	            if (isPossiblyAsync) {
-	              return isPromiseLike(value) ? value : value ? $q.when(value) : $q.reject(value);
-	            } else {
+	        ctrl[validatorCollection][name] = function evalValidity(modelValue, viewValue) {
+	          var value = formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
+	          // In the next breaking change, this code should simply return the value
+	          if (isAsync) {
+	            return value;
+	          } else if (isPossiblyAsync) {
+	            if (isPromiseLike(value)) {
+	              logAsyncValidatorsDeprecationNotice(validator, opts);
 	              return value;
-	            }
-	          };
-	        }
-
-	        function setupWithParsers() {
-	          var inFlightValidator = undefined;
-	          ctrl.$parsers.unshift(function evalValidityOfParser(viewValue) {
-	            var isValid = formlyUtil.formlyEval(scope, validator, ctrl.$modelValue, viewValue);
-	            if (isPromiseLike(isValid)) {
-	              ctrl.$pending = ctrl.$pending || {};
-	              ctrl.$pending[name] = true;
-	              inFlightValidator = isValid;
-	              isValid.then(function () {
-	                if (inFlightValidator === isValid) {
-	                  ctrl.$setValidity(name, true);
-	                }
-	              })['catch'](function () {
-	                if (inFlightValidator === isValid) {
-	                  ctrl.$setValidity(name, false);
-	                }
-	              })['finally'](function () {
-	                if (Object.keys(ctrl.$pending).length === 1) {
-	                  delete ctrl.$pending;
-	                } else {
-	                  delete ctrl.$pending[name];
-	                }
-	              });
 	            } else {
-	              ctrl.$setValidity(name, isValid);
+	              return value ? $q.when(value) : $q.reject(value);
 	            }
-	            return viewValue;
-	          });
+	          } else {
+	            return value;
+	          }
+	        };
+	      }
+
+	      function setupWithParsers(validator, name, isAsync) {
+	        var inFlightValidator = undefined;
+	        ctrl.$parsers.unshift(function evalValidityOfParser(viewValue) {
+	          var isValid = formlyUtil.formlyEval(scope, validator, ctrl.$modelValue, viewValue);
+	          // In the next breaking change, rather than checking for isPromiseLike, it should just check for isAsync.
+
+	          if (isAsync || isPromiseLike(isValid)) {
+	            if (!isAsync) {
+	              logAsyncValidatorsDeprecationNotice(validator, opts);
+	            }
+	            ctrl.$pending = ctrl.$pending || {};
+	            ctrl.$pending[name] = true;
+	            inFlightValidator = isValid;
+	            isValid.then(function () {
+	              if (inFlightValidator === isValid) {
+	                ctrl.$setValidity(name, true);
+	              }
+	            })['catch'](function () {
+	              if (inFlightValidator === isValid) {
+	                ctrl.$setValidity(name, false);
+	              }
+	            })['finally'](function () {
+	              if (Object.keys(ctrl.$pending).length === 1) {
+	                delete ctrl.$pending;
+	              } else {
+	                delete ctrl.$pending[name];
+	              }
+	            });
+	          } else {
+	            ctrl.$setValidity(name, isValid);
+	          }
+	          return viewValue;
+	        });
+	      }
+	      function logAsyncValidatorsDeprecationNotice(validator, options) {
+	        if (warnedValidators.indexOf(validator) !== -1) {
+	          // we've warned about this one before. No spam necessary...
+	          return;
 	        }
-	      });
+	        warnedValidators.push(validator);
+	        formlyWarn('validators-returning-promises-should-use-asyncValidators', 'Validators returning promises should use asyncValidators instead of validators.', options);
+	      }
 	    }
 	  };
 
 	  function isPromiseLike(obj) {
 	    return obj && _angularFix2['default'].isFunction(obj.then);
 	  }
-
-	  function checkValidators(validators) {
-	    var allowedProperties = ['expression', 'message'];
-	    var validatorsWithExtraProps = {};
-	    _angularFix2['default'].forEach(validators, function (validator, name) {
-	      if (_angularFix2['default'].isString(validator)) {
-	        return;
-	      }
-	      var extraProps = [];
-	      _angularFix2['default'].forEach(validator, function (v, key) {
-	        if (allowedProperties.indexOf(key) === -1) {
-	          extraProps.push(key);
-	        }
-	      });
-	      if (extraProps.length) {
-	        validatorsWithExtraProps[name] = extraProps;
-	      }
-	    });
-	    if (Object.keys(validatorsWithExtraProps).length) {
-	      throw new Error(['Validators are only allowed to be functions or objects that have ' + allowedProperties.join(', ') + '.', 'You provided some extra properties: ' + JSON.stringify(validatorsWithExtraProps)].join(' '));
-	    }
-	  }
 	}
-	formlyCustomValidation.$inject = ["formlyUtil", "$q"];
+	formlyCustomValidation.$inject = ["formlyConfig", "formlyUtil", "$q", "formlyWarn"];
 	module.exports = exports['default'];
 
 /***/ },
