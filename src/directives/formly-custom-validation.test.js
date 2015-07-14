@@ -4,17 +4,17 @@ import angular from 'angular-fix';
 import {expect} from 'chai';
 
 describe(`formly-custom-validation`, function() {
-  let $compile, $timeout, $q, scope, $log;
+  let $compile, $timeout, $q, scope, $log, formlyConfig;
   let formTemplate = `<form name="myForm">TEMPLATE</form>`;
   beforeEach(window.module('formly'));
-  beforeEach(inject((_$compile_, _$timeout_, _$q_, $rootScope, _$log_) => {
+  beforeEach(inject((_$compile_, _$timeout_, _$q_, $rootScope, _$log_, _formlyConfig_) => {
     $compile = _$compile_;
     $timeout = _$timeout_;
     $q = _$q_;
     scope = $rootScope.$new();
     scope.options = {validation: {}, validators: {}, asyncValidators: {}};
     $log = _$log_;
-    $log.reset();
+    formlyConfig = _formlyConfig_;
   }));
 
   describe(`using parsers`, () => {
@@ -27,6 +27,31 @@ describe(`formly-custom-validation`, function() {
     checkApi(formTemplate.replace(
       `TEMPLATE`, `<input ng-model="input" name="field" formly-custom-validation />`
     ));
+
+    describe(`validators that are functions placement`, () => {
+      it(`should be placed in $asyncValidators because it can return a promise`, () => {
+        scope.options.validators.isHello = viewValue => viewValue === 'hello';
+        $compile(
+          `<form name="myForm"><input ng-model="input" name="field" formly-custom-validation /></form>`
+        )(scope);
+        scope.$digest();
+        const field = scope.myForm.field;
+        expect(field.$validators.isHello).to.not.exist;
+        expect(field.$asyncValidators.isHello).to.exist;
+      });
+
+      it(`should be placed in $validators if formlyConfig.extras.explicitAsync`, () => {
+        formlyConfig.extras.explicitAsync = true;
+        scope.options.validators.isHello = viewValue => viewValue === 'hello';
+        $compile(
+          `<form name="myForm"><input ng-model="input" name="field" formly-custom-validation /></form>`
+        )(scope);
+        scope.$digest();
+        const field = scope.myForm.field;
+        expect(field.$validators.isHello).to.exist;
+        expect(field.$asyncValidators.isHello).to.not.exist;
+      });
+    });
   });
 
   describe(`options.validation.messages`, () => {

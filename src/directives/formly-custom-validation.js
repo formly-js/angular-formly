@@ -2,7 +2,7 @@ import angular from 'angular-fix';
 export default formlyCustomValidation;
 
 // @ngInject
-function formlyCustomValidation(formlyUtil, $q, formlyWarn) {
+function formlyCustomValidation(formlyConfig, formlyUtil, $q, formlyWarn) {
   return {
     restrict: 'A',
     require: 'ngModel',
@@ -43,6 +43,12 @@ function formlyCustomValidation(formlyUtil, $q, formlyWarn) {
       function setupWithValidators(validator, name, isAsync) {
         var isPossiblyAsync = !angular.isString(validator);
         var validatorCollection = (isPossiblyAsync || isAsync) ? '$asyncValidators' : '$validators';
+
+        // this is temporary until we can have a breaking change. Allow people to get the wins of the explicitAsync api
+        if (formlyConfig.extras.explicitAsync && !isAsync) {
+          validatorCollection = '$validators';
+        }
+
         ctrl[validatorCollection][name] = function evalValidity(modelValue, viewValue) {
           var value = formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
           // In the next breaking change, this code should simply return the value

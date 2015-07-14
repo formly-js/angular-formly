@@ -3,6 +3,7 @@
 ## New Features
 
 - You can now place async validators on `asyncValidators` (see [#369](/../../issues/369)).
+- You can specify `formlyConfig.extras.explicitAsync = true` to enforce all `validators` to be placed onto the `$validators` pipeline rather than the `$asyncValidators` pipeline regardless of whether it is a function.
 
 ## Deprecations
 
