@@ -280,7 +280,7 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
 
 
   function warn() {
-    if (!_this.disableWarnings) {
+    if (!_this.disableWarnings && console.warn) {
       /* eslint no-console:0 */
       console.warn(...arguments);
     }

@@ -75,6 +75,13 @@ const templateManipulators = nullable(apiCheck.shape({
   postWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional
 }).strict);
 
+const validatorChecker = apiCheck.objectOf(apiCheck.oneOfType([
+  formlyExpression, apiCheck.shape({
+    expression: formlyExpression,
+    message: formlyExpression.optional
+  }).strict
+]));
+
 let fieldOptionsApiShape = {
   $$hashKey: apiCheck.any.optional,
   type: apiCheck.shape.ifNot(['template', 'templateUrl'], apiCheck.string).optional,
@@ -110,12 +117,8 @@ let fieldOptionsApiShape = {
       listener: formlyExpression
     })
   ).optional,
-  validators: apiCheck.objectOf(apiCheck.oneOfType([
-    formlyExpression, apiCheck.shape({
-      expression: formlyExpression,
-      message: formlyExpression.optional
-    }).strict
-  ])).optional,
+  validators: validatorChecker.optional,
+  asyncValidators: validatorChecker.optional,
   noFormControl: apiCheck.bool.optional,
   hide: apiCheck.bool.optional,
   hideExpression: formlyExpression.optional,

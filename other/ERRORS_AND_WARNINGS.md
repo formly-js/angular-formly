@@ -123,6 +123,13 @@ of the expression, the scope you're passed wont have all the properties you may 
 See documentation [here](http://docs.angular-formly.com/docs/field-configuration-object#hideexpression-string--function)
 and an example [here](http://angular-formly.com/#/example/field-options/hide-fields)
 
+# Validators returning promises should use asyncValidators
+
+Due to some issues with treating all function validators as async validators, the functionality has been split into
+simply `validators` and `asyncValidators`. The ability to return a promise from a validator has been deprecated and you
+should use `asyncValidators` for those now. For more info, see
+[#369](https://github.com/formly-js/angular-formly/issues/369).
+
 # Notes
 
 It is recommended to disable warnings in production using `formlyConfigProvider.disableWarnings = true`. Note: This will

@@ -1,3 +1,13 @@
+# 6.18.0
+
+## New Features
+
+- You can now place async validators on `asyncValidators` (see [#369](/../../issues/369)).
+
+## Deprecations
+
+- You will now get a warning if a `validator` returns a promise. This warning will be removed in 7.0.0 and the functionality to support it will also be removed. Use `asyncValidators` instead.
+
 # 6.17.0
 
 ## New Features
