@@ -1,3 +1,9 @@
+# 6.18.1
+
+## Bug Fixes
+
+- Fixing issue where a normal validator function would be treated as an async validator by formly, but not by angular resulting in all validations passing. 😅
+
 # 6.18.0
 
 ## New Features

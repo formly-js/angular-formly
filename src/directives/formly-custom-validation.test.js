@@ -51,6 +51,12 @@ describe(`formly-custom-validation`, function() {
         expect(field.$validators.isHello).to.exist;
         expect(field.$asyncValidators.isHello).to.not.exist;
       });
+
+      it(`should validate properly when explicitAsync is true`, () => {
+        formlyConfig.extras.explicitAsync = true;
+        const template = `<form name="myForm"><input ng-model="input" name="field" formly-custom-validation /></form>`;
+        doValidation(template, 'hello', false, viewValue => viewValue !== 'hello', false);
+      });
     });
   });
 
@@ -75,21 +81,21 @@ describe(`formly-custom-validation`, function() {
   function checkApi(template, versionThreeOrBetterAndEmulating) {
     const value = `hello`;
     describe(`validators`, () => {
-      const isAsync = false;
+      const validate = doValidation.bind(null, template, 'hello', false);
       it(`should pass if returning a string that passes`, () => {
-        doValidation(`$viewValue === "${value}"`, true, isAsync);
+        validate(`$viewValue === "${value}"`, true);
       });
 
       it(`should fail if returning a string that fails`, () => {
-        doValidation(`$viewValue !== "${value}"`, false, isAsync);
+        validate(`$viewValue !== "${value}"`, false);
       });
 
       it(`should pass if it's a function that passes`, () => {
-        doValidation(viewValue => viewValue === value, true, isAsync);
+        validate(viewValue => viewValue === value, true);
       });
 
       it(`should fail if it's a function that fails`, () => {
-        doValidation(viewValue => viewValue !== value, false, isAsync);
+        validate(viewValue => viewValue !== value, false);
       });
 
       it(`should warn if it's a function that returns a promise for a regular validator (should use asyncValidators instead)`, () => {
@@ -100,19 +106,19 @@ describe(`formly-custom-validation`, function() {
           /validators-returning-promises-should-use-asyncValidators/
         ];
         shouldWarn(logArgs, () => {
-          doValidation(() => $q.when(), true, isAsync);
+          validate(() => $q.when(), true);
         });
       });
     });
 
     describe(`asyncValidators`, () => {
-      const isAsync = true;
+      const validate = doValidation.bind(null, template, 'hello', true);
       it(`should pass if it's a function that returns a promise that resolves`, () => {
-        doValidation(() => $q.when(), true, isAsync);
+        validate(() => $q.when(), true);
       });
 
       it(`should fail if it's a function that returns a promise that rejects`, () => {
-        doValidation(() => $q.reject(), false, isAsync);
+        validate(() => $q.reject(), false);
       });
 
       it(`should be pending until the promise is resolved`, () => {
@@ -144,21 +150,20 @@ describe(`formly-custom-validation`, function() {
         }
       });
     });
+  }
 
-
-    function doValidation(validator, pass, isAsync) {
-      if (isAsync) {
-        scope.options.asyncValidators.isHello = validator;
-      } else {
-        scope.options.validators.isHello = validator;
-      }
-      $compile(template)(scope);
-      const field = scope.myForm.field;
-      scope.$digest();
-      field.$setViewValue(value);
-      scope.$digest();
-      expect(field.$valid).to.eq(pass);
+  function doValidation(template, value, isAsync, validator, pass) {
+    if (isAsync) {
+      scope.options.asyncValidators.isHello = validator;
+    } else {
+      scope.options.validators.isHello = validator;
     }
+    $compile(template)(scope);
+    const field = scope.myForm.field;
+    scope.$digest();
+    field.$setViewValue(value);
+    scope.$digest();
+    expect(field.$valid).to.eq(pass);
   }
 
   function shouldWarn(logArgs, test) {

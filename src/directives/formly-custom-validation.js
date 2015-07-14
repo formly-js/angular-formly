@@ -54,7 +54,7 @@ function formlyCustomValidation(formlyConfig, formlyUtil, $q, formlyWarn) {
           // In the next breaking change, this code should simply return the value
           if (isAsync) {
             return value;
-          } else if (isPossiblyAsync) {
+          } else if (isPossiblyAsync && !formlyConfig.extras.explicitAsync) {
             if (isPromiseLike(value)) {
               logAsyncValidatorsDeprecationNotice(validator, opts);
               return value;
