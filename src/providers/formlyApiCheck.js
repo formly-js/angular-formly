@@ -28,6 +28,7 @@ function shapeRequiredIfNot(otherProps, propChecker) {
   return apiCheck.utils.checkerHelpers.setupChecker(shapeRequiredIfNotDefinition);
 }
 
+// TODO in 7.0.0 .nullable is available on all checkers
 function nullable(checker) {
   return apiCheck.oneOfType([
     apiCheck.oneOf([null]), checker

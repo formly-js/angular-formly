@@ -1,5 +1,5 @@
 /* eslint no-shadow:0 */
-/* eslint max-statements:50 */
+/* eslint max-statements:[2, 50] */
 /* eslint max-len:0 */
 /* eslint no-console:0 */
 import angular from 'angular-fix';

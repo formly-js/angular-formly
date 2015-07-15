@@ -494,7 +494,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
   }
 
   function getWrapperOption(options, formOptions) {
-    /* eslint complexity:[6, 2] */
+    /* eslint complexity:[2, 6] */
     let wrapper = options.wrapper;
     // explicit null means no wrapper
     if (wrapper === null) {
