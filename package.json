@@ -18,6 +18,7 @@
     "build:prod": "better-npm-run build:prod",
     "build": "npm run build:dist & npm run build:prod",
     "test": "better-npm-run test",
+    "test:mac": "COVERAGE=true NODE_ENV=test karma start",
     "test:single": "better-npm-run test:single",
     "test:debug": "better-npm-run test:debug",
     "test:ci": "better-npm-run test:ci",
