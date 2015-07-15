@@ -8,6 +8,7 @@ import formlyValidationMessages from './providers/formlyValidationMessages';
 import formlyUtil from './services/formlyUtil';
 import formlyWarn from './services/formlyWarn';
 
+import formlyAssignNgModelCtrl from './directives/formly-assign-ng-model-ctrl';
 import formlyCustomValidation from './directives/formly-custom-validation';
 import formlyField from './directives/formly-field';
 import formlyFocus from './directives/formly-focus';
@@ -33,6 +34,7 @@ ngModule.factory('formlyValidationMessages', formlyValidationMessages);
 ngModule.factory('formlyUtil', formlyUtil);
 ngModule.factory('formlyWarn', formlyWarn);
 
+ngModule.directive('formlyAssignNgModelCtrl', formlyAssignNgModelCtrl);
 ngModule.directive('formlyCustomValidation', formlyCustomValidation);
 ngModule.directive('formlyField', formlyField);
 ngModule.directive('formlyFocus', formlyFocus);

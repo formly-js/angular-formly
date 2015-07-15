@@ -231,7 +231,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       .then(transcludeInWrappers(scope.options, scope.formOptions))
       .then(runManipulators(fieldManipulators.postWrapper))
       .then(setElementTemplate)
-      .then(watchFormControl)
+      .then(addShowMessagesWatcher)
       .then(callLinkFunctions)
       .catch(error => {
         formlyWarn(
@@ -332,25 +332,25 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
         });
       }
 
-      function addShowMessagesWatcher() {
-        stopWatchingShowError = scope.$watch(function watchShowValidationChange() {
-          const customExpression = formlyConfig.extras.errorExistsAndShouldBeVisibleExpression;
-          const {options, fc} = scope;
-          if (!fc.$invalid) {
-            return false;
-          } else if (typeof options.validation.show === 'boolean') {
-            return options.validation.show;
-          } else if (customExpression) {
-            return formlyUtil.formlyEval(scope, customExpression, fc.$modelValue, fc.$viewValue);
-          } else {
-            let noTouchedButDirty = (angular.isUndefined(fc.$touched) && fc.$dirty);
-            return (scope.fc.$touched || noTouchedButDirty);
-          }
-        }, function onShowValidationChange(show) {
-          scope.options.validation.errorExistsAndShouldBeVisible = show;
-          scope.showError = show; // shortcut for template authors
-        });
-      }
+    }
+    function addShowMessagesWatcher() {
+      stopWatchingShowError = scope.$watch(function watchShowValidationChange() {
+        const customExpression = formlyConfig.extras.errorExistsAndShouldBeVisibleExpression;
+        const {options, fc} = scope;
+        if (!fc.$invalid) {
+          return false;
+        } else if (typeof options.validation.show === 'boolean') {
+          return options.validation.show;
+        } else if (customExpression) {
+          return formlyUtil.formlyEval(scope, customExpression, fc.$modelValue, fc.$viewValue);
+        } else {
+          let noTouchedButDirty = (angular.isUndefined(fc.$touched) && fc.$dirty);
+          return (scope.fc.$touched || noTouchedButDirty);
+        }
+      }, function onShowValidationChange(show) {
+        scope.options.validation.errorExistsAndShouldBeVisible = show;
+        scope.showError = show; // shortcut for template authors
+      });
     }
 
     function callLinkFunctions() {

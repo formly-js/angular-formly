@@ -5,6 +5,7 @@ import index from './index.common';
 import './providers/formlyApiCheck.test';
 import './providers/formlyConfig.test';
 import './services/formlyUtil.test';
+import './directives/formly-assign-ng-model-ctrl.test';
 import './directives/formly-custom-validation.test';
 import './directives/formly-field.test';
 import './directives/formly-form.test';
