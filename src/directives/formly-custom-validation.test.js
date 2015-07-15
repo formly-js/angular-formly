@@ -1,7 +1,6 @@
 /* eslint no-unused-vars:0, max-len:0 */
 import _ from 'lodash';
 import angular from 'angular-fix';
-import {expect} from 'chai';
 
 describe(`formly-custom-validation`, function() {
   let $compile, $timeout, $q, scope, $log, formlyConfig;

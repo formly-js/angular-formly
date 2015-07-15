@@ -2,7 +2,6 @@
 /* eslint no-console:0 */
 /* eslint max-len:0 */
 /* eslint max-nested-callbacks:0 */
-import {expect} from 'chai';
 import testUtils from '../test.utils.js';
 import angular from 'angular-fix';
 import _ from 'lodash';

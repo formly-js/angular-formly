@@ -4,7 +4,6 @@
 /* eslint no-console:0 */
 import angular from 'angular-fix';
 import apiCheck from 'api-check';
-import {expect} from 'chai';
 import testUtils from '../test.utils.js';
 
 const {getNewField, input, basicForm, multiNgModelField} = testUtils;

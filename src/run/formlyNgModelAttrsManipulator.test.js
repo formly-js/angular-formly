@@ -1,6 +1,5 @@
 /* eslint max-len:0 */
 import angular from 'angular';
-import {expect} from 'chai';
 import _ from 'lodash';
 
 describe('formlyNgModelAttrsManipulator', () => {

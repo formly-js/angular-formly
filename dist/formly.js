@@ -167,7 +167,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	'use strict';
 
@@ -186,7 +186,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var args = Array.prototype.slice.call(arguments);
 	      var warnInfoSlug = args.shift();
 	      args.unshift('Formly Warning:');
-	      args.push('' + formlyErrorAndWarningsUrlPrefix + '' + warnInfoSlug);
+	      args.push('' + formlyErrorAndWarningsUrlPrefix + warnInfoSlug);
 	      $log.warn.apply($log, _toConsumableArray(args));
 	    }
 	  };
@@ -216,7 +216,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
 
@@ -267,6 +267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return apiCheck.utils.checkerHelpers.setupChecker(shapeRequiredIfNotDefinition);
 	}
 
+	// TODO in 7.0.0 .nullable is available on all checkers
 	function nullable(checker) {
 	  return apiCheck.oneOfType([apiCheck.oneOf([null]), checker]);
 	}
@@ -427,7 +428,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
 
@@ -496,7 +497,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function getErrorMessage(errorInfoSlug, message) {
 	    var url = '';
 	    if (errorInfoSlug !== null) {
-	      url = '' + formlyErrorAndWarningsUrlPrefix + '' + errorInfoSlug;
+	      url = '' + formlyErrorAndWarningsUrlPrefix + errorInfoSlug;
 	    }
 	    return 'Formly Error: ' + message + '. ' + url;
 	  }
@@ -742,6 +743,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          template: options,
 	          name: name
 	        };
+	        _x2 = undefined;
 	        _again = true;
 	        continue _function;
 	      }
@@ -785,7 +787,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function checkOverwrite(property, object, newValue, objectName) {
 	    if (object.hasOwnProperty(property)) {
-	      warn(['Attempting to overwrite ' + property + ' on ' + objectName + ' which is currently', '' + JSON.stringify(object[property]) + ' with ' + JSON.stringify(newValue), 'To supress this warning, specify the property "overwriteOk: true"'].join(' '));
+	      warn(['Attempting to overwrite ' + property + ' on ' + objectName + ' which is currently', JSON.stringify(object[property]) + ' with ' + JSON.stringify(newValue), 'To supress this warning, specify the property "overwriteOk: true"'].join(' '));
 	    }
 	  }
 
@@ -941,7 +943,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 11 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	"use strict";
 
@@ -974,7 +976,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function templateOptionValue(prop, prefix, suffix, alternate) {
 	    return function getValidationMessage(viewValue, modelValue, scope) {
 	      if (scope.options.templateOptions[prop]) {
-	        return "" + prefix + " " + scope.options.templateOptions[prop] + " " + suffix;
+	        return prefix + " " + scope.options.templateOptions[prop] + " " + suffix;
 	      } else {
 	        return alternate;
 	      }
@@ -1353,8 +1355,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function invokeControllers(scope) {
-	      var options = arguments[1] === undefined ? {} : arguments[1];
-	      var type = arguments[2] === undefined ? {} : arguments[2];
+	      var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	      var type = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
 	      _angularFix2['default'].forEach([type.controller, options.controller], function (controller) {
 	        if (controller) {
@@ -1394,7 +1396,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var extraAttributes = '';
 	      if (scope.options.elementAttributes) {
 	        extraAttributes = Object.keys(scope.options.elementAttributes).map(function (key) {
-	          return '' + key + '="' + scope.options.elementAttributes[key] + '"';
+	          return key + '="' + scope.options.elementAttributes[key] + '"';
 	        }).join(' ');
 	      }
 	      var modelValue = 'model';
@@ -1639,7 +1641,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function getWrapperOption(options, formOptions) {
-	    /* eslint complexity:[6, 2] */
+	    /* eslint complexity:[2, 6] */
 	    var wrapper = options.wrapper;
 	    // explicit null means no wrapper
 	    if (wrapper === null) {
@@ -1723,7 +1725,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 15 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	'use strict';
 
@@ -1844,7 +1846,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          throw formlyUsability.getFormlyError('bind-name attribute on formly-form not allowed in < angular 1.3');
 	        }
 	        // we can do a one-time binding here because we know we're in 1.3.x territory
-	        formName = '' + $interpolate.startSymbol() + '::\'formly_\' + ' + bindName + '' + $interpolate.endSymbol();
+	        formName = $interpolate.startSymbol() + '::\'formly_\' + ' + bindName + $interpolate.endSymbol();
 	      }
 	      return formName;
 	    }
@@ -1857,7 +1859,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var nodeValue = _ref.nodeValue;
 
 	        if (nodeName !== 'undefined' && excluded.indexOf(nodeName) === -1) {
-	          arrayAttrs.push('' + toKebabCase(nodeName) + '="' + nodeValue + '"');
+	          arrayAttrs.push(toKebabCase(nodeName) + '="' + nodeValue + '"');
 	        }
 	      });
 	      return arrayAttrs.join(' ');
@@ -2199,7 +2201,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          if (_angularFix2['default'].isString(to[name])) {
 	            attrVal = '$eval(' + ref + ')';
 	          } else if (_angularFix2['default'].isFunction(to[name])) {
-	            attrVal = '' + ref + '(model[options.key], options, this, $event)';
+	            attrVal = ref + '(model[options.key], options, this, $event)';
 	          } else {
 	            throw new Error('options.templateOptions.' + name + ' must be a string or function: ' + JSON.stringify(options));
 	          }
@@ -2208,7 +2210,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          attrVal = ref;
 	        } else if ((val.attribute || val.boolean) && inEp) {
 	          attrName = val.attribute || val.boolean;
-	          attrVal = '' + $interpolate.startSymbol() + '' + ref + '' + $interpolate.endSymbol();
+	          attrVal = '' + $interpolate.startSymbol() + ref + $interpolate.endSymbol();
 	        } else if (val.attribute && inTo) {
 	          attrName = val.attribute;
 	          attrVal = toVal;
@@ -2233,7 +2235,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function getNgModelNodes(node, skip) {
 	    var selectorNot = _angularFix2['default'].isString(skip) ? ':not(' + skip + ')' : '';
 	    var skipNot = ':not([formly-skip-ng-model-attrs-manipulator])';
-	    var query = '[ng-model]' + selectorNot + '' + skipNot + ', [data-ng-model]' + selectorNot + '' + skipNot;
+	    var query = '[ng-model]' + selectorNot + skipNot + ', [data-ng-model]' + selectorNot + skipNot;
 	    return node.querySelectorAll(query);
 	  }
 
