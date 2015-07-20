@@ -65,6 +65,8 @@ See the [issues labeled enhancement](https://github.com/formly-js/angular-formly
 
 Please see the [CONTRIBUTING Guidelines](CONTRIBUTING.md).
 
+**Note**: This projects adheres to a [Code of Conduct](CODE_OF_CONDUCT.md).
+
 ## Bookmark Links
 
 You can bookmark these :-)

@@ -1,3 +1,9 @@
+# 6.19.0
+
+## New Features
+
+- Adding a code of conduct for contributing to the project to be more open and encourage diversity. 🎉
+
 # 6.18.1
 
 ## Bug Fixes
