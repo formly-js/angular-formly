@@ -890,6 +890,13 @@ describe('formly-field', function() {
       expect(field.formControl).to.not.exist;
       expect(() => field.resetModel()).to.not.throw();
     });
+
+    it(`should not digest if there's a digest in progress`, () => {
+      scope.fields = [getNewField()];
+      compileAndDigest();
+      scope.$root.$$phase = '$digest';
+      expect(() => field.resetModel()).to.not.throw();
+    });
   });
 
   describe(`with a div ng-model`, () => {
