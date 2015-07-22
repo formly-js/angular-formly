@@ -578,9 +578,10 @@ describe('formly-field', function() {
   });
 
   describe(`type apiCheck`, () => {
-    let type = 'input';
+    let inputType;
+    const type = 'input';
     beforeEach(() => {
-      formlyConfig.setType({
+      inputType = formlyConfig.setType({
         name: type,
         template: '<label>{{to.label}}</label><input class="{{to.className}}" ng-model="model[options.key]" />',
         apiCheck(check) {
@@ -599,6 +600,39 @@ describe('formly-field', function() {
         }
       });
       scope.model = {};
+    });
+
+    it(`should default to the built-in formlyApiCheck`, inject((formlyApiCheck) => {
+      const type = formlyConfig.setType({
+        name: 'someOtherType',
+        template: '<hr />',
+        apiCheck: sinon.spy()
+      });
+      scope.fields = [{type: 'someOtherType'}];
+      compileAndDigest();
+      expect(type.apiCheck).to.have.been.calledWith(formlyApiCheck);
+    }));
+
+    it(`should work with the old api`, () => {
+      shouldWarn(
+        /deprecated/,
+        () => {
+          formlyConfig.setType({
+            name: 'someOtherType',
+            template: '<label>{{to.label}}</label>',
+            apiCheck: {
+              templateOptions: apiCheck.shape({
+                label: apiCheck.string
+              })
+            }
+          });
+        }
+      );
+      scope.fields = [{type: 'someOtherType'}];
+      shouldWarn(
+        /angular-formly: formly-field type someOtherType apiCheck failed.*?Required `label`.*?templateOptions.*?`String`/,
+        compileAndDigest
+      );
     });
 
     it(`should not warn if everything's fine`, () => {
@@ -651,11 +685,41 @@ describe('formly-field', function() {
       );
     });
 
+    describe(`disabled`, () => {
+      it(`should not do anything if the given instance is disabled`, () => {
+        inputType.apiCheckInstance.config.disabled = true;
+        scope.fields = [
+          {type, templateOptions: {label: 'string'}}
+        ];
+        shouldNotWarn(compileAndDigest);
+      });
+
+      it(`should not do anything if no instance is provided and the formly instance is disabled`, inject((formlyApiCheck) => {
+        formlyApiCheck.config.disabled = true;
+        formlyConfig.setType({
+          name: 'someOtherType',
+          template: '<hr />',
+          apiCheck: checker => ({data: {foo: checker.bool}})
+        });
+        scope.fields = [{type: 'someOtherType'}];
+        shouldNotWarn(compileAndDigest);
+        formlyApiCheck.config.disabled = false;
+      }));
+
+      it(`should not do anything if the global instance is disabled`, () => {
+        apiCheck.globalConfig.disabled = true;
+        scope.fields = [
+          {type, templateOptions: {label: 'string'}}
+        ];
+        shouldNotWarn(compileAndDigest);
+        apiCheck.globalConfig.disabled = false;
+      });
+    });
+
     describe(`extended scenario`, () => {
-      let childType, parentType, pristineOptions;
+      let childType, pristineOptions;
       beforeEach(() => {
-        parentType = formlyConfig.getType(type);
-        sinon.spy(parentType, 'apiCheck');
+        sinon.spy(inputType, 'apiCheck');
         childType = formlyConfig.setType({
           name: type + 'Child',
           extends: type,
@@ -682,7 +746,7 @@ describe('formly-field', function() {
       it(`should pass if everything is ok`, () => {
         compileDigestAndMatchError();
         expect(childType.apiCheck).to.have.been.calledWith(childType.apiCheckInstance);
-        expect(parentType.apiCheck).to.have.been.calledWith(parentType.apiCheckInstance);
+        expect(inputType.apiCheck).to.have.been.calledWith(inputType.apiCheckInstance);
       });
 
       it(`should throw if the child has a problem`, () => {
@@ -696,7 +760,7 @@ describe('formly-field', function() {
         childType.apiCheckFunction = 'warn';
         compileDigestAndMatchError();
         expect(childType.apiCheck).to.have.been.calledWith(childType.apiCheckInstance);
-        expect(parentType.apiCheck).to.have.been.calledWith(parentType.apiCheckInstance);
+        expect(inputType.apiCheck).to.have.been.calledWith(inputType.apiCheckInstance);
       });
 
       function compileDigestAndMatchError(fieldOverrides, error) {
@@ -1392,7 +1456,6 @@ describe('formly-field', function() {
     return getFieldNode(index).querySelector('[ng-model]');
   }
 
-
   function shouldWarn(match, test) {
     var originalWarn = console.warn;
     var calledArgs;
@@ -1400,12 +1463,11 @@ describe('formly-field', function() {
       calledArgs = arguments;
     };
     test();
-    if (!calledArgs) {
-      throw new Error('Expected warning, but there was none');
-    }
-    expect(calledArgs[0]).to.match(match);
+    expect(calledArgs, 'expected warning and there was none').to.exist;
+    expect(Array.prototype.join.call(calledArgs, ' ')).to.match(match);
     console.warn = originalWarn;
   }
+
 
   function shouldNotWarn(test) {
     var originalWarn = console.warn;
