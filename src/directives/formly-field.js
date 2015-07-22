@@ -295,7 +295,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       const ngModelNodes = templateEl[0].querySelectorAll('[ng-model],[data-ng-model]');
 
 
-      if (ngModelNodes) {
+      if (ngModelNodes.length) {
         angular.forEach(ngModelNodes, function(ngModelNode) {
           fieldCount++;
           watchFieldNameOrExistence(ngModelNode.getAttribute('name'));
