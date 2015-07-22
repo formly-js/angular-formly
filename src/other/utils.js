@@ -38,6 +38,7 @@ function reverseDeepMerge(dest) {
       }
     });
   });
+  return dest;
 }
 
 function objAndSameType(obj1, obj2) {

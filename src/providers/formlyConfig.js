@@ -4,7 +4,7 @@ import utils from '../other/utils';
 export default formlyConfig;
 
 // @ngInject
-function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
+function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, formlyApiCheck) {
 
   var typeMap = {};
   var templateWrappersMap = {};
@@ -15,6 +15,7 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
   angular.extend(this, {
     setType,
     getType,
+    getTypeHeritage,
     setWrapper,
     getWrapper,
     getWrapperByType,
@@ -38,13 +39,18 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
 
   function setType(options) {
     if (angular.isArray(options)) {
-      angular.forEach(options, setType);
+      const allTypes = [];
+      angular.forEach(options, item => {
+        allTypes.push(setType(item));
+      });
+      return allTypes;
     } else if (angular.isObject(options)) {
       checkType(options);
       if (options.extends) {
         extendTypeOptions(options);
       }
       typeMap[options.name] = options;
+      return typeMap[options.name];
     } else {
       throw getError(`You must provide an object or array for setType. You provided: ${JSON.stringify(arguments)}`);
     }
@@ -55,6 +61,7 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
       prefix: 'formlyConfig.setType',
       url: 'settype-validation-failed'
     });
+    checkApiCheck(options);
     if (!options.overwriteOk) {
       checkOverwrite(options.name, typeMap, options, 'types');
     } else {
@@ -181,6 +188,19 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
     }
   }
 
+  function getTypeHeritage(parent) {
+    var heritage = [];
+    var type = getType(parent);
+    parent = type.extends;
+    while(parent) {
+      type = getType(parent);
+      heritage.push(type);
+      parent = type.extends;
+    }
+    return heritage;
+  }
+
+
   function setWrapper(options, name) {
     if (angular.isArray(options)) {
       return options.map(wrapperOptions => setWrapper(wrapperOptions));
@@ -218,6 +238,7 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
     if (options.template) {
       formlyUsabilityProvider.checkWrapperTemplate(options.template, options);
     }
+    checkApiCheck(options);
     if (!options.overwriteOk) {
       checkOverwrite(options.name, templateWrappersMap, options, 'templateWrappers');
     } else {
@@ -235,11 +256,22 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
 
   function checkOverwrite(property, object, newValue, objectName) {
     if (object.hasOwnProperty(property)) {
-      warn([
+      warn('overwriting-types-or-wrappers', [
         `Attempting to overwrite ${property} on ${objectName} which is currently`,
         `${JSON.stringify(object[property])} with ${JSON.stringify(newValue)}`,
         `To supress this warning, specify the property "overwriteOk: true"`
       ].join(' '));
+    }
+  }
+
+  function checkApiCheck(options) {
+    if (options.apiCheck && !angular.isFunction(options.apiCheck)) {
+      warn(
+        'apicheck-as-an-object-deprecated',
+        'apiCheck as an object has been deprecated',
+        `Attempted for type: ${options.name}`,
+        options
+      );
     }
   }
 
@@ -283,7 +315,11 @@ function formlyConfig(formlyUsabilityProvider, formlyApiCheck) {
   function warn() {
     if (!_this.disableWarnings && console.warn) {
       /* eslint no-console:0 */
-      console.warn(...arguments);
+      var args = Array.prototype.slice.call(arguments);
+      var warnInfoSlug = args.shift();
+      args.unshift('Formly Warning:');
+      args.push(`${formlyErrorAndWarningsUrlPrefix}${warnInfoSlug}`);
+      console.warn(...args);
     }
   }
 }

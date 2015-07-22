@@ -1,3 +1,14 @@
+# 6.20.0
+
+## New Features
+
+- You can now specify `apiCheck` as a function that is invoked with your specified instance of an `apiCheck`, you return an object of checkers as before (except now the properties are wrapped in a `shape` for you so you don't have to wrapp the root properties in `shape`s).
+- Slightly improved messaging for failed checks.
+
+## Deprecations
+
+- You will now get a deprecation warning if you specify the `apiCheck` property as an object rather than a function. [#334](/../../issues/334)
+
 # 6.19.0
 
 ## New Features

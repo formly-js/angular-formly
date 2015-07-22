@@ -102,7 +102,7 @@ describe(`formly-custom-validation`, function() {
           'Formly Warning:',
           'Validators returning promises should use asyncValidators instead of validators.',
           scope.options,
-          /validators-returning-promises-should-use-asyncValidators/
+          /validators-returning-promises-should-use-asyncvalidators/
         ];
         shouldWarn(logArgs, () => {
           validate(() => $q.when(), true);

@@ -38,7 +38,7 @@ function nullable(checker) {
 let formlyExpression = apiCheck.oneOfType([apiCheck.string, apiCheck.func]);
 let specifyWrapperType = nullable(apiCheck.typeOrArrayOf(apiCheck.string));
 
-const apiCheckProperty = apiCheck.objectOf(apiCheck.func);
+const apiCheckProperty = apiCheck.oneOfType([apiCheck.func, apiCheck.objectOf(apiCheck.func)]);
 
 const apiCheckInstanceProperty = apiCheck.shape.onlyIf('apiCheck', apiCheck.func.withProperties({
   warn: apiCheck.func,

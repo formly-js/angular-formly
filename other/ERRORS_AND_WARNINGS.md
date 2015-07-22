@@ -24,6 +24,10 @@ Fixes for this warning are:
 Webpack's `raw-loader` then it's as simple as `require('./my-formly-template.html')`. This is what I do, and it's a
 beautiful thing :-)
 
+# Overwriting types or wrappers
+
+If you wish to override an existing type or wrapper, you must specify `overwriteOk: true`.
+
 # Type {type} has no template
 
 This means that you're specifying a type for a field that doesn't not have a template or templateUrl. For a field to
@@ -129,6 +133,14 @@ Due to some issues with treating all function validators as async validators, th
 simply `validators` and `asyncValidators`. The ability to return a promise from a validator has been deprecated and you
 should use `asyncValidators` for those now. For more info, see
 [#369](https://github.com/formly-js/angular-formly/issues/369).
+
+# apiCheck as an object deprecated
+
+As a performance optimization, the `apiCheck` property has been changed to a function. This is good because when
+apiCheck is disabled (either globally or the specified `apiCheckInstance`), the function is not even called which means
+the apiCheck checkers are never even created. Not much we can do about the couple of extra bytes, but that's not really
+a big issue. For more info, see [#334](https://github.com/formly-js/angular-formly/issues/334). Note, this will be
+removed in a major release.
 
 # Notes
 

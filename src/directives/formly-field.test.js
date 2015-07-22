@@ -583,17 +583,18 @@ describe('formly-field', function() {
       formlyConfig.setType({
         name: type,
         template: '<label>{{to.label}}</label><input class="{{to.className}}" ng-model="model[options.key]" />',
-        apiCheck: {
-          templateOptions: apiCheck.shape({
-            label: apiCheck.string,
-            className: apiCheck.string
-          })
+        apiCheck(check) {
+          return {
+            templateOptions: {
+              label: check.string,
+              className: check.string
+            }
+          };
         },
         apiCheckInstance: apiCheck({
           output: {prefix: 'custom-api-check'}
         }),
         apiCheckOptions: {
-          prefix: type + ' type checker',
           url: 'http://example.com/some-custom-url'
         }
       });
@@ -612,7 +613,7 @@ describe('formly-field', function() {
         {type, templateOptions: {label: 'string'}}
       ];
       shouldWarn(
-        /custom-api-check.*?input type checker.*?some-custom-url(.|\n)*?className/,
+        /custom-api-check formly-field type input for property templateOptions apiCheck failed.*?className.*?some-custom-url/,
         compileAndDigest
       );
     });
@@ -623,7 +624,113 @@ describe('formly-field', function() {
         {type, templateOptions: {label: 'string'}}
       ];
       expect(compileAndDigest).to.throw(
-        /custom-api-check.*?input type checker.*?some-custom-url(.|\n)*?className/
+        /custom-api-check formly-field type input for property templateOptions apiCheck failed.*?.className.*?some-custom-url/
+      );
+    });
+
+    it(`should work with wrappers as well`, () => {
+      formlyConfig.setWrapper({
+        name: 'mywrapper',
+        template: 'wrapped!<formly-transclude></formly-transclude>wrapped!',
+        apiCheck(check) {
+          return {
+            templateOptions: {
+              foo: check.bool
+            }
+          };
+        },
+        apiCheckInstance: apiCheck({output: {prefix: 'my own'}}),
+        apiCheckOptions: {prefix: 'options prefix'}
+      });
+      scope.fields = [
+        {type, wrapper: 'mywrapper', templateOptions: {label: 'string', className: 'string'}}
+      ];
+      shouldWarn(
+        /my own options prefix apiCheck failed/,
+        compileAndDigest
+      );
+    });
+
+    describe(`extended scenario`, () => {
+      let childType, parentType, pristineOptions;
+      beforeEach(() => {
+        parentType = formlyConfig.getType(type);
+        sinon.spy(parentType, 'apiCheck');
+        childType = formlyConfig.setType({
+          name: type + 'Child',
+          extends: type,
+          template: '<hr />',
+          apiCheck(check) {
+            return {
+              data: {
+                foo: check.string
+              }
+            };
+          },
+          apiCheckFunction: 'throw',
+          apiCheckInstance: apiCheck({
+            output: {suffix: 'my own'}
+          }),
+          apiCheckOptions: {url: 'http://other-url.example.com', prefix: type + 'Child type checker'}
+        });
+
+        sinon.spy(childType, 'apiCheck');
+
+        pristineOptions = {type: type + 'Child', templateOptions: {label: 'foo', className: 'bar'}, data: {foo: 'bar'}};
+      });
+
+      it(`should pass if everything is ok`, () => {
+        compileDigestAndMatchError();
+        expect(childType.apiCheck).to.have.been.calledWith(childType.apiCheckInstance);
+        expect(parentType.apiCheck).to.have.been.calledWith(parentType.apiCheckInstance);
+      });
+
+      it(`should throw if the child has a problem`, () => {
+        compileDigestAndMatchError(
+          {data: {foo: false}},
+          /inputChild type checker apiCheck failed.*?`foo`.*?`String`.*?my own.*?other-url\.example\.com/
+        );
+      });
+
+      it(`should invoke the apiCheck for all extended types if an error is not thrown`, () => {
+        childType.apiCheckFunction = 'warn';
+        compileDigestAndMatchError();
+        expect(childType.apiCheck).to.have.been.calledWith(childType.apiCheckInstance);
+        expect(parentType.apiCheck).to.have.been.calledWith(parentType.apiCheckInstance);
+      });
+
+      function compileDigestAndMatchError(fieldOverrides, error) {
+        scope.fields = [_.merge(pristineOptions, fieldOverrides)];
+        if (error) {
+          expect(compileAndDigest).to.throw(error);
+        } else {
+          expect(compileAndDigest).to.not.throw();
+        }
+      }
+    });
+
+    it(`should have good default options`, () => {
+      formlyConfig.setType({
+        name: 'someType',
+        template: '<hr />',
+        apiCheck(check) {
+          return {
+            templateOptions: {
+              label: check.string,
+              className: check.string
+            }
+          };
+        },
+        apiCheckInstance: apiCheck({
+          output: {prefix: 'custom-api-check'}
+        })
+      });
+      scope.fields = [
+        {type: 'someType', templateOptions: {label: 'string'}}
+      ];
+      shouldWarn(
+        /custom-api-check formly-field type someType for property templateOptions apiCheck failed.*?Required.*?className/,
+        compileAndDigest
       );
     });
   });
@@ -635,11 +742,13 @@ describe('formly-field', function() {
       formlyConfig.setWrapper({
         name,
         template: '<div class="to.className"><label>{{to.label}}</label><formly-transclude></formly-transclude></div>',
-        apiCheck: {
-          templateOptions: apiCheck.shape({
-            label: apiCheck.string,
-            className: apiCheck.string
-          })
+        apiCheck(check) {
+          return {
+            templateOptions: {
+              label: check.string,
+              className: check.string
+            }
+          };
         },
         apiCheckInstance: apiCheck({
           output: {prefix: 'custom-api-check'}
@@ -984,7 +1093,7 @@ describe('formly-field', function() {
 
     it(`should allow you to specify any expression which will be used to evaluate the model at compile-time`, () => {
       scope.fields = [
-        getNewField({key: 'foobar', model: 'options.data.foo', data: {foo: { bar: 'foobar'}}})
+        getNewField({key: 'foobar', model: 'options.data.foo', data: {foo: {bar: 'foobar'}}})
       ];
 
       compileAndDigest();
@@ -1306,6 +1415,7 @@ describe('formly-field', function() {
     };
     test();
     if (calledArgs) {
+      console.log(calledArgs);
       throw new Error('Expected no warning, but there was one', calledArgs);
     }
     console.warn = originalWarn;

@@ -108,7 +108,7 @@ function formlyCustomValidation(formlyConfig, formlyUtil, $q, formlyWarn) {
         }
         warnedValidators.push(validator);
         formlyWarn(
-          'validators-returning-promises-should-use-asyncValidators',
+          'validators-returning-promises-should-use-asyncvalidators',
           'Validators returning promises should use asyncValidators instead of validators.',
           options
         );

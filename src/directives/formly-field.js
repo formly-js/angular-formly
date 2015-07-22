@@ -1,4 +1,5 @@
 import angular from 'angular-fix';
+import apiCheckFactory from 'api-check';
 
 export default formlyField;
 
@@ -152,8 +153,8 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     function resetModel() {
       $scope.model[$scope.options.key] = $scope.options.initialValue;
       if ($scope.options.formControl) {
-        if(angular.isArray($scope.options.formControl)){
-          angular.forEach($scope.options.formControl, function(formControl){
+        if (angular.isArray($scope.options.formControl)) {
+          angular.forEach($scope.options.formControl, function(formControl) {
             resetFormControl(formControl, true);
           });
         } else {
@@ -162,8 +163,8 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       }
     }
 
-    function resetFormControl(formControl, isMultiNgModel){
-      if(!isMultiNgModel){
+    function resetFormControl(formControl, isMultiNgModel) {
+      if (!isMultiNgModel) {
         formControl.$setViewValue($scope.model[$scope.options.key]);
       }
 
@@ -172,7 +173,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       formControl.$setPristine();
 
       // To prevent breaking change requiring a digest to reset $viewModel
-      if(!$scope.$root.$$phase){
+      if (!$scope.$root.$$phase) {
         $scope.$digest();
       }
     }
@@ -205,7 +206,6 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       $scope.options.options.formState = $scope.formState;
     }
   }
-
 
 
   // link function
@@ -314,8 +314,8 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       function watchFieldExistence(name) {
         scope.$watch(`form["${name}"]`, function formControlChange(formControl) {
           if (formControl) {
-            if(fieldCount > 1){
-              if(!scope.options.formControl){
+            if (fieldCount > 1) {
+              if (!scope.options.formControl) {
                 scope.options.formControl = [];
               }
               scope.options.formControl.push(formControl);
@@ -403,10 +403,10 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
   }
 
   function getFieldTemplate(options) {
-    function fromOptionsOrType(key, fieldType){
-      if(angular.isDefined(options[key])){
+    function fromOptionsOrType(key, fieldType) {
+      if (angular.isDefined(options[key])) {
         return options[key];
-      } else if(fieldType && angular.isDefined(fieldType[key])){
+      } else if (fieldType && angular.isDefined(fieldType[key])) {
         return fieldType[key];
       }
     }
@@ -538,7 +538,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       if (type.validateOptions) {
         type.validateOptions(options);
       }
-      runApiCheck(type, options);
+      runApiCheck(type, options, true);
     }
     if (options.expressionProperties && options.expressionProperties.hide) {
       formlyWarn(
@@ -556,17 +556,46 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     });
   }
 
-  function runApiCheck({apiCheck, apiCheckInstance, apiCheckFunction, apiCheckOptions}, options) {
+  function runApiCheck({apiCheck, apiCheckInstance, apiCheckFunction, apiCheckOptions}, options, forType) {
+    runApiCheckForType(apiCheck, apiCheckInstance, apiCheckFunction, apiCheckOptions, options);
+    if (forType && options.type) {
+      angular.forEach(formlyConfig.getTypeHeritage(options.type), function(type) {
+        runApiCheckForType(type.apiCheck, type.apiCheckInstance, type.apiCheckFunction, type.apiCheckOptions, options);
+      });
+    }
+  }
+
+  function runApiCheckForType(apiCheck, apiCheckInstance, apiCheckFunction, apiCheckOptions, options) {
+    /* eslint complexity:[2, 8] */
     if (!apiCheck) {
       return;
     }
     const instance = apiCheckInstance || formlyApiCheck;
+    if (instance.config.disabled || apiCheckFactory.globalConfig.disabled) {
+      return;
+    }
     const fn = apiCheckFunction || 'warn';
-    const shape = instance.shape(apiCheck);
-    instance[fn](shape, options, apiCheckOptions || {
-        prefix: `formly-field ${name}`,
-        url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
+    if (angular.isFunction(apiCheck)) {
+      // this is the new API
+      const checkerObjects = apiCheck(instance);
+      angular.forEach(checkerObjects, (shape, name) => {
+        const checker = instance.shape(shape);
+        const checkOptions = angular.extend({
+          prefix: `formly-field type ${options.type} for property ${name}`,
+          url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
+        }, apiCheckOptions);
+        instance[fn](checker, options[name], checkOptions);
       });
+    } else {
+      // TODO this is the deprecated API. Remove this in a breaking change.
+      const checker = instance.shape(apiCheck);
+      const checkOptions = apiCheckOptions || {
+          prefix: `formly-field type ${options.type}`,
+          url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
+        };
+      instance[fn](checker, options, checkOptions);
+    }
   }
+
 
 }

@@ -11,6 +11,12 @@ const {getNewField, basicForm} = testUtils;
 describe('formlyConfig', () => {
   beforeEach(window.module('formly'));
 
+  let formlyConfig;
+
+  beforeEach(inject((_formlyConfig_) => {
+    formlyConfig = _formlyConfig_;
+  }));
+
   describe('setWrapper/getWrapper', () => {
     var getterFn, setterFn;
     var template = '<span>This is my <formly-transclude></formly-transclude> template';
@@ -21,7 +27,7 @@ describe('formlyConfig', () => {
     var name2 = 'name2';
     var template2 = template + '2';
     var $log;
-    beforeEach(inject(function(formlyConfig, _$log_) {
+    beforeEach(inject(function(_$log_) {
       getterFn = formlyConfig.getWrapper;
       setterFn = formlyConfig.setWrapper;
       $log = _$log_;
@@ -311,8 +317,7 @@ describe('formlyConfig', () => {
         });
 
         describe(`function cases`, () => {
-          let args, parentFn, childFn, parentDefaultOptions, childDefaultOptions,
-            argsAndParent;
+          let args, parentFn, childFn, parentDefaultOptions, childDefaultOptions, argsAndParent;
           beforeEach(() => {
             args = {data: {someData: true}};
             parentDefaultOptions = {
@@ -573,11 +578,8 @@ describe('formlyConfig', () => {
       setterFn = formlyConfig[setterName];
       getterFn = formlyConfig[getterName];
     }));
+
     it(`should allow you to specify an apiCheck function that will be used to validate your options`, () => {
-      const apiCheck = {
-        templateOptions: formlyApiCheck.shape({}),
-        data: formlyApiCheck.shape({})
-      };
       expect(() => {
         setterFn({
           name,
@@ -587,21 +589,32 @@ describe('formlyConfig', () => {
       }).to.not.throw();
 
       expect(getterFn(name).apiCheck).to.equal(apiCheck);
+
+      function apiCheck() {
+        return {
+          templateOptions: {},
+          data: {}
+        };
+      }
     });
 
-    it(`should throw an error when specifying a function is the wrong shape`, () => {
-      // TODO
+    it(`should give a deprecation warning when providing apiCheck as an object rather than a function`, () => {
+      shouldWarn(
+        /Formly Warning: apiCheck as an object has been deprecated Attempted for type: input/,
+        function() {
+          setterFn({
+            name,
+            apiCheck: {},
+            template
+          });
+        }
+      );
     });
 
     describe(`apiCheckInstance`, () => {
       let apiCheckInstance;
-      let apiCheck;
       beforeEach(() => {
         apiCheckInstance = require('api-check')();
-        apiCheck = {
-          templateOptions: formlyApiCheck.shape({}),
-          data: formlyApiCheck.shape({})
-        };
       });
       it(`should allow you to specify an instance of your own apiCheck so messaging will be custom`, () => {
         expect(() => {
@@ -614,16 +627,16 @@ describe('formlyConfig', () => {
           setterFn({name, apiCheckInstance, template});
         }).to.throw();
       });
+
+      function apiCheck() {
+        return {
+          templateOptions: {},
+          data: {}
+        };
+      }
     });
 
     describe(`apiCheckFunction`, () => {
-      let apiCheck;
-      beforeEach(() => {
-        apiCheck = {
-          templateOptions: formlyApiCheck.shape({}),
-          data: formlyApiCheck.shape({})
-        };
-      });
       it(`should allow you to specify warn or throw as the `, () => {
         expect(() => {
           setterFn({name, apiCheck, apiCheckFunction: 'warn', template});
@@ -640,6 +653,13 @@ describe('formlyConfig', () => {
           setterFn({name, apiCheckFunction: 'other', template});
         }).to.throw();
       });
+
+      function apiCheck() {
+        return {
+          templateOptions: {},
+          data: {}
+        };
+      }
     });
   }
 
@@ -648,13 +668,12 @@ describe('formlyConfig', () => {
 
     describe(`that impact field rendering`, () => {
 
-      let scope, $compile, formlyConfig, el, field;
+      let scope, $compile, el, field;
 
-      beforeEach(inject(($rootScope, _$compile_, _formlyConfig_) => {
+      beforeEach(inject(($rootScope, _$compile_) => {
         scope = $rootScope.$new();
         $compile = _$compile_;
         scope.fields = [{template: '<input ng-model="model[options.key]" />'}];
-        formlyConfig = _formlyConfig_;
       }));
 
       describe(`defaultHideDirective`, () => {
@@ -734,6 +753,20 @@ describe('formlyConfig', () => {
 
   });
 
+  describe(`getTypeHeritage`, () => {
+    it(`should get the heritage of all type extensions`, () => {
+      formlyConfig.setType([
+        {name: 'grandparent'},
+        {name: 'parent', extends: 'grandparent'},
+        {name: 'child', extends: 'parent'},
+        {name: 'extra', extends: 'grandparent'},
+        {name: 'extra2'}
+      ]);
+      expect(formlyConfig.getTypeHeritage('child')).to.eql([
+        formlyConfig.getType('parent'), formlyConfig.getType('grandparent')
+      ]);
+    });
+  });
 
   function shouldWarn(match, test) {
     var originalWarn = console.warn;
@@ -742,7 +775,8 @@ describe('formlyConfig', () => {
       calledArgs = arguments;
     };
     test();
-    expect(calledArgs[0]).to.match(match);
+    expect(calledArgs, 'expected warning and there was none').to.exist;
+    expect(Array.prototype.join.call(calledArgs, ' ')).to.match(match);
     console.warn = originalWarn;
   }
 
