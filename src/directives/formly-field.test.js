@@ -1227,6 +1227,26 @@ describe('formly-field', function() {
     }));
   });
 
+  describe(`merging of options`, () => {
+    describe(`extends`, () => {
+      beforeEach(() => {
+        formlyConfig.setType({
+          name: 'hr',
+          template: '<hr />',
+          defaultOptions: () => ({data: {foo: 'bar', baz: 'foobar'}})
+        });
+      });
+
+      it(`should merge the options properly`, () => {
+        const field = {type: 'hr', data: {baz: 'barfoo'}};
+        scope.fields = [field];
+        compileAndDigest();
+        expect(field.data.baz).to.equal('barfoo');
+        expect(field.data.foo).to.equal('bar');
+      });
+    });
+  });
+
   function compileAndDigest(template = basicForm, context = scope) {
     el = $compile(template)(context);
     context.$digest();
