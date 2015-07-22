@@ -9,6 +9,10 @@
 
 - You will now get a deprecation warning if you specify the `apiCheck` property as an object rather than a function. [#334](/../../issues/334)
 
+## Bug Fixes
+
+- Fixing issue where watchers for a `formControl` were being set even if the template had no `ng-model`. Whoops...
+
 # 6.19.0
 
 ## New Features
