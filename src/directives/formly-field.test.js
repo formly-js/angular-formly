@@ -882,6 +882,14 @@ describe('formly-field', function() {
       expect(field.formControl[1].$touched).to.be.false;
       expect(field.formControl[1].$dirty).to.be.false;
     });
+
+    it(`should work just fine to call resetModel on a field that has no formControl`, () => {
+      const field = {template: '<hr />'};
+      scope.fields = [field];
+      compileAndDigest();
+      expect(field.formControl).to.not.exist;
+      expect(() => field.resetModel()).to.not.throw();
+    });
   });
 
   describe(`with a div ng-model`, () => {
