@@ -7,6 +7,7 @@ import './providers/formlyConfig.test';
 import './services/formlyUtil.test';
 import './directives/formly-custom-validation.test';
 import './directives/formly-field.test';
+import './directives/formly-focus.test';
 import './directives/formly-form.test';
 import './run/formlyNgModelAttrsManipulator.test';
 import './other/utils.test';
