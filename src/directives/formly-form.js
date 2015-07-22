@@ -91,9 +91,9 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
       const excluded = ['model', 'form', 'fields', 'options', 'name', 'role', 'class',
         'data-model', 'data-form', 'data-fields', 'data-options', 'data-name'];
       const arrayAttrs = [];
-      angular.forEach(attributes, ({nodeName, nodeValue}) => {
+      angular.forEach(attributes, ({nodeName, value}) => {
         if (nodeName !== 'undefined' && excluded.indexOf(nodeName) === -1) {
-          arrayAttrs.push(`${toKebabCase(nodeName)}="${nodeValue}"`);
+          arrayAttrs.push(`${toKebabCase(nodeName)}="${value}"`);
         }
       });
       return arrayAttrs.join(' ');
