@@ -5,6 +5,7 @@
 import angular from 'angular-fix';
 import apiCheck from 'api-check';
 import testUtils from '../test.utils.js';
+import _ from 'lodash';
 
 const {getNewField, input, basicForm, multiNgModelField} = testUtils;
 
@@ -551,11 +552,27 @@ describe('formly-field', function() {
       expect(() => compileAndDigest()).to.throw();
     });
 
-    it(`should not replace options.value when gettersetter is set`, () => {
-      var testfn = function(){};
-      scope.fields = [getNewField({modelOptions: {getterSetter: true}, value: testfn})];
-      compileAndDigest();
-      expect(getIsolateScope().options.value).to.eq(testfn);
+
+    describe(`value function`, () => {
+      let value;
+      it(`should be overrideable via value option`, () => {
+        compileDigestAndSetValueFunction({value: customGetterSetter});
+        expect(value).to.eq(customGetterSetter);
+        function customGetterSetter() {
+        }
+      });
+      it(`should be a getter/setter`, () => {
+        compileDigestAndSetValueFunction();
+        expect(value()).to.eq(undefined);
+        expect(value('foo')).to.eq('foo');
+        expect(value()).to.eq('foo');
+      });
+
+      function compileDigestAndSetValueFunction(fieldOverrides) {
+        scope.fields = [getNewField(_.merge({modelOptions: {getterSetter: true}}, fieldOverrides))];
+        compileAndDigest();
+        value = getIsolateScope().options.value;
+      }
     });
 
   });
