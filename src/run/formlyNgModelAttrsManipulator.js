@@ -11,8 +11,8 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
 
 
   function ngModelAttrsManipulator(template, options, scope) {
-    var node = document.createElement('div');
-    var data = options.data;
+    const node = document.createElement('div');
+    const data = options.data;
     if (data.skipNgModelAttrsManipulator === true) {
       return template;
     }
@@ -60,7 +60,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
       const to = options.templateOptions || {};
       const ep = options.expressionProperties || {};
 
-      let ngModelAttributes = getBuiltInAttributes();
+      const ngModelAttributes = getBuiltInAttributes();
 
       // extend with the user's specifications winning
       angular.extend(ngModelAttributes, options.ngModelAttrs);
@@ -68,8 +68,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
       // Feel free to make this more simple :-)
       angular.forEach(ngModelAttributes, (val, name) => {
         /* eslint complexity:[2, 14] */
-        let attrVal;
-        let attrName;
+        let attrVal, attrName;
         const ref = `options.templateOptions['${name}']`;
         const toVal = to[name];
         const epVal = getEpValue(ep, name);
@@ -130,7 +129,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
   }
 
   function getBuiltInAttributes() {
-    let ngModelAttributes = {
+    const ngModelAttributes = {
       focus: {
         attribute: 'formly-focus'
       }
@@ -159,7 +158,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
     });
 
     angular.forEach(expressionOnly, item => {
-      var propName = 'on' + item.substr(0, 1).toUpperCase() + item.substr(1);
+      const propName = 'on' + item.substr(0, 1).toUpperCase() + item.substr(1);
       ngModelAttributes[propName] = {expression: 'ng-' + item};
     });
 

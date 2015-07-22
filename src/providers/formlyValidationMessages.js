@@ -4,7 +4,7 @@ export default formlyValidationMessages;
 // @ngInject
 function formlyValidationMessages() {
 
-  var validationMessages = {
+  const validationMessages = {
     addTemplateOptionValueMessage,
     addStringMessage,
     messages: {}

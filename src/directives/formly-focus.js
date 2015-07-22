@@ -5,10 +5,11 @@ function formlyFocus($timeout, $document) {
   return {
     restrict: 'A',
     link: function formlyFocusLink(scope, element, attrs) {
-      var previousEl = null;
-      var el = element[0];
-      var doc = $document[0];
+      let previousEl = null;
+      const el = element[0];
+      const doc = $document[0];
       attrs.$observe('formlyFocus', function respondToFocusExpressionChange(value) {
+        /* eslint no-bitwise:0 */ // I know what I'm doing. I promise...
         if (value === 'true') {
           $timeout(function setElementFocus() {
             previousEl = doc.activeElement;

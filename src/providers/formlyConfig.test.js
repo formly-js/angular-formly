@@ -18,15 +18,14 @@ describe('formlyConfig', () => {
   }));
 
   describe('setWrapper/getWrapper', () => {
-    var getterFn, setterFn;
-    var template = '<span>This is my <formly-transclude></formly-transclude> template';
-    var templateUrl = '/path/to/my/template.html';
-    var typesString = 'checkbox';
-    var types = ['text', 'textarea'];
-    var name = 'hi';
-    var name2 = 'name2';
-    var template2 = template + '2';
-    var $log;
+    let getterFn, setterFn, $log;
+    const template = '<span>This is my <formly-transclude></formly-transclude> template';
+    const templateUrl = '/path/to/my/template.html';
+    const typesString = 'checkbox';
+    const types = ['text', 'textarea'];
+    const name = 'hi';
+    const name2 = 'name2';
+    const template2 = template + '2';
     beforeEach(inject(function(_$log_) {
       getterFn = formlyConfig.getWrapper;
       setterFn = formlyConfig.setWrapper;
@@ -95,12 +94,12 @@ describe('formlyConfig', () => {
       });
 
       it('should throw an error when the template does not use formly-transclude', () => {
-        var error = /templates.*?must.*?<formly-transclude><\/formly-transclude>/;
+        const error = /templates.*?must.*?<formly-transclude><\/formly-transclude>/;
         expect(() => setterFn({template: 'no formly-transclude'})).to.throw(error);
       });
 
       it('should throw an error when specifying an array type where not all items are strings', () => {
-        var error = /types.*?typeOrArrayOf.*?String.*?/i;
+        const error = /types.*?typeOrArrayOf.*?String.*?/i;
         expect(() => setterFn({template, types: ['hi', 2, false, 'cool']})).to.throw(error);
       });
 
@@ -127,10 +126,10 @@ describe('formlyConfig', () => {
   });
 
   describe('getWrapperByType', () => {
-    var getterFn, setterFn;
-    var types = ['input', 'checkbox'];
-    var types2 = ['input', 'select'];
-    var templateUrl = '/path/to/file.html';
+    let getterFn, setterFn;
+    const types = ['input', 'checkbox'];
+    const types2 = ['input', 'select'];
+    const templateUrl = '/path/to/file.html';
     beforeEach(inject(function(formlyConfig) {
       setterFn = formlyConfig.setWrapper;
       getterFn = formlyConfig.getWrapperByType;
@@ -138,14 +137,14 @@ describe('formlyConfig', () => {
 
     describe('＼(＾O＾)／ path', () => {
       it('should return a template wrapper that has the same type', () => {
-        var option = setterFn({templateUrl, types});
+        const option = setterFn({templateUrl, types});
         expect(getterFn(types[0])).to.eql([option]);
       });
 
       it('should return an array when multiple wrappers have the same time', () => {
         setterFn({templateUrl, types});
         setterFn({templateUrl, types: types2});
-        var inputWrappers = getterFn('input');
+        const inputWrappers = getterFn('input');
         expect(inputWrappers).to.be.instanceOf(Array);
         expect(inputWrappers).to.have.length(2);
       });
@@ -154,12 +153,12 @@ describe('formlyConfig', () => {
   });
 
   describe('removeWrapper', () => {
-    var remove, removeForType, setterFn, getterFn, getByTypeFn;
-    var template = '<div>Something <formly-transclude></formly-transclude> cool</div>';
-    var name = 'name';
-    var types = ['input', 'checkbox'];
-    var types2 = ['input', 'something else'];
-    var types3 = ['checkbox', 'something else'];
+    let remove, removeForType, setterFn, getterFn, getByTypeFn;
+    const template = '<div>Something <formly-transclude></formly-transclude> cool</div>';
+    const name = 'name';
+    const types = ['input', 'checkbox'];
+    const types2 = ['input', 'something else'];
+    const types3 = ['checkbox', 'something else'];
     beforeEach(inject((formlyConfig) => {
       remove = formlyConfig.removeWrapperByName;
       removeForType = formlyConfig.removeWrappersForType;
@@ -177,22 +176,22 @@ describe('formlyConfig', () => {
     it('should allow you to remove a wrapper for a type', () => {
       setterFn({types, template});
       setterFn({types: types2, template});
-      var checkboxAndSomethingElseWrapper = setterFn({types: types3, template});
+      const checkboxAndSomethingElseWrapper = setterFn({types: types3, template});
       removeForType('input');
       expect(getByTypeFn('input')).to.be.empty;
-      var checkboxWrappers = getByTypeFn('checkbox');
+      const checkboxWrappers = getByTypeFn('checkbox');
       expect(checkboxWrappers).to.eql([checkboxAndSomethingElseWrapper]);
     });
   });
 
 
   describe('setType/getType', () => {
-    var getterFn, setterFn;
-    var name = 'input';
-    var template = '<input type="{{options.inputType}}" />';
-    var templateUrl = '/input.html';
-    var wrapper = 'input';
-    var wrapper2 = 'input2';
+    let getterFn, setterFn;
+    const name = 'input';
+    const template = '<input type="{{options.inputType}}" />';
+    const templateUrl = '/input.html';
+    const wrapper = 'input';
+    const wrapper2 = 'input2';
     beforeEach(inject(function(formlyConfig) {
       getterFn = formlyConfig.getType;
       setterFn = formlyConfig.setType;
@@ -281,7 +280,7 @@ describe('formlyConfig', () => {
         });
 
         describe(`template/templateUrl Cases`, () => {
-          it('should use templateUrl if type defines it and its parent has template defined', function(){
+          it('should use templateUrl if type defines it and its parent has template defined', function() {
             setterFn([
               {
                 name,
@@ -298,7 +297,7 @@ describe('formlyConfig', () => {
             expect(getterFn('type2').template).to.be.undefined;
           });
 
-          it('should use template if type defines it and its parent had templateUrl defined', function(){
+          it('should use template if type defines it and its parent had templateUrl defined', function() {
             setterFn([
               {
                 name,
@@ -380,7 +379,7 @@ describe('formlyConfig', () => {
               {name, defaultOptions: parentDefaultOptions},
               {name: 'type2', extends: name, defaultOptions: childFn}
             ]);
-            var returned = getterFn('type2').defaultOptions(args);
+            const returned = getterFn('type2').defaultOptions(args);
             expect(childFn).to.have.been.calledWith(argsAndParent);
             expect(returned).to.eql(childDefaultOptions);
           });
@@ -522,8 +521,6 @@ describe('formlyConfig', () => {
 
       describe(`validateOptions`, () => {
         it(`should allow you to specify this as a property of a type`, () => {
-          const validateOptions = () => {
-          };
           expect(() => {
             setterFn({
               name,
@@ -532,6 +529,9 @@ describe('formlyConfig', () => {
             });
           }).to.not.throw();
           expect(getterFn(name).validateOptions).to.be.a('function');
+
+          function validateOptions() {
+          }
         });
       });
 
@@ -733,7 +733,6 @@ describe('formlyConfig', () => {
       });
 
 
-
       function compileAndDigest(template) {
         el = $compile(template || basicForm)(scope);
         scope.$digest();
@@ -769,8 +768,8 @@ describe('formlyConfig', () => {
   });
 
   function shouldWarn(match, test) {
-    var originalWarn = console.warn;
-    var calledArgs;
+    const originalWarn = console.warn;
+    let calledArgs;
     console.warn = function() {
       calledArgs = arguments;
     };
@@ -781,8 +780,8 @@ describe('formlyConfig', () => {
   }
 
   function shouldNotWarn(test) {
-    var originalWarn = console.warn;
-    var callCount = 0;
+    const originalWarn = console.warn;
+    let callCount = 0;
     console.warn = () => callCount++;
     test();
     expect(callCount).to.equal(0);

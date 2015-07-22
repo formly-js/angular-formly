@@ -1,7 +1,7 @@
 import angular from 'angular-fix';
 import apiCheckFactory from 'api-check';
 
-let apiCheck = apiCheckFactory({
+const apiCheck = apiCheckFactory({
   output: {
     prefix: 'angular-formly:',
     docsBaseUrl: require('../other/docsBaseUrl')
@@ -13,9 +13,10 @@ function shapeRequiredIfNot(otherProps, propChecker) {
     otherProps = [otherProps];
   }
   const type = `specified if these are not specified: \`${otherProps.join(', ')}\` (otherwise it's optional)`;
+
   function shapeRequiredIfNotDefinition(prop, propName, location, obj) {
-    var propExists = obj && obj.hasOwnProperty(propName);
-    var otherPropsExist = otherProps.some(function (otherProp) {
+    const propExists = obj && obj.hasOwnProperty(propName);
+    const otherPropsExist = otherProps.some(function(otherProp) {
       return obj && obj.hasOwnProperty(otherProp);
     });
     if (!otherPropsExist && !propExists) {
@@ -24,6 +25,7 @@ function shapeRequiredIfNot(otherProps, propChecker) {
       return propChecker(prop, propName, location, obj);
     }
   }
+
   shapeRequiredIfNotDefinition.type = type;
   return apiCheck.utils.checkerHelpers.setupChecker(shapeRequiredIfNotDefinition);
 }
@@ -35,8 +37,8 @@ function nullable(checker) {
   ]);
 }
 
-let formlyExpression = apiCheck.oneOfType([apiCheck.string, apiCheck.func]);
-let specifyWrapperType = nullable(apiCheck.typeOrArrayOf(apiCheck.string));
+const formlyExpression = apiCheck.oneOfType([apiCheck.string, apiCheck.func]);
+const specifyWrapperType = nullable(apiCheck.typeOrArrayOf(apiCheck.string));
 
 const apiCheckProperty = apiCheck.oneOfType([apiCheck.func, apiCheck.objectOf(apiCheck.func)]);
 
@@ -83,7 +85,7 @@ const validatorChecker = apiCheck.objectOf(apiCheck.oneOfType([
   }).strict
 ]));
 
-let fieldOptionsApiShape = {
+const fieldOptionsApiShape = {
   $$hashKey: apiCheck.any.optional,
   type: apiCheck.shape.ifNot(['template', 'templateUrl'], apiCheck.string).optional,
   template: apiCheck.shape.ifNot(
@@ -151,7 +153,7 @@ let fieldOptionsApiShape = {
 };
 
 
-let formlyFieldOptions = apiCheck.shape(fieldOptionsApiShape).strict;
+const formlyFieldOptions = apiCheck.shape(fieldOptionsApiShape).strict;
 
 
 const formOptionsApi = apiCheck.shape({
@@ -181,10 +183,10 @@ const fieldGroup = apiCheck.shape({
   elementAttributes: apiCheck.objectOf(apiCheck.string).optional
 }).strict;
 
-let typeOptionsDefaultOptions = angular.copy(fieldOptionsApiShape);
+const typeOptionsDefaultOptions = angular.copy(fieldOptionsApiShape);
 typeOptionsDefaultOptions.key = apiCheck.string.optional;
 
-let formlyTypeOptions = apiCheck.shape({
+const formlyTypeOptions = apiCheck.shape({
   name: apiCheck.string,
   template: apiCheck.shape.ifNot('templateUrl', apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
   templateUrl: apiCheck.shape.ifNot('template', apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,

@@ -1,3 +1,10 @@
 {
-  "extends": "./node_modules/kcd-common-tools/shared/.eslintrc"
+  "extends": "./node_modules/kcd-common-tools/shared/test.eslintrc",
+  "rules": {
+    "max-params": [2, 11] // gotta love me some angular...
+  },
+  "globals": {
+    "inject": false,
+    "VERSION": false
+  }
 }

@@ -46,7 +46,7 @@ function formlyUsability(formlyApiCheck, formlyErrorAndWarningsUrlPrefix) {
   }
 
   function checkWrapperTemplate(template, additionalInfo) {
-    var formlyTransclude = '<formly-transclude></formly-transclude>';
+    const formlyTransclude = '<formly-transclude></formly-transclude>';
     if (template.indexOf(formlyTransclude) === -1) {
       throw getFormlyError(
         `Template wrapper templates must use "${formlyTransclude}" somewhere in them. ` +

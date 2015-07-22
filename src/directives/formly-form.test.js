@@ -136,8 +136,8 @@ describe('formly-form', () => {
 
     expect(scope.parent).to.have.property('formly_0_in_my_ng_repeat');
     expect(scope.parent).to.have.property('formly_1_in_my_ng_repeat');
-    var firstForm = el[0].querySelector('ng-form');
-    var firstFormScope = angular.element(firstForm).isolateScope();
+    const firstForm = el[0].querySelector('ng-form');
+    const firstFormScope = angular.element(firstForm).isolateScope();
     expect(firstFormScope.formId).to.eq('formly_0_in_my_ng_repeat');
   });
 
@@ -649,7 +649,7 @@ describe('formly-form', () => {
       function fieldTransform(fields) {
         const extraKeys = ['customThing', 'otherCustomThing'];
         return _.map(fields, field => {
-          var newField = {data: {}};
+          const newField = {data: {}};
           _.each(field, (val, name) => {
             if (_.contains(extraKeys, name)) {
               newField.data[name] = val;

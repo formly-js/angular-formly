@@ -17,7 +17,7 @@ function formlyCustomValidation(formlyConfig, formlyUtil, $q, formlyWarn) {
       });
 
 
-      var useNewValidatorsApi = ctrl.hasOwnProperty('$validators') && !attrs.hasOwnProperty('useParsers');
+      const useNewValidatorsApi = ctrl.hasOwnProperty('$validators') && !attrs.hasOwnProperty('useParsers');
       angular.forEach(opts.validators, addValidatorToPipeline.bind(null, false));
       angular.forEach(opts.asyncValidators, addValidatorToPipeline.bind(null, true));
 
@@ -32,7 +32,7 @@ function formlyCustomValidation(formlyConfig, formlyUtil, $q, formlyWarn) {
       }
 
       function setupMessage(validator, name) {
-        var message = validator.message;
+        const message = validator.message;
         if (message) {
           opts.validation.messages[name] = () => {
             return formlyUtil.formlyEval(scope, message, ctrl.$modelValue, ctrl.$viewValue);
@@ -41,8 +41,8 @@ function formlyCustomValidation(formlyConfig, formlyUtil, $q, formlyWarn) {
       }
 
       function setupWithValidators(validator, name, isAsync) {
-        var isPossiblyAsync = !angular.isString(validator);
-        var validatorCollection = (isPossiblyAsync || isAsync) ? '$asyncValidators' : '$validators';
+        const isPossiblyAsync = !angular.isString(validator);
+        let validatorCollection = (isPossiblyAsync || isAsync) ? '$asyncValidators' : '$validators';
 
         // this is temporary until we can have a breaking change. Allow people to get the wins of the explicitAsync api
         if (formlyConfig.extras.explicitAsync && !isAsync) {
@@ -50,7 +50,7 @@ function formlyCustomValidation(formlyConfig, formlyUtil, $q, formlyWarn) {
         }
 
         ctrl[validatorCollection][name] = function evalValidity(modelValue, viewValue) {
-          var value = formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
+          const value = formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
           // In the next breaking change, this code should simply return the value
           if (isAsync) {
             return value;
@@ -70,7 +70,7 @@ function formlyCustomValidation(formlyConfig, formlyUtil, $q, formlyWarn) {
       function setupWithParsers(validator, name, isAsync) {
         let inFlightValidator;
         ctrl.$parsers.unshift(function evalValidityOfParser(viewValue) {
-          var isValid = formlyUtil.formlyEval(scope, validator, ctrl.$modelValue, viewValue);
+          const isValid = formlyUtil.formlyEval(scope, validator, ctrl.$modelValue, viewValue);
           // In the next breaking change, rather than checking for isPromiseLike, it should just check for isAsync.
 
           if (isAsync || isPromiseLike(isValid)) {
@@ -101,6 +101,7 @@ function formlyCustomValidation(formlyConfig, formlyUtil, $q, formlyWarn) {
           return viewValue;
         });
       }
+
       function logAsyncValidatorsDeprecationNotice(validator, options) {
         if (warnedValidators.indexOf(validator) !== -1) {
           // we've warned about this one before. No spam necessary...

@@ -6,11 +6,11 @@ export default formlyConfig;
 // @ngInject
 function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, formlyApiCheck) {
 
-  var typeMap = {};
-  var templateWrappersMap = {};
-  var defaultWrapperName = 'default';
-  var _this = this;
-  var getError = formlyUsabilityProvider.getFormlyError;
+  const typeMap = {};
+  const templateWrappersMap = {};
+  const defaultWrapperName = 'default';
+  const _this = this;
+  const getError = formlyUsabilityProvider.getFormlyError;
 
   angular.extend(this, {
     setType,
@@ -79,10 +79,10 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
     extendTemplate(options, extendsType);
   }
 
-  function extendTemplate(options, extendsType){
-    if(options.template && extendsType.templateUrl){
+  function extendTemplate(options, extendsType) {
+    if (options.template && extendsType.templateUrl) {
       delete options.templateUrl;
-    } else if(options.templateUrl && extendsType.template){
+    } else if (options.templateUrl && extendsType.template) {
       delete options.template;
     }
   }
@@ -94,7 +94,7 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
     }
     const optionsCtrl = options.controller;
     if (angular.isDefined(optionsCtrl)) {
-      options.controller = function ($scope, $controller) {
+      options.controller = function($scope, $controller) {
         $controller(extendsCtrl, {$scope});
         $controller(optionsCtrl, {$scope});
       };
@@ -111,7 +111,7 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
     }
     const optionsFn = options.link;
     if (angular.isDefined(optionsFn)) {
-      options.link = function () {
+      options.link = function() {
         extendsFn(...arguments);
         optionsFn(...arguments);
       };
@@ -128,9 +128,9 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
     const optionsFn = options.validateOptions;
     const originalDefaultOptions = options.defaultOptions;
     if (angular.isDefined(optionsFn)) {
-      options.validateOptions = function (opts) {
+      options.validateOptions = function(opts) {
         optionsFn(opts);
-        let mergedOptions = angular.copy(opts);
+        const mergedOptions = angular.copy(opts);
         let defaultOptions = originalDefaultOptions;
         if (defaultOptions) {
           if (angular.isFunction(defaultOptions)) {
@@ -167,7 +167,7 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
       };
     } else if (optionsDOIsFn) {
       options.defaultOptions = function defaultOptions(opts) {
-        let newDefaultOptions = {};
+        const newDefaultOptions = {};
         utils.reverseDeepMerge(newDefaultOptions, opts, extendsDO);
         return optionsDO(newDefaultOptions);
       };
@@ -178,7 +178,7 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
     if (!name) {
       return undefined;
     }
-    var type = typeMap[name];
+    const type = typeMap[name];
     if (!type && throwError === true) {
       throw getError(
         `There is no type by the name of "${name}": ${JSON.stringify(errorContext)}`
@@ -189,10 +189,10 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
   }
 
   function getTypeHeritage(parent) {
-    var heritage = [];
-    var type = getType(parent);
+    const heritage = [];
+    let type = getType(parent);
     parent = type.extends;
-    while(parent) {
+    while (parent) {
       type = getType(parent);
       heritage.push(type);
       parent = type.extends;
@@ -248,7 +248,7 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
   }
 
   function checkWrapperTypes(options) {
-    let shouldThrow = !angular.isArray(options.types) || !options.types.every(angular.isString);
+    const shouldThrow = !angular.isArray(options.types) || !options.types.every(angular.isString);
     if (shouldThrow) {
       throw getError(`Attempted to create a template wrapper with types that is not a string or an array of strings`);
     }
@@ -280,9 +280,9 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
   }
 
   function getWrapperByType(type) {
-    /* jshint maxcomplexity:6 */
-    var wrappers = [];
-    for (var name in templateWrappersMap) {
+    /* eslint prefer-const:0 */
+    const wrappers = [];
+    for (let name in templateWrappersMap) {
       if (templateWrappersMap.hasOwnProperty(name)) {
         if (templateWrappersMap[name].types && templateWrappersMap[name].types.indexOf(type) !== -1) {
           wrappers.push(templateWrappersMap[name]);
@@ -293,13 +293,13 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
   }
 
   function removeWrapperByName(name) {
-    var wrapper = templateWrappersMap[name];
+    const wrapper = templateWrappersMap[name];
     delete templateWrappersMap[name];
     return wrapper;
   }
 
   function removeWrappersForType(type) {
-    var wrappers = getWrapperByType(type);
+    const wrappers = getWrapperByType(type);
     if (!wrappers) {
       return undefined;
     }
@@ -315,8 +315,8 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
   function warn() {
     if (!_this.disableWarnings && console.warn) {
       /* eslint no-console:0 */
-      var args = Array.prototype.slice.call(arguments);
-      var warnInfoSlug = args.shift();
+      const args = Array.prototype.slice.call(arguments);
+      const warnInfoSlug = args.shift();
       args.unshift('Formly Warning:');
       args.push(`${formlyErrorAndWarningsUrlPrefix}${warnInfoSlug}`);
       console.warn(...args);

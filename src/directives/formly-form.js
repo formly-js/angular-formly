@@ -9,7 +9,7 @@ export default formlyForm;
  */
 // @ngInject
 function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpolate) {
-  var currentFormId = 1;
+  let currentFormId = 1;
   return {
     restrict: 'E',
     template: formlyFormGetTemplate,
@@ -200,7 +200,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
       if (isFieldGroup(field) || !angular.isDefined(field.watcher)) {
         return;
       }
-      var watchers = field.watcher;
+      let watchers = field.watcher;
       if (!angular.isArray(watchers)) {
         watchers = [watchers];
       }
@@ -211,22 +211,22 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
             'All field watchers must have a listener', field
           );
         }
-        var watchExpression = getWatchExpression(watcher, field, index);
-        var watchListener = getWatchListener(watcher, field, index);
+        const watchExpression = getWatchExpression(watcher, field, index);
+        const watchListener = getWatchListener(watcher, field, index);
 
-        var type = watcher.type || '$watch';
+        const type = watcher.type || '$watch';
         watcher.stopWatching = $scope[type](watchExpression, watchListener, watcher.watchDeep);
       });
     }
 
     function getWatchExpression(watcher, field, index) {
-      var watchExpression = watcher.expression || `model['${field.key}']`;
+      let watchExpression = watcher.expression || `model['${field.key}']`;
       if (angular.isFunction(watchExpression)) {
         // wrap the field's watch expression so we can call it with the field as the first arg
         // and the stop function as the last arg as a helper
-        var originalExpression = watchExpression;
+        const originalExpression = watchExpression;
         watchExpression = function formlyWatchExpression() {
-          var args = modifyArgs(watcher, index, ...arguments);
+          const args = modifyArgs(watcher, index, ...arguments);
           return originalExpression(...args);
         };
         watchExpression.displayName = `Formly Watch Expression for field for ${field.key}`;
@@ -235,13 +235,13 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
     }
 
     function getWatchListener(watcher, field, index) {
-      var watchListener = watcher.listener;
+      let watchListener = watcher.listener;
       if (angular.isFunction(watchListener)) {
         // wrap the field's watch listener so we can call it with the field as the first arg
         // and the stop function as the last arg as a helper
-        var originalListener = watchListener;
+        const originalListener = watchListener;
         watchListener = function formlyWatchListener() {
-          var args = modifyArgs(watcher, index, ...arguments);
+          const args = modifyArgs(watcher, index, ...arguments);
           return originalListener(...args);
         };
         watchListener.displayName = `Formly Watch Listener for field for ${field.key}`;
@@ -262,7 +262,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
       // this makes it closer to what a regular formlyExpression would be
       return {
         options: field,
-        index: index,
+        index,
         formState: $scope.options.formState,
         formId: $scope.formId
       };
@@ -312,7 +312,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
       }
     }
 
-    /**
+    /*
      * chrome autocomplete lameness
      * see https://code.google.com/p/chromium/issues/detail?id=468153#c14
      * ლ(ಠ益ಠლ)   (╯°□°)╯︵ ┻━┻    (◞‸◟；)

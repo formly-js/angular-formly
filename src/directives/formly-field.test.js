@@ -79,7 +79,7 @@ describe('formly-field', function() {
         }
       ];
       const el = compileAndDigest();
-      var outerEl = el[0].querySelector('.my-other-template-wrapper');
+      const outerEl = el[0].querySelector('.my-other-template-wrapper');
       expect(outerEl).to.exist;
       expect(outerEl.querySelector('.my-template-wrapper')).to.exist;
     });
@@ -144,7 +144,7 @@ describe('formly-field', function() {
           },
           validators: {
             ipAddress: function(viewValue, modelValue) {
-              var value = modelValue || viewValue;
+              const value = modelValue || viewValue;
               return /(\d{1,3}\.){3}\d{1,3}/.test(value);
             }
           }
@@ -192,7 +192,7 @@ describe('formly-field', function() {
     });
 
     it('should default to the ipAddress type options', () => {
-      var field = {type: 'ipAddress'};
+      const field = {type: 'ipAddress'};
       scope.fields = [field];
       compileAndDigest();
       expect(field.data.usingDefaultOptions).to.be.true;
@@ -219,8 +219,8 @@ describe('formly-field', function() {
 
     function testTemplateManipulators(isPre) {
       describe(isPre ? 'preWrapper' : 'postWrapper', () => {
-        var manipulators;
-        var textTemplate = '<input class="text-template" name="{{id}}" ng-model="model[options.key]">';
+        let manipulators;
+        const textTemplate = '<input class="text-template" name="{{id}}" ng-model="model[options.key]">';
         beforeEach(() => {
           manipulators = formlyConfig.templateManipulators[isPre ? 'preWrapper' : 'postWrapper'];
           formlyConfig.setWrapper([
@@ -238,10 +238,10 @@ describe('formly-field', function() {
           ];
         });
 
-        var when = isPre ? 'before' : 'after';
+        const when = isPre ? 'before' : 'after';
 
         it(`should call the manipulators when compiling a field ${when} the element is wrapped in wrappers`, () => {
-          var manipulatedTemplate;
+          let manipulatedTemplate;
           manipulators.push((templateToManipulate, fieldOptions, scope) => {
             if (isPre) {
               expect(templateToManipulate).to.contain('text-template');
@@ -310,7 +310,7 @@ describe('formly-field', function() {
         {type: 'text'}
       ];
       const el = compileAndDigest();
-      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      const fieldEl = angular.element(el[0].querySelector('.formly-field'));
       expect(fieldEl.isolateScope().setInTypeController).to.be.true;
     });
 
@@ -319,8 +319,8 @@ describe('formly-field', function() {
         {type: 'text'}
       ];
       const el = compileAndDigest();
-      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
-      var fieldScope = fieldEl.isolateScope();
+      const fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      const fieldScope = fieldEl.isolateScope();
       expect(fieldScope.setInTypeLink).to.be.true;
       expect(fieldScope.el[0]).to.equal(fieldEl[0]);
     });
@@ -331,7 +331,7 @@ describe('formly-field', function() {
       ];
 
       const el = compileAndDigest();
-      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      const fieldEl = angular.element(el[0].querySelector('.formly-field'));
       expect(fieldEl.isolateScope().setInTypeController).to.be.true;
     });
 
@@ -341,8 +341,8 @@ describe('formly-field', function() {
         {template: 'sweet mercy', link: linkFn}
       ];
       const el = compileAndDigest();
-      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
-      var fieldScope = fieldEl.isolateScope();
+      const fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      const fieldScope = fieldEl.isolateScope();
       expect(fieldScope.setInTypeLink).to.be.true;
       expect(fieldScope.el[0]).to.equal(fieldEl[0]);
     });
@@ -350,7 +350,7 @@ describe('formly-field', function() {
 
   describe(`template and templateUrl properties`, () => {
     let $templateCache;
-    var expectedTemplateText = 'sweet mercy';
+    const expectedTemplateText = 'sweet mercy';
 
     beforeEach(inject((_$templateCache_) => {
       $templateCache = _$templateCache_;
@@ -369,7 +369,7 @@ describe('formly-field', function() {
 
       const el = compileAndDigest();
 
-      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      const fieldEl = angular.element(el[0].querySelector('.formly-field'));
       expect(fieldEl.text()).to.equal(expectedTemplateText);
     });
 
@@ -385,7 +385,7 @@ describe('formly-field', function() {
 
       const el = compileAndDigest();
 
-      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      const fieldEl = angular.element(el[0].querySelector('.formly-field'));
       expect(fieldEl.text()).to.equal(expectedTemplateText);
     });
 
@@ -396,7 +396,7 @@ describe('formly-field', function() {
 
       const el = compileAndDigest();
 
-      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      const fieldEl = angular.element(el[0].querySelector('.formly-field'));
       expect(fieldEl.text()).to.equal(expectedTemplateText);
     });
 
@@ -407,7 +407,7 @@ describe('formly-field', function() {
 
       const el = compileAndDigest();
 
-      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      const fieldEl = angular.element(el[0].querySelector('.formly-field'));
       expect(fieldEl.text()).to.equal('');
     });
 
@@ -423,7 +423,7 @@ describe('formly-field', function() {
 
       const el = compileAndDigest();
 
-      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      const fieldEl = angular.element(el[0].querySelector('.formly-field'));
       expect(fieldEl.text()).to.equal(expectedTemplateText);
     });
 
@@ -439,7 +439,7 @@ describe('formly-field', function() {
 
       const el = compileAndDigest();
 
-      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      const fieldEl = angular.element(el[0].querySelector('.formly-field'));
       expect(fieldEl.text()).to.equal(expectedTemplateText);
     });
 
@@ -450,7 +450,7 @@ describe('formly-field', function() {
 
       const el = compileAndDigest();
 
-      var fieldEl = angular.element(el[0].querySelector('.formly-field'));
+      const fieldEl = angular.element(el[0].querySelector('.formly-field'));
       expect(fieldEl.text()).to.equal(expectedTemplateText);
     });
   });
@@ -1075,7 +1075,7 @@ describe('formly-field', function() {
   describe(`with a div ng-model`, () => {
     it(`should have a form-controller`, () => {
       const template = `<div ng-model="model[options.key]"> </div>`;
-      scope.fields = [getNewField({template: template})];
+      scope.fields = [getNewField({template})];
       compileAndDigest();
       expect(isolateScope.fc).to.exist;
       expect(field.formControl).to.exist;
@@ -1085,7 +1085,7 @@ describe('formly-field', function() {
   describe(`with a div data-ng-model`, () => {
     it(`should have a form-controller`, () => {
       const template = `<div data-ng-model="model[options.key]"> </div>`;
-      scope.fields = [getNewField({template: template})];
+      scope.fields = [getNewField({template})];
       compileAndDigest();
       expect(isolateScope.fc).to.exist;
       expect(field.formControl).to.exist;
@@ -1280,7 +1280,7 @@ describe('formly-field', function() {
 
   describe(`templateManipulators and wrappers`, () => {
     it(`should not cause a problem when you don't pass form-options`, () => {
-      var fieldScope = scope.$new();
+      const fieldScope = scope.$new();
       fieldScope.field = {template: 'foo', model: {}};
       fieldScope.fields = [fieldScope.field];
       expect(() => {
@@ -1457,8 +1457,8 @@ describe('formly-field', function() {
   }
 
   function shouldWarn(match, test) {
-    var originalWarn = console.warn;
-    var calledArgs;
+    const originalWarn = console.warn;
+    let calledArgs;
     console.warn = function() {
       calledArgs = arguments;
     };
@@ -1470,8 +1470,8 @@ describe('formly-field', function() {
 
 
   function shouldNotWarn(test) {
-    var originalWarn = console.warn;
-    var calledArgs;
+    const originalWarn = console.warn;
+    let calledArgs;
     console.warn = function() {
       calledArgs = arguments;
     };

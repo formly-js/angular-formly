@@ -4,7 +4,7 @@ import angular from 'angular-fix';
 
 describe(`formly-custom-validation`, function() {
   let $compile, $timeout, $q, scope, $log, formlyConfig;
-  let formTemplate = `<form name="myForm">TEMPLATE</form>`;
+  const formTemplate = `<form name="myForm">TEMPLATE</form>`;
   beforeEach(window.module('formly'));
   beforeEach(inject((_$compile_, _$timeout_, _$q_, $rootScope, _$log_, _formlyConfig_) => {
     $compile = _$compile_;

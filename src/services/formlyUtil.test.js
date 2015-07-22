@@ -9,7 +9,7 @@ describe('formlyUtil', () => {
     }));
 
     it(`should modify and prefer the first object`, () => {
-      let firstObj = {
+      const firstObj = {
         obj1a: {
           obj2a: {
             string3a: 'Hello world',
@@ -21,7 +21,7 @@ describe('formlyUtil', () => {
           1, 2, 3, 4
         ]
       };
-      let secondObj = {
+      const secondObj = {
         obj1a: {
           obj2a: {
             string3a: 'Should not win',
@@ -33,14 +33,14 @@ describe('formlyUtil', () => {
         }
       };
 
-      let thirdObj = {
+      const thirdObj = {
         obj1a: 'false',
         arry1a: [
           4, 3, 2, 1, 0
         ]
       };
 
-      let result = {
+      const result = {
         obj1a: {
           obj2a: {
             string3a: 'Hello world',
@@ -60,18 +60,18 @@ describe('formlyUtil', () => {
     });
 
     it(`should allow for adding of empty objects`, () => {
-      let firstObj = {
+      const firstObj = {
         a: 'a',
         b: 'b'
       };
 
-      let secondObj = {
+      const secondObj = {
         data: {},
         templateOptions: {},
         validation: {}
       };
 
-      let result = {
+      const result = {
         a: 'a',
         b: 'b',
         data: {},

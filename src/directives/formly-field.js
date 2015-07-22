@@ -39,7 +39,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       return;
     }
 
-    var fieldType = getFieldType($scope.options);
+    const fieldType = getFieldType($scope.options);
     simplifyLife($scope.options);
     mergeFieldOptionsWithTypeDefaults($scope.options, fieldType);
     extendOptionsWithDefaults($scope.options, $scope.index);
@@ -59,11 +59,11 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     function runExpressions() {
       // must run on next tick to make sure that the current value is correct.
       $timeout(function runExpressionsOnNextTick() {
-        var field = $scope.options;
-        var currentValue = valueGetterSetter();
+        const field = $scope.options;
+        const currentValue = valueGetterSetter();
         angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
-          var setter = $parse(prop).assign;
-          var promise = $q.when(formlyUtil.formlyEval($scope, expression, currentValue, currentValue));
+          const setter = $parse(prop).assign;
+          const promise = $q.when(formlyUtil.formlyEval($scope, expression, currentValue, currentValue));
           promise.then(function setFieldValue(value) {
             setter(field, value);
           });
@@ -116,7 +116,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       if (type) {
         mergeOptions(options, type.defaultOptions);
       }
-      var properOrder = arrayify(options.optionsTypes).reverse(); // so the right things are overridden
+      const properOrder = arrayify(options.optionsTypes).reverse(); // so the right things are overridden
       angular.forEach(properOrder, typeName => {
         mergeOptions(options, formlyConfig.getType(typeName, true, options).defaultOptions);
       });
@@ -218,10 +218,10 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     addAttributes();
     addClasses();
 
-    var type = getFieldType(scope.options);
-    var args = arguments;
-    var thusly = this;
-    var fieldCount = 0;
+    const type = getFieldType(scope.options);
+    const args = arguments;
+    const thusly = this;
+    let fieldCount = 0;
     const fieldManipulators = getManipulators(scope.options, scope.formOptions);
     getFieldTemplate(scope.options)
       .then(runManipulators(fieldManipulators.preWrapper))
@@ -340,7 +340,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
           } else if (customExpression) {
             return formlyUtil.formlyEval(scope, customExpression, fc.$modelValue, fc.$viewValue);
           } else {
-            let noTouchedButDirty = (angular.isUndefined(fc.$touched) && fc.$dirty);
+            const noTouchedButDirty = (angular.isUndefined(fc.$touched) && fc.$dirty);
             return (scope.fc.$touched || noTouchedButDirty);
           }
         }, function onShowValidationChange(show) {
@@ -362,7 +362,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
     function runManipulators(manipulators) {
       return function runManipulatorsOnTemplate(templateToManipulate) {
-        var chain = $q.when(templateToManipulate);
+        let chain = $q.when(templateToManipulate);
         angular.forEach(manipulators, manipulator => {
           chain = chain.then(template => {
             return $q.when(manipulator(template, scope.options, scope)).then(newTemplate => {
@@ -377,7 +377,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
   // sort-of stateless util functions
   function asHtml(el) {
-    var wrapper = angular.element('<a></a>');
+    const wrapper = angular.element('<a></a>');
     return wrapper.append(el).html();
   }
 
@@ -411,9 +411,9 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       }
     }
 
-    let type = formlyConfig.getType(options.type, true, options);
-    let template = fromOptionsOrType('template', type);
-    let templateUrl = fromOptionsOrType('templateUrl', type);
+    const type = formlyConfig.getType(options.type, true, options);
+    const template = fromOptionsOrType('template', type);
+    const templateUrl = fromOptionsOrType('templateUrl', type);
     if (angular.isUndefined(template) && !templateUrl) {
       throw formlyUsability.getFieldError(
         'type-type-has-no-template',
@@ -436,7 +436,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     if (!isUrl) {
       return templatePromise;
     } else {
-      let httpOptions = {cache: $templateCache};
+      const httpOptions = {cache: $templateCache};
       return templatePromise
         .then((url) => $http.get(url, httpOptions))
         .then((response) => response.data)
@@ -451,7 +451,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
   }
 
   function transcludeInWrappers(options, formOptions) {
-    let wrapper = getWrapperOption(options, formOptions);
+    const wrapper = getWrapperOption(options, formOptions);
 
     return function transcludeTemplate(template) {
       if (!wrapper.length) {
@@ -463,7 +463,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
         aWrapper.validateOptions && aWrapper.validateOptions(options);
         runApiCheck(aWrapper, options);
       });
-      let promises = wrapper.map(w => getTemplate(w.template || w.templateUrl, !w.template));
+      const promises = wrapper.map(w => getTemplate(w.template || w.templateUrl, !w.template));
       return $q.all(promises).then(wrappersTemplates => {
         wrappersTemplates.forEach((wrapperTemplate, index) => {
           formlyUsability.checkWrapperTemplate(wrapperTemplate, wrapper[index]);
@@ -479,7 +479,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
   }
 
   function doTransclusion(wrapper, template) {
-    let superWrapper = angular.element('<a></a>'); // this allows people not have to have a single root in wrappers
+    const superWrapper = angular.element('<a></a>'); // this allows people not have to have a single root in wrappers
     superWrapper.append(wrapper);
     let transcludeEl = superWrapper.find('formly-transclude');
     if (!transcludeEl.length) {
@@ -507,20 +507,20 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     }
 
     // get all wrappers for that the type specified that it uses.
-    var type = formlyConfig.getType(options.type, true, options);
+    const type = formlyConfig.getType(options.type, true, options);
     if (type && type.wrapper) {
-      let typeWrappers = arrayify(type.wrapper).map(formlyConfig.getWrapper);
+      const typeWrappers = arrayify(type.wrapper).map(formlyConfig.getWrapper);
       wrapper = wrapper.concat(typeWrappers);
     }
 
     // add form wrappers
     if (formOptions.wrapper) {
-      let formWrappers = arrayify(formOptions.wrapper).map(formlyConfig.getWrapper);
+      const formWrappers = arrayify(formOptions.wrapper).map(formlyConfig.getWrapper);
       wrapper = wrapper.concat(formWrappers);
     }
 
     // add the default wrapper last
-    var defaultWrapper = formlyConfig.getWrapper();
+    const defaultWrapper = formlyConfig.getWrapper();
     if (defaultWrapper) {
       wrapper.push(defaultWrapper);
     }

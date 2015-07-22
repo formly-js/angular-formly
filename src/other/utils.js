@@ -14,7 +14,7 @@ function getFieldId(formId, options, index) {
   if (options.id) {
     return options.id;
   }
-  var type = options.type;
+  let type = options.type;
   if (!type && options.template) {
     type = 'template';
   } else if (!type && options.templateUrl) {
@@ -56,9 +56,9 @@ function findByNodeName(el, nodeName) {
     return el;
   }
 
-  var c = el.children();
-  for(var i = 0; c && i < c.length; i++) {
-    var node = findByNodeName(c[i], nodeName);
+  const c = el.children();
+  for (let i = 0; c && i < c.length; i++) {
+    const node = findByNodeName(c[i], nodeName);
     if (node) {
       return node;
     }
@@ -78,7 +78,7 @@ function arrayify(obj) {
 
 function extendFunction(...fns) {
   return function extendedFunction() {
-    var args = arguments;
+    const args = arguments;
     fns.forEach(fn => fn.apply(null, args));
   };
 }
