@@ -1,3 +1,9 @@
+# 6.20.1
+
+## Bug Fixes
+
+- There was an issue where if the `$scope.model` was undefined the `formly-field` getterSetter would throw an error. I removed this check in `6.20.0` because I thought this wasn't needed any longer, but I discovered an edge case when I was upgrading my app so I'm bringing it back complete with tests :-)
+
 # 6.20.0
 
 ## New Features
