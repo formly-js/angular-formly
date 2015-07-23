@@ -561,12 +561,28 @@ describe('formly-field', function() {
         function customGetterSetter() {
         }
       });
+
       it(`should be a getter/setter`, () => {
         compileDigestAndSetValueFunction();
         expect(value()).to.eq(undefined);
         expect(value('foo')).to.eq('foo');
         expect(value()).to.eq('foo');
       });
+
+      it(`should not throw an error when the model is undefined`, inject(($rootScope) => {
+        const formlyField = `<div formly-field
+               options="field"
+               model="model">
+          </div>`;
+        scope = $rootScope.$new();
+        _.assign(scope, {
+          field: getNewField(),
+          model: undefined // <-- this is the key
+        });
+        el = $compile(formlyField)(scope);
+        scope.$digest();
+        expect(() => scope.field.value()).to.not.throw();
+      }));
 
       function compileDigestAndSetValueFunction(fieldOverrides) {
         scope.fields = [getNewField(_.merge({modelOptions: {getterSetter: true}}, fieldOverrides))];

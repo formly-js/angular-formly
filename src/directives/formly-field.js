@@ -72,6 +72,9 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     }
 
     function valueGetterSetter(newVal) {
+      if (!$scope.model || !$scope.options.key) {
+        return undefined;
+      }
       if (angular.isDefined(newVal)) {
         $scope.model[$scope.options.key] = newVal;
       }
