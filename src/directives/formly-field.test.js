@@ -960,78 +960,9 @@ describe('formly-field', function() {
   });
 
   describe(`parsers/formatters`, () => {
-    describe(`everything`, () => {
-      it(`should merge the parsers and formatters in the right order`, () => {
-        const parent1Parser1 = sinon.spy();
-        const parent1Parser2 = sinon.spy();
-        const parent2Parser1 = sinon.spy();
-        const parent2Parser2 = sinon.spy();
-        const childParser1 = sinon.spy();
-        const childParser2 = sinon.spy();
-        const optionType1Parser1 = sinon.spy();
-        const optionType1Parser2 = sinon.spy();
-        const optionType2Parser1 = sinon.spy();
-        const optionType2Parser2 = sinon.spy();
-        const fieldParser1 = sinon.spy();
-        const fieldParser2 = sinon.spy();
-
-        formlyConfig.setType({
-          name: 'parent1',
-          defaultOptions: {
-            parsers: [parent1Parser1, parent1Parser2]
-          }
-        });
-
-        formlyConfig.setType({
-          name: 'parent2',
-          defaultOptions: {
-            parsers: [parent2Parser1, parent2Parser2]
-          }
-        });
-
-        formlyConfig.setType({
-          name: 'child',
-          template: '<input ng-model="model[options.key]" />',
-          extends: 'parent1', // <-- note this!
-          defaultOptions: {
-            parsers: [childParser1, childParser2]
-          }
-        });
-
-        formlyConfig.setType({
-          name: 'optionType1',
-          extends: 'parent2', // <-- note this!
-          defaultOptions: {
-            parsers: [optionType1Parser1, optionType1Parser2]
-          }
-        });
-
-        formlyConfig.setType({
-          name: 'optionType2',
-          defaultOptions: {
-            parsers: [optionType2Parser1, optionType2Parser2]
-          }
-        });
-
-        scope.fields = [
-          {
-            type: 'child',
-            optionsTypes: ['optionType1', 'optionType2'],
-            parsers: [fieldParser1, fieldParser2]
-          }
-        ];
-
-        compileAndDigest();
-        const ctrl = getNgModelCtrl();
-        const originalParsers = ctrl.$parsers.map(parser => parser.originalParser);
-        expect(originalParsers).to.eql([
-          parent1Parser1, parent1Parser2,
-          childParser1, childParser2,
-          parent2Parser1, parent2Parser2,
-          optionType1Parser1, optionType1Parser2,
-          optionType2Parser1, optionType2Parser2,
-          fieldParser1, fieldParser2
-        ]);
+    describe(`parsers`, () => {
+      it(`should be merged in the right order`, () => {
+        testParsersOrFormatters('parsers');
       });
 
       it(`should handle a formlyExpression as a string`, () => {
@@ -1047,6 +978,119 @@ describe('formly-field', function() {
         expect(scope.model.myKey).to.equal('hello! boo!');
       });
     });
+
+    describe(`formatters`, () => {
+      it(`should be merged in the right order`, () => {
+        testParsersOrFormatters('formatters');
+      });
+
+      it(`should handle a formlyExpression as a string`, () => {
+        scope.fields = [getNewField({
+          key: 'myKey',
+          formatters: ['$viewValue + options.data.extraThing'],
+          data: {extraThing: ' boo!'}
+        })];
+        compileAndDigest();
+        scope.model.myKey = 'hello!';
+        scope.$digest();
+        const ctrl = getNgModelCtrl();
+        expect(ctrl.$formatters).to.have.length(2); // ngModel adds one
+        expect(ctrl.$viewValue).to.equal('hello! boo!');
+      });
+    });
+
+    function testParsersOrFormatters(which) {
+      let originalThingProp = 'originalParser';
+      if (which === 'formatters') {
+        originalThingProp = 'originalFormatter';
+      }
+      const parent1Thing1 = sinon.spy(function parent1Thing1() {
+      });
+      const parent1Thing2 = sinon.spy(function parent1Thing2() {
+      });
+      const parent2Thing1 = sinon.spy(function parent2Thing1() {
+      });
+      const parent2Thing2 = sinon.spy(function parent2Thing2() {
+      });
+      const childThing1 = sinon.spy(function childThing1() {
+      });
+      const childThing2 = sinon.spy(function childThing2() {
+      });
+      const optionType1Thing1 = sinon.spy(function optionType1Thing1() {
+      });
+      const optionType1Thing2 = sinon.spy(function optionType1Thing2() {
+      });
+      const optionType2Thing1 = sinon.spy(function optionType2Thing1() {
+      });
+      const optionType2Thing2 = sinon.spy(function optionType2Thing2() {
+      });
+      const fieldThing1 = sinon.spy(function fieldThing1() {
+      });
+      const fieldThing2 = sinon.spy(function fieldThing2() {
+      });
+
+      formlyConfig.setType({
+        name: 'parent1',
+        defaultOptions: {
+          [which]: [parent1Thing1, parent1Thing2]
+        }
+      });
+
+      formlyConfig.setType({
+        name: 'parent2',
+        defaultOptions: {
+          [which]: [parent2Thing1, parent2Thing2]
+        }
+      });
+
+      formlyConfig.setType({
+        name: 'child',
+        template: '<input ng-model="model[options.key]" />',
+        extends: 'parent1', // <-- note this!
+        defaultOptions: {
+          [which]: [childThing1, childThing2]
+        }
+      });
+
+      formlyConfig.setType({
+        name: 'optionType1',
+        extends: 'parent2', // <-- note this!
+        defaultOptions: {
+          [which]: [optionType1Thing1, optionType1Thing2]
+        }
+      });
+
+      formlyConfig.setType({
+        name: 'optionType2',
+        defaultOptions: {
+          [which]: [optionType2Thing1, optionType2Thing2]
+        }
+      });
+
+      scope.fields = [
+        {
+          type: 'child',
+          optionsTypes: ['optionType1', 'optionType2'],
+          [which]: [fieldThing1, fieldThing2]
+        }
+      ];
+
+      compileAndDigest();
+      const ctrl = getNgModelCtrl();
+      const originalThings = ctrl['$' + which].map(thing => thing[originalThingProp]);
+      if (which === 'formatters') {
+        // all ngModelControllers have a default formatter, remove that from the originalThings for our test
+        originalThings.shift();
+      }
+      expect(originalThings).to.eql([
+        parent1Thing1, parent1Thing2,
+        childThing1, childThing2,
+        parent2Thing1, parent2Thing2,
+        optionType1Thing1, optionType1Thing2,
+        optionType2Thing1, optionType2Thing2,
+        fieldThing1, fieldThing2
+      ]);
+    }
   });
 
   describe(`link`, () => {

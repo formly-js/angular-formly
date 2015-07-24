@@ -123,6 +123,7 @@ const fieldOptionsApiShape = {
   validators: validatorChecker.optional,
   asyncValidators: validatorChecker.optional,
   parsers: apiCheck.arrayOf(formlyExpression).optional,
+  formatters: apiCheck.arrayOf(formlyExpression).optional,
   noFormControl: apiCheck.bool.optional,
   hide: apiCheck.bool.optional,
   hideExpression: formlyExpression.optional,

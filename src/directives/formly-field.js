@@ -329,6 +329,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
             stopWatchingShowError();
             addShowMessagesWatcher();
             addParsers();
+            addFormatters();
           }
         });
       }
@@ -354,18 +355,31 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       }
 
       function addParsers() {
+        setParsersOrFormatters('parsers');
+      }
+
+      function addFormatters() {
+        setParsersOrFormatters('formatters');
+      }
+
+      function setParsersOrFormatters(which) {
+        let originalThingProp = 'originalParser';
+        if (which === 'formatters') {
+          originalThingProp = 'originalFormatter';
+        }
+
         // init with type's parsers
-        let parsers = getParsersFromType(type);
+        let things = getThingsFromType(type);
 
-        // get optionsTypes parsers
-        parsers = formlyUtil.extendArray(parsers, getParsersFromOptionsTypes(scope.options.optionsTypes));
+        // get optionsTypes things
+        things = formlyUtil.extendArray(things, getThingsFromOptionsTypes(scope.options.optionsTypes));
 
-        // get field's parsers
-        parsers = formlyUtil.extendArray(parsers, scope.options.parsers);
+        // get field's things
+        things = formlyUtil.extendArray(things, scope.options[which]);
 
-        // convert parsers into formlyExpression parsers
-        angular.forEach(parsers, (parser, index) => {
-          parsers[index] = getFormlyExpressionParser(parser);
+        // convert things into formlyExpression things
+        angular.forEach(things, (thing, index) => {
+          things[index] = getFormlyExpressionThing(thing);
         });
 
         let ngModelCtrls = scope.fc;
@@ -374,50 +388,50 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
         }
 
         angular.forEach(ngModelCtrls, ngModelCtrl => {
-          ngModelCtrl.$parsers = ngModelCtrl.$parsers.concat(...parsers);
+          ngModelCtrl['$' + which] = ngModelCtrl['$' + which].concat(...things);
         });
 
-        function getParsersFromType(theType) {
+        function getThingsFromType(theType) {
           if (!theType) {
             return [];
           }
           if (angular.isString(theType)) {
             theType = formlyConfig.getType(theType, true, scope.options);
           }
-          let typeParsers = [];
+          let typeThings = [];
 
-          // get parsers from parent
+          // get things from parent
           if (theType.extends) {
-            typeParsers = formlyUtil.extendArray(typeParsers, getParsersFromType(theType.extends));
+            typeThings = formlyUtil.extendArray(typeThings, getThingsFromType(theType.extends));
           }
 
-          // get own type's parsers
-          typeParsers = formlyUtil.extendArray(typeParsers, getDefaultOptionsParsers(theType));
+          // get own type's things
+          typeThings = formlyUtil.extendArray(typeThings, getDefaultOptionsProperty(theType, which, []));
 
-          // get parsers from optionsTypes
-          typeParsers = formlyUtil.extendArray(
-            typeParsers,
-            getParsersFromOptionsTypes(getDefaultOptionsOptionsTypes(theType))
+          // get things from optionsTypes
+          typeThings = formlyUtil.extendArray(
+            typeThings,
+            getThingsFromOptionsTypes(getDefaultOptionsOptionsTypes(theType))
           );
 
-          return typeParsers;
+          return typeThings;
         }
 
-        function getParsersFromOptionsTypes(optionsTypes = []) {
-          let optionsTypesParsers = [];
-          angular.forEach(optionsTypes.reverse(), optionsTypeName => {
-            optionsTypesParsers = formlyUtil.extendArray(optionsTypesParsers, getParsersFromType(optionsTypeName));
+        function getThingsFromOptionsTypes(optionsTypes = []) {
+          let optionsTypesThings = [];
+          angular.forEach(angular.copy(arrayify(optionsTypes)).reverse(), optionsTypeName => {
+            optionsTypesThings = formlyUtil.extendArray(optionsTypesThings, getThingsFromType(optionsTypeName));
           });
-          return optionsTypesParsers;
+          return optionsTypesThings;
         }
 
-        function getFormlyExpressionParser(parser) {
-          formlyExpressionParserFunction.originalParser = parser;
-          return formlyExpressionParserFunction;
+        function getFormlyExpressionThing(thing) {
+          formlyExpressionParserOrFormatterFunction[originalThingProp] = thing;
+          return formlyExpressionParserOrFormatterFunction;
 
-          function formlyExpressionParserFunction($viewValue) {
+          function formlyExpressionParserOrFormatterFunction($viewValue) {
             const $modelValue = scope.options.value();
-            return formlyUtil.formlyEval(scope, parser, $modelValue, $viewValue);
+            return formlyUtil.formlyEval(scope, thing, $modelValue, $viewValue);
           }
         }
 
@@ -676,10 +690,6 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
 
 // Stateless util functions
-function getDefaultOptionsParsers(type) {
-  return getDefaultOptionsProperty(type, 'parsers', []);
-}
-
 function getDefaultOptionsOptionsTypes(type) {
   return getDefaultOptionsProperty(type, 'optionsTypes', []);
 }

@@ -1,3 +1,9 @@
+# 6.21.0-beta.1
+
+## New Features
+
+- Adding support for `formatters` [#368](/../../issues/368)
+
 # 6.21.0-beta.0
 
 ## New Features
