@@ -1,4 +1,4 @@
-//! angular-formly version 6.21.0-beta.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 6.21.0-beta.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("6.21.0-beta.0")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("6.21.0-beta.1")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -345,6 +345,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  validators: validatorChecker.optional,
 	  asyncValidators: validatorChecker.optional,
 	  parsers: apiCheck.arrayOf(formlyExpression).optional,
+	  formatters: apiCheck.arrayOf(formlyExpression).optional,
 	  noFormControl: apiCheck.bool.optional,
 	  hide: apiCheck.bool.optional,
 	  hideExpression: formlyExpression.optional,
@@ -444,7 +445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.21.0-beta.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.21.0-beta.1") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -1539,6 +1540,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            stopWatchingShowError();
 	            addShowMessagesWatcher();
 	            addParsers();
+	            addFormatters();
 	          }
 	        });
 	      }
@@ -1566,18 +1568,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      function addParsers() {
+	        setParsersOrFormatters('parsers');
+	      }
+
+	      function addFormatters() {
+	        setParsersOrFormatters('formatters');
+	      }
+
+	      function setParsersOrFormatters(which) {
+	        var originalThingProp = 'originalParser';
+	        if (which === 'formatters') {
+	          originalThingProp = 'originalFormatter';
+	        }
+
 	        // init with type's parsers
-	        var parsers = getParsersFromType(type);
+	        var things = getThingsFromType(type);
 
-	        // get optionsTypes parsers
-	        parsers = formlyUtil.extendArray(parsers, getParsersFromOptionsTypes(scope.options.optionsTypes));
+	        // get optionsTypes things
+	        things = formlyUtil.extendArray(things, getThingsFromOptionsTypes(scope.options.optionsTypes));
 
-	        // get field's parsers
-	        parsers = formlyUtil.extendArray(parsers, scope.options.parsers);
+	        // get field's things
+	        things = formlyUtil.extendArray(things, scope.options[which]);
 
-	        // convert parsers into formlyExpression parsers
-	        _angularFix2['default'].forEach(parsers, function (parser, index) {
-	          parsers[index] = getFormlyExpressionParser(parser);
+	        // convert things into formlyExpression things
+	        _angularFix2['default'].forEach(things, function (thing, index) {
+	          things[index] = getFormlyExpressionThing(thing);
 	        });
 
 	        var ngModelCtrls = scope.fc;
@@ -1586,51 +1601,51 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        _angularFix2['default'].forEach(ngModelCtrls, function (ngModelCtrl) {
-	          var _ngModelCtrl$$parsers;
+	          var _ngModelCtrl;
 
-	          ngModelCtrl.$parsers = (_ngModelCtrl$$parsers = ngModelCtrl.$parsers).concat.apply(_ngModelCtrl$$parsers, _toConsumableArray(parsers));
+	          ngModelCtrl['$' + which] = (_ngModelCtrl = ngModelCtrl['$' + which]).concat.apply(_ngModelCtrl, _toConsumableArray(things));
 	        });
 
-	        function getParsersFromType(theType) {
+	        function getThingsFromType(theType) {
 	          if (!theType) {
 	            return [];
 	          }
 	          if (_angularFix2['default'].isString(theType)) {
 	            theType = formlyConfig.getType(theType, true, scope.options);
 	          }
-	          var typeParsers = [];
+	          var typeThings = [];
 
-	          // get parsers from parent
+	          // get things from parent
 	          if (theType['extends']) {
-	            typeParsers = formlyUtil.extendArray(typeParsers, getParsersFromType(theType['extends']));
+	            typeThings = formlyUtil.extendArray(typeThings, getThingsFromType(theType['extends']));
 	          }
 
-	          // get own type's parsers
-	          typeParsers = formlyUtil.extendArray(typeParsers, getDefaultOptionsParsers(theType));
+	          // get own type's things
+	          typeThings = formlyUtil.extendArray(typeThings, getDefaultOptionsProperty(theType, which, []));
 
-	          // get parsers from optionsTypes
-	          typeParsers = formlyUtil.extendArray(typeParsers, getParsersFromOptionsTypes(getDefaultOptionsOptionsTypes(theType)));
+	          // get things from optionsTypes
+	          typeThings = formlyUtil.extendArray(typeThings, getThingsFromOptionsTypes(getDefaultOptionsOptionsTypes(theType)));
 
-	          return typeParsers;
+	          return typeThings;
 	        }
 
-	        function getParsersFromOptionsTypes() {
+	        function getThingsFromOptionsTypes() {
 	          var optionsTypes = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
-	          var optionsTypesParsers = [];
-	          _angularFix2['default'].forEach(optionsTypes.reverse(), function (optionsTypeName) {
-	            optionsTypesParsers = formlyUtil.extendArray(optionsTypesParsers, getParsersFromType(optionsTypeName));
+	          var optionsTypesThings = [];
+	          _angularFix2['default'].forEach(_angularFix2['default'].copy(arrayify(optionsTypes)).reverse(), function (optionsTypeName) {
+	            optionsTypesThings = formlyUtil.extendArray(optionsTypesThings, getThingsFromType(optionsTypeName));
 	          });
-	          return optionsTypesParsers;
+	          return optionsTypesThings;
 	        }
 
-	        function getFormlyExpressionParser(parser) {
-	          formlyExpressionParserFunction.originalParser = parser;
-	          return formlyExpressionParserFunction;
+	        function getFormlyExpressionThing(thing) {
+	          formlyExpressionParserOrFormatterFunction[originalThingProp] = thing;
+	          return formlyExpressionParserOrFormatterFunction;
 
-	          function formlyExpressionParserFunction($viewValue) {
+	          function formlyExpressionParserOrFormatterFunction($viewValue) {
 	            var $modelValue = scope.options.value();
-	            return formlyUtil.formlyEval(scope, parser, $modelValue, $viewValue);
+	            return formlyUtil.formlyEval(scope, thing, $modelValue, $viewValue);
 	          }
 	        }
 	      }
@@ -1894,10 +1909,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	formlyField.$inject = ["$http", "$q", "$compile", "$templateCache", "$interpolate", "formlyConfig", "formlyValidationMessages", "formlyApiCheck", "formlyUtil", "formlyUsability", "formlyWarn"];
 
 	// Stateless util functions
-	function getDefaultOptionsParsers(type) {
-	  return getDefaultOptionsProperty(type, 'parsers', []);
-	}
-
 	function getDefaultOptionsOptionsTypes(type) {
 	  return getDefaultOptionsProperty(type, 'optionsTypes', []);
 	}
