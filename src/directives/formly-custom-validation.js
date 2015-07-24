@@ -89,7 +89,8 @@ function formlyCustomValidation(formlyConfig, formlyUtil, $q, formlyWarn) {
                 ctrl.$setValidity(name, false);
               }
             }).finally(() => {
-              if (Object.keys(ctrl.$pending).length === 1) {
+              const $pending = ctrl.$pending || {};
+              if (Object.keys($pending).length === 1) {
                 delete ctrl.$pending;
               } else {
                 delete ctrl.$pending[name];

@@ -959,6 +959,96 @@ describe('formly-field', function() {
     });
   });
 
+  describe(`parsers/formatters`, () => {
+    describe(`everything`, () => {
+      it(`should merge the parsers and formatters in the right order`, () => {
+        const parent1Parser1 = sinon.spy();
+        const parent1Parser2 = sinon.spy();
+        const parent2Parser1 = sinon.spy();
+        const parent2Parser2 = sinon.spy();
+        const childParser1 = sinon.spy();
+        const childParser2 = sinon.spy();
+        const optionType1Parser1 = sinon.spy();
+        const optionType1Parser2 = sinon.spy();
+        const optionType2Parser1 = sinon.spy();
+        const optionType2Parser2 = sinon.spy();
+        const fieldParser1 = sinon.spy();
+        const fieldParser2 = sinon.spy();
+
+        formlyConfig.setType({
+          name: 'parent1',
+          defaultOptions: {
+            parsers: [parent1Parser1, parent1Parser2]
+          }
+        });
+
+        formlyConfig.setType({
+          name: 'parent2',
+          defaultOptions: {
+            parsers: [parent2Parser1, parent2Parser2]
+          }
+        });
+
+        formlyConfig.setType({
+          name: 'child',
+          template: '<input ng-model="model[options.key]" />',
+          extends: 'parent1', // <-- note this!
+          defaultOptions: {
+            parsers: [childParser1, childParser2]
+          }
+        });
+
+        formlyConfig.setType({
+          name: 'optionType1',
+          extends: 'parent2', // <-- note this!
+          defaultOptions: {
+            parsers: [optionType1Parser1, optionType1Parser2]
+          }
+        });
+
+        formlyConfig.setType({
+          name: 'optionType2',
+          defaultOptions: {
+            parsers: [optionType2Parser1, optionType2Parser2]
+          }
+        });
+
+        scope.fields = [
+          {
+            type: 'child',
+            optionsTypes: ['optionType1', 'optionType2'],
+            parsers: [fieldParser1, fieldParser2]
+          }
+        ];
+
+        compileAndDigest();
+        const ctrl = getNgModelCtrl();
+        const originalParsers = ctrl.$parsers.map(parser => parser.originalParser);
+        expect(originalParsers).to.eql([
+          parent1Parser1, parent1Parser2,
+          childParser1, childParser2,
+          parent2Parser1, parent2Parser2,
+          optionType1Parser1, optionType1Parser2,
+          optionType2Parser1, optionType2Parser2,
+          fieldParser1, fieldParser2
+        ]);
+      });
+
+      it(`should handle a formlyExpression as a string`, () => {
+        scope.fields = [getNewField({
+          key: 'myKey',
+          parsers: ['$viewValue + options.data.extraThing'],
+          data: {extraThing: ' boo!'}
+        })];
+        compileAndDigest();
+        const ctrl = getNgModelCtrl();
+        expect(ctrl.$parsers).to.have.length(1);
+        ctrl.$setViewValue('hello!');
+        expect(scope.model.myKey).to.equal('hello! boo!');
+      });
+    });
+  });
+
   describe(`link`, () => {
     describe(`addClasses`, () => {
       it(`should add the type class`, () => {
@@ -1470,6 +1560,10 @@ describe('formly-field', function() {
 
   function getFieldNgModelNode(index = 0) {
     return getFieldNode(index).querySelector('[ng-model]');
+  }
+
+  function getNgModelCtrl(index = 0) {
+    return angular.element(getFieldNgModelNode(index)).controller('ngModel');
   }
 
   function shouldWarn(match, test) {

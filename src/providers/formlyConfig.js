@@ -190,7 +190,10 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
 
   function getTypeHeritage(parent) {
     const heritage = [];
-    let type = getType(parent);
+    let type = parent;
+    if (angular.isString(type)) {
+      type = getType(parent);
+    }
     parent = type.extends;
     while (parent) {
       type = getType(parent);

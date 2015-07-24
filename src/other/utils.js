@@ -1,6 +1,6 @@
 import angular from 'angular-fix';
 
-export default {formlyEval, getFieldId, reverseDeepMerge, findByNodeName, arrayify, extendFunction};
+export default {formlyEval, getFieldId, reverseDeepMerge, findByNodeName, arrayify, extendFunction, extendArray};
 
 function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
   if (angular.isFunction(expression)) {
@@ -82,3 +82,23 @@ function extendFunction(...fns) {
     fns.forEach(fn => fn.apply(null, args));
   };
 }
+
+function extendArray(primary, secondary, property) {
+  if (property) {
+    primary = primary[property];
+    secondary = secondary[property];
+  }
+  if (secondary && primary) {
+    angular.forEach(secondary, function(item) {
+      if (primary.indexOf(item) === -1) {
+        primary.push(item);
+      }
+    });
+    return primary;
+  } else if (secondary) {
+    return secondary;
+  } else {
+    return primary;
+  }
+}
+

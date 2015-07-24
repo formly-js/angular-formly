@@ -1,3 +1,9 @@
+# 6.21.0
+
+## New Features
+
+- Adding support for `parsers` [#368](/../../issues/368)
+
 # 6.20.1
 
 ## Bug Fixes
