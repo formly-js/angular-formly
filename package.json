@@ -22,6 +22,7 @@
     "test:single": "better-npm-run test:single",
     "test:debug": "better-npm-run test:debug",
     "test:ci": "better-npm-run test:ci",
+    "start:linux": "NODE_ENV=test COVERAGE=true karma start",
     "start": "npm run test",
     "check-coverage": "istanbul check-coverage --statements 93 --branches 89 --functions 92 --lines 92",
     "code-checks": "eslint src/ --quiet",
