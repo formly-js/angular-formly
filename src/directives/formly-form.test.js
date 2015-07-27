@@ -149,7 +149,7 @@ describe('formly-form', () => {
     expect(() => scope.$digest()).to.not.throw();
   });
 
-  describe.skip(`ngTransclude element`, () => {
+  describe(`ngTransclude element`, () => {
     it(`should have the specified className`, () => {
       const el = compileAndDigest(`
       <formly-form model="model" fields="fields" form="theForm" transclude-class="foo yeah"></formly-form>

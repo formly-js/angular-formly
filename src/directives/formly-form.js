@@ -50,7 +50,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
                form-options="options"
                index="$index">
           </${fieldRootEl}>
-          <div ng-transclude></div>
+          <div ng-transclude class="${getTranscludeClass()}"></div>
         </${rootEl}>
       `;
 
@@ -85,6 +85,10 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
         formName = `${$interpolate.startSymbol()}::'formly_' + ${bindName}${$interpolate.endSymbol()}`;
       }
       return formName;
+    }
+
+    function getTranscludeClass() {
+      return attrs.transcludeClass || '';
     }
 
     function copyAttributes(attributes) {
