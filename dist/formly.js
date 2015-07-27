@@ -1,4 +1,4 @@
-//! angular-formly version 6.21.0-beta.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 6.21.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("6.21.0-beta.1")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("6.21.0")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -445,7 +445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.21.0-beta.1") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.21.0") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -2012,7 +2012,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (attrs.hasOwnProperty('isFieldGroup') && el.parent().parent().hasClass('formly')) {
 	      parentFormAttributes = copyAttributes(el.parent().parent()[0].attributes);
 	    }
-	    return '\n        <' + rootEl + ' class="formly"\n                 name="' + getFormName() + '"\n                 role="form" ' + parentFormAttributes + '>\n          <' + fieldRootEl + ' formly-field\n               ng-repeat="field in fields ' + getTrackBy() + '"\n               ' + getHideDirective() + '="!field.hide"\n               class="formly-field"\n               options="field"\n               model="field.model || model"\n               fields="fields"\n               form="theFormlyForm"\n               form-id="' + getFormName() + '"\n               form-state="options.formState"\n               form-options="options"\n               index="$index">\n          </' + fieldRootEl + '>\n          <div ng-transclude></div>\n        </' + rootEl + '>\n      ';
+	    return '\n        <' + rootEl + ' class="formly"\n                 name="' + getFormName() + '"\n                 role="form" ' + parentFormAttributes + '>\n          <' + fieldRootEl + ' formly-field\n               ng-repeat="field in fields ' + getTrackBy() + '"\n               ' + getHideDirective() + '="!field.hide"\n               class="formly-field"\n               options="field"\n               model="field.model || model"\n               fields="fields"\n               form="theFormlyForm"\n               form-id="' + getFormName() + '"\n               form-state="options.formState"\n               form-options="options"\n               index="$index">\n          </' + fieldRootEl + '>\n          <div ng-transclude class="' + getTranscludeClass() + '"></div>\n        </' + rootEl + '>\n      ';
 
 	    function getRootEl() {
 	      return attrs.rootEl || 'ng-form';
@@ -2045,6 +2045,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        formName = $interpolate.startSymbol() + '::\'formly_\' + ' + bindName + $interpolate.endSymbol();
 	      }
 	      return formName;
+	    }
+
+	    function getTranscludeClass() {
+	      return attrs.transcludeClass || '';
 	    }
 
 	    function copyAttributes(attributes) {

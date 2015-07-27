@@ -1,3 +1,10 @@
+# 6.21.0
+
+## New Features
+
+- Adding the ability to pass a `class` to be used on the `ng-transclude` `div` in the `formly-form`. Thanks
+	[@DevanB](https://github.com/DevanB) for your first open source contribution! [#398](/../../issues/398)
+
 # 6.21.0-beta.1
 
 ## New Features
