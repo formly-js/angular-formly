@@ -149,6 +149,24 @@ describe('formly-form', () => {
     expect(() => scope.$digest()).to.not.throw();
   });
 
+  describe.skip(`ngTransclude element`, () => {
+    it(`should have the specified className`, () => {
+      const el = compileAndDigest(`
+      <formly-form model="model" fields="fields" form="theForm" transclude-class="foo yeah"></formly-form>
+    `);
+      expect(el[0].querySelector('.foo.yeah')).to.exist;
+    });
+
+    it(`should not have a className when one is unspecified`, () => {
+      // this test is to avoid giving it a class of "undefined"
+      const el = compileAndDigest(`
+      <formly-form model="model" fields="fields" form="theForm"></formly-form>
+    `);
+      const transcludedDiv = el[0].querySelector('div[ng-transclude]');
+      expect(transcludedDiv.classList).to.have.length(0);
+    });
+  });
+
   describe(`fieldGroup`, () => {
 
     beforeEach(() => {
