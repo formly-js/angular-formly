@@ -1,3 +1,9 @@
+# 6.21.1
+
+## Bug Fixes
+
+- Remove the shrinkwrap because it didn't really work out the way I wanted it to... [#408](/../../issues/408)
+
 # 6.21.0
 
 ## New Features
