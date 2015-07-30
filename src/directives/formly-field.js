@@ -16,6 +16,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
   return {
     restrict: 'AE',
     transclude: true,
+    require: '?^formlyForm',
     scope: {
       options: '=',
       model: '=',
@@ -51,7 +52,6 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     setDefaultValue();
     setInitialValue();
     runExpressions();
-    addModelWatcher($scope, $scope.options);
     addValidationMessages($scope.options);
     invokeControllers($scope, $scope.options, fieldType);
 
@@ -146,13 +146,6 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       });
     }
 
-    // initialization functions
-    function addModelWatcher(scope, options) {
-      if (options.model) {
-        scope.$watch('options.model', runExpressions, true);
-      }
-    }
-
     function resetModel() {
       $scope.model[$scope.options.key] = $scope.options.initialValue;
       if ($scope.options.formControl) {
@@ -212,10 +205,15 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
 
   // link function
-  function fieldLink(scope, el) {
+  function fieldLink(scope, el, attrs, formlyFormCtrl) {
     if (scope.options.fieldGroup) {
       setFieldGroupTemplate();
       return;
+    }
+
+    // watch the field model (if exists) if there is no parent formly-form directive (that would watch it instead)
+    if (!formlyFormCtrl && scope.options.model) {
+      scope.$watch('options.model', () => scope.options.runExpressions(), true);
     }
 
     addAttributes();

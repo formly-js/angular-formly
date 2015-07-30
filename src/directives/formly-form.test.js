@@ -375,6 +375,64 @@ describe('formly-form', () => {
 
   });
 
+  describe('an instance of model', () => {
+    const spy1 = sinon.spy();
+    const spy2 = sinon.spy();
+
+    beforeEach(() => {
+      scope.model = {};
+      scope.fieldModel1 = {};
+
+      scope.fields = [
+        {template: input, key: 'foo', model: scope.fieldModel1},
+        {template: input, key: 'bar', model: scope.fieldModel1},
+        {template: input, key: 'zoo', model: scope.fieldModel1}
+      ];
+    });
+
+    it('should be assigned with only one watcher', () => {
+      compileAndDigest();
+      $timeout.flush();
+
+      scope.fields[0].expressionProperties = {'data.dummy': spy1};
+      scope.fields[1].expressionProperties = {'data.dummy': spy2};
+
+      scope.fieldModel1.foo = 'value';
+      scope.$digest();
+      $timeout.flush();
+
+      expect(spy1).to.have.been.calledOnce;
+      expect(spy2).to.have.been.calledOnce;
+    });
+  });
+
+  describe('hideExpression', () => {
+    beforeEach(() => {
+      scope.model = {};
+      scope.fieldModel = {};
+
+      scope.fields = [
+        {template: input, key: 'foo', model: scope.fieldModel},
+        {template: input, key: 'bar', model: scope.fieldModel, hideExpression: () => !!scope.fieldModel.foo}
+      ];
+    });
+
+    it('should be called and resolve to true when field model changes', () => {
+      compileAndDigest();
+      expect(scope.fields[1].hide).be.false;
+      scope.fields[0].formControl.$setViewValue('value');
+      expect(scope.fields[1].hide).be.true;
+    });
+
+    it('should be called and resolve to false when field model changes', () => {
+      scope.fieldModel.foo = 'value';
+      compileAndDigest();
+      expect(scope.fields[1].hide).be.true;
+      scope.fields[0].formControl.$setViewValue('');
+      expect(scope.fields[1].hide).be.false;
+    });
+  });
+
   describe(`options`, () => {
     beforeEach(() => {
       scope.model = {

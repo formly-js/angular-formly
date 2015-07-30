@@ -1359,6 +1359,24 @@ describe('formly-field', function() {
       expect(() => compileAndDigest()).to.throw();
     });
 
+    it(`should watch the model when it's not the direct child of a formly-form`, () => {
+      scope.fields = [
+        getNewField({key: 'foo', model: {}})
+      ];
+
+      compileAndDigest('<div formly-field class="formly-field" options="fields[0]" model="fields[0].model"></div>');
+      $timeout.flush();
+
+      const expressionPropertySpy = sinon.spy();
+      field.expressionProperties = {'data.dummy': expressionPropertySpy};
+
+      field.model.foo = 'hello';
+      scope.$digest();
+      $timeout.flush();
+
+      expect(expressionPropertySpy).to.have.been.calledOnce;
+    });
+
   });
 
   describe(`fieldGroup`, () => {
