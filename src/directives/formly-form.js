@@ -120,7 +120,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
       angular.forEach($scope.fields, function runFieldExpressionProperties(field, index) {
         /*jshint -W030 */
         const model = field.model || $scope.model;
-        field.runExpressions && field.runExpressions(model);
+        field.runExpressions && field.runExpressions();
         if (field.hideExpression) { // can't use hide with expressionProperties reliably
           const val = model[field.key];
           field.hide = evalCloseToFormlyExpression(field.hideExpression, val, field, index);
@@ -139,7 +139,8 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
         }
       }
 
-      angular.forEach($scope.fields, initModel); // initializes the model property if set to 'formState'
+      setupModels();
+
       angular.forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
       angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
     }
@@ -175,6 +176,20 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
           field.options.resetModel();
         } else if (field.resetModel) {
           field.resetModel();
+        }
+      });
+    }
+
+    function setupModels() {
+      // a set of field models that are already watched (the $scope.model will have its own watcher)
+      const watchedModels = [$scope.model];
+
+      angular.forEach($scope.fields, (field) => {
+        initModel(field);
+
+        if (field.model && watchedModels.indexOf(field.model) === -1) {
+          $scope.$watch(() => field.model, onModelOrFormStateChange, true);
+          watchedModels.push(field.model);
         }
       });
     }
