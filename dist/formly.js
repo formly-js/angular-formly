@@ -1,4 +1,4 @@
-//! angular-formly version 6.22.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 6.23.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("6.22.0")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("6.23.0")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -448,7 +448,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.22.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.23.0") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -1137,6 +1137,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var isPossiblyAsync = !_angularFix2['default'].isString(validator);
 	        var validatorCollection = isPossiblyAsync || isAsync ? '$asyncValidators' : '$validators';
 
+	        // UPDATE IN 7.0.0
 	        // this is temporary until we can have a breaking change. Allow people to get the wins of the explicitAsync api
 	        if (formlyConfig.extras.explicitAsync && !isAsync) {
 	          validatorCollection = '$validators';
@@ -1144,6 +1145,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        ctrl[validatorCollection][name] = function evalValidity(modelValue, viewValue) {
 	          var value = formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
+	          // UPDATE IN 7.0.0
 	          // In the next breaking change, this code should simply return the value
 	          if (isAsync) {
 	            return value;
@@ -1164,6 +1166,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var inFlightValidator = undefined;
 	        ctrl.$parsers.unshift(function evalValidityOfParser(viewValue) {
 	          var isValid = formlyUtil.formlyEval(scope, validator, ctrl.$modelValue, viewValue);
+	          // UPDATE IN 7.0.0
 	          // In the next breaking change, rather than checking for isPromiseLike, it should just check for isAsync.
 
 	          if (isAsync || isPromiseLike(isValid)) {
@@ -1879,11 +1882,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  function runApiCheckForType(apiCheck, apiCheckInstance, apiCheckFunction, apiCheckOptions, options) {
-	    /* eslint complexity:[2, 8] */
+	    /* eslint complexity:[2, 9] */
 	    if (!apiCheck) {
 	      return;
 	    }
-	    var instance = apiCheckInstance || formlyApiCheck;
+	    var instance = apiCheckInstance || formlyConfig.extras.apiCheckInstance || formlyApiCheck;
 	    if (instance.config.disabled || _apiCheck2['default'].globalConfig.disabled) {
 	      return;
 	    }
@@ -2349,7 +2352,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports['default'] = addFormlyNgModelAttrsManipulator;
 
 	// @ngInject
-	function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
+	function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn) {
 	  if (formlyConfig.extras.disableNgModelAttrsManipulator) {
 	    return;
 	  }
@@ -2357,14 +2360,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function ngModelAttrsManipulator(template, options, scope) {
 	    var node = document.createElement('div');
-	    var data = options.data;
-	    if (data.skipNgModelAttrsManipulator === true) {
+	    var skip = getSkip(options);
+	    if (skip === true) {
 	      return template;
 	    }
-
 	    node.innerHTML = template;
 
-	    var modelNodes = getNgModelNodes(node, data.skipNgModelAttrsManipulator);
+	    var modelNodes = getNgModelNodes(node, skip);
 	    if (!modelNodes || !modelNodes.length) {
 	      return template;
 	    }
@@ -2470,6 +2472,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return node.querySelectorAll(query);
 	  }
 
+	  function getSkip(options) {
+	    // UPDATE IN 7.0.0
+	    var skip = options.extras && options.extras.skipNgModelAttrsManipulator;
+	    if (!_angularFix2['default'].isDefined(skip)) {
+	      skip = options.data && options.data.skipNgModelAttrsManipulator;
+	      if (_angularFix2['default'].isDefined(skip)) {
+	        formlyWarn('skipngmodelattrsmanipulator-moved', 'The skipNgModelAttrsManipulator property has been moved from the `data` property to the `extras` property', options);
+	      }
+	    }
+	    return skip;
+	  }
+
 	  function getBuiltInAttributes() {
 	    var ngModelAttributes = {
 	      focus: {
@@ -2522,7 +2536,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  }
 	}
-	addFormlyNgModelAttrsManipulator.$inject = ["formlyConfig", "$interpolate"];
+	addFormlyNgModelAttrsManipulator.$inject = ["formlyConfig", "$interpolate", "formlyWarn"];
 	module.exports = exports['default'];
 
 /***/ },

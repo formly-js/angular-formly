@@ -1,4 +1,8 @@
-# 6.22.1
+# 6.23.0
+
+## New Features
+
+- You can now specify a default `formlyConfig.extras.apiCheckInstance` so you don't have to specify it for all of your types and wrappers.
 
 ## Deprecations
 
