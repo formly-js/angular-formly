@@ -701,34 +701,52 @@ describe('formly-field', function() {
       );
     });
 
-    describe(`disabled`, () => {
-      it(`should not do anything if the given instance is disabled`, () => {
-        inputType.apiCheckInstance.config.disabled = true;
-        scope.fields = [
-          {type, templateOptions: {label: 'string'}}
-        ];
-        shouldNotWarn(compileAndDigest);
+    describe(`apiCheckInstance`, () => {
+      describe(`disabled`, () => {
+        it(`should not do anything if the given instance is disabled`, () => {
+          inputType.apiCheckInstance.config.disabled = true;
+          scope.fields = [
+            {type, templateOptions: {label: 'string'}}
+          ];
+          shouldNotWarn(compileAndDigest);
+        });
+
+        it(`should not do anything if no instance is provided and the formly instance is disabled`, inject((formlyApiCheck) => {
+          formlyApiCheck.config.disabled = true;
+          formlyConfig.setType({
+            name: 'someOtherType',
+            template: '<hr />',
+            apiCheck: checker => ({data: {foo: checker.bool}})
+          });
+          scope.fields = [{type: 'someOtherType'}];
+          shouldNotWarn(compileAndDigest);
+          formlyApiCheck.config.disabled = false;
+        }));
+
+        it(`should not do anything if the global instance is disabled`, () => {
+          apiCheck.globalConfig.disabled = true;
+          scope.fields = [
+            {type, templateOptions: {label: 'string'}}
+          ];
+          shouldNotWarn(compileAndDigest);
+          apiCheck.globalConfig.disabled = false;
+        });
       });
 
-      it(`should not do anything if no instance is provided and the formly instance is disabled`, inject((formlyApiCheck) => {
-        formlyApiCheck.config.disabled = true;
-        formlyConfig.setType({
-          name: 'someOtherType',
-          template: '<hr />',
-          apiCheck: checker => ({data: {foo: checker.bool}})
+      describe.skip(`formlyConfig.extras.apiCheckInstance`, () => {
+        it(`should default to this instance when specified and no specific type instance is specified`, () => {
+          const globalApiCheckInstance = apiCheck({
+            output: {prefix: 'custom-api-check'}
+          });
+          const warnSpy = sinon.spy(globalApiCheckInstance, 'warn');
+          formlyConfig.extras.apiCheckInstance = globalApiCheckInstance;
+          delete inputType.apiCheckInstance;
+          scope.fields = [
+            {type, templateOptions: {label: 'string', className: 'valid'}}
+          ];
+          compileAndDigest();
+          expect(warnSpy).to.have.been.calledOnce;
         });
-        scope.fields = [{type: 'someOtherType'}];
-        shouldNotWarn(compileAndDigest);
-        formlyApiCheck.config.disabled = false;
-      }));
-
-      it(`should not do anything if the global instance is disabled`, () => {
-        apiCheck.globalConfig.disabled = true;
-        scope.fields = [
-          {type, templateOptions: {label: 'string'}}
-        ];
-        shouldNotWarn(compileAndDigest);
-        apiCheck.globalConfig.disabled = false;
       });
     });
 
