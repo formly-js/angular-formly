@@ -732,7 +732,7 @@ describe('formly-field', function() {
         });
       });
 
-      describe.skip(`formlyConfig.extras.apiCheckInstance`, () => {
+      describe(`formlyConfig.extras.apiCheckInstance`, () => {
         it(`should default to this instance when specified and no specific type instance is specified`, () => {
           const globalApiCheckInstance = apiCheck({
             output: {prefix: 'custom-api-check'}
