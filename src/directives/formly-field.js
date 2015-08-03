@@ -653,11 +653,11 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
   }
 
   function runApiCheckForType(apiCheck, apiCheckInstance, apiCheckFunction, apiCheckOptions, options) {
-    /* eslint complexity:[2, 8] */
+    /* eslint complexity:[2, 9] */
     if (!apiCheck) {
       return;
     }
-    const instance = apiCheckInstance || formlyApiCheck;
+    const instance = apiCheckInstance || formlyConfig.extras.apiCheckInstance || formlyApiCheck;
     if (instance.config.disabled || apiCheckFactory.globalConfig.disabled) {
       return;
     }
