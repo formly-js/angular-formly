@@ -1,4 +1,4 @@
-//! angular-formly version 6.21.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 6.22.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("6.21.1")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("6.22.0")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -328,6 +328,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  id: apiCheck.string.optional,
 	  name: apiCheck.string.optional,
 	  expressionProperties: expressionProperties.optional,
+	  extras: apiCheck.shape({
+	    validateOnModelChange: apiCheck.bool.optional
+	  }).strict.optional,
 	  data: apiCheck.object.optional,
 	  templateOptions: apiCheck.object.optional,
 	  wrapper: specifyWrapperType.optional,
@@ -445,7 +448,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.21.1") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.22.0") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -1248,6 +1251,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return {
 	    restrict: 'AE',
 	    transclude: true,
+	    require: '?^formlyForm',
 	    scope: {
 	      options: '=',
 	      model: '=',
@@ -1282,7 +1286,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    setDefaultValue();
 	    setInitialValue();
 	    runExpressions();
-	    addModelWatcher($scope, $scope.options);
 	    addValidationMessages($scope.options);
 	    invokeControllers($scope, $scope.options, fieldType);
 
@@ -1315,6 +1318,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function simplifyLife(options) {
 	      // add a few empty objects (if they don't already exist) so you don't have to undefined check everywhere
 	      formlyUtil.reverseDeepMerge(options, {
+	        extras: {},
 	        data: {},
 	        templateOptions: {},
 	        validation: {}
@@ -1375,13 +1379,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        resetModel: resetModel,
 	        updateInitialValue: updateInitialValue
 	      });
-	    }
-
-	    // initialization functions
-	    function addModelWatcher(scope, options) {
-	      if (options.model) {
-	        scope.$watch('options.model', runExpressions, true);
-	      }
 	    }
 
 	    function resetModel() {
@@ -1445,10 +1442,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  // link function
-	  function fieldLink(scope, el) {
+	  function fieldLink(scope, el, attrs, formlyFormCtrl) {
 	    if (scope.options.fieldGroup) {
 	      setFieldGroupTemplate();
 	      return;
+	    }
+
+	    // watch the field model (if exists) if there is no parent formly-form directive (that would watch it instead)
+	    if (!formlyFormCtrl && scope.options.model) {
+	      scope.$watch('options.model', function () {
+	        return scope.options.runExpressions();
+	      }, true);
 	    }
 
 	    addAttributes();
@@ -2080,13 +2084,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    function onModelOrFormStateChange() {
 	      _angularFix2['default'].forEach($scope.fields, function runFieldExpressionProperties(field, index) {
-	        /*jshint -W030 */
 	        var model = field.model || $scope.model;
-	        field.runExpressions && field.runExpressions(model);
+	        field.runExpressions && field.runExpressions();
 	        if (field.hideExpression) {
 	          // can't use hide with expressionProperties reliably
 	          var val = model[field.key];
 	          field.hide = evalCloseToFormlyExpression(field.hideExpression, val, field, index);
+	        }
+	        if (field.extras && field.extras.validateOnModelChange && field.formControl) {
+	          field.formControl.$validate();
 	        }
 	      });
 	    }
@@ -2102,7 +2108,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	      }
 
-	      _angularFix2['default'].forEach($scope.fields, initModel); // initializes the model property if set to 'formState'
+	      setupModels();
+
 	      _angularFix2['default'].forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
 	      _angularFix2['default'].forEach($scope.fields, setupWatchers); // setup watchers for all fields
 	    }
@@ -2134,6 +2141,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	          field.options.resetModel();
 	        } else if (field.resetModel) {
 	          field.resetModel();
+	        }
+	      });
+	    }
+
+	    function setupModels() {
+	      // a set of field models that are already watched (the $scope.model will have its own watcher)
+	      var watchedModels = [$scope.model];
+
+	      _angularFix2['default'].forEach($scope.fields, function (field) {
+	        initModel(field);
+
+	        if (field.model && watchedModels.indexOf(field.model) === -1) {
+	          $scope.$watch(function () {
+	            return field.model;
+	          }, onModelOrFormStateChange, true);
+	          watchedModels.push(field.model);
 	        }
 	      });
 	    }
