@@ -1,3 +1,19 @@
+# 6.22.0
+
+## New Features
+
+- Adding `extras` property to the field configuration object (for configuration of angular-formly core features).
+- Adding support for `field.extras.validateOnModelChange` which will invoke the field's `formControl.$validate` function when the model or formState changes. [#404](/../../issues/404)
+
+## Bug Fixes
+
+- `hideExpressions` now run on both the field's own model change (if present) as well as the form's model's change and formState change. Thanks [@redhead](https://github.com/redhead)! [#380](/../../issues/380)
+
+## Internal enhancements
+
+- Adding test for the presence all the things that get added to the field configuration object
+- Adding test for the presence all the things that should be available on the scope of a formly-field (and hence available to template authors).
+
 # 6.21.1
 
 ## Bug Fixes

@@ -1569,6 +1569,19 @@ describe('formly-field', function() {
     });
   });
 
+  describe(`extras`, () => {
+    describe(`validateOnModelChange`, () => {
+      it(`should invoke $validate on the field even when the field's model hasn't changed`, () => {
+        scope.fields = [getNewField({extras: {validateOnModelChange: true}})];
+        compileAndDigest();
+        const $validateSpy = sinon.spy(field.formControl, '$validate');
+        scope.model.foo = 'bar';
+        scope.$digest();
+        expect($validateSpy).to.have.been.calledOnce;
+      });
+    });
+  });
+
   describe(`other things`, () => {
     it(`should warn if you specify 'hide' in expressionProperties`, inject(($log) => {
       scope.fields = [getNewField({expressionProperties: {hide: 'foo'}})];
@@ -1581,6 +1594,26 @@ describe('formly-field', function() {
       );
       expect(log[2]).to.equal(field);
     }));
+
+    it(`should add a bunch of things to the formly field and it's scope`, () => {
+      scope.fields = [{template: '<input ng-model="model[options.key]" />'}];
+      compileAndDigest();
+      // here's a list of everything that angular-formly adds for you.
+      expect(field).to.contain.all.keys([
+        'key', 'extras', 'data', 'templateOptions', 'validation', 'value', 'runExpressions',
+        'resetModel', 'updateInitialValue', 'id', 'name', 'initialValue', 'formControl'
+      ]);
+    });
+
+    it(`should add a bunch of things to the formly field and it's scope`, () => {
+      scope.fields = [{template: '<input ng-model="model[options.key]" />'}];
+      compileAndDigest();
+      // here's a list of everything that you have available on the scope for your templates
+      expect(isolateScope).to.contain.all.keys([
+        'options', 'model', 'formId', 'index', 'fields', 'formState', 'formOptions',
+        'form', 'id', 'to', 'fc', 'name', 'showError'
+      ]);
+    });
   });
 
   describe(`merging of options`, () => {

@@ -84,6 +84,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     function simplifyLife(options) {
       // add a few empty objects (if they don't already exist) so you don't have to undefined check everywhere
       formlyUtil.reverseDeepMerge(options, {
+        extras: {},
         data: {},
         templateOptions: {},
         validation: {}

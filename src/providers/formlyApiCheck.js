@@ -102,6 +102,9 @@ const fieldOptionsApiShape = {
   id: apiCheck.string.optional,
   name: apiCheck.string.optional,
   expressionProperties: expressionProperties.optional,
+  extras: apiCheck.shape({
+    validateOnModelChange: apiCheck.bool.optional
+  }).strict.optional,
   data: apiCheck.object.optional,
   templateOptions: apiCheck.object.optional,
   wrapper: specifyWrapperType.optional,
