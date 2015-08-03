@@ -142,6 +142,32 @@ the apiCheck checkers are never even created. Not much we can do about the coupl
 a big issue. For more info, see [#334](https://github.com/formly-js/angular-formly/issues/334). Note, this will be
 removed in a major release.
 
+# skipNgModelAttrsManipulator moved
+
+This property has been moved from the `data` property to the `extras` property.
+
+Before:
+
+```javascript
+{
+  template: '<hr />',
+  data: {
+    skipNgModelAttrsManipulator: true
+  }
+}
+```
+
+After:
+
+```javascript
+{
+  template: '<hr />',
+  extras: {
+    skipNgModelAttrsManipulator: true
+  }
+}
+```
+
 # Notes
 
 It is recommended to disable warnings in production using `formlyConfigProvider.disableWarnings = true`. Note: This will

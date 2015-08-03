@@ -2,18 +2,24 @@
 import angular from 'angular';
 import _ from 'lodash';
 
+import testUtils from '../test.utils.js';
+
+const {shouldWarnWithLog} = testUtils;
+
 describe('formlyNgModelAttrsManipulator', () => {
   beforeEach(window.module('formly'));
 
-  let formlyConfig, manipulator, scope, field, result, resultEl, resultNode;
+  let formlyConfig, manipulator, scope, field, result, resultEl, resultNode, $log;
   const template = '<input ng-model="model[options.key]" />';
 
-  beforeEach(inject((_formlyConfig_, $rootScope) => {
+  beforeEach(inject((_formlyConfig_, $rootScope, _$log_) => {
+    $log = _$log_;
     formlyConfig = _formlyConfig_;
     manipulator = formlyConfig.templateManipulators.preWrapper[0];
     scope = $rootScope.$new();
     scope.id = 'id';
     field = {
+      extras: {},
       data: {},
       validation: {},
       templateOptions: {}
@@ -21,8 +27,20 @@ describe('formlyNgModelAttrsManipulator', () => {
   }));
 
   describe(`skipping`, () => {
-    it(`should allow you to skip the manipulator wholesale for the field`, () => {
+    it(`should give a deprecation warning when using the data property`, () => {
       field.data.skipNgModelAttrsManipulator = true;
+      const logArgs = [
+        'Formly Warning:',
+        'The skipNgModelAttrsManipulator property has been moved from the `data` property to the `extras` property',
+        field,
+        /skipngmodelattrsmanipulator-moved/
+      ];
+      shouldWarnWithLog($log, logArgs, manipulate);
+    });
+
+
+    it(`should allow you to skip the manipulator wholesale for the field`, () => {
+      field.extras.skipNgModelAttrsManipulator = true;
       manipulate();
       expect(result).to.equal(template);
     });
@@ -30,7 +48,7 @@ describe('formlyNgModelAttrsManipulator', () => {
     it(`should allow you to specify a selector for specific elements to skip`, () => {
       const className = 'ignored-thing' + _.random(0, 10);
       field.templateOptions.required = true;
-      field.data.skipNgModelAttrsManipulator = `.${className}`;
+      field.extras.skipNgModelAttrsManipulator = `.${className}`;
       manipulate(`
         <div>
           <input class="first-thing" ng-model="model[options.key]" />
@@ -60,7 +78,7 @@ describe('formlyNgModelAttrsManipulator', () => {
 
     it(`should not skip by selector if skipNgModelAttrsManipulator is a boolean value`, () => {
       field.templateOptions.required = true;
-      field.data.skipNgModelAttrsManipulator = false;
+      field.extras.skipNgModelAttrsManipulator = false;
       manipulate(`
         <div>
           <input class="first-thing" ng-model="model[options.key]" />
@@ -76,7 +94,7 @@ describe('formlyNgModelAttrsManipulator', () => {
     it(`should allow you to skip using both the special attribute and the custom selector`, () => {
       const className = 'ignored-thing' + _.random(0, 10);
       field.templateOptions.required = true;
-      field.data.skipNgModelAttrsManipulator = `.${className}`;
+      field.extras.skipNgModelAttrsManipulator = `.${className}`;
       manipulate(`
         <div>
           <input class="first-thing" ng-model="model[options.key]" />

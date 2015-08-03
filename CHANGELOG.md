@@ -1,3 +1,9 @@
+# 6.22.1
+
+## Deprecations
+
+- You will now get a deprecation warning if you specify the `skipNgModelAttrsManipulator` property under the `data` property (it has moved to `extras`). [#390](/../../issues/390)
+
 # 6.22.0
 
 ## New Features

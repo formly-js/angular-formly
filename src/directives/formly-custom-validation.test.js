@@ -2,6 +2,10 @@
 import _ from 'lodash';
 import angular from 'angular-fix';
 
+import testUtils from '../test.utils.js';
+
+const {shouldWarnWithLog} = testUtils;
+
 describe(`formly-custom-validation`, function() {
   let $compile, $timeout, $q, scope, $log, formlyConfig;
   const formTemplate = `<form name="myForm">TEMPLATE</form>`;
@@ -104,7 +108,7 @@ describe(`formly-custom-validation`, function() {
           scope.options,
           /validators-returning-promises-should-use-asyncvalidators/
         ];
-        shouldWarn(logArgs, () => {
+        shouldWarnWithLog($log, logArgs, () => {
           validate(() => $q.when(), true);
         });
       });
@@ -163,19 +167,5 @@ describe(`formly-custom-validation`, function() {
     field.$setViewValue(value);
     scope.$digest();
     expect(field.$valid).to.eq(pass);
-  }
-
-  function shouldWarn(logArgs, test) {
-    /* eslint no-console:0 */
-    test();
-    expect($log.warn.logs, '$log should have only been called once').to.have.length(1);
-    const log = $log.warn.logs[0];
-    _.each(logArgs, (arg, index) => {
-      if (_.isRegExp(arg)) {
-        expect(log[index]).to.match(arg);
-      } else {
-        expect(log[index]).to.equal(arg);
-      }
-    });
   }
 });

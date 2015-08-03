@@ -6,7 +6,7 @@
 import angular from 'angular-fix';
 import testUtils from '../test.utils.js';
 
-const {getNewField, basicForm} = testUtils;
+const {getNewField, basicForm, shouldWarn, shouldNotWarn} = testUtils;
 
 describe('formlyConfig', () => {
   beforeEach(window.module('formly'));
@@ -766,25 +766,4 @@ describe('formlyConfig', () => {
       ]);
     });
   });
-
-  function shouldWarn(match, test) {
-    const originalWarn = console.warn;
-    let calledArgs;
-    console.warn = function() {
-      calledArgs = arguments;
-    };
-    test();
-    expect(calledArgs, 'expected warning and there was none').to.exist;
-    expect(Array.prototype.join.call(calledArgs, ' ')).to.match(match);
-    console.warn = originalWarn;
-  }
-
-  function shouldNotWarn(test) {
-    const originalWarn = console.warn;
-    let callCount = 0;
-    console.warn = () => callCount++;
-    test();
-    expect(callCount).to.equal(0);
-    console.warn = originalWarn;
-  }
 });

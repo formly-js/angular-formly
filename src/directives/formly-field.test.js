@@ -1,13 +1,12 @@
 /* eslint no-shadow:0 */
 /* eslint max-statements:[2, 50] */
 /* eslint max-len:0 */
-/* eslint no-console:0 */
 import angular from 'angular-fix';
 import apiCheck from 'api-check';
 import testUtils from '../test.utils.js';
 import _ from 'lodash';
 
-const {getNewField, input, basicForm, multiNgModelField} = testUtils;
+const {getNewField, input, basicForm, multiNgModelField, shouldWarn, shouldNotWarn} = testUtils;
 
 describe('formly-field', function() {
   /* jshint maxstatements:100 */
@@ -1677,32 +1676,5 @@ describe('formly-field', function() {
 
   function getNgModelCtrl(index = 0) {
     return angular.element(getFieldNgModelNode(index)).controller('ngModel');
-  }
-
-  function shouldWarn(match, test) {
-    const originalWarn = console.warn;
-    let calledArgs;
-    console.warn = function() {
-      calledArgs = arguments;
-    };
-    test();
-    expect(calledArgs, 'expected warning and there was none').to.exist;
-    expect(Array.prototype.join.call(calledArgs, ' ')).to.match(match);
-    console.warn = originalWarn;
-  }
-
-
-  function shouldNotWarn(test) {
-    const originalWarn = console.warn;
-    let calledArgs;
-    console.warn = function() {
-      calledArgs = arguments;
-    };
-    test();
-    if (calledArgs) {
-      console.log(calledArgs);
-      throw new Error('Expected no warning, but there was one', calledArgs);
-    }
-    console.warn = originalWarn;
   }
 });

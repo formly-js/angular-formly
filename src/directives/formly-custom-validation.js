@@ -44,6 +44,7 @@ function formlyCustomValidation(formlyConfig, formlyUtil, $q, formlyWarn) {
         const isPossiblyAsync = !angular.isString(validator);
         let validatorCollection = (isPossiblyAsync || isAsync) ? '$asyncValidators' : '$validators';
 
+        // UPDATE IN 7.0.0
         // this is temporary until we can have a breaking change. Allow people to get the wins of the explicitAsync api
         if (formlyConfig.extras.explicitAsync && !isAsync) {
           validatorCollection = '$validators';
@@ -51,6 +52,7 @@ function formlyCustomValidation(formlyConfig, formlyUtil, $q, formlyWarn) {
 
         ctrl[validatorCollection][name] = function evalValidity(modelValue, viewValue) {
           const value = formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
+          // UPDATE IN 7.0.0
           // In the next breaking change, this code should simply return the value
           if (isAsync) {
             return value;
@@ -71,6 +73,7 @@ function formlyCustomValidation(formlyConfig, formlyUtil, $q, formlyWarn) {
         let inFlightValidator;
         ctrl.$parsers.unshift(function evalValidityOfParser(viewValue) {
           const isValid = formlyUtil.formlyEval(scope, validator, ctrl.$modelValue, viewValue);
+          // UPDATE IN 7.0.0
           // In the next breaking change, rather than checking for isPromiseLike, it should just check for isAsync.
 
           if (isAsync || isPromiseLike(isValid)) {
