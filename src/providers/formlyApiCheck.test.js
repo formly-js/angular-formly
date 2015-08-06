@@ -42,9 +42,46 @@ describe('formlyApiCheck', () => {
     });
   });
 
+  describe(`extras`, () => {
+    describe(`skipNgModelAttrsManipulator`, () => {
+      it(`should pass with a boolean`, () => {
+        expectPass({
+          template: 'foo',
+          extras: {skipNgModelAttrsManipulator: true}
+        }, 'formlyFieldOptions');
+      });
+
+      it(`should pass with a string`, () => {
+        expectPass({
+          template: 'foo',
+          extras: {skipNgModelAttrsManipulator: '.selector'}
+        }, 'formlyFieldOptions');
+      });
+
+      it(`should pass with nothing`, () => {
+        expectPass({
+          template: 'foo',
+          extras: {skipNgModelAttrsManipulator: '.selector'}
+        }, 'formlyFieldOptions');
+      });
+
+      it(`should fail with anything else`, () => {
+        expectFail({
+          template: 'foo',
+          extras: {skipNgModelAttrsManipulator: 32}
+        }, 'formlyFieldOptions');
+      });
+    });
+  });
+
   function expectPass(options, checker) {
     const result = formlyApiCheck[checker](options);
     expect(result).to.be.undefined;
+  }
+
+  function expectFail(options, checker) {
+    const result = formlyApiCheck[checker](options);
+    expect(result).to.be.an.instanceOf(Error);
   }
 
 });

@@ -1,3 +1,9 @@
+# 6.23.1
+
+## Bug Fixes
+
+- api-check wasn't allowing `skipNgModelAttrsManipulator` under the `extras` property. [#421](/../../issues/421)
+
 # 6.23.0
 
 ## New Features

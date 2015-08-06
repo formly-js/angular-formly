@@ -103,7 +103,10 @@ const fieldOptionsApiShape = {
   name: apiCheck.string.optional,
   expressionProperties: expressionProperties.optional,
   extras: apiCheck.shape({
-    validateOnModelChange: apiCheck.bool.optional
+    validateOnModelChange: apiCheck.bool.optional,
+    skipNgModelAttrsManipulator: apiCheck.oneOfType([
+      apiCheck.string, apiCheck.bool
+    ]).optional
   }).strict.optional,
   data: apiCheck.object.optional,
   templateOptions: apiCheck.object.optional,
