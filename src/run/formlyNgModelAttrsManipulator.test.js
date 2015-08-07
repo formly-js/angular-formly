@@ -45,7 +45,9 @@ describe('formlyNgModelAttrsManipulator', () => {
       expect(result).to.equal(template);
     });
 
-    it(`should allow you to specify a selector for specific elements to skip`, () => {
+
+    const skipWithSelectorTitle = `should allow you to specify a selector for specific elements to skip`;
+    function skipWithSelector() {
       const className = 'ignored-thing' + _.random(0, 10);
       field.templateOptions.required = true;
       field.extras.skipNgModelAttrsManipulator = `.${className}`;
@@ -59,9 +61,11 @@ describe('formlyNgModelAttrsManipulator', () => {
       const secondInput = angular.element(resultNode.querySelector(`.${className}`));
       expect(firstInput.attr('required')).to.exist;
       expect(secondInput.attr('required')).to.not.exist;
-    });
+    }
+    it(skipWithSelectorTitle, skipWithSelector);
 
-    it(`should allow you to place the attribute formly-skip-ng-model-attrs-manipulator on an ng-model to have it skip`, () => {
+    const skipWithAttributeTitle = `should allow you to place the attribute formly-skip-ng-model-attrs-manipulator on an ng-model to have it skip`;
+    function skipWithAttribute() {
       field.templateOptions.required = true;
       manipulate(`
         <div>
@@ -73,10 +77,12 @@ describe('formlyNgModelAttrsManipulator', () => {
       const secondInput = angular.element(resultNode.querySelector('[formly-skip-ng-model-attrs-manipulator]'));
       expect(firstInput.attr('required')).to.exist;
       expect(secondInput.attr('required')).to.not.exist;
-    });
+    }
+    it(skipWithAttributeTitle, skipWithAttribute);
 
 
-    it(`should not skip by selector if skipNgModelAttrsManipulator is a boolean value`, () => {
+    const dontSkipWithBooleanTitle = `should not skip by selector if skipNgModelAttrsManipulator is a boolean value`;
+    function dontSkipWithBoolean() {
       field.templateOptions.required = true;
       field.extras.skipNgModelAttrsManipulator = false;
       manipulate(`
@@ -89,9 +95,11 @@ describe('formlyNgModelAttrsManipulator', () => {
       const secondInput = angular.element(resultNode.querySelector('.second-thing'));
       expect(firstInput.attr('required')).to.exist;
       expect(secondInput.attr('required')).to.exist;
-    });
+    }
+    it(dontSkipWithBooleanTitle, dontSkipWithBoolean);
 
-    it(`should allow you to skip using both the special attribute and the custom selector`, () => {
+    const skipWithAttributeAndSelectorTitle = `should allow you to skip using both the special attribute and the custom selector`;
+    function skipWithAttributeAndSelector() {
       const className = 'ignored-thing' + _.random(0, 10);
       field.templateOptions.required = true;
       field.extras.skipNgModelAttrsManipulator = `.${className}`;
@@ -108,8 +116,36 @@ describe('formlyNgModelAttrsManipulator', () => {
       expect(firstInput.attr('required')).to.exist;
       expect(secondInput.attr('required')).to.not.exist;
       expect(thirdInput.attr('required')).to.not.exist;
+    }
+    it(skipWithAttributeAndSelectorTitle, skipWithAttributeAndSelector);
+
+    //repeat a few skipping tests with a broken Element.querySelectorAll function
+    describe('node search fallback', () => {
+      let origQuerySelectorAll;
+
+      //deliberately break querySelectorAll to mimic IE8's behaviour
+      beforeEach(() => {
+        origQuerySelectorAll = Element.prototype.querySelectorAll;
+        Element.prototype.querySelectorAll = function brokenQuerySelectorAll(selector) {
+          if (selector && selector.indexOf(':not') >= 0) {
+            throw new Error(':not selector not supported');
+          }
+          return origQuerySelectorAll.apply(this, arguments);
+        };
+      });
+
+      afterEach(() => {
+        Element.prototype.querySelectorAll = origQuerySelectorAll;
+      });
+
+      it(skipWithSelectorTitle, skipWithSelector);
+      it(skipWithAttributeTitle, skipWithAttribute);
+      it(dontSkipWithBooleanTitle, dontSkipWithBoolean);
+      it(skipWithAttributeAndSelectorTitle, skipWithAttributeAndSelector);
     });
+
   });
+
 
   it(`should have a limited number of automatically added attributes without any specific options`, () => {
     manipulate();
