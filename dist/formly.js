@@ -1,4 +1,4 @@
-//! angular-formly version 6.23.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 6.23.2 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("6.23.1")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("6.23.2")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -449,7 +449,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.23.1") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.23.2") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -2470,7 +2470,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var selectorNot = _angularFix2['default'].isString(skip) ? ':not(' + skip + ')' : '';
 	    var skipNot = ':not([formly-skip-ng-model-attrs-manipulator])';
 	    var query = '[ng-model]' + selectorNot + skipNot + ', [data-ng-model]' + selectorNot + skipNot;
-	    return node.querySelectorAll(query);
+	    try {
+	      return node.querySelectorAll(query);
+	    } catch (e) {
+	      //this code is needed for IE8, as it does not support the CSS3 ':not' selector
+	      //it should be removed when IE8 support is dropped
+	      return getNgModelNodesFallback(node, skip);
+	    }
+	  }
+
+	  function getNgModelNodesFallback(node, skip) {
+	    var allNgModelNodes = node.querySelectorAll('[ng-model], [data-ng-model]');
+	    var matchingNgModelNodes = [];
+
+	    //make sure this array is compatible with NodeList type by adding an 'item' function
+	    matchingNgModelNodes.item = function (i) {
+	      return this[i];
+	    };
+
+	    for (var i = 0; i < allNgModelNodes.length; i++) {
+	      var ngModelNode = allNgModelNodes[i];
+	      if (!ngModelNode.hasAttribute('formly-skip-ng-model-attrs-manipulator') && (_angularFix2['default'].isString(skip) || !nodeMatches(ngModelNode, skip))) {
+
+	        matchingNgModelNodes.push(ngModelNode);
+	      }
+	    }
+
+	    return matchingNgModelNodes;
+	  }
+
+	  function nodeMatches(node, selector) {
+	    var div = document.createElement('div');
+	    div.innerHTML = node.outerHTML;
+	    return div.querySelector(selector);
 	  }
 
 	  function getSkip(options) {

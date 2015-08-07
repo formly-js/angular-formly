@@ -1,3 +1,10 @@
+# 6.23.2
+
+## Bug Fixes
+
+- IE8 doesn't support the `:not` selector. Our resident IE8 support expert [@koenweyn](https://github.com/koenweyn) caught it and PRed a fix. Thanks! [#422](/../../pull/422)
+
+
 # 6.23.1
 
 ## Bug Fixes
