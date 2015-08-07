@@ -124,7 +124,40 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
     const selectorNot = angular.isString(skip) ? `:not(${skip})` : '';
     const skipNot = ':not([formly-skip-ng-model-attrs-manipulator])';
     const query = `[ng-model]${selectorNot}${skipNot}, [data-ng-model]${selectorNot}${skipNot}`;
-    return node.querySelectorAll(query);
+    try {
+      return node.querySelectorAll(query);
+    } catch (e) {
+      //this code is needed for IE8, as it does not support the CSS3 ':not' selector
+      //it should be removed when IE8 support is dropped
+      return getNgModelNodesFallback(node, skip);
+    }
+  }
+
+  function getNgModelNodesFallback(node, skip) {
+    const allNgModelNodes = node.querySelectorAll('[ng-model], [data-ng-model]');
+    const matchingNgModelNodes = [];
+
+    //make sure this array is compatible with NodeList type by adding an 'item' function
+    matchingNgModelNodes.item = function(i) {
+      return this[i];
+    };
+
+    for (let i = 0; i < allNgModelNodes.length; i++) {
+      const ngModelNode = allNgModelNodes[i];
+      if (!ngModelNode.hasAttribute('formly-skip-ng-model-attrs-manipulator') &&
+        (angular.isString(skip) || !nodeMatches(ngModelNode, skip))) {
+
+        matchingNgModelNodes.push(ngModelNode);
+      }
+    }
+
+    return matchingNgModelNodes;
+  }
+
+  function nodeMatches(node, selector) {
+    const div = document.createElement('div');
+    div.innerHTML = node.outerHTML;
+    return div.querySelector(selector);
   }
 
   function getSkip(options) {
