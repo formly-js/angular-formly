@@ -1025,19 +1025,6 @@ describe('formly-field', function() {
 
         const ctrl = getNgModelCtrl();
 
-        //workaround: this formats the model value right off the bat,
-        //without the workaround, the initial model value stays unformatted
-
-/*
-        let value = ctrl.$modelValue;
-        ctrl.$formatters.forEach((formatter) => {
-          value = formatter(value);
-        });
-
-        ctrl.$setViewValue(value);
-        ctrl.$render();
-*/
-
         expect(ctrl.$viewValue).to.equal('!hello!');
       });
     });
