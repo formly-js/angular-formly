@@ -1014,6 +1014,32 @@ describe('formly-field', function() {
         expect(ctrl.$formatters).to.have.length(2); // ngModel adds one
         expect(ctrl.$viewValue).to.equal('hello! boo!');
       });
+
+      it.skip(`should format a model value right from the start`, () => {
+        scope.model = {myKey: 'hello'};
+        scope.fields = [getNewField({
+          key: 'myKey',
+          formatters: ['"!" + $viewValue + "!"']
+        })];
+        compileAndDigest();
+
+        const ctrl = getNgModelCtrl();
+
+        //workaround: this formats the model value right off the bat,
+        //without the workaround, the initial model value stays unformatted
+
+/*
+        let value = ctrl.$modelValue;
+        ctrl.$formatters.forEach((formatter) => {
+          value = formatter(value);
+        });
+
+        ctrl.$setViewValue(value);
+        ctrl.$render();
+*/
+
+        expect(ctrl.$viewValue).to.equal('!hello!');
+      });
     });
 
     function testParsersOrFormatters(which) {
