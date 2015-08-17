@@ -1015,7 +1015,7 @@ describe('formly-field', function() {
         expect(ctrl.$viewValue).to.equal('hello! boo!');
       });
 
-      it.skip(`should format a model value right from the start`, () => {
+      it(`should format a model value right from the start`, () => {
         scope.model = {myKey: 'hello'};
         scope.fields = [getNewField({
           key: 'myKey',
