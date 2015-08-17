@@ -1027,6 +1027,30 @@ describe('formly-field', function() {
 
         expect(ctrl.$viewValue).to.equal('!hello!');
       });
+
+      it.skip(`should handle multiple form controllers when formatting a model value right from the start`, () => {
+        scope.model = {
+          multiNgModel: {
+            start: 'start',
+            stop: 'stop'
+          }
+        };
+        const field = getNewField({
+          key: 'multiNgModel',
+          template: multiNgModelField,
+          formatters: ['"!" + $viewValue + "!"']
+        });
+        scope.fields = [field];
+
+        compileAndDigest();
+
+        const ctrl1 = field.formControl[0];
+        const ctrl2 = field.formControl[1];
+
+        expect(ctrl1.$viewValue).to.equal('!start!');
+        expect(ctrl2.$viewValue).to.equal('!stop!');
+      });
+
     });
 
     function testParsersOrFormatters(which) {
