@@ -1,3 +1,9 @@
+# 6.23.3
+
+## Bug Fixes
+
+- Logic bug introduced in the last version.
+
 # 6.23.2
 
 ## Bug Fixes

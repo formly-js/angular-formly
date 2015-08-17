@@ -145,8 +145,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
     for (let i = 0; i < allNgModelNodes.length; i++) {
       const ngModelNode = allNgModelNodes[i];
       if (!ngModelNode.hasAttribute('formly-skip-ng-model-attrs-manipulator') &&
-        (angular.isString(skip) || !nodeMatches(ngModelNode, skip))) {
-
+        !(angular.isString(skip) && nodeMatches(ngModelNode, skip))) {
         matchingNgModelNodes.push(ngModelNode);
       }
     }
