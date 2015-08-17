@@ -1,4 +1,4 @@
-//! angular-formly version 6.23.3 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 6.23.4 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("6.23.3")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("6.23.4")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -449,7 +449,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.23.3") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.23.4") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -1581,6 +1581,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      function addFormatters() {
 	        setParsersOrFormatters('formatters');
+	        var ctrl = scope.fc;
+	        if (ctrl.$formatters) {
+	          (function () {
+	            var value = ctrl.$modelValue;
+	            ctrl.$formatters.forEach(function (formatter) {
+	              value = formatter(value);
+	            });
+
+	            ctrl.$setViewValue(value);
+	            ctrl.$render();
+	          })();
+	        }
 	      }
 
 	      function setParsersOrFormatters(which) {
@@ -1747,7 +1759,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!isUrl) {
 	      return templatePromise;
 	    } else {
-	      var _ret = (function () {
+	      var _ret2 = (function () {
 	        var httpOptions = { cache: $templateCache };
 	        return {
 	          v: templatePromise.then(function (url) {
@@ -1760,7 +1772,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 	      })();
 
-	      if (typeof _ret === 'object') return _ret.v;
+	      if (typeof _ret2 === 'object') return _ret2.v;
 	    }
 	  }
 

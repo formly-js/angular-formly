@@ -1,3 +1,9 @@
+# 6.23.4
+
+## Bug Fixes
+
+- Running formatters on initial load of ng-model [#423](/../../issues/423)
+
 # 6.23.3
 
 ## Bug Fixes
