@@ -368,6 +368,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
           ctrl.$setViewValue(value);
           ctrl.$render();
+          ctrl.$setPristine();
         }
       }
 
