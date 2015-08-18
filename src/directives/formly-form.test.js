@@ -406,6 +406,58 @@ describe('formly-form', () => {
     });
   });
 
+  describe('nested model as string', () => {
+    let spy;
+
+    beforeEach(() => {
+      spy = sinon.spy();
+
+      scope.model = {
+        nested: {}
+      };
+
+      scope.fields = [
+        {template: input, key: 'foo'}
+      ];
+    });
+
+    it('starting with "model." should be assigned with only one watcher', () => {
+      scope.fields[0].model = 'model.nested';
+
+      compileAndDigest();
+      $timeout.flush();
+
+      scope.fields[0].expressionProperties = {'data.dummy': spy};
+
+      scope.model.nested.foo = 'value';
+      scope.$digest();
+      $timeout.flush();
+
+      expect(spy).to.have.been.calledOnce;
+    });
+
+    it('starting with "formState." should be assigned with only one watcher', () => {
+      const formWithOptions = '<formly-form model="model" fields="fields" options="options"></formly-form>';
+      scope.options = {
+        formState: {
+          nested: {}
+        }
+      };
+      scope.fields[0].model = 'formState.nested';
+
+      compileAndDigest(formWithOptions);
+      $timeout.flush();
+
+      scope.fields[0].expressionProperties = {'data.dummy': spy};
+
+      scope.options.formState.nested.foo = 'value';
+      scope.$digest();
+      $timeout.flush();
+
+      expect(spy).to.have.been.calledOnce;
+    });
+  });
+
   describe('hideExpression', () => {
     beforeEach(() => {
       scope.model = {};
