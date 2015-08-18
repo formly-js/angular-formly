@@ -1,3 +1,10 @@
+# 6.23.5
+
+## Bug Fixes
+
+- Had performance issues with the previous release. Also the previous release was causing problems with `$dirty`.
+  [#432](/../../issues/432). Thanks [@TheMcMurder](https://github.com/TheMcMurder)
+
 # 6.23.4
 
 ## Bug Fixes
