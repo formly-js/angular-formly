@@ -1015,7 +1015,7 @@ describe('formly-field', function() {
         expect(ctrl.$viewValue).to.equal('hello! boo!');
       });
 
-      it(`should format a model value right from the start`, () => {
+      it(`should format a model value right from the start and the form should still be pristine`, () => {
         scope.model = {myKey: 'hello'};
         scope.fields = [getNewField({
           key: 'myKey',
@@ -1026,6 +1026,8 @@ describe('formly-field', function() {
         const ctrl = getNgModelCtrl();
 
         expect(ctrl.$viewValue).to.equal('!hello!');
+        expect(ctrl.$dirty).to.equal(false);
+        expect(ctrl.$pristine).to.equal(true);
       });
 
       it.skip(`should handle multiple form controllers when formatting a model value right from the start`, () => {
