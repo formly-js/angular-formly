@@ -360,6 +360,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       function addFormatters() {
         setParsersOrFormatters('formatters');
         const ctrl = scope.fc;
+        const formWasPristine = scope.form.$pristine;
         if (scope.options.formatters) {
           let value = ctrl.$modelValue;
           ctrl.$formatters.forEach((formatter) => {
@@ -369,6 +370,9 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
           ctrl.$setViewValue(value);
           ctrl.$render();
           ctrl.$setPristine();
+          if (formWasPristine) {
+            scope.form.$setPristine();
+          }
         }
       }
 
