@@ -186,10 +186,15 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
       // a set of field models that are already watched (the $scope.model will have its own watcher)
       const watchedModels = [$scope.model];
 
-      angular.forEach($scope.fields, (field) => {
-        initModel(field);
+      if ($scope.options.formState) {
+        // $scope.options.formState will have its own watcher
+        watchedModels.push($scope.options.formState);
+      }
 
-        if (field.model && watchedModels.indexOf(field.model) === -1) {
+      angular.forEach($scope.fields, (field) => {
+        const isNewModel = initModel(field);
+
+        if (field.model && isNewModel && watchedModels.indexOf(field.model) === -1) {
           $scope.$watch(() => field.model, onModelOrFormStateChange, true);
           watchedModels.push(field.model);
         }
@@ -197,9 +202,16 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
     }
 
     function initModel(field) {
+      let isNewModel = true;
+
       if (angular.isString(field.model)) {
         const expression = field.model;
         const index = $scope.fields.indexOf(field);
+
+        if (formlyUtil.startsWith(expression, 'model.') || formlyUtil.startsWith(expression, 'formState.')) {
+          isNewModel = false;
+        }
+
         field.model = evalCloseToFormlyExpression(expression, undefined, field, index);
         if (!field.model) {
           throw formlyUsability.getFieldError(
@@ -209,6 +221,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
             field);
         }
       }
+      return isNewModel;
     }
 
     function attachKey(field, index) {
