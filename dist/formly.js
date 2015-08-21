@@ -1,4 +1,4 @@
-//! angular-formly version 6.23.6 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 6.23.7 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("6.23.6")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("6.23.7")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -449,7 +449,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.23.6") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.23.7") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -904,7 +904,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _angularFix2 = _interopRequireDefault(_angularFix);
 
-	exports['default'] = { formlyEval: formlyEval, getFieldId: getFieldId, reverseDeepMerge: reverseDeepMerge, findByNodeName: findByNodeName, arrayify: arrayify, extendFunction: extendFunction, extendArray: extendArray };
+	exports['default'] = { formlyEval: formlyEval, getFieldId: getFieldId, reverseDeepMerge: reverseDeepMerge, findByNodeName: findByNodeName, arrayify: arrayify, extendFunction: extendFunction, extendArray: extendArray, startsWith: startsWith };
 
 	function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
 	  if (_angularFix2['default'].isFunction(expression)) {
@@ -1006,6 +1006,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return secondary;
 	  } else {
 	    return primary;
+	  }
+	}
+
+	function startsWith(str, search) {
+	  if (_angularFix2['default'].isString(str) && _angularFix2['default'].isString(search)) {
+	    return str.length >= search.length && str.substring(0, search.length) === search;
+	  } else {
+	    return false;
 	  }
 	}
 	module.exports = exports['default'];
@@ -2170,10 +2178,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // a set of field models that are already watched (the $scope.model will have its own watcher)
 	      var watchedModels = [$scope.model];
 
-	      _angularFix2['default'].forEach($scope.fields, function (field) {
-	        initModel(field);
+	      if ($scope.options.formState) {
+	        // $scope.options.formState will have its own watcher
+	        watchedModels.push($scope.options.formState);
+	      }
 
-	        if (field.model && watchedModels.indexOf(field.model) === -1) {
+	      _angularFix2['default'].forEach($scope.fields, function (field) {
+	        var isNewModel = initModel(field);
+
+	        if (field.model && isNewModel && watchedModels.indexOf(field.model) === -1) {
 	          $scope.$watch(function () {
 	            return field.model;
 	          }, onModelOrFormStateChange, true);
@@ -2183,14 +2196,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function initModel(field) {
+	      var isNewModel = true;
+
 	      if (_angularFix2['default'].isString(field.model)) {
 	        var expression = field.model;
 	        var index = $scope.fields.indexOf(field);
+
+	        if (formlyUtil.startsWith(expression, 'model.') || formlyUtil.startsWith(expression, 'formState.')) {
+	          isNewModel = false;
+	        }
+
 	        field.model = evalCloseToFormlyExpression(expression, undefined, field, index);
 	        if (!field.model) {
 	          throw formlyUsability.getFieldError('field-model-must-be-initialized', 'Field model must be initialized. When specifying a model as a string for a field, the result of the' + ' expression must have been initialized ahead of time.', field);
 	        }
 	      }
+	      return isNewModel;
 	    }
 
 	    function attachKey(field, index) {

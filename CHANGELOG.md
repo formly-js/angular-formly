@@ -1,3 +1,9 @@
+# 6.23.7
+
+## Perf
+
+- [@redhead](https://github.com/redhead) optomized the use of `formState` and `model` for the `model` property. Thanks!
+
 # 6.23.5
 
 ## Bug Fixes
