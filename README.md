@@ -55,7 +55,7 @@ Find all the documentation at [docs.angular-formly.com](http://docs.angular-form
 
 ## Getting Help
 
-Please to file an issue unless you feel like you've found a bug or have a feature request. Instead, go to [help.angular-formly.com](http://help.angular-formly.com) and follow the instructions.
+Please don't file an issue unless you feel like you've found a bug or have a feature request. Instead, go to [help.angular-formly.com](http://help.angular-formly.com) and follow the instructions.
 
 ## Roadmap
 
