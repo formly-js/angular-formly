@@ -20,6 +20,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     scope: {
       options: '=',
       model: '=',
+      originalModel: '=',
       formId: '@', // TODO remove formId in a breaking release
       index: '=?',
       fields: '=?',
