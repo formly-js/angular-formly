@@ -98,6 +98,7 @@ const fieldOptionsApiShape = {
   ).optional,
   key: apiCheck.oneOfType([apiCheck.string, apiCheck.number]).optional,
   model: modelChecker.optional,
+  originalModel: modelChecker.optional,
   className: apiCheck.string.optional,
   id: apiCheck.string.optional,
   name: apiCheck.string.optional,

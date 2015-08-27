@@ -1484,6 +1484,18 @@ describe('formly-field', function() {
       expect(field2.model).to.eq(scope.model.child);
       expect(field2.originalModel).not.to.eq(scope.model.child);
       expect(field2.originalModel).to.eq(scope.model);
+    });
+
+    it('should take field model as default for original model, if original value attributes has not been set', () => {
+      scope.fields = [
+        getNewField({key: 'foo', model: {foo: 'bar'}})
+      ];
+
+      compileAndDigest('<div formly-field class="formly-field" options="fields[0]" model="model"></div>');
+      $timeout.flush();
+
+      expect(field.model).to.eq(scope.fields[0].model);
+      expect(field.originalModel).to.eql(scope.fields[0].model);
 
     });
 
