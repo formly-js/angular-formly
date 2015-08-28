@@ -12,3 +12,4 @@ console.log('Setting origin to ' + repo);
 exec('git remote set-url origin ' + repo.replace('https://', 'https://' + GH_TOKEN + '@') + ' && ');
 exec('git config --global user.email kent+formly-bot@doddsfamily.us && ');
 exec('git config --global user.name "formly-bot"');
+
