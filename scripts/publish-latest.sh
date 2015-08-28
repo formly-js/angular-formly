@@ -28,7 +28,7 @@ echo "tagging with v$F_VERSION"
 git tag v${F_VERSION} -f
 
 echo "pushing"
-git push https://github.com/formly-js/angular-formly.git latest --tags -f
+git push https://formly-bot:${BOT_GH_TOKEN}@github.com/formly-js/angular-formly.git latest --tags -f
 
 echo "done!"
 
