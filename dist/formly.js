@@ -1,4 +1,4 @@
-//! angular-formly version 6.23.7 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 6.24.14 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("6.23.7")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("6.24.14")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -353,6 +353,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  noFormControl: apiCheck.bool.optional,
 	  hide: apiCheck.bool.optional,
 	  hideExpression: formlyExpression.optional,
+	  ngModelElAttrs: apiCheck.objectOf(apiCheck.string).optional,
 	  ngModelAttrs: apiCheck.objectOf(apiCheck.shape({
 	    expression: apiCheck.shape.ifNot(['value', 'attribute', 'bound'], apiCheck.any).optional,
 	    value: apiCheck.shape.ifNot('expression', apiCheck.any).optional,
@@ -449,7 +450,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.23.7") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.24.14") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -2416,6 +2417,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    addValidation();
 	    addModelOptions();
 	    addTemplateOptionsAttrs();
+	    addNgModelElAttrs();
 
 	    return node.innerHTML;
 
@@ -2499,6 +2501,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (_angularFix2['default'].isDefined(attrName) && _angularFix2['default'].isDefined(attrVal)) {
 	          addIfNotPresent(modelNodes, attrName, attrVal);
 	        }
+	      });
+	    }
+
+	    function addNgModelElAttrs() {
+	      _angularFix2['default'].forEach(options.ngModelElAttrs, function (val, name) {
+	        addIfNotPresent(modelNodes, name, val);
 	      });
 	    }
 	  }
