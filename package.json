@@ -28,7 +28,7 @@
     "report-coverage": "cat ./coverage/lcov.info | node_modules/.bin/codecov",
     "code-checks": "eslint src/",
     "commit": "git-cz",
-    "semantic-release": "semantic-release pre && npm run build && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm run build && with-package git commit -am pkg.version && npm publish && semantic-release post"
   },
   "betterScripts": {
     "build:dist": {
