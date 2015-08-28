@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "6.23.7",
+  "version": "0.0.0-semantically-released.0",
   "author": "Astrism <astrisms@gmail.com>",
   "contributors": [
     "Astrism <astrisms@gmail.com>",
@@ -9,7 +9,7 @@
   "homepage": "http://formly-js.github.io/angular-formly/",
   "repository": {
     "type": "git",
-    "url": "git://github.com/formly-js/angular-formly.git"
+    "url": "https://github.com/formly-js/angular-formly.git"
   },
   "main": "dist/formly.js",
   "license": "MIT",
@@ -17,18 +17,18 @@
     "build:dist": "better-npm-run build:dist",
     "build:prod": "better-npm-run build:prod",
     "build": "npm run build:dist & npm run build:prod",
-    "test": "better-npm-run test",
+    "test": "better-npm-run test test:single",
     "test:mac": "COVERAGE=true NODE_ENV=test karma start",
-    "test:single": "better-npm-run test:single",
+    "test:watch": "better-npm-run test",
     "test:debug": "better-npm-run test:debug",
     "test:ci": "better-npm-run test:ci",
-    "start:linux": "NODE_ENV=test COVERAGE=true karma start",
-    "start": "npm run test",
+    "start:mac": "npm run test:mac",
+    "start": "npm run test:watch",
     "check-coverage": "istanbul check-coverage --statements 93 --branches 89 --functions 92 --lines 92",
+    "report-coverage": "cat ./coverage/lcov.info | node_modules/.bin/codecov",
     "code-checks": "eslint src/ --quiet",
-    "release": "npm run build && with-package git commit -am pkg.version && with-package git tag pkg.version && git push && npm publish && git push --tags",
-    "release:beta": "npm run release && npm run tag:beta",
-    "tag:beta": "with-package npm dist-tag add pkg.name@pkg.version beta"
+    "commit": "git-cz",
+    "semantic-release": "semantic-release pre && npm run build && npm publish && semantic-release post"
   },
   "betterScripts": {
     "build:dist": {
@@ -43,14 +43,14 @@
       },
       "command": "webpack --config node_modules/kcd-common-tools/shared/webpack.config.js --progress --colors"
     },
-    "test": {
+    "test:watch": {
       "env": {
         "COVERAGE": "true",
         "NODE_ENV": "test"
       },
       "command": "karma start"
     },
-    "test:single": {
+    "test": {
       "env": {
         "COVERAGE": "true",
         "NODE_ENV": "test"
@@ -72,7 +72,7 @@
   },
   "config": {
     "ghooks": {
-      "pre-commit": "npm run code-checks && npm run test:single && npm run check-coverage"
+      "pre-commit": "npm run code-checks && npm run test && npm run check-coverage"
     }
   },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
@@ -91,6 +91,8 @@
     "better-npm-run": "benoror/better-npm-run#0.0.1",
     "chai": "3.2.0",
     "codecov.io": "0.1.5",
+    "commitizen": "1.0.4",
+    "cz-conventional-changelog": "1.1.0",
     "eslint": "0.24.1",
     "eslint-loader": "0.14.2",
     "eslint-plugin-mocha": "0.4.0",
@@ -115,6 +117,7 @@
     "ng-annotate-loader": "0.0.6",
     "node-libs-browser": "0.5.2",
     "raw-loader": "0.5.1",
+    "semantic-release": "^4.3.4",
     "sinon": "1.15.4",
     "sinon-chai": "2.8.0",
     "uglify-loader": "1.2.0",
@@ -129,5 +132,8 @@
   "kcdCommon": {
     "webpack": "scripts/webpack-overrides.js",
     "karma": "scripts/karma-overrides.js"
+  },
+  "czConfig": {
+    "path": "node_modules/cz-conventional-changelog"
   }
 }
