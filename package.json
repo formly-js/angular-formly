@@ -28,7 +28,6 @@
     "report-coverage": "cat ./coverage/lcov.info | node_modules/.bin/codecov",
     "code-checks": "eslint src/",
     "commit": "git-cz",
-    "prepublish:latest": "node scripts/authorize-push.js",
     "publish:latest": "with-package scripts/publish-latest.sh pkg.version",
     "semantic-release": "semantic-release pre && npm run build && npm publish && semantic-release post && npm run publish:latest"
   },
