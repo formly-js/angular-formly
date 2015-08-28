@@ -8,10 +8,10 @@ git config --global user.email kent+formly-bot@doddsfamily.us
 git config --global user.name formly-bot
 
 echo "setting remote"
-git remote add github https://formly-bot:${BOT_GH_TOKEN}@github.com/formly-js/angular-formly.git
+git remote set-url origin https://formly-bot:${BOT_GH_TOKEN}@github.com/formly-js/angular-formly.git
 
 echo "merging master"
-git merge github/master -m "master merge" -X theirs
+git merge origin/master -m "master merge" -X theirs
 
 echo "adding dist"
 git add dist package.json
@@ -23,7 +23,7 @@ echo "tagging with v$F_VERSION"
 git tag v${F_VERSION} -f
 
 echo "pushing"
-git push github latest --tags -f
+git push origin latest --tags -f
 
 echo "done!"
 
