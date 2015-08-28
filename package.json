@@ -26,7 +26,7 @@
     "start": "npm run test:watch",
     "check-coverage": "istanbul check-coverage --statements 93 --branches 89 --functions 92 --lines 92",
     "report-coverage": "cat ./coverage/lcov.info | node_modules/.bin/codecov",
-    "code-checks": "eslint src/ --quiet",
+    "code-checks": "eslint src/",
     "commit": "git-cz",
     "semantic-release": "semantic-release pre && npm run build && npm publish && semantic-release post"
   },
