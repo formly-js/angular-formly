@@ -2,6 +2,12 @@
 set -e # exit with non-zero exit code if there are failures
 
 F_VERSION=$1
+
+echo "setting global bot config"
+git config --global user.email kent+formly-bot@doddsfamily.us
+git config --global user.name formly-bot
+
+echo "setting remote"
 git remote set-url github https://formly-bot:${BOT_GH_TOKEN}@github.com/formly-js/angular-formly.git >/dev/null 2>/dev/null
 
 echo "merging master"
