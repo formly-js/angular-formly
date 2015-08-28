@@ -19,7 +19,7 @@ echo "mergin master"
 git merge origin/master -m "master merge" -X theirs
 
 echo "adding dist"
-git add dist
+git add dist package.json
 
 echo "committing with $F_VERSION"
 git commit -m $F_VERSION --no-verify
@@ -28,7 +28,7 @@ echo "tagging with v$F_VERSION"
 git tag v${F_VERSION} -f
 
 echo "pushing"
-git push origin latest --tags -f
+git push https://github.com/formly-js/angular-formly.git latest --tags -f
 
 echo "done!"
 
