@@ -29,6 +29,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
     addValidation();
     addModelOptions();
     addTemplateOptionsAttrs();
+    addNgModelElAttrs();
 
 
     return node.innerHTML;
@@ -115,6 +116,12 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
         if (angular.isDefined(attrName) && angular.isDefined(attrVal)) {
           addIfNotPresent(modelNodes, attrName, attrVal);
         }
+      });
+    }
+
+    function addNgModelElAttrs() {
+      angular.forEach(options.ngModelElAttrs, (val, name) => {
+        addIfNotPresent(modelNodes, name, val);
       });
     }
   }

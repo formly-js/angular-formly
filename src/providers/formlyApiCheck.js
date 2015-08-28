@@ -133,6 +133,7 @@ const fieldOptionsApiShape = {
   noFormControl: apiCheck.bool.optional,
   hide: apiCheck.bool.optional,
   hideExpression: formlyExpression.optional,
+  ngModelElAttrs: apiCheck.objectOf(apiCheck.string).optional,
   ngModelAttrs: apiCheck.objectOf(apiCheck.shape({
     expression: apiCheck.shape.ifNot(['value', 'attribute', 'bound'], apiCheck.any).optional,
     value: apiCheck.shape.ifNot('expression', apiCheck.any).optional,

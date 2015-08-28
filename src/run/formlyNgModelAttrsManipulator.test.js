@@ -316,6 +316,43 @@ describe('formlyNgModelAttrsManipulator', () => {
   });
 
 
+  describe(`ngModelElAttrs`, () => {
+
+    it(`should place the attributes you specify on the ng-model element`, () => {
+      _.assign(field, {
+        ngModelElAttrs: {foo: '{{::to.bar}}'}
+      });
+      manipulate();
+      expect(
+        resultNode.getAttribute('foo'),
+        'foo attribute should equal the value of foo in ngModelElAttrs'
+      ).to.equal('{{::to.bar}}');
+    });
+
+    it(`should work with multiple ng-models`, () => {
+      _.assign(field, {
+        ngModelElAttrs: {foo: '{{::to.bar}}'}
+      });
+      manipulate(`
+        <div>
+          <input class="first" ng-model="foo" />
+          <input class="second" ng-model="bar" />
+        </div>
+      `);
+      expect(
+        resultNode.querySelector('.first').getAttribute('foo'),
+        'foo attribute should equal the value of foo in ngModelElAttrs'
+      ).to.equal('{{::to.bar}}');
+      expect(
+        resultNode.querySelector('.second').getAttribute('foo'),
+        'foo attribute should equal the value of foo in ngModelElAttrs'
+      ).to.equal('{{::to.bar}}');
+
+    });
+  });
+
+
+
   function manipulate(theTemplate = template) {
     result = manipulator(theTemplate, field, scope);
     resultEl = angular.element(result);
