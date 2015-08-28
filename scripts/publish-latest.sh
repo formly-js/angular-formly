@@ -1,12 +1,22 @@
 #!/bin/bash
-set -e # exit with non-zero exit code if there are failurs
+set -e # exit with non-zero exit code if there are failures
 
 F_VERSION=$1
+
+echo "shoing origin"
+git remote show origin
+
+echo "updating"
+git remote update
+
 echo "fetching"
 git fetch
 
 echo "checking out"
-git checkout -b latest origin/latest
+git checkout -b latest
+
+echo "mergin master"
+git merge origin/master -m "master merge" -X theirs
 
 echo "adding dist"
 git add dist
