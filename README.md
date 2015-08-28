@@ -7,7 +7,6 @@ Status:
 [![npm downloads](https://img.shields.io/npm/dm/angular-formly.svg?style=flat-square)](http://npm-stat.com/charts.html?package=angular-formly&from=2015-01-01)
 [![Build
 Status](https://img.shields.io/travis/formly-js/angular-formly.svg?style=flat-square)](https://travis-ci.org/formly-js/angular-formly)
-[![Build Status](https://snap-ci.com/formly-js/angular-formly/branch/master/build_image)](https://snap-ci.com/formly-js/angular-formly/branch/master)
 [![Code Coverage](https://img.shields.io/codecov/c/github/formly-js/angular-formly.svg?style=flat-square)](https://codecov.io/github/formly-js/angular-formly)
 
 Links:
