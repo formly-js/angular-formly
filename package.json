@@ -29,7 +29,7 @@
     "code-checks": "eslint src/",
     "commit": "git-cz",
     "prepublish:latest": "node scripts/authorize-push.js",
-    "publish:latest": "git fetch && git checkout -b latest origin/latest && git add dist && with-package git commit -m pkg.version && with-package F_VERSION=pkg.version git tag v${F_VERSION} -f && git push origin latest --tags -f",
+    "publish:latest": "scripts/publish-latest.sh",
     "semantic-release": "semantic-release pre && npm run build && npm publish && semantic-release post && npm run publish:latest"
   },
   "betterScripts": {
