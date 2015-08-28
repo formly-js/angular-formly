@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e # exit with non-zero exit code if there are failurs
 
-$F_VERSION=$1
+F_VERSION=$1
 echo "fetching"
 git fetch
 
