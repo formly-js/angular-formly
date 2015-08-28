@@ -44,11 +44,12 @@ Please do the following:
 1. run `npm install`
 2. run `npm start` (if you're on a windows machine, see [this issue](https://github.com/formly-js/angular-formly/issues/305))
 3. write tests & code in ES6 goodness :-)
-4. commit your changes to the `src/` directory only please. Also, please keep PRs changing only what the specific issue is addressing. In your commit message, add a reference to the issue it's addressing (i.e. Fixes issue with templateManipulators #153)
-5. notice that there's a pre-commit hook that runs to ensure tests pass and coverage doesn't drop to prevent the build from breaking :-)
-6. push your changes
-7. create a PR with a link to the original issue
-8. wait patiently :-)
+4. run `git add src/`
+5. run `npm run commit` and follow the prompt (this ensures that your commit message follows our guidelines).
+6. notice that there's a pre-commit hook that runs to ensure tests pass and coverage doesn't drop to prevent the build from breaking :-)
+7. push your changes
+8. create a PR with a link to the original issue
+9. wait patiently :-)
 
 #### Notes
 
@@ -66,7 +67,7 @@ There are a lot of questions from people as they get started using angular-forml
 - Hang out on [the chat](http://chat.angular-formly.com)
 - Sign up on [the mailing list](http://mailing-list.angular-formly.com)
 - Watch the [angular-formly repositories](https://github.com/formly-js) for issues or requests that you could help with (like [angular-formly-website](https://github.com/formly-js/angular-formly-website) for requests for examples).
- 
+
 #### Contributing to community
 
 - Write blog posts! Like [this one](https://scotch.io/tutorials/easy-angularjs-forms-with-angular-formly) or [this one](http://www.erwan-datin.com/tips/how-do-I-store-angular-formly-fields-model-into-database)
