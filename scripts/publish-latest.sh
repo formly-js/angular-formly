@@ -23,7 +23,7 @@ echo "tagging with v$F_VERSION"
 git tag v${F_VERSION} -f
 
 echo "pushing"
-git push origin latest --tags -f
+git push origin HEAD:latest --tags -f
 
 echo "done!"
 
