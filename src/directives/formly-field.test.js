@@ -1464,6 +1464,41 @@ describe('formly-field', function() {
       expect(expressionPropertySpy).to.have.been.calledOnce;
     });
 
+    it('should make original model available on field scope, even another model has been set for field', () => {
+
+      scope.model = {foo: 'bar', child: {fox: 'jumps'}};
+
+      scope.fields = [
+        getNewField({key: 'foo '}),
+        getNewField({key: 'bar', model: 'model.child'})
+      ];
+
+      compileAndDigest();
+
+      const field1 = getIsolateScope(0);
+      const field2 = getIsolateScope(1);
+
+      expect(field1.model).to.eq(scope.model);
+      expect(field1.originalModel).to.eq(field1.model);
+
+      expect(field2.model).to.eq(scope.model.child);
+      expect(field2.originalModel).not.to.eq(scope.model.child);
+      expect(field2.originalModel).to.eq(scope.model);
+    });
+
+    it('should take field model as default for original model, if original value attributes has not been set', () => {
+      scope.fields = [
+        getNewField({key: 'foo', model: {foo: 'bar'}})
+      ];
+
+      compileAndDigest('<div formly-field class="formly-field" options="fields[0]" model="model"></div>');
+      $timeout.flush();
+
+      expect(field.model).to.eq(scope.fields[0].model);
+      expect(field.originalModel).to.eql(scope.fields[0].model);
+
+    });
+
   });
 
   describe(`fieldGroup`, () => {

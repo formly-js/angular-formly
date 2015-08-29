@@ -43,6 +43,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
                class="formly-field"
                options="field"
                model="field.model || model"
+               original-model="model"
                fields="fields"
                form="theFormlyForm"
                form-id="${getFormName()}"
