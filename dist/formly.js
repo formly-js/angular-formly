@@ -1,4 +1,4 @@
-//! angular-formly version 6.23.7 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 6.24.22 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("6.23.7")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("6.24.22")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -324,6 +324,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  templateUrl: apiCheck.shape.ifNot(['type', 'template'], apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
 	  key: apiCheck.oneOfType([apiCheck.string, apiCheck.number]).optional,
 	  model: modelChecker.optional,
+	  originalModel: modelChecker.optional,
 	  className: apiCheck.string.optional,
 	  id: apiCheck.string.optional,
 	  name: apiCheck.string.optional,
@@ -353,6 +354,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  noFormControl: apiCheck.bool.optional,
 	  hide: apiCheck.bool.optional,
 	  hideExpression: formlyExpression.optional,
+	  ngModelElAttrs: apiCheck.objectOf(apiCheck.string).optional,
 	  ngModelAttrs: apiCheck.objectOf(apiCheck.shape({
 	    expression: apiCheck.shape.ifNot(['value', 'attribute', 'bound'], apiCheck.any).optional,
 	    value: apiCheck.shape.ifNot('expression', apiCheck.any).optional,
@@ -449,7 +451,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.23.7") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.24.22") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -1267,6 +1269,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    scope: {
 	      options: '=',
 	      model: '=',
+	      originalModel: '=?',
 	      formId: '@', // TODO remove formId in a breaking release
 	      index: '=?',
 	      fields: '=?',
@@ -1330,6 +1333,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function simplifyLife(options) {
 	      // add a few empty objects (if they don't already exist) so you don't have to undefined check everywhere
 	      formlyUtil.reverseDeepMerge(options, {
+	        originalModel: options.model,
 	        extras: {},
 	        data: {},
 	        templateOptions: {},
@@ -2045,7 +2049,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (attrs.hasOwnProperty('isFieldGroup') && el.parent().parent().hasClass('formly')) {
 	      parentFormAttributes = copyAttributes(el.parent().parent()[0].attributes);
 	    }
-	    return '\n        <' + rootEl + ' class="formly"\n                 name="' + getFormName() + '"\n                 role="form" ' + parentFormAttributes + '>\n          <' + fieldRootEl + ' formly-field\n               ng-repeat="field in fields ' + getTrackBy() + '"\n               ' + getHideDirective() + '="!field.hide"\n               class="formly-field"\n               options="field"\n               model="field.model || model"\n               fields="fields"\n               form="theFormlyForm"\n               form-id="' + getFormName() + '"\n               form-state="options.formState"\n               form-options="options"\n               index="$index">\n          </' + fieldRootEl + '>\n          <div ng-transclude class="' + getTranscludeClass() + '"></div>\n        </' + rootEl + '>\n      ';
+	    return '\n        <' + rootEl + ' class="formly"\n                 name="' + getFormName() + '"\n                 role="form" ' + parentFormAttributes + '>\n          <' + fieldRootEl + ' formly-field\n               ng-repeat="field in fields ' + getTrackBy() + '"\n               ' + getHideDirective() + '="!field.hide"\n               class="formly-field"\n               options="field"\n               model="field.model || model"\n               original-model="model"\n               fields="fields"\n               form="theFormlyForm"\n               form-id="' + getFormName() + '"\n               form-state="options.formState"\n               form-options="options"\n               index="$index">\n          </' + fieldRootEl + '>\n          <div ng-transclude class="' + getTranscludeClass() + '"></div>\n        </' + rootEl + '>\n      ';
 
 	    function getRootEl() {
 	      return attrs.rootEl || 'ng-form';
@@ -2416,6 +2420,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    addValidation();
 	    addModelOptions();
 	    addTemplateOptionsAttrs();
+	    addNgModelElAttrs();
 
 	    return node.innerHTML;
 
@@ -2499,6 +2504,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (_angularFix2['default'].isDefined(attrName) && _angularFix2['default'].isDefined(attrVal)) {
 	          addIfNotPresent(modelNodes, attrName, attrVal);
 	        }
+	      });
+	    }
+
+	    function addNgModelElAttrs() {
+	      _angularFix2['default'].forEach(options.ngModelElAttrs, function (val, name) {
+	        addIfNotPresent(modelNodes, name, val);
 	      });
 	    }
 	  }
