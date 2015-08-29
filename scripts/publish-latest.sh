@@ -8,7 +8,7 @@ git config --global user.email kent+formly-bot@doddsfamily.us
 git config --global user.name formly-bot
 
 echo "setting remote"
-git remote set-url origin https://formly-bot:$BOT_GH_TOKEN@github.com/formly-js/angular-formly.git
+git remote set-url origin https://formly-bot:$BOT_GH_TOKEN@github.com/formly-js/angular-formly.git >/dev/null 2>/dev/null
 
 echo "merging master"
 git merge origin/master -m "master merge" -X theirs
@@ -23,7 +23,7 @@ echo "tagging with v$F_VERSION"
 git tag v${F_VERSION} -f
 
 echo "pushing"
-git push origin HEAD:latest --tags -f
+git push origin HEAD:latest --tags -f >/dev/null 2>/dev/null
 
 echo "done!"
 
