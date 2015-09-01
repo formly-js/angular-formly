@@ -521,7 +521,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     if (angular.isUndefined(template) && !templateUrl) {
       throw formlyUsability.getFieldError(
         'type-type-has-no-template',
-        `Type '${options.type}' has not template. On element:`, options
+        `Type '${options.type}' has no template. On element:`, options
       );
     }
 
