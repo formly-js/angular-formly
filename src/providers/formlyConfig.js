@@ -154,22 +154,22 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
     const optionsDOIsFn = angular.isFunction(optionsDO);
     const extendsDOIsFn = angular.isFunction(extendsDO);
     if (extendsDOIsFn) {
-      options.defaultOptions = function defaultOptions(opts) {
-        const extendsDefaultOptions = extendsDO(opts);
+      options.defaultOptions = function defaultOptions(opts, scope) {
+        const extendsDefaultOptions = extendsDO(opts, scope);
         const mergedDefaultOptions = {};
         utils.reverseDeepMerge(mergedDefaultOptions, opts, extendsDefaultOptions);
         let extenderOptionsDefaultOptions = optionsDO;
         if (optionsDOIsFn) {
-          extenderOptionsDefaultOptions = extenderOptionsDefaultOptions(mergedDefaultOptions);
+          extenderOptionsDefaultOptions = extenderOptionsDefaultOptions(mergedDefaultOptions, scope);
         }
         utils.reverseDeepMerge(extendsDefaultOptions, extenderOptionsDefaultOptions);
         return extendsDefaultOptions;
       };
     } else if (optionsDOIsFn) {
-      options.defaultOptions = function defaultOptions(opts) {
+      options.defaultOptions = function defaultOptions(opts, scope) {
         const newDefaultOptions = {};
         utils.reverseDeepMerge(newDefaultOptions, opts, extendsDO);
-        return optionsDO(newDefaultOptions);
+        return optionsDO(newDefaultOptions, scope);
       };
     }
   }

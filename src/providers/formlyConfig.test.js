@@ -316,9 +316,10 @@ describe('formlyConfig', () => {
         });
 
         describe(`function cases`, () => {
-          let args, parentFn, childFn, parentDefaultOptions, childDefaultOptions, argsAndParent;
+          let args, fakeScope, parentFn, childFn, parentDefaultOptions, childDefaultOptions, argsAndParent;
           beforeEach(() => {
             args = {data: {someData: true}};
+            fakeScope = {};
             parentDefaultOptions = {
               data: {extraOptions: true},
               templateOptions: {placeholder: 'hi'}
@@ -339,9 +340,9 @@ describe('formlyConfig', () => {
               {name, defaultOptions: parentFn},
               {name: 'type2', extends: name, defaultOptions: childFn}
             ]);
-            getterFn('type2').defaultOptions(args);
-            expect(parentFn).to.have.been.calledWith(args);
-            expect(childFn).to.have.been.calledWith(argsAndParent);
+            getterFn('type2').defaultOptions(args, fakeScope);
+            expect(parentFn).to.have.been.calledWith(args, fakeScope);
+            expect(childFn).to.have.been.calledWith(argsAndParent, fakeScope);
           });
 
           it(`should call the extended parent's defaultOptions function when it doesn't have one of its own`, () => {
@@ -349,8 +350,8 @@ describe('formlyConfig', () => {
               {name, defaultOptions: parentFn},
               {name: 'type2', extends: name}
             ]);
-            getterFn('type2').defaultOptions(args);
-            expect(parentFn).to.have.been.calledWith(args);
+            getterFn('type2').defaultOptions(args, fakeScope);
+            expect(parentFn).to.have.been.calledWith(args, fakeScope);
           });
 
           it(`should call its own defaultOptions function when the parent doesn't have one`, () => {
@@ -358,8 +359,8 @@ describe('formlyConfig', () => {
               {name, template},
               {name: 'type2', extends: name, defaultOptions: childFn}
             ]);
-            getterFn('type2').defaultOptions(args);
-            expect(childFn).to.have.been.calledWith(args);
+            getterFn('type2').defaultOptions(args, fakeScope);
+            expect(childFn).to.have.been.calledWith(args, fakeScope);
           });
 
           it(`should extend its defaultOptions object with the parent's defaultOptions object`, () => {
@@ -379,8 +380,8 @@ describe('formlyConfig', () => {
               {name, defaultOptions: parentDefaultOptions},
               {name: 'type2', extends: name, defaultOptions: childFn}
             ]);
-            const returned = getterFn('type2').defaultOptions(args);
-            expect(childFn).to.have.been.calledWith(argsAndParent);
+            const returned = getterFn('type2').defaultOptions(args, fakeScope);
+            expect(childFn).to.have.been.calledWith(argsAndParent, fakeScope);
             expect(returned).to.eql(childDefaultOptions);
           });
         });

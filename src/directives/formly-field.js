@@ -131,7 +131,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     function mergeOptions(options, extraOptions) {
       if (extraOptions) {
         if (angular.isFunction(extraOptions)) {
-          extraOptions = extraOptions(options);
+          extraOptions = extraOptions(options, $scope);
         }
         formlyUtil.reverseDeepMerge(options, extraOptions);
       }
