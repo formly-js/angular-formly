@@ -21,7 +21,7 @@ describe('formly-form', () => {
     scope.fields = [];
   }));
 
-  it.skip(`should be possible to use it as an attribute directive`, () => {
+  it(`should be possible to use it as an attribute directive`, () => {
     const el = compileAndDigest(`
       <div formly-form model="model" fields="fields" form="theForm"></formly-form>
     `);

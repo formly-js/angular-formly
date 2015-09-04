@@ -5,13 +5,13 @@ export default formlyForm;
 /**
  * @ngdoc directive
  * @name formlyForm
- * @restrict E
+ * @restrict AE
  */
 // @ngInject
 function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpolate) {
   let currentFormId = 1;
   return {
-    restrict: 'E',
+    restrict: 'AE',
     template: formlyFormGetTemplate,
     replace: true,
     transclude: true,
