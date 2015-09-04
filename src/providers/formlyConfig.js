@@ -61,7 +61,7 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
       prefix: 'formlyConfig.setType',
       url: 'settype-validation-failed'
     });
-    checkApiCheck(options);
+    checkDeprecatedOptions(options);
     if (!options.overwriteOk) {
       checkOverwrite(options.name, typeMap, options, 'types');
     } else {
@@ -241,7 +241,7 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
     if (options.template) {
       formlyUsabilityProvider.checkWrapperTemplate(options.template, options);
     }
-    checkApiCheck(options);
+    checkDeprecatedOptions(options);
     if (!options.overwriteOk) {
       checkOverwrite(options.name, templateWrappersMap, options, 'templateWrappers');
     } else {
@@ -267,11 +267,19 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
     }
   }
 
-  function checkApiCheck(options) {
+  function checkDeprecatedOptions(options) {
     if (options.apiCheck && !angular.isFunction(options.apiCheck)) {
       warn(
         'apicheck-as-an-object-deprecated',
-        'apiCheck as an object has been deprecated',
+        'apiCheck as an object has been deprecated.',
+        `Attempted for type: ${options.name}`,
+        options
+      );
+    }
+    if (options.validateOptions) {
+      warn(
+        'validateoptions-deprecated',
+        'the `validateOptions` property has been deprecated.',
         `Attempted for type: ${options.name}`,
         options
       );

@@ -104,12 +104,16 @@ describe('formly-field', function() {
   describe('api check', () => {
     let validateOptions;
     beforeEach(() => {
+      /* eslint no-console:0 */
+      const originalWarn = console.warn;
+      console.warn = () => {};
       validateOptions = sinon.spy();
       formlyConfig.setType({
         name: 'text', template: `<input name="{{id}}" ng-model="model[options.key]" />`,
         validateOptions
       });
       scope.model = {};
+      console.warn = originalWarn;
     });
 
     it('should throw an error when a field has extra properties', () => {

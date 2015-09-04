@@ -437,45 +437,70 @@ describe('formlyConfig', () => {
             childFn = sinon.spy();
           });
 
-          it(`should call the parent validateOptions function when there is no child function`, () => {
-            setterFn([
-              {name, template, validateOptions: parentFn},
-              {name: 'type2', extends: name}
-            ]);
-            getterFn('type2').validateOptions(options);
-            expect(parentFn).to.have.been.calledWith(options);
+          it(`should give a deprecation warning when specified as part of a type`, () => {
+            shouldWarn(
+              /Formly Warning: the `validateOptions` property has been deprecated. Attempted for type: foobar/,
+              function() {
+                setterFn({
+                  name: 'foobar',
+                  validateOptions() {}
+                });
+              }
+            );
           });
 
-          it(`should call the child validateOptions function when there is no parent function`, () => {
-            setterFn([
-              {name, template},
-              {name: 'type2', extends: name, validateOptions: childFn}
-            ]);
-            getterFn('type2').validateOptions(options);
-            expect(childFn).to.have.been.calledWith(options);
+          describe(`old functionality`, () => {
+            let originalWarn;
+            beforeEach(() => {
+              originalWarn = console.warn;
+              console.warn = () => {};
+            });
+
+            it(`should call the parent validateOptions function when there is no child function`, () => {
+              setterFn([
+                {name, template, validateOptions: parentFn},
+                {name: 'type2', extends: name}
+              ]);
+              getterFn('type2').validateOptions(options);
+              expect(parentFn).to.have.been.calledWith(options);
+            });
+
+            it(`should call the child validateOptions function when there is no parent function`, () => {
+              setterFn([
+                {name, template},
+                {name: 'type2', extends: name, validateOptions: childFn}
+              ]);
+              getterFn('type2').validateOptions(options);
+              expect(childFn).to.have.been.calledWith(options);
+            });
+
+            it(`should call the child validateOptions function and the parent validateOptions function when they are both present`, () => {
+              setterFn([
+                {name, template, validateOptions: parentFn},
+                {name: 'type2', extends: name, validateOptions: childFn}
+              ]);
+              getterFn('type2').validateOptions(options);
+              expect(childFn).to.have.been.calledWith(options);
+              expect(parentFn).to.have.been.calledWith(options);
+            });
+
+            it(`should pass the result of the child's defaultOptions with the given options to the parent's validateOptions function`, () => {
+              const defaultOptions = {data: {f: 'g'}};
+              const combinedOptions = {data: {a: 'b', c: {d: 'e'}, f: 'g'}};
+              setterFn([
+                {name, template, validateOptions: parentFn},
+                {name: 'type2', extends: name, validateOptions: childFn, defaultOptions}
+              ]);
+              getterFn('type2').validateOptions(options);
+              expect(childFn).to.have.been.calledWith(options);
+              expect(parentFn).to.have.been.calledWith(combinedOptions);
+            });
+
+            afterEach(() => {
+              console.warn = originalWarn;
+            });
           });
 
-          it(`should call the child validateOptions function and the parent validateOptions function when they are both present`, () => {
-            setterFn([
-              {name, template, validateOptions: parentFn},
-              {name: 'type2', extends: name, validateOptions: childFn}
-            ]);
-            getterFn('type2').validateOptions(options);
-            expect(childFn).to.have.been.calledWith(options);
-            expect(parentFn).to.have.been.calledWith(options);
-          });
-
-          it(`should pass the result of the child's defaultOptions with the given options to the parent's validateOptions function`, () => {
-            const defaultOptions = {data: {f: 'g'}};
-            const combinedOptions = {data: {a: 'b', c: {d: 'e'}, f: 'g'}};
-            setterFn([
-              {name, template, validateOptions: parentFn},
-              {name: 'type2', extends: name, validateOptions: childFn, defaultOptions}
-            ]);
-            getterFn('type2').validateOptions(options);
-            expect(childFn).to.have.been.calledWith(options);
-            expect(parentFn).to.have.been.calledWith(combinedOptions);
-          });
         });
 
         describe(`controller functions`, () => {
@@ -519,23 +544,6 @@ describe('formlyConfig', () => {
 
         });
       });
-
-      describe(`validateOptions`, () => {
-        it(`should allow you to specify this as a property of a type`, () => {
-          expect(() => {
-            setterFn({
-              name,
-              validateOptions,
-              template
-            });
-          }).to.not.throw();
-          expect(getterFn(name).validateOptions).to.be.a('function');
-
-          function validateOptions() {
-          }
-        });
-      });
-
     });
 
     describe('(◞‸◟；) path', () => {
@@ -601,7 +609,7 @@ describe('formlyConfig', () => {
 
     it(`should give a deprecation warning when providing apiCheck as an object rather than a function`, () => {
       shouldWarn(
-        /Formly Warning: apiCheck as an object has been deprecated Attempted for type: input/,
+        /Formly Warning: apiCheck as an object has been deprecated. Attempted for type: input/,
         function() {
           setterFn({
             name,

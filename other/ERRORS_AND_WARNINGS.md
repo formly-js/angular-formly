@@ -142,6 +142,12 @@ the apiCheck checkers are never even created. Not much we can do about the coupl
 a big issue. For more info, see [#334](https://github.com/formly-js/angular-formly/issues/334). Note, this will be
 removed in a major release.
 
+# validateOptions deprecated
+
+Because angular-formly already has a dependency on `api-check` and this is just a better way to validate your options,
+you should use this method instead. In an effort to simplify things. This has been deprecated in favor of the `apiCheck`
+property.
+
 # skipNgModelAttrsManipulator moved
 
 This property has been moved from the `data` property to the `extras` property.
