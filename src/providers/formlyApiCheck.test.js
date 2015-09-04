@@ -31,6 +31,23 @@ describe('formlyApiCheck', () => {
         key: 'whatevs'
       }, 'formlyFieldOptions');
     });
+
+    describe('ngModelAttrs', () => {
+      it(`should allow property of 'boolean'`, () => {
+        expectPass({
+          template: 'hello',
+          key: 'whatevs',
+          templateOptions: {
+            foo: 'bar'
+          },
+          ngModelAttrs: {
+            foo: {
+              boolean: 'foo-bar'
+            }
+          }
+        }, 'formlyFieldOptions');
+      });
+    });
   });
 
   describe(`fieldGroup`, () => {
