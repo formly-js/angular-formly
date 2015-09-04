@@ -23,7 +23,7 @@ describe('formly-form', () => {
 
   it(`should be possible to use it as an attribute directive`, () => {
     const el = compileAndDigest(`
-      <div formly-form model="model" fields="fields" form="theForm"></formly-form>
+      <div formly-form model="model" fields="fields" form="theForm"></div>
     `);
     expect(el.length).to.equal(1);
     expect(el.prop('nodeName').toLowerCase()).to.equal('ng-form');
