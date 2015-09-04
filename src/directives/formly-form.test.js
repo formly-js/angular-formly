@@ -21,6 +21,14 @@ describe('formly-form', () => {
     scope.fields = [];
   }));
 
+  it.skip(`should be possible to use it as an attribute directive`, () => {
+    const el = compileAndDigest(`
+      <div formly-form model="model" fields="fields" form="theForm"></formly-form>
+    `);
+    expect(el.length).to.equal(1);
+    expect(el.prop('nodeName').toLowerCase()).to.equal('ng-form');
+  });
+
   it('should use ng-form as the default root tag', () => {
     const el = compileAndDigest(`
       <formly-form model="model" fields="fields" form="theForm"></formly-form>
