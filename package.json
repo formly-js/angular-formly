@@ -73,7 +73,7 @@
   },
   "config": {
     "ghooks": {
-      "commit-msg": "node scripts/pre-commit-git-check.js && npm run code-checks && npm run test && npm run check-coverage"
+      "commit-msg": "./node_modules/.bin/validate-commit-msg && npm run code-checks && npm run test && npm run check-coverage"
     }
   },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
@@ -122,6 +122,7 @@
     "sinon": "1.15.4",
     "sinon-chai": "2.8.0",
     "uglify-loader": "1.2.0",
+    "validate-commit-msg": "1.0.0",
     "webpack": "1.10.2",
     "with-package": "0.2.0"
   },
