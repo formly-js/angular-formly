@@ -1,10 +1,7 @@
 {
-  "extends": "./node_modules/kcd-common-tools/shared/test.eslintrc",
-  "rules": {
-    "max-params": [2, 11] // gotta love me some angular...
-  },
-  "globals": {
-    "inject": false,
-    "VERSION": false
-  }
+  // this exists solely for editors. The test and app eslints are slightly different
+  // and the app validates the app code via the other/app.eslintrc and validates the
+  // test code via the other/test.eslintrc
+  // we simply use the test.eslintrc so our editors don't get mad at us.
+  "extends": "./other/test.eslintrc"
 }

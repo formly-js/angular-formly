@@ -9,7 +9,7 @@ export default formlyField;
  * @restrict AE
  */
 // @ngInject
-function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyConfig, formlyValidationMessages,
+function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyConfig,
                      formlyApiCheck, formlyUtil, formlyUsability, formlyWarn) {
   const {arrayify} = formlyUtil;
 
@@ -34,7 +34,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
 
   // @ngInject
-  function FormlyFieldController($scope, $timeout, $parse, $controller) {
+  function FormlyFieldController($scope, $timeout, $parse, $controller, formlyValidationMessages) {
     /* eslint max-statements:[2, 31] */
     if ($scope.options.fieldGroup) {
       setupFieldGroup();
@@ -694,9 +694,9 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       // TODO this is the deprecated API. Remove this in a breaking change.
       const checker = instance.shape(apiCheck);
       const checkOptions = apiCheckOptions || {
-          prefix: `formly-field type ${options.type}`,
-          url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
-        };
+        prefix: `formly-field type ${options.type}`,
+        url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
+      };
       instance[fn](checker, options, checkOptions);
     }
   }
