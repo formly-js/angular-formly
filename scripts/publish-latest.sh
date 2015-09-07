@@ -7,6 +7,9 @@ echo "setting global bot config"
 git config --global user.email kent+formly-bot@doddsfamily.us
 git config --global user.name formly-bot
 
+echo "checking out temp branch"
+git checkout -b travis/temp
+
 echo "adding dist"
 git add dist package.json
 
@@ -21,8 +24,8 @@ git remote set-branches --add origin latest # required because travis clones wit
 git fetch origin
 git checkout latest
 
-echo "merging master"
-git merge master -m "master merge" -X theirs
+echo "merging built files"
+git merge travis/temp -m "merging built files" -X theirs
 
 echo "pushing"
 git push origin HEAD:latest -f >/dev/null 2>/dev/null
