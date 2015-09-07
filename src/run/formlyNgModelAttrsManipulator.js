@@ -85,8 +85,8 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
           // I realize this looks backwards, but it's right, trust me...
           attrName = val.value;
           attrVal = name;
-        } else if (val.expression && inTo) {
-          attrName = val.expression;
+        } else if (val.statement && inTo) {
+          attrName = val.statement;
           if (angular.isString(to[name])) {
             attrVal = `$eval(${ref})`;
           } else if (angular.isFunction(to[name])) {
@@ -197,7 +197,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
     const boundOnly = [];
     const bothBooleanAndBound = ['required', 'disabled'];
     const bothAttributeAndBound = ['pattern', 'minlength'];
-    const expressionOnly = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
+    const statementOnly = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
     const attributeOnly = ['placeholder', 'min', 'max', 'tabindex', 'type'];
     if (formlyConfig.extras.ngModelAttrsManipulatorPreferUnbound) {
       bothAttributeAndBound.push('maxlength');
@@ -217,9 +217,9 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
       ngModelAttributes[item] = {attribute: item, bound: 'ng-' + item};
     });
 
-    angular.forEach(expressionOnly, item => {
+    angular.forEach(statementOnly, item => {
       const propName = 'on' + item.substr(0, 1).toUpperCase() + item.substr(1);
-      ngModelAttributes[propName] = {expression: 'ng-' + item};
+      ngModelAttributes[propName] = {statement: 'ng-' + item};
     });
 
     angular.forEach(attributeOnly, item => {

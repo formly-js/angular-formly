@@ -184,7 +184,7 @@ describe('formly-field', function() {
               attribute: 'required'
             },
             myChange: {
-              expression: 'ng-change'
+              statement: 'ng-change'
             }
           },
           templateOptions: {
