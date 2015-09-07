@@ -19,11 +19,5 @@ git add dist package.json
 echo "committing with $F_VERSION"
 git commit -m $F_VERSION --no-verify
 
-echo "tagging with v$F_VERSION"
-git tag v${F_VERSION} -f
-
-echo "pushing"
-git push origin HEAD:latest --tags -f >/dev/null 2>/dev/null
-
 echo "done!"
 
