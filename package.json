@@ -29,7 +29,7 @@
     "code-checks": "eslint src/",
     "commit": "git-cz",
     "publish:latest": "with-package scripts/publish-latest.sh pkg.version",
-    "semantic-release": "semantic-release pre && npm run build && npm publish && npm run publish:latest && semantic-release post"
+    "semantic-release": "semantic-release pre && npm run build && npm run publish:latest"
   },
   "betterScripts": {
     "build:dist": {
