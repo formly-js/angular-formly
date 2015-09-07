@@ -127,53 +127,6 @@ of the expression, the scope you're passed wont have all the properties you may 
 See documentation [here](http://docs.angular-formly.com/docs/field-configuration-object#hideexpression-string--function)
 and an example [here](http://angular-formly.com/#/example/field-options/hide-fields)
 
-# Validators returning promises should use asyncValidators
-
-Due to some issues with treating all function validators as async validators, the functionality has been split into
-simply `validators` and `asyncValidators`. The ability to return a promise from a validator has been deprecated and you
-should use `asyncValidators` for those now. For more info, see
-[#369](https://github.com/formly-js/angular-formly/issues/369).
-
-# apiCheck as an object deprecated
-
-As a performance optimization, the `apiCheck` property has been changed to a function. This is good because when
-apiCheck is disabled (either globally or the specified `apiCheckInstance`), the function is not even called which means
-the apiCheck checkers are never even created. Not much we can do about the couple of extra bytes, but that's not really
-a big issue. For more info, see [#334](https://github.com/formly-js/angular-formly/issues/334). Note, this will be
-removed in a major release.
-
-# validateOptions deprecated
-
-Because angular-formly already has a dependency on `api-check` and this is just a better way to validate your options,
-you should use this method instead. In an effort to simplify things. This has been deprecated in favor of the `apiCheck`
-property.
-
-# skipNgModelAttrsManipulator moved
-
-This property has been moved from the `data` property to the `extras` property.
-
-Before:
-
-```javascript
-{
-  template: '<hr />',
-  data: {
-    skipNgModelAttrsManipulator: true
-  }
-}
-```
-
-After:
-
-```javascript
-{
-  template: '<hr />',
-  extras: {
-    skipNgModelAttrsManipulator: true
-  }
-}
-```
-
 # Notes
 
 It is recommended to disable warnings in production using `formlyConfigProvider.disableWarnings = true`. Note: This will

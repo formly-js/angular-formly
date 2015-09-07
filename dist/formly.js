@@ -1,4 +1,4 @@
-//! angular-formly version 6.26.9 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 7.0.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("6.26.9")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("7.0.0")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -269,15 +269,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return apiCheck.utils.checkerHelpers.setupChecker(shapeRequiredIfNotDefinition);
 	}
 
-	// TODO in 7.0.0 .nullable is available on all checkers
-	function nullable(checker) {
-	  return apiCheck.oneOfType([apiCheck.oneOf([null]), checker]);
-	}
-
 	var formlyExpression = apiCheck.oneOfType([apiCheck.string, apiCheck.func]);
-	var specifyWrapperType = nullable(apiCheck.typeOrArrayOf(apiCheck.string));
+	var specifyWrapperType = apiCheck.typeOrArrayOf(apiCheck.string).nullable;
 
-	var apiCheckProperty = apiCheck.oneOfType([apiCheck.func, apiCheck.objectOf(apiCheck.func)]);
+	var apiCheckProperty = apiCheck.func;
 
 	var apiCheckInstanceProperty = apiCheck.shape.onlyIf('apiCheck', apiCheck.func.withProperties({
 	  warn: apiCheck.func,
@@ -293,7 +288,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  templateUrl: apiCheck.shape.ifNot('template', apiCheck.string).optional,
 	  types: apiCheck.typeOrArrayOf(apiCheck.string).optional,
 	  overwriteOk: apiCheck.bool.optional,
-	  validateOptions: apiCheck.func.optional,
 	  apiCheck: apiCheckProperty.optional,
 	  apiCheckInstance: apiCheckInstanceProperty.optional,
 	  apiCheckFunction: apiCheckFunctionProperty.optional,
@@ -307,10 +301,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var modelChecker = apiCheck.oneOfType([apiCheck.string, apiCheck.object]);
 
-	var templateManipulators = nullable(apiCheck.shape({
-	  preWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional,
-	  postWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional
-	}).strict);
+	var templateManipulators = apiCheck.shape({
+	  preWrapper: apiCheck.arrayOf(apiCheck.func).nullable.optional,
+	  postWrapper: apiCheck.arrayOf(apiCheck.func).nullable.optional
+	}).strict.nullable;
 
 	var validatorChecker = apiCheck.objectOf(apiCheck.oneOfType([formlyExpression, apiCheck.shape({
 	  expression: formlyExpression,
@@ -356,18 +350,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  hideExpression: formlyExpression.optional,
 	  ngModelElAttrs: apiCheck.objectOf(apiCheck.string).optional,
 	  ngModelAttrs: apiCheck.objectOf(apiCheck.shape({
-	    expression: apiCheck.shape.ifNot(['value', 'attribute', 'bound', 'boolean'], apiCheck.any).optional,
-	    value: apiCheck.shape.ifNot('expression', apiCheck.any).optional,
-	    attribute: apiCheck.shape.ifNot('expression', apiCheck.any).optional,
-	    bound: apiCheck.shape.ifNot('expression', apiCheck.any).optional,
-	    boolean: apiCheck.shape.ifNot('expression', apiCheck.any).optional
+	    statement: apiCheck.shape.ifNot(['value', 'attribute', 'bound', 'boolean'], apiCheck.any).optional,
+	    value: apiCheck.shape.ifNot('statement', apiCheck.any).optional,
+	    attribute: apiCheck.shape.ifNot('statement', apiCheck.any).optional,
+	    bound: apiCheck.shape.ifNot('statement', apiCheck.any).optional,
+	    boolean: apiCheck.shape.ifNot('statement', apiCheck.any).optional
 	  }).strict).optional,
 	  elementAttributes: apiCheck.objectOf(apiCheck.string).optional,
 	  optionsTypes: apiCheck.typeOrArrayOf(apiCheck.string).optional,
 	  link: apiCheck.func.optional,
 	  controller: apiCheck.oneOfType([apiCheck.string, apiCheck.func, apiCheck.array]).optional,
 	  validation: apiCheck.shape({
-	    show: nullable(apiCheck.bool).optional,
+	    show: apiCheck.bool.nullable.optional,
 	    messages: apiCheck.objectOf(formlyExpression).optional,
 	    errorExistsAndShouldBeVisible: apiCheck.bool.optional
 	  }).optional,
@@ -422,7 +416,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  'extends': apiCheck.string.optional,
 	  wrapper: specifyWrapperType.optional,
 	  data: apiCheck.object.optional,
-	  validateOptions: apiCheck.func.optional,
 	  apiCheck: apiCheckProperty.optional,
 	  apiCheckInstance: apiCheckInstanceProperty.optional,
 	  apiCheckFunction: apiCheckFunctionProperty.optional,
@@ -452,7 +445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("6.26.9") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.0.0") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -621,7 +614,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      prefix: 'formlyConfig.setType',
 	      url: 'settype-validation-failed'
 	    });
-	    checkDeprecatedOptions(options);
 	    if (!options.overwriteOk) {
 	      checkOverwrite(options.name, typeMap, options, 'types');
 	    } else {
@@ -633,7 +625,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var extendsType = getType(options['extends'], true, options);
 	    extendTypeControllerFunction(options, extendsType);
 	    extendTypeLinkFunction(options, extendsType);
-	    extendTypeValidateOptionsFunction(options, extendsType);
 	    extendTypeDefaultOptions(options, extendsType);
 	    _otherUtils2['default'].reverseDeepMerge(options, extendsType);
 	    extendTemplate(options, extendsType);
@@ -677,31 +668,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      };
 	    } else {
 	      options.link = extendsFn;
-	    }
-	  }
-
-	  function extendTypeValidateOptionsFunction(options, extendsType) {
-	    var extendsFn = extendsType.validateOptions;
-	    if (!_angularFix2['default'].isDefined(extendsFn)) {
-	      return;
-	    }
-	    var optionsFn = options.validateOptions;
-	    var originalDefaultOptions = options.defaultOptions;
-	    if (_angularFix2['default'].isDefined(optionsFn)) {
-	      options.validateOptions = function (opts) {
-	        optionsFn(opts);
-	        var mergedOptions = _angularFix2['default'].copy(opts);
-	        var defaultOptions = originalDefaultOptions;
-	        if (defaultOptions) {
-	          if (_angularFix2['default'].isFunction(defaultOptions)) {
-	            defaultOptions = defaultOptions(mergedOptions);
-	          }
-	          _otherUtils2['default'].reverseDeepMerge(mergedOptions, defaultOptions);
-	        }
-	        extendsFn(mergedOptions);
-	      };
-	    } else {
-	      options.validateOptions = extendsFn;
 	    }
 	  }
 
@@ -811,7 +777,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (options.template) {
 	      formlyUsabilityProvider.checkWrapperTemplate(options.template, options);
 	    }
-	    checkDeprecatedOptions(options);
 	    if (!options.overwriteOk) {
 	      checkOverwrite(options.name, templateWrappersMap, options, 'templateWrappers');
 	    } else {
@@ -830,15 +795,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function checkOverwrite(property, object, newValue, objectName) {
 	    if (object.hasOwnProperty(property)) {
 	      warn('overwriting-types-or-wrappers', ['Attempting to overwrite ' + property + ' on ' + objectName + ' which is currently', JSON.stringify(object[property]) + ' with ' + JSON.stringify(newValue), 'To supress this warning, specify the property "overwriteOk: true"'].join(' '));
-	    }
-	  }
-
-	  function checkDeprecatedOptions(options) {
-	    if (options.apiCheck && !_angularFix2['default'].isFunction(options.apiCheck)) {
-	      warn('apicheck-as-an-object-deprecated', 'apiCheck as an object has been deprecated.', 'Attempted for type: ' + options.name, options);
-	    }
-	    if (options.validateOptions) {
-	      warn('validateoptions-deprecated', 'the `validateOptions` property has been deprecated.', 'Attempted for type: ' + options.name, options);
 	    }
 	  }
 
@@ -910,7 +866,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _angularFix2 = _interopRequireDefault(_angularFix);
 
-	exports['default'] = { formlyEval: formlyEval, getFieldId: getFieldId, reverseDeepMerge: reverseDeepMerge, findByNodeName: findByNodeName, arrayify: arrayify, extendFunction: extendFunction, extendArray: extendArray, startsWith: startsWith };
+	exports['default'] = {
+	  formlyEval: formlyEval, getFieldId: getFieldId, reverseDeepMerge: reverseDeepMerge, findByNodeName: findByNodeName, arrayify: arrayify, extendFunction: extendFunction, extendArray: extendArray, startsWith: startsWith, contains: contains
+	};
 
 	function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
 	  if (_angularFix2['default'].isFunction(expression)) {
@@ -1022,6 +980,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return false;
 	  }
 	}
+
+	function contains(str, search) {
+	  if (_angularFix2['default'].isString(str) && _angularFix2['default'].isString(search)) {
+	    return str.length >= search.length && str.indexOf(search) !== -1;
+	  } else {
+	    return false;
+	  }
+	}
 	module.exports = exports['default'];
 
 /***/ },
@@ -1111,13 +1077,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports['default'] = formlyCustomValidation;
 
 	// @ngInject
-	function formlyCustomValidation(formlyConfig, formlyUtil, $q, formlyWarn) {
+	function formlyCustomValidation(formlyUtil) {
 	  return {
 	    restrict: 'A',
 	    require: 'ngModel',
 	    link: function formlyCustomValidationLink(scope, el, attrs, ctrl) {
 	      var opts = scope.options;
-	      var warnedValidators = [];
 	      opts.validation.messages = opts.validation.messages || {};
 	      _angularFix2['default'].forEach(opts.validation.messages, function (message, key) {
 	        opts.validation.messages[key] = function () {
@@ -1149,31 +1114,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      function setupWithValidators(validator, name, isAsync) {
-	        var isPossiblyAsync = !_angularFix2['default'].isString(validator);
-	        var validatorCollection = isPossiblyAsync || isAsync ? '$asyncValidators' : '$validators';
-
-	        // UPDATE IN 7.0.0
-	        // this is temporary until we can have a breaking change. Allow people to get the wins of the explicitAsync api
-	        if (formlyConfig.extras.explicitAsync && !isAsync) {
-	          validatorCollection = '$validators';
-	        }
+	        var validatorCollection = isAsync ? '$asyncValidators' : '$validators';
 
 	        ctrl[validatorCollection][name] = function evalValidity(modelValue, viewValue) {
-	          var value = formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
-	          // UPDATE IN 7.0.0
-	          // In the next breaking change, this code should simply return the value
-	          if (isAsync) {
-	            return value;
-	          } else if (isPossiblyAsync && !formlyConfig.extras.explicitAsync) {
-	            if (isPromiseLike(value)) {
-	              logAsyncValidatorsDeprecationNotice(validator, opts);
-	              return value;
-	            } else {
-	              return value ? $q.when(value) : $q.reject(value);
-	            }
-	          } else {
-	            return value;
-	          }
+	          return formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
 	        };
 	      }
 
@@ -1181,13 +1125,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var inFlightValidator = undefined;
 	        ctrl.$parsers.unshift(function evalValidityOfParser(viewValue) {
 	          var isValid = formlyUtil.formlyEval(scope, validator, ctrl.$modelValue, viewValue);
-	          // UPDATE IN 7.0.0
-	          // In the next breaking change, rather than checking for isPromiseLike, it should just check for isAsync.
-
-	          if (isAsync || isPromiseLike(isValid)) {
-	            if (!isAsync) {
-	              logAsyncValidatorsDeprecationNotice(validator, opts);
-	            }
+	          if (isAsync) {
 	            ctrl.$pending = ctrl.$pending || {};
 	            ctrl.$pending[name] = true;
 	            inFlightValidator = isValid;
@@ -1213,23 +1151,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return viewValue;
 	        });
 	      }
-
-	      function logAsyncValidatorsDeprecationNotice(validator, options) {
-	        if (warnedValidators.indexOf(validator) !== -1) {
-	          // we've warned about this one before. No spam necessary...
-	          return;
-	        }
-	        warnedValidators.push(validator);
-	        formlyWarn('validators-returning-promises-should-use-asyncvalidators', 'Validators returning promises should use asyncValidators instead of validators.', options);
-	      }
 	    }
 	  };
-
-	  function isPromiseLike(obj) {
-	    return obj && _angularFix2['default'].isFunction(obj.then);
-	  }
 	}
-	formlyCustomValidation.$inject = ["formlyConfig", "formlyUtil", "$q", "formlyWarn"];
+	formlyCustomValidation.$inject = ["formlyUtil"];
 	module.exports = exports['default'];
 
 /***/ },
@@ -1807,7 +1732,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      wrapper.forEach(function (aWrapper) {
 	        formlyUsability.checkWrapper(aWrapper, options);
-	        aWrapper.validateOptions && aWrapper.validateOptions(options);
 	        runApiCheck(aWrapper, options);
 	      });
 	      var promises = wrapper.map(function (w) {
@@ -1884,9 +1808,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // validate with the type
 	    var type = options.type && formlyConfig.getType(options.type);
 	    if (type) {
-	      if (type.validateOptions) {
-	        type.validateOptions(options);
-	      }
 	      runApiCheck(type, options, true);
 	    }
 	    if (options.expressionProperties && options.expressionProperties.hide) {
@@ -1925,26 +1846,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return;
 	    }
 	    var fn = apiCheckFunction || 'warn';
-	    if (_angularFix2['default'].isFunction(apiCheck)) {
-	      // this is the new API
-	      var checkerObjects = apiCheck(instance);
-	      _angularFix2['default'].forEach(checkerObjects, function (shape, name) {
-	        var checker = instance.shape(shape);
-	        var checkOptions = _angularFix2['default'].extend({
-	          prefix: 'formly-field type ' + options.type + ' for property ' + name,
-	          url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
-	        }, apiCheckOptions);
-	        instance[fn](checker, options[name], checkOptions);
-	      });
-	    } else {
-	      // TODO this is the deprecated API. Remove this in a breaking change.
-	      var checker = instance.shape(apiCheck);
-	      var checkOptions = apiCheckOptions || {
-	        prefix: 'formly-field type ' + options.type,
+	    // this is the new API
+	    var checkerObjects = apiCheck(instance);
+	    _angularFix2['default'].forEach(checkerObjects, function (shape, name) {
+	      var checker = instance.shape(shape);
+	      var checkOptions = _angularFix2['default'].extend({
+	        prefix: 'formly-field type ' + options.type + ' for property ' + name,
 	        url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
-	      };
-	      instance[fn](checker, options, checkOptions);
-	    }
+	      }, apiCheckOptions);
+	      instance[fn](checker, options[name], checkOptions);
+	    });
 	  }
 	}
 	formlyField.$inject = ["$http", "$q", "$compile", "$templateCache", "$interpolate", "formlyConfig", "formlyApiCheck", "formlyUtil", "formlyUsability", "formlyWarn"];
@@ -2400,10 +2311,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _angularFix2 = _interopRequireDefault(_angularFix);
 
+	var _otherUtils = __webpack_require__(10);
+
 	exports['default'] = addFormlyNgModelAttrsManipulator;
 
 	// @ngInject
-	function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn) {
+	function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
 	  if (formlyConfig.extras.disableNgModelAttrsManipulator) {
 	    return;
 	  }
@@ -2411,7 +2324,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function ngModelAttrsManipulator(template, options, scope) {
 	    var node = document.createElement('div');
-	    var skip = getSkip(options);
+	    var skip = options.extras && options.extras.skipNgModelAttrsManipulator;
 	    if (skip === true) {
 	      return template;
 	    }
@@ -2426,6 +2339,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    addIfNotPresent(modelNodes, 'name', scope.name || scope.id);
 
 	    addValidation();
+	    alterNgModelAttr();
 	    addModelOptions();
 	    addTemplateOptionsAttrs();
 	    addNgModelElAttrs();
@@ -2438,13 +2352,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 
+	    function alterNgModelAttr() {
+	      if (isPropertyAccessor(options.key)) {
+	        addRegardlessOfPresence(modelNodes, 'ng-model', 'model.' + options.key);
+	      }
+	    }
+
 	    function addModelOptions() {
 	      if (_angularFix2['default'].isDefined(options.modelOptions)) {
 	        addIfNotPresent(modelNodes, 'ng-model-options', 'options.modelOptions');
 	        if (options.modelOptions.getterSetter) {
-	          _angularFix2['default'].forEach(modelNodes, function (modelNode) {
-	            modelNode.setAttribute('ng-model', 'options.value');
-	          });
+	          addRegardlessOfPresence(modelNodes, 'ng-model', 'options.value');
 	        }
 	      }
 	    }
@@ -2477,8 +2395,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          // I realize this looks backwards, but it's right, trust me...
 	          attrName = val.value;
 	          attrVal = name;
-	        } else if (val.expression && inTo) {
-	          attrName = val.expression;
+	        } else if (val.statement && inTo) {
+	          attrName = val.statement;
 	          if (_angularFix2['default'].isString(to[name])) {
 	            attrVal = '$eval(' + ref + ')';
 	          } else if (_angularFix2['default'].isFunction(to[name])) {
@@ -2517,7 +2435,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    function addNgModelElAttrs() {
 	      _angularFix2['default'].forEach(options.ngModelElAttrs, function (val, name) {
-	        addIfNotPresent(modelNodes, name, val);
+	        addRegardlessOfPresence(modelNodes, name, val);
 	      });
 	    }
 	  }
@@ -2561,18 +2479,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return div.querySelector(selector);
 	  }
 
-	  function getSkip(options) {
-	    // UPDATE IN 7.0.0
-	    var skip = options.extras && options.extras.skipNgModelAttrsManipulator;
-	    if (!_angularFix2['default'].isDefined(skip)) {
-	      skip = options.data && options.data.skipNgModelAttrsManipulator;
-	      if (_angularFix2['default'].isDefined(skip)) {
-	        formlyWarn('skipngmodelattrsmanipulator-moved', 'The skipNgModelAttrsManipulator property has been moved from the `data` property to the `extras` property', options);
-	      }
-	    }
-	    return skip;
-	  }
-
 	  function getBuiltInAttributes() {
 	    var ngModelAttributes = {
 	      focus: {
@@ -2582,7 +2488,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var boundOnly = [];
 	    var bothBooleanAndBound = ['required', 'disabled'];
 	    var bothAttributeAndBound = ['pattern', 'minlength'];
-	    var expressionOnly = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
+	    var statementOnly = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
 	    var attributeOnly = ['placeholder', 'min', 'max', 'tabindex', 'type'];
 	    if (formlyConfig.extras.ngModelAttrsManipulatorPreferUnbound) {
 	      bothAttributeAndBound.push('maxlength');
@@ -2602,9 +2508,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      ngModelAttributes[item] = { attribute: item, bound: 'ng-' + item };
 	    });
 
-	    _angularFix2['default'].forEach(expressionOnly, function (item) {
+	    _angularFix2['default'].forEach(statementOnly, function (item) {
 	      var propName = 'on' + item.substr(0, 1).toUpperCase() + item.substr(1);
-	      ngModelAttributes[propName] = { expression: 'ng-' + item };
+	      ngModelAttributes[propName] = { statement: 'ng-' + item };
 	    });
 
 	    _angularFix2['default'].forEach(attributeOnly, function (item) {
@@ -2624,8 +2530,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    });
 	  }
+
+	  function addRegardlessOfPresence(nodes, attr, val) {
+	    _angularFix2['default'].forEach(nodes, function (node) {
+	      node.setAttribute(attr, val);
+	    });
+	  }
+
+	  function isPropertyAccessor(key) {
+	    return (0, _otherUtils.contains)(key, '.') || (0, _otherUtils.contains)(key, '[') && (0, _otherUtils.contains)(key, ']');
+	  }
 	}
-	addFormlyNgModelAttrsManipulator.$inject = ["formlyConfig", "$interpolate", "formlyWarn"];
+	addFormlyNgModelAttrsManipulator.$inject = ["formlyConfig", "$interpolate"];
 	module.exports = exports['default'];
 
 /***/ },

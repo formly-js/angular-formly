@@ -2,18 +2,13 @@
 import angular from 'angular';
 import _ from 'lodash';
 
-import testUtils from '../test.utils.js';
-
-const {shouldWarnWithLog} = testUtils;
-
 describe('formlyNgModelAttrsManipulator', () => {
   beforeEach(window.module('formly'));
 
-  let formlyConfig, manipulator, scope, field, result, resultEl, resultNode, $log;
+  let formlyConfig, manipulator, scope, field, result, resultEl, resultNode;
   const template = '<input ng-model="model[options.key]" />';
 
-  beforeEach(inject((_formlyConfig_, $rootScope, _$log_) => {
-    $log = _$log_;
+  beforeEach(inject((_formlyConfig_, $rootScope) => {
     formlyConfig = _formlyConfig_;
     manipulator = formlyConfig.templateManipulators.preWrapper[0];
     scope = $rootScope.$new();
@@ -27,17 +22,6 @@ describe('formlyNgModelAttrsManipulator', () => {
   }));
 
   describe(`skipping`, () => {
-    it(`should give a deprecation warning when using the data property`, () => {
-      field.data.skipNgModelAttrsManipulator = true;
-      const logArgs = [
-        'Formly Warning:',
-        'The skipNgModelAttrsManipulator property has been moved from the `data` property to the `extras` property',
-        field,
-        /skipngmodelattrsmanipulator-moved/
-      ];
-      shouldWarnWithLog($log, logArgs, manipulate);
-    });
-
 
     it(`should allow you to skip the manipulator wholesale for the field`, () => {
       field.extras.skipNgModelAttrsManipulator = true;
@@ -194,6 +178,19 @@ describe('formlyNgModelAttrsManipulator', () => {
     });
   });
 
+  describe(`selector key notation`, () => {
+    it(`should change the ng-model when the key is a dot property accessor`, () => {
+      field.key = 'bar.foo';
+      manipulate();
+      expect(resultEl.attr('ng-model')).to.equal('model.' + field.key);
+    });
+
+    it(`should change the ng-model when the key is a bracket property accessor`, () => {
+      field.key = 'bar["foo-bar"]';
+      manipulate();
+      expect(resultEl.attr('ng-model')).to.equal('model.' + field.key);
+    });
+  });
 
   describe(`formly-custom-validation`, () => {
     it(`shouldn't be added if there aren't validators or messages`, () => {
@@ -348,6 +345,14 @@ describe('formlyNgModelAttrsManipulator', () => {
         'foo attribute should equal the value of foo in ngModelElAttrs'
       ).to.equal('{{::to.bar}}');
 
+    });
+
+    it(`should override existing attributes`, () => {
+      field.ngModelElAttrs = {
+        'ng-model': 'formState.foo.bar'
+      };
+      manipulate();
+      expect(resultEl.attr('ng-model')).to.equal('formState.foo.bar');
     });
   });
 

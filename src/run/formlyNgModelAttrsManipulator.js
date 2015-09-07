@@ -1,9 +1,10 @@
 import angular from 'angular-fix';
+import {contains} from '../other/utils';
 
 export default addFormlyNgModelAttrsManipulator;
 
 // @ngInject
-function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn) {
+function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
   if (formlyConfig.extras.disableNgModelAttrsManipulator) {
     return;
   }
@@ -12,7 +13,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
 
   function ngModelAttrsManipulator(template, options, scope) {
     const node = document.createElement('div');
-    const skip = getSkip(options);
+    const skip = options.extras && options.extras.skipNgModelAttrsManipulator;
     if (skip === true) {
       return template;
     }
@@ -27,6 +28,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
     addIfNotPresent(modelNodes, 'name', scope.name || scope.id);
 
     addValidation();
+    alterNgModelAttr();
     addModelOptions();
     addTemplateOptionsAttrs();
     addNgModelElAttrs();
@@ -41,13 +43,17 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
       }
     }
 
+    function alterNgModelAttr() {
+      if (isPropertyAccessor(options.key)) {
+        addRegardlessOfPresence(modelNodes, 'ng-model', 'model.' + options.key);
+      }
+    }
+
     function addModelOptions() {
       if (angular.isDefined(options.modelOptions)) {
         addIfNotPresent(modelNodes, 'ng-model-options', 'options.modelOptions');
         if (options.modelOptions.getterSetter) {
-          angular.forEach(modelNodes, modelNode => {
-            modelNode.setAttribute('ng-model', 'options.value');
-          });
+          addRegardlessOfPresence(modelNodes, 'ng-model', 'options.value');
         }
       }
     }
@@ -79,8 +85,8 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
           // I realize this looks backwards, but it's right, trust me...
           attrName = val.value;
           attrVal = name;
-        } else if (val.expression && inTo) {
-          attrName = val.expression;
+        } else if (val.statement && inTo) {
+          attrName = val.statement;
           if (angular.isString(to[name])) {
             attrVal = `$eval(${ref})`;
           } else if (angular.isFunction(to[name])) {
@@ -121,7 +127,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
 
     function addNgModelElAttrs() {
       angular.forEach(options.ngModelElAttrs, (val, name) => {
-        addIfNotPresent(modelNodes, name, val);
+        addRegardlessOfPresence(modelNodes, name, val);
       });
     }
   }
@@ -166,22 +172,6 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
     return div.querySelector(selector);
   }
 
-  function getSkip(options) {
-    // UPDATE IN 7.0.0
-    let skip = options.extras && options.extras.skipNgModelAttrsManipulator;
-    if (!angular.isDefined(skip)) {
-      skip = options.data && options.data.skipNgModelAttrsManipulator;
-      if (angular.isDefined(skip)) {
-        formlyWarn(
-          'skipngmodelattrsmanipulator-moved',
-          'The skipNgModelAttrsManipulator property has been moved from the `data` property to the `extras` property',
-          options
-        );
-      }
-    }
-    return skip;
-  }
-
   function getBuiltInAttributes() {
     const ngModelAttributes = {
       focus: {
@@ -191,7 +181,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
     const boundOnly = [];
     const bothBooleanAndBound = ['required', 'disabled'];
     const bothAttributeAndBound = ['pattern', 'minlength'];
-    const expressionOnly = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
+    const statementOnly = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
     const attributeOnly = ['placeholder', 'min', 'max', 'tabindex', 'type'];
     if (formlyConfig.extras.ngModelAttrsManipulatorPreferUnbound) {
       bothAttributeAndBound.push('maxlength');
@@ -211,9 +201,9 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
       ngModelAttributes[item] = {attribute: item, bound: 'ng-' + item};
     });
 
-    angular.forEach(expressionOnly, item => {
+    angular.forEach(statementOnly, item => {
       const propName = 'on' + item.substr(0, 1).toUpperCase() + item.substr(1);
-      ngModelAttributes[propName] = {expression: 'ng-' + item};
+      ngModelAttributes[propName] = {statement: 'ng-' + item};
     });
 
     angular.forEach(attributeOnly, item => {
@@ -234,5 +224,15 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
         node.setAttribute(attr, val);
       }
     });
+  }
+
+  function addRegardlessOfPresence(nodes, attr, val) {
+    angular.forEach(nodes, node => {
+      node.setAttribute(attr, val);
+    });
+  }
+
+  function isPropertyAccessor(key) {
+    return contains(key, '.') || (contains(key, '[') && contains(key, ']'));
   }
 }

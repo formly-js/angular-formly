@@ -564,7 +564,6 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
       wrapper.forEach((aWrapper) => {
         formlyUsability.checkWrapper(aWrapper, options);
-        aWrapper.validateOptions && aWrapper.validateOptions(options);
         runApiCheck(aWrapper, options);
       });
       const promises = wrapper.map(w => getTemplate(w.template || w.templateUrl, !w.template));
@@ -639,9 +638,6 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     // validate with the type
     const type = options.type && formlyConfig.getType(options.type);
     if (type) {
-      if (type.validateOptions) {
-        type.validateOptions(options);
-      }
       runApiCheck(type, options, true);
     }
     if (options.expressionProperties && options.expressionProperties.hide) {
@@ -679,26 +675,16 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       return;
     }
     const fn = apiCheckFunction || 'warn';
-    if (angular.isFunction(apiCheck)) {
-      // this is the new API
-      const checkerObjects = apiCheck(instance);
-      angular.forEach(checkerObjects, (shape, name) => {
-        const checker = instance.shape(shape);
-        const checkOptions = angular.extend({
-          prefix: `formly-field type ${options.type} for property ${name}`,
-          url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
-        }, apiCheckOptions);
-        instance[fn](checker, options[name], checkOptions);
-      });
-    } else {
-      // TODO this is the deprecated API. Remove this in a breaking change.
-      const checker = instance.shape(apiCheck);
-      const checkOptions = apiCheckOptions || {
-        prefix: `formly-field type ${options.type}`,
+    // this is the new API
+    const checkerObjects = apiCheck(instance);
+    angular.forEach(checkerObjects, (shape, name) => {
+      const checker = instance.shape(shape);
+      const checkOptions = angular.extend({
+        prefix: `formly-field type ${options.type} for property ${name}`,
         url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
-      };
-      instance[fn](checker, options, checkOptions);
-    }
+      }, apiCheckOptions);
+      instance[fn](checker, options[name], checkOptions);
+    });
   }
 
 

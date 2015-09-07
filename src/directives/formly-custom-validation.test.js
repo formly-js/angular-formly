@@ -30,37 +30,6 @@ describe(`formly-custom-validation`, function() {
     checkApi(formTemplate.replace(
       `TEMPLATE`, `<input ng-model="input" name="field" formly-custom-validation />`
     ));
-
-    describe(`validators that are functions placement`, () => {
-      it(`should be placed in $asyncValidators because it can return a promise`, () => {
-        scope.options.validators.isHello = viewValue => viewValue === 'hello';
-        $compile(
-          `<form name="myForm"><input ng-model="input" name="field" formly-custom-validation /></form>`
-        )(scope);
-        scope.$digest();
-        const field = scope.myForm.field;
-        expect(field.$validators.isHello).to.not.exist;
-        expect(field.$asyncValidators.isHello).to.exist;
-      });
-
-      it(`should be placed in $validators if formlyConfig.extras.explicitAsync`, () => {
-        formlyConfig.extras.explicitAsync = true;
-        scope.options.validators.isHello = viewValue => viewValue === 'hello';
-        $compile(
-          `<form name="myForm"><input ng-model="input" name="field" formly-custom-validation /></form>`
-        )(scope);
-        scope.$digest();
-        const field = scope.myForm.field;
-        expect(field.$validators.isHello).to.exist;
-        expect(field.$asyncValidators.isHello).to.not.exist;
-      });
-
-      it(`should validate properly when explicitAsync is true`, () => {
-        formlyConfig.extras.explicitAsync = true;
-        const template = `<form name="myForm"><input ng-model="input" name="field" formly-custom-validation /></form>`;
-        doValidation(template, 'hello', false, viewValue => viewValue !== 'hello', false);
-      });
-    });
   });
 
   describe(`options.validation.messages`, () => {
@@ -99,18 +68,6 @@ describe(`formly-custom-validation`, function() {
 
       it(`should fail if it's a function that fails`, () => {
         validate(viewValue => viewValue !== value, false);
-      });
-
-      it(`should warn if it's a function that returns a promise for a regular validator (should use asyncValidators instead)`, () => {
-        const logArgs = [
-          'Formly Warning:',
-          'Validators returning promises should use asyncValidators instead of validators.',
-          scope.options,
-          /validators-returning-promises-should-use-asyncvalidators/
-        ];
-        shouldWarnWithLog($log, logArgs, () => {
-          validate(() => $q.when(), true);
-        });
       });
     });
 

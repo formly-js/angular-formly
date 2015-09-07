@@ -102,15 +102,12 @@ describe('formly-field', function() {
 
 
   describe('api check', () => {
-    let validateOptions;
     beforeEach(() => {
       /* eslint no-console:0 */
       const originalWarn = console.warn;
       console.warn = () => {};
-      validateOptions = sinon.spy();
       formlyConfig.setType({
-        name: 'text', template: `<input name="{{id}}" ng-model="model[options.key]" />`,
-        validateOptions
+        name: 'text', template: `<input name="{{id}}" ng-model="model[options.key]" />`
       });
       scope.model = {};
       console.warn = originalWarn;
@@ -126,13 +123,6 @@ describe('formly-field', function() {
 
 
       expect(() => compileAndDigest()).to.throw(/extra.*properties.*extraProp/);
-    });
-
-    it(`should invoke the validateOptions property of the type`, () => {
-      const field = {type: 'text'};
-      scope.fields = [field];
-      compileAndDigest();
-      expect(validateOptions).to.have.been.calledWith(field);
     });
   });
 
@@ -184,7 +174,7 @@ describe('formly-field', function() {
               attribute: 'required'
             },
             myChange: {
-              expression: 'ng-change'
+              statement: 'ng-change'
             }
           },
           templateOptions: {
@@ -631,28 +621,6 @@ describe('formly-field', function() {
       compileAndDigest();
       expect(type.apiCheck).to.have.been.calledWith(formlyApiCheck);
     }));
-
-    it(`should work with the old api`, () => {
-      shouldWarn(
-        /deprecated/,
-        () => {
-          formlyConfig.setType({
-            name: 'someOtherType',
-            template: '<label>{{to.label}}</label>',
-            apiCheck: {
-              templateOptions: apiCheck.shape({
-                label: apiCheck.string
-              })
-            }
-          });
-        }
-      );
-      scope.fields = [{type: 'someOtherType'}];
-      shouldWarn(
-        /angular-formly: formly-field type someOtherType apiCheck failed.*?Required `label`.*?templateOptions.*?`String`/,
-        compileAndDigest
-      );
-    });
 
     it(`should not warn if everything's fine`, () => {
       scope.fields = [

@@ -30,17 +30,10 @@ function shapeRequiredIfNot(otherProps, propChecker) {
   return apiCheck.utils.checkerHelpers.setupChecker(shapeRequiredIfNotDefinition);
 }
 
-// TODO in 7.0.0 .nullable is available on all checkers
-function nullable(checker) {
-  return apiCheck.oneOfType([
-    apiCheck.oneOf([null]), checker
-  ]);
-}
-
 const formlyExpression = apiCheck.oneOfType([apiCheck.string, apiCheck.func]);
-const specifyWrapperType = nullable(apiCheck.typeOrArrayOf(apiCheck.string));
+const specifyWrapperType = apiCheck.typeOrArrayOf(apiCheck.string).nullable;
 
-const apiCheckProperty = apiCheck.oneOfType([apiCheck.func, apiCheck.objectOf(apiCheck.func)]);
+const apiCheckProperty = apiCheck.func;
 
 const apiCheckInstanceProperty = apiCheck.shape.onlyIf('apiCheck', apiCheck.func.withProperties({
   warn: apiCheck.func,
@@ -56,7 +49,6 @@ const formlyWrapperType = apiCheck.shape({
   templateUrl: apiCheck.shape.ifNot('template', apiCheck.string).optional,
   types: apiCheck.typeOrArrayOf(apiCheck.string).optional,
   overwriteOk: apiCheck.bool.optional,
-  validateOptions: apiCheck.func.optional,
   apiCheck: apiCheckProperty.optional,
   apiCheckInstance: apiCheckInstanceProperty.optional,
   apiCheckFunction: apiCheckFunctionProperty.optional,
@@ -73,10 +65,10 @@ const expressionProperties = apiCheck.objectOf(apiCheck.oneOfType([
 
 const modelChecker = apiCheck.oneOfType([apiCheck.string, apiCheck.object]);
 
-const templateManipulators = nullable(apiCheck.shape({
-  preWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional,
-  postWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional
-}).strict);
+const templateManipulators = apiCheck.shape({
+  preWrapper: apiCheck.arrayOf(apiCheck.func).nullable.optional,
+  postWrapper: apiCheck.arrayOf(apiCheck.func).nullable.optional
+}).strict.nullable;
 
 const validatorChecker = apiCheck.objectOf(apiCheck.oneOfType([
   formlyExpression, apiCheck.shape({
@@ -136,11 +128,11 @@ const fieldOptionsApiShape = {
   hideExpression: formlyExpression.optional,
   ngModelElAttrs: apiCheck.objectOf(apiCheck.string).optional,
   ngModelAttrs: apiCheck.objectOf(apiCheck.shape({
-    expression: apiCheck.shape.ifNot(['value', 'attribute', 'bound', 'boolean'], apiCheck.any).optional,
-    value: apiCheck.shape.ifNot('expression', apiCheck.any).optional,
-    attribute: apiCheck.shape.ifNot('expression', apiCheck.any).optional,
-    bound: apiCheck.shape.ifNot('expression', apiCheck.any).optional,
-    boolean: apiCheck.shape.ifNot('expression', apiCheck.any).optional
+    statement: apiCheck.shape.ifNot(['value', 'attribute', 'bound', 'boolean'], apiCheck.any).optional,
+    value: apiCheck.shape.ifNot('statement', apiCheck.any).optional,
+    attribute: apiCheck.shape.ifNot('statement', apiCheck.any).optional,
+    bound: apiCheck.shape.ifNot('statement', apiCheck.any).optional,
+    boolean: apiCheck.shape.ifNot('statement', apiCheck.any).optional
   }).strict).optional,
   elementAttributes: apiCheck.objectOf(apiCheck.string).optional,
   optionsTypes: apiCheck.typeOrArrayOf(apiCheck.string).optional,
@@ -149,7 +141,7 @@ const fieldOptionsApiShape = {
     apiCheck.string, apiCheck.func, apiCheck.array
   ]).optional,
   validation: apiCheck.shape({
-    show: nullable(apiCheck.bool).optional,
+    show: apiCheck.bool.nullable.optional,
     messages: apiCheck.objectOf(formlyExpression).optional,
     errorExistsAndShouldBeVisible: apiCheck.bool.optional
   }).optional,
@@ -211,7 +203,6 @@ const formlyTypeOptions = apiCheck.shape({
   extends: apiCheck.string.optional,
   wrapper: specifyWrapperType.optional,
   data: apiCheck.object.optional,
-  validateOptions: apiCheck.func.optional,
   apiCheck: apiCheckProperty.optional,
   apiCheckInstance: apiCheckInstanceProperty.optional,
   apiCheckFunction: apiCheckFunctionProperty.optional,

@@ -1,6 +1,8 @@
 import angular from 'angular-fix';
 
-export default {formlyEval, getFieldId, reverseDeepMerge, findByNodeName, arrayify, extendFunction, extendArray, startsWith};
+export default {
+  formlyEval, getFieldId, reverseDeepMerge, findByNodeName, arrayify, extendFunction, extendArray, startsWith, contains
+};
 
 function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
   if (angular.isFunction(expression)) {
@@ -105,6 +107,14 @@ function extendArray(primary, secondary, property) {
 function startsWith(str, search) {
   if (angular.isString(str) && angular.isString(search)) {
     return str.length >= search.length && str.substring(0, search.length) === search;
+  } else {
+    return false;
+  }
+}
+
+function contains(str, search) {
+  if (angular.isString(str) && angular.isString(search)) {
+    return str.length >= search.length && str.indexOf(search) !== -1;
   } else {
     return false;
   }
