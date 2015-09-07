@@ -209,9 +209,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
         const expression = field.model;
         const index = $scope.fields.indexOf(field);
 
-        if (formlyUtil.startsWith(expression, 'model.') || formlyUtil.startsWith(expression, 'formState.')) {
-          isNewModel = false;
-        }
+        isNewModel = !refrencesCurrentlyWatchedModel(expression);
 
         field.model = evalCloseToFormlyExpression(expression, undefined, field, index);
         if (!field.model) {
@@ -223,6 +221,12 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
         }
       }
       return isNewModel;
+    }
+
+    function refrencesCurrentlyWatchedModel(expression) {
+      return ['model', 'formState'].some(item => {
+        return formlyUtil.startsWith(expression, `${item}.`) || formlyUtil.startsWith(expression, `${item}[`);
+      });
     }
 
     function attachKey(field, index) {

@@ -430,7 +430,23 @@ describe('formly-form', () => {
     });
 
     it('starting with "model." should be assigned with only one watcher', () => {
-      scope.fields[0].model = 'model.nested';
+      testModelAccessor('model.nested');
+    });
+
+    it('starting with "model[" should be assigned with only one watcher', () => {
+      testModelAccessor('model["nested"]');
+    });
+
+    it('starting with "formState." should be assigned with only one watcher', () => {
+      testFormStateAccessor('formState.nested');
+    });
+
+    it('starting with "formState[" should be assigned with only one watcher', () => {
+      testFormStateAccessor('formState["nested"]');
+    });
+
+    function testModelAccessor(accessor) {
+      scope.fields[0].model = accessor;
 
       compileAndDigest();
       $timeout.flush();
@@ -442,16 +458,16 @@ describe('formly-form', () => {
       $timeout.flush();
 
       expect(spy).to.have.been.calledOnce;
-    });
+    }
 
-    it('starting with "formState." should be assigned with only one watcher', () => {
+    function testFormStateAccessor(accessor) {
       const formWithOptions = '<formly-form model="model" fields="fields" options="options"></formly-form>';
       scope.options = {
         formState: {
           nested: {}
         }
       };
-      scope.fields[0].model = 'formState.nested';
+      scope.fields[0].model = accessor;
 
       compileAndDigest(formWithOptions);
       $timeout.flush();
@@ -463,7 +479,7 @@ describe('formly-form', () => {
       $timeout.flush();
 
       expect(spy).to.have.been.calledOnce;
-    });
+    }
   });
 
   describe('hideExpression', () => {
