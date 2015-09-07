@@ -25,7 +25,7 @@ git fetch origin
 git checkout latest
 
 echo "merging built files"
-git merge travis/temp -m "merging built files" -X theirs
+git merge travis/temp -m v$F_VERSION -X theirs
 
 echo "pushing"
 git push origin HEAD:latest -f >/dev/null 2>/dev/null
