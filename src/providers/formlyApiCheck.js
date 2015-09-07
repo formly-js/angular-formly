@@ -30,15 +30,8 @@ function shapeRequiredIfNot(otherProps, propChecker) {
   return apiCheck.utils.checkerHelpers.setupChecker(shapeRequiredIfNotDefinition);
 }
 
-// TODO in 7.0.0 .nullable is available on all checkers
-function nullable(checker) {
-  return apiCheck.oneOfType([
-    apiCheck.oneOf([null]), checker
-  ]);
-}
-
 const formlyExpression = apiCheck.oneOfType([apiCheck.string, apiCheck.func]);
-const specifyWrapperType = nullable(apiCheck.typeOrArrayOf(apiCheck.string));
+const specifyWrapperType = apiCheck.typeOrArrayOf(apiCheck.string).nullable;
 
 const apiCheckProperty = apiCheck.oneOfType([apiCheck.func, apiCheck.objectOf(apiCheck.func)]);
 
@@ -73,10 +66,10 @@ const expressionProperties = apiCheck.objectOf(apiCheck.oneOfType([
 
 const modelChecker = apiCheck.oneOfType([apiCheck.string, apiCheck.object]);
 
-const templateManipulators = nullable(apiCheck.shape({
-  preWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional,
-  postWrapper: nullable(apiCheck.arrayOf(apiCheck.func)).optional
-}).strict);
+const templateManipulators = apiCheck.shape({
+  preWrapper: apiCheck.arrayOf(apiCheck.func).nullable.optional,
+  postWrapper: apiCheck.arrayOf(apiCheck.func).nullable.optional
+}).strict.nullable;
 
 const validatorChecker = apiCheck.objectOf(apiCheck.oneOfType([
   formlyExpression, apiCheck.shape({
@@ -149,7 +142,7 @@ const fieldOptionsApiShape = {
     apiCheck.string, apiCheck.func, apiCheck.array
   ]).optional,
   validation: apiCheck.shape({
-    show: nullable(apiCheck.bool).optional,
+    show: apiCheck.bool.nullable.optional,
     messages: apiCheck.objectOf(formlyExpression).optional,
     errorExistsAndShouldBeVisible: apiCheck.bool.optional
   }).optional,
