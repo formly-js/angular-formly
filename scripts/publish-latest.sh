@@ -12,8 +12,8 @@ git remote set-url origin https://formly-bot:$BOT_GH_TOKEN@github.com/formly-js/
 
 echo "checking out latest"
 git remote update
-git fetch
-git checkout -t -b latest origin/latest
+git fetch origin
+git checkout --track origin/latest
 
 echo "merging master"
 git merge origin/master -m "master merge" -X theirs
