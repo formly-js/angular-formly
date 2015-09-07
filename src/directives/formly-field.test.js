@@ -102,15 +102,12 @@ describe('formly-field', function() {
 
 
   describe('api check', () => {
-    let validateOptions;
     beforeEach(() => {
       /* eslint no-console:0 */
       const originalWarn = console.warn;
       console.warn = () => {};
-      validateOptions = sinon.spy();
       formlyConfig.setType({
-        name: 'text', template: `<input name="{{id}}" ng-model="model[options.key]" />`,
-        validateOptions
+        name: 'text', template: `<input name="{{id}}" ng-model="model[options.key]" />`
       });
       scope.model = {};
       console.warn = originalWarn;
@@ -126,13 +123,6 @@ describe('formly-field', function() {
 
 
       expect(() => compileAndDigest()).to.throw(/extra.*properties.*extraProp/);
-    });
-
-    it(`should invoke the validateOptions property of the type`, () => {
-      const field = {type: 'text'};
-      scope.fields = [field];
-      compileAndDigest();
-      expect(validateOptions).to.have.been.calledWith(field);
     });
   });
 

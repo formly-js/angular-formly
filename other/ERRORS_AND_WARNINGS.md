@@ -127,12 +127,6 @@ of the expression, the scope you're passed wont have all the properties you may 
 See documentation [here](http://docs.angular-formly.com/docs/field-configuration-object#hideexpression-string--function)
 and an example [here](http://angular-formly.com/#/example/field-options/hide-fields)
 
-# validateOptions deprecated
-
-Because angular-formly already has a dependency on `api-check` and this is just a better way to validate your options,
-you should use this method instead. In an effort to simplify things. This has been deprecated in favor of the `apiCheck`
-property.
-
 # skipNgModelAttrsManipulator moved
 
 This property has been moved from the `data` property to the `extras` property.

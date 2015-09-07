@@ -61,7 +61,6 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
       prefix: 'formlyConfig.setType',
       url: 'settype-validation-failed'
     });
-    checkDeprecatedOptions(options);
     if (!options.overwriteOk) {
       checkOverwrite(options.name, typeMap, options, 'types');
     } else {
@@ -73,7 +72,6 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
     const extendsType = getType(options.extends, true, options);
     extendTypeControllerFunction(options, extendsType);
     extendTypeLinkFunction(options, extendsType);
-    extendTypeValidateOptionsFunction(options, extendsType);
     extendTypeDefaultOptions(options, extendsType);
     utils.reverseDeepMerge(options, extendsType);
     extendTemplate(options, extendsType);
@@ -117,31 +115,6 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
       };
     } else {
       options.link = extendsFn;
-    }
-  }
-
-  function extendTypeValidateOptionsFunction(options, extendsType) {
-    const extendsFn = extendsType.validateOptions;
-    if (!angular.isDefined(extendsFn)) {
-      return;
-    }
-    const optionsFn = options.validateOptions;
-    const originalDefaultOptions = options.defaultOptions;
-    if (angular.isDefined(optionsFn)) {
-      options.validateOptions = function(opts) {
-        optionsFn(opts);
-        const mergedOptions = angular.copy(opts);
-        let defaultOptions = originalDefaultOptions;
-        if (defaultOptions) {
-          if (angular.isFunction(defaultOptions)) {
-            defaultOptions = defaultOptions(mergedOptions);
-          }
-          utils.reverseDeepMerge(mergedOptions, defaultOptions);
-        }
-        extendsFn(mergedOptions);
-      };
-    } else {
-      options.validateOptions = extendsFn;
     }
   }
 
@@ -241,7 +214,6 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
     if (options.template) {
       formlyUsabilityProvider.checkWrapperTemplate(options.template, options);
     }
-    checkDeprecatedOptions(options);
     if (!options.overwriteOk) {
       checkOverwrite(options.name, templateWrappersMap, options, 'templateWrappers');
     } else {
@@ -264,17 +236,6 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
         `${JSON.stringify(object[property])} with ${JSON.stringify(newValue)}`,
         `To supress this warning, specify the property "overwriteOk: true"`
       ].join(' '));
-    }
-  }
-
-  function checkDeprecatedOptions(options) {
-    if (options.validateOptions) {
-      warn(
-        'validateoptions-deprecated',
-        'the `validateOptions` property has been deprecated.',
-        `Attempted for type: ${options.name}`,
-        options
-      );
     }
   }
 

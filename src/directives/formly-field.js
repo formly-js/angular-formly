@@ -564,7 +564,6 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
       wrapper.forEach((aWrapper) => {
         formlyUsability.checkWrapper(aWrapper, options);
-        aWrapper.validateOptions && aWrapper.validateOptions(options);
         runApiCheck(aWrapper, options);
       });
       const promises = wrapper.map(w => getTemplate(w.template || w.templateUrl, !w.template));
@@ -639,9 +638,6 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     // validate with the type
     const type = options.type && formlyConfig.getType(options.type);
     if (type) {
-      if (type.validateOptions) {
-        type.validateOptions(options);
-      }
       runApiCheck(type, options, true);
     }
     if (options.expressionProperties && options.expressionProperties.hide) {
