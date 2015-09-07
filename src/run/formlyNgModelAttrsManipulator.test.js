@@ -194,6 +194,19 @@ describe('formlyNgModelAttrsManipulator', () => {
     });
   });
 
+  describe(`selector key notation`, () => {
+    it(`should change the ng-model when the key is a dot property accessor`, () => {
+      field.key = 'bar.foo';
+      manipulate();
+      expect(resultEl.attr('ng-model')).to.equal('model.' + field.key);
+    });
+
+    it(`should change the ng-model when the key is a bracket property accessor`, () => {
+      field.key = 'bar["foo-bar"]';
+      manipulate();
+      expect(resultEl.attr('ng-model')).to.equal('model.' + field.key);
+    });
+  });
 
   describe(`formly-custom-validation`, () => {
     it(`shouldn't be added if there aren't validators or messages`, () => {

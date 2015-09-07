@@ -1,4 +1,5 @@
 import angular from 'angular-fix';
+import {contains} from '../other/utils';
 
 export default addFormlyNgModelAttrsManipulator;
 
@@ -27,6 +28,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
     addIfNotPresent(modelNodes, 'name', scope.name || scope.id);
 
     addValidation();
+    alterNgModelAttr();
     addModelOptions();
     addTemplateOptionsAttrs();
     addNgModelElAttrs();
@@ -41,13 +43,17 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
       }
     }
 
+    function alterNgModelAttr() {
+      if (isPropertyAccessor(options.key)) {
+        addRegardlessOfPresence(modelNodes, 'ng-model', 'model.' + options.key);
+      }
+    }
+
     function addModelOptions() {
       if (angular.isDefined(options.modelOptions)) {
         addIfNotPresent(modelNodes, 'ng-model-options', 'options.modelOptions');
         if (options.modelOptions.getterSetter) {
-          angular.forEach(modelNodes, modelNode => {
-            modelNode.setAttribute('ng-model', 'options.value');
-          });
+          addRegardlessOfPresence(modelNodes, 'ng-model', 'options.value');
         }
       }
     }
@@ -234,5 +240,15 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
         node.setAttribute(attr, val);
       }
     });
+  }
+
+  function addRegardlessOfPresence(nodes, attr, val) {
+    angular.forEach(nodes, node => {
+      node.setAttribute(attr, val);
+    });
+  }
+
+  function isPropertyAccessor(key) {
+    return contains(key, '.') || (contains(key, '[') && contains(key, ']'));
   }
 }
