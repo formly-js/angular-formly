@@ -1,5 +1,5 @@
 {
-  // this exists solely for editors. The test and app eslints are slightly different
+  // this exists solely for editors. The test and src eslints are slightly different
   // and the app validates the app code via the other/app.eslintrc and validates the
   // test code via the other/test.eslintrc
   // we simply use the test.eslintrc so our editors don't get mad at us.
