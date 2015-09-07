@@ -10,6 +10,10 @@ git config --global user.name formly-bot
 echo "setting remote"
 git remote set-url origin https://formly-bot:$BOT_GH_TOKEN@github.com/formly-js/angular-formly.git >/dev/null 2>/dev/null
 
+echo "checking out latest"
+git fetch
+git checkout latest
+
 echo "merging master"
 git merge origin/master -m "master merge" -X theirs
 
