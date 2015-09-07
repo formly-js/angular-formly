@@ -11,6 +11,7 @@ echo "setting remote"
 git remote set-url origin https://formly-bot:$BOT_GH_TOKEN@github.com/formly-js/angular-formly.git >/dev/null 2>/dev/null
 
 echo "checking out latest"
+git remote show origin
 git remote update
 git fetch origin
 git checkout --track origin/latest
