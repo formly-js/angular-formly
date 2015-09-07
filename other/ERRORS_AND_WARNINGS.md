@@ -127,32 +127,6 @@ of the expression, the scope you're passed wont have all the properties you may 
 See documentation [here](http://docs.angular-formly.com/docs/field-configuration-object#hideexpression-string--function)
 and an example [here](http://angular-formly.com/#/example/field-options/hide-fields)
 
-# skipNgModelAttrsManipulator moved
-
-This property has been moved from the `data` property to the `extras` property.
-
-Before:
-
-```javascript
-{
-  template: '<hr />',
-  data: {
-    skipNgModelAttrsManipulator: true
-  }
-}
-```
-
-After:
-
-```javascript
-{
-  template: '<hr />',
-  extras: {
-    skipNgModelAttrsManipulator: true
-  }
-}
-```
-
 # Notes
 
 It is recommended to disable warnings in production using `formlyConfigProvider.disableWarnings = true`. Note: This will

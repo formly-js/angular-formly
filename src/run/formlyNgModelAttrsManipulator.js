@@ -4,7 +4,7 @@ import {contains} from '../other/utils';
 export default addFormlyNgModelAttrsManipulator;
 
 // @ngInject
-function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn) {
+function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
   if (formlyConfig.extras.disableNgModelAttrsManipulator) {
     return;
   }
@@ -13,7 +13,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
 
   function ngModelAttrsManipulator(template, options, scope) {
     const node = document.createElement('div');
-    const skip = getSkip(options);
+    const skip = options.extras && options.extras.skipNgModelAttrsManipulator;
     if (skip === true) {
       return template;
     }
@@ -170,22 +170,6 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
     const div = document.createElement('div');
     div.innerHTML = node.outerHTML;
     return div.querySelector(selector);
-  }
-
-  function getSkip(options) {
-    // UPDATE IN 7.0.0
-    let skip = options.extras && options.extras.skipNgModelAttrsManipulator;
-    if (!angular.isDefined(skip)) {
-      skip = options.data && options.data.skipNgModelAttrsManipulator;
-      if (angular.isDefined(skip)) {
-        formlyWarn(
-          'skipngmodelattrsmanipulator-moved',
-          'The skipNgModelAttrsManipulator property has been moved from the `data` property to the `extras` property',
-          options
-        );
-      }
-    }
-    return skip;
   }
 
   function getBuiltInAttributes() {
