@@ -11,6 +11,8 @@ echo "setting remote"
 git remote set-url origin https://formly-bot:$BOT_GH_TOKEN@github.com/formly-js/angular-formly.git >/dev/null 2>/dev/null
 
 echo "checking out latest"
+git remote update
+git fetch
 git checkout -t -b latest origin/latest
 
 echo "merging master"
