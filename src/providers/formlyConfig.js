@@ -268,14 +268,6 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
   }
 
   function checkDeprecatedOptions(options) {
-    if (options.apiCheck && !angular.isFunction(options.apiCheck)) {
-      warn(
-        'apicheck-as-an-object-deprecated',
-        'apiCheck as an object has been deprecated.',
-        `Attempted for type: ${options.name}`,
-        options
-      );
-    }
     if (options.validateOptions) {
       warn(
         'validateoptions-deprecated',

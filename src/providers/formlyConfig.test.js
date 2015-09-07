@@ -607,19 +607,6 @@ describe('formlyConfig', () => {
       }
     });
 
-    it(`should give a deprecation warning when providing apiCheck as an object rather than a function`, () => {
-      shouldWarn(
-        /Formly Warning: apiCheck as an object has been deprecated. Attempted for type: input/,
-        function() {
-          setterFn({
-            name,
-            apiCheck: {},
-            template
-          });
-        }
-      );
-    });
-
     describe(`apiCheckInstance`, () => {
       let apiCheckInstance;
       beforeEach(() => {

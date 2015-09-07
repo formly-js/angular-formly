@@ -33,7 +33,7 @@ function shapeRequiredIfNot(otherProps, propChecker) {
 const formlyExpression = apiCheck.oneOfType([apiCheck.string, apiCheck.func]);
 const specifyWrapperType = apiCheck.typeOrArrayOf(apiCheck.string).nullable;
 
-const apiCheckProperty = apiCheck.oneOfType([apiCheck.func, apiCheck.objectOf(apiCheck.func)]);
+const apiCheckProperty = apiCheck.func;
 
 const apiCheckInstanceProperty = apiCheck.shape.onlyIf('apiCheck', apiCheck.func.withProperties({
   warn: apiCheck.func,

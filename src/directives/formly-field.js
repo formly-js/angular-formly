@@ -679,26 +679,16 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       return;
     }
     const fn = apiCheckFunction || 'warn';
-    if (angular.isFunction(apiCheck)) {
-      // this is the new API
-      const checkerObjects = apiCheck(instance);
-      angular.forEach(checkerObjects, (shape, name) => {
-        const checker = instance.shape(shape);
-        const checkOptions = angular.extend({
-          prefix: `formly-field type ${options.type} for property ${name}`,
-          url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
-        }, apiCheckOptions);
-        instance[fn](checker, options[name], checkOptions);
-      });
-    } else {
-      // TODO this is the deprecated API. Remove this in a breaking change.
-      const checker = instance.shape(apiCheck);
-      const checkOptions = apiCheckOptions || {
-        prefix: `formly-field type ${options.type}`,
+    // this is the new API
+    const checkerObjects = apiCheck(instance);
+    angular.forEach(checkerObjects, (shape, name) => {
+      const checker = instance.shape(shape);
+      const checkOptions = angular.extend({
+        prefix: `formly-field type ${options.type} for property ${name}`,
         url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
-      };
-      instance[fn](checker, options, checkOptions);
-    }
+      }, apiCheckOptions);
+      instance[fn](checker, options[name], checkOptions);
+    });
   }
 
 

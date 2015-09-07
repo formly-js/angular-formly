@@ -632,28 +632,6 @@ describe('formly-field', function() {
       expect(type.apiCheck).to.have.been.calledWith(formlyApiCheck);
     }));
 
-    it(`should work with the old api`, () => {
-      shouldWarn(
-        /deprecated/,
-        () => {
-          formlyConfig.setType({
-            name: 'someOtherType',
-            template: '<label>{{to.label}}</label>',
-            apiCheck: {
-              templateOptions: apiCheck.shape({
-                label: apiCheck.string
-              })
-            }
-          });
-        }
-      );
-      scope.fields = [{type: 'someOtherType'}];
-      shouldWarn(
-        /angular-formly: formly-field type someOtherType apiCheck failed.*?Required `label`.*?templateOptions.*?`String`/,
-        compileAndDigest
-      );
-    });
-
     it(`should not warn if everything's fine`, () => {
       scope.fields = [
         {type, templateOptions: {label: 'string', className: 'string'}}

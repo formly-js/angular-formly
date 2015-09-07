@@ -127,14 +127,6 @@ of the expression, the scope you're passed wont have all the properties you may 
 See documentation [here](http://docs.angular-formly.com/docs/field-configuration-object#hideexpression-string--function)
 and an example [here](http://angular-formly.com/#/example/field-options/hide-fields)
 
-# apiCheck as an object deprecated
-
-As a performance optimization, the `apiCheck` property has been changed to a function. This is good because when
-apiCheck is disabled (either globally or the specified `apiCheckInstance`), the function is not even called which means
-the apiCheck checkers are never even created. Not much we can do about the couple of extra bytes, but that's not really
-a big issue. For more info, see [#334](https://github.com/formly-js/angular-formly/issues/334). Note, this will be
-removed in a major release.
-
 # validateOptions deprecated
 
 Because angular-formly already has a dependency on `api-check` and this is just a better way to validate your options,
