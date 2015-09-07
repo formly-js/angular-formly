@@ -7,6 +7,12 @@ echo "setting global bot config"
 git config --global user.email kent+formly-bot@doddsfamily.us
 git config --global user.name formly-bot
 
+echo "adding dist"
+git add dist package.json
+
+echo "committing with $F_VERSION"
+git commit -m v$F_VERSION --no-verify
+
 echo "setting remote"
 git remote set-url origin https://formly-bot:$BOT_GH_TOKEN@github.com/formly-js/angular-formly.git >/dev/null 2>/dev/null
 
@@ -16,13 +22,7 @@ git fetch origin
 git checkout latest
 
 echo "merging master"
-git merge origin/master -m "master merge" -X theirs
-
-echo "adding dist"
-git add dist package.json
-
-echo "committing with $F_VERSION"
-git commit -m v$F_VERSION --no-verify
+git merge master -m "master merge" -X theirs
 
 echo "pushing"
 git push origin HEAD:latest -f >/dev/null 2>/dev/null
