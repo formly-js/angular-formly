@@ -127,7 +127,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate, formlyWarn
 
     function addNgModelElAttrs() {
       angular.forEach(options.ngModelElAttrs, (val, name) => {
-        addIfNotPresent(modelNodes, name, val);
+        addRegardlessOfPresence(modelNodes, name, val);
       });
     }
   }

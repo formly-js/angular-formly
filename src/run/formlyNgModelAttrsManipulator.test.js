@@ -362,6 +362,14 @@ describe('formlyNgModelAttrsManipulator', () => {
       ).to.equal('{{::to.bar}}');
 
     });
+
+    it(`should override existing attributes`, () => {
+      field.ngModelElAttrs = {
+        'ng-model': 'formState.foo.bar'
+      };
+      manipulate();
+      expect(resultEl.attr('ng-model')).to.equal('formState.foo.bar');
+    });
   });
 
 
