@@ -17,7 +17,10 @@ echo "adding dist"
 git add dist package.json
 
 echo "committing with $F_VERSION"
-git commit -m $F_VERSION --no-verify
+git commit -m v$F_VERSION --no-verify
+
+echo "pushing"
+git push origin HEAD:latest -f >/dev/null 2>/dev/null
 
 echo "done!"
 
