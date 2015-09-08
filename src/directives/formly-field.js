@@ -168,7 +168,8 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       }
 
       formControl.$render();
-      formControl.$setUntouched();
+      // REMOVE UNDEFINED CHECK WHEN DROPPING ANGULAR 1.2 SUPPORT
+      formControl.$setUntouched && formControl.$setUntouched();
       formControl.$setPristine();
 
       // To prevent breaking change requiring a digest to reset $viewModel
