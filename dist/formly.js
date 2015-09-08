@@ -1,4 +1,4 @@
-//! angular-formly version 7.0.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 7.0.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -9,7 +9,7 @@
 		exports["ngFormly"] = factory(require("angular"), require("api-check"));
 	else
 		root["ngFormly"] = factory(root["angular"], root["apiCheck"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_6__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_5__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -83,35 +83,35 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _angularFix = __webpack_require__(3);
+	var _angularFix = __webpack_require__(2);
 
 	var _angularFix2 = _interopRequireDefault(_angularFix);
 
-	var _providersFormlyApiCheck = __webpack_require__(5);
+	var _providersFormlyApiCheck = __webpack_require__(4);
 
 	var _providersFormlyApiCheck2 = _interopRequireDefault(_providersFormlyApiCheck);
 
-	var _otherDocsBaseUrl = __webpack_require__(7);
+	var _otherDocsBaseUrl = __webpack_require__(6);
 
 	var _otherDocsBaseUrl2 = _interopRequireDefault(_otherDocsBaseUrl);
 
-	var _providersFormlyUsability = __webpack_require__(8);
+	var _providersFormlyUsability = __webpack_require__(7);
 
 	var _providersFormlyUsability2 = _interopRequireDefault(_providersFormlyUsability);
 
-	var _providersFormlyConfig = __webpack_require__(9);
+	var _providersFormlyConfig = __webpack_require__(8);
 
 	var _providersFormlyConfig2 = _interopRequireDefault(_providersFormlyConfig);
 
-	var _providersFormlyValidationMessages = __webpack_require__(11);
+	var _providersFormlyValidationMessages = __webpack_require__(10);
 
 	var _providersFormlyValidationMessages2 = _interopRequireDefault(_providersFormlyValidationMessages);
 
-	var _servicesFormlyUtil = __webpack_require__(12);
+	var _servicesFormlyUtil = __webpack_require__(11);
 
 	var _servicesFormlyUtil2 = _interopRequireDefault(_servicesFormlyUtil);
 
-	var _servicesFormlyWarn = __webpack_require__(2);
+	var _servicesFormlyWarn = __webpack_require__(12);
 
 	var _servicesFormlyWarn2 = _interopRequireDefault(_servicesFormlyWarn);
 
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("7.0.0")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("7.0.1")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -167,35 +167,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 2 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
-
-	exports['default'] = formlyWarn;
-
-	// @ngInject
-	function formlyWarn(formlyConfig, formlyErrorAndWarningsUrlPrefix, $log) {
-	  return function warn() {
-	    if (!formlyConfig.disableWarnings) {
-	      var args = Array.prototype.slice.call(arguments);
-	      var warnInfoSlug = args.shift();
-	      args.unshift('Formly Warning:');
-	      args.push('' + formlyErrorAndWarningsUrlPrefix + warnInfoSlug);
-	      $log.warn.apply($log, _toConsumableArray(args));
-	    }
-	  };
-	}
-	formlyWarn.$inject = ["formlyConfig", "formlyErrorAndWarningsUrlPrefix", "$log"];
-	module.exports = exports['default'];
-
-/***/ },
-/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// some versions of angular don't export the angular module properly,
@@ -205,7 +176,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
-	var angular = __webpack_require__(4);
+	var angular = __webpack_require__(3);
 
 	/* istanbul ignore next */
 	if (!angular.version) {
@@ -215,13 +186,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 4 */
+/* 3 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -232,18 +203,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _angularFix = __webpack_require__(3);
+	var _angularFix = __webpack_require__(2);
 
 	var _angularFix2 = _interopRequireDefault(_angularFix);
 
-	var _apiCheck = __webpack_require__(6);
+	var _apiCheck = __webpack_require__(5);
 
 	var _apiCheck2 = _interopRequireDefault(_apiCheck);
 
 	var apiCheck = (0, _apiCheck2['default'])({
 	  output: {
 	    prefix: 'angular-formly:',
-	    docsBaseUrl: __webpack_require__(7)
+	    docsBaseUrl: __webpack_require__(6)
 	  }
 	});
 
@@ -431,13 +402,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -445,11 +416,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.0.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.0.1") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -460,7 +431,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _angularFix = __webpack_require__(3);
+	var _angularFix = __webpack_require__(2);
 
 	var _angularFix2 = _interopRequireDefault(_angularFix);
 
@@ -524,7 +495,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -537,11 +508,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
-	var _angularFix = __webpack_require__(3);
+	var _angularFix = __webpack_require__(2);
 
 	var _angularFix2 = _interopRequireDefault(_angularFix);
 
-	var _otherUtils = __webpack_require__(10);
+	var _otherUtils = __webpack_require__(9);
 
 	var _otherUtils2 = _interopRequireDefault(_otherUtils);
 
@@ -851,7 +822,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -862,7 +833,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _angularFix = __webpack_require__(3);
+	var _angularFix = __webpack_require__(2);
 
 	var _angularFix2 = _interopRequireDefault(_angularFix);
 
@@ -991,7 +962,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1035,7 +1006,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports["default"];
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1046,7 +1017,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _otherUtils = __webpack_require__(10);
+	var _otherUtils = __webpack_require__(9);
 
 	var _otherUtils2 = _interopRequireDefault(_otherUtils);
 
@@ -1056,6 +1027,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	function formlyUtil() {
 	  return _otherUtils2['default'];
 	}
+	module.exports = exports['default'];
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
+	exports['default'] = formlyWarn;
+
+	// @ngInject
+	function formlyWarn(formlyConfig, formlyErrorAndWarningsUrlPrefix, $log) {
+	  return function warn() {
+	    if (!formlyConfig.disableWarnings) {
+	      var args = Array.prototype.slice.call(arguments);
+	      var warnInfoSlug = args.shift();
+	      args.unshift('Formly Warning:');
+	      args.push('' + formlyErrorAndWarningsUrlPrefix + warnInfoSlug);
+	      $log.warn.apply($log, _toConsumableArray(args));
+	    }
+	  };
+	}
+	formlyWarn.$inject = ["formlyConfig", "formlyErrorAndWarningsUrlPrefix", "$log"];
 	module.exports = exports['default'];
 
 /***/ },
@@ -1070,7 +1070,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _angularFix = __webpack_require__(3);
+	var _angularFix = __webpack_require__(2);
 
 	var _angularFix2 = _interopRequireDefault(_angularFix);
 
@@ -1171,11 +1171,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
-	var _angularFix = __webpack_require__(3);
+	var _angularFix = __webpack_require__(2);
 
 	var _angularFix2 = _interopRequireDefault(_angularFix);
 
-	var _apiCheck = __webpack_require__(6);
+	var _apiCheck = __webpack_require__(5);
 
 	var _apiCheck2 = _interopRequireDefault(_apiCheck);
 
@@ -1246,7 +1246,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            setter(field, value);
 	          });
 	        });
-	      });
+	      }, 0, false);
 	    }
 
 	    function valueGetterSetter(newVal) {
@@ -1345,7 +1345,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      formControl.$render();
-	      formControl.$setUntouched();
+	      formControl.$setUntouched && formControl.$setUntouched();
 	      formControl.$setPristine();
 
 	      // To prevent breaking change requiring a digest to reset $viewModel
@@ -1926,7 +1926,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
-	var _angularFix = __webpack_require__(3);
+	var _angularFix = __webpack_require__(2);
 
 	var _angularFix2 = _interopRequireDefault(_angularFix);
 
@@ -2307,11 +2307,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _angularFix = __webpack_require__(3);
+	var _angularFix = __webpack_require__(2);
 
 	var _angularFix2 = _interopRequireDefault(_angularFix);
 
-	var _otherUtils = __webpack_require__(10);
+	var _otherUtils = __webpack_require__(9);
 
 	exports['default'] = addFormlyNgModelAttrsManipulator;
 
@@ -2556,7 +2556,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _angularFix = __webpack_require__(3);
+	var _angularFix = __webpack_require__(2);
 
 	var _angularFix2 = _interopRequireDefault(_angularFix);
 

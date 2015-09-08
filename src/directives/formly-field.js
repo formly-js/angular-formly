@@ -69,7 +69,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
             setter(field, value);
           });
         });
-      });
+      }, 0, false);
     }
 
     function valueGetterSetter(newVal) {
@@ -168,7 +168,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       }
 
       formControl.$render();
-      formControl.$setUntouched();
+      formControl.$setUntouched && formControl.$setUntouched();
       formControl.$setPristine();
 
       // To prevent breaking change requiring a digest to reset $viewModel
