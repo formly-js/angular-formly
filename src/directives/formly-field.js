@@ -69,7 +69,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
             setter(field, value);
           });
         });
-      });
+      }, 0, false);
     }
 
     function valueGetterSetter(newVal) {
@@ -168,7 +168,6 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       }
 
       formControl.$render();
-      // REMOVE UNDEFINED CHECK WHEN DROPPING ANGULAR 1.2 SUPPORT
       formControl.$setUntouched && formControl.$setUntouched();
       formControl.$setPristine();
 
