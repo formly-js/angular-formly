@@ -1,7 +1,19 @@
 {
-  // this exists solely for editors. The test and src eslints are slightly different
-  // and the app validates the app code via the other/app.eslintrc and validates the
-  // test code via the other/test.eslintrc
-  // we simply use the test.eslintrc so our editors don't get mad at us.
-  "extends": "./other/test.eslintrc"
+  "extends": "kentcdodds/test-angular",
+  "rules": {
+    "no-invalid-this": 0, // meh...
+    "func-names": 0, // I wish, but doing this right now would be a royal pain
+    "new-cap": [
+      2,
+      {
+        "newIsCap": true,
+        "capIsNew": true
+      }
+    ],
+    "max-params": [2, 10],
+    "max-statements": [2, 30], // TODO bring this down
+  },
+  "globals": {
+    "VERSION": false
+  },
 }
