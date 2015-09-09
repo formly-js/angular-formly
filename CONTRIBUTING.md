@@ -70,7 +70,7 @@ There are a lot of questions from people as they get started using angular-forml
 
 #### Contributing to community
 
-- Create plugins! [ideas](http://docs.angular-formly.com/v7.0.1/page/plugin-ideas)
+- Create plugins! [ideas](http://docs.angular-formly.com/v7.0.1/page/plugins)
 - Write blog posts! Like [these](http://docs.angular-formly.com/docs/tips#blog-articles)
 - Record screencasts
 - Write examples. The website is driven by examples. [Watch video](https://www.youtube.com/watch?v=4dsXXTPET4A&list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH&index=3)
