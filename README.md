@@ -52,6 +52,10 @@ Find more resources at [learn.angular-formly.com](http://learn.angular-formly.co
 
 Find all the documentation at [docs.angular-formly.com](http://docs.angular-formly.com).
 
+## Plugins
+
+Find all the plugins at [docs.angular-formly.com/page/plugins](http://docs.angular-formly.com/page/plugins)
+
 ## Getting Help
 
 Please don't file an issue unless you feel like you've found a bug or have a feature request. Instead, go to [help.angular-formly.com](http://help.angular-formly.com) and follow the instructions.
