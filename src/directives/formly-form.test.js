@@ -6,7 +6,7 @@ import testUtils from '../test.utils.js';
 import angular from 'angular-fix';
 import _ from 'lodash';
 
-const {getNewField, input, basicForm} = testUtils;
+const {getNewField, input, basicForm, shouldWarnWithLog} = testUtils;
 
 describe('formly-form', () => {
   let $compile, formlyConfig, scope, el, $timeout;
@@ -759,6 +759,33 @@ describe('formly-form', () => {
         formlyConfig.extras.fieldTransform = fieldTransform;
       });
 
+      it(`should give a deprecation warning when formlyConfig.extras.fieldTransform is a function rather than an array`, inject(($log) => {
+        shouldWarnWithLog(
+          $log,
+          [
+            'Formly Warning:',
+            'fieldTransform as a function has been deprecated.',
+            /Attempted for formlyConfig.extras/
+          ],
+          compileAndDigest
+        );
+      }));
+
+      it(`should give a deprecation warning when options.fieldTransform function rather than an array`, inject(($log) => {
+        formlyConfig.extras.fieldTransform = undefined;
+        scope.fields = [getNewField()];
+        scope.options.fieldTransform = fields => fields;
+        shouldWarnWithLog(
+          $log,
+          [
+            'Formly Warning:',
+            'fieldTransform as a function has been deprecated.',
+            'Attempted for form'
+          ],
+          compileAndDigest
+        );
+      }));
+
       it(`should throw an error if something is passed in and nothing is returned`, () => {
         scope.fields = [getNewField()];
         scope.options.fieldTransform = function() {
@@ -776,6 +803,20 @@ describe('formly-form', () => {
       it(`should use formlyConfig.extras.fieldTransform when not specified on options`, () => {
         const spy = sinon.spy(formlyConfig.extras, 'fieldTransform');
         doExpectations(spy);
+      });
+
+      it(`should allow you to use an array of transform functions`, () => {
+        scope.fields = [getNewField({
+          customThing: 'foo',
+          otherCustomThing: {
+            whatever: '|-o-|'
+          }})];
+        scope.options.fieldTransform = [fieldTransform];
+        expect(() => compileAndDigest()).to.not.throw();
+
+        const field = scope.fields[0];
+        expect(field).to.have.deep.property('data.customThing');
+        expect(field).to.have.deep.property('data.otherCustomThing');
       });
 
       function doExpectations(spy) {

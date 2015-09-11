@@ -1,4 +1,4 @@
-//! angular-formly version 7.0.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 7.1.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("7.0.1")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("7.1.0")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -355,7 +355,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  removeChromeAutoComplete: apiCheck.bool.optional,
 	  templateManipulators: templateManipulators.optional,
 	  wrapper: specifyWrapperType.optional,
-	  fieldTransform: apiCheck.func.optional,
+	  fieldTransform: apiCheck.oneOfType([apiCheck.func, apiCheck.array]).optional,
 	  data: apiCheck.object.optional
 	}).strict;
 
@@ -416,7 +416,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.0.1") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.1.0") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -2047,19 +2047,36 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    function setupFields() {
 	      $scope.fields = $scope.fields || [];
-	      var fieldTransform = $scope.options.fieldTransform || formlyConfig.extras.fieldTransform;
 
-	      if (fieldTransform) {
-	        $scope.fields = fieldTransform($scope.fields, $scope.model, $scope.options, $scope.form);
-	        if (!$scope.fields) {
-	          throw formlyUsability.getFormlyError('fieldTransform must return an array of fields');
-	        }
+	      checkDeprecatedOptions($scope.options);
+
+	      var fieldTransforms = $scope.options.fieldTransform || formlyConfig.extras.fieldTransform;
+
+	      if (!_angularFix2['default'].isArray(fieldTransforms)) {
+	        fieldTransforms = [fieldTransforms];
 	      }
+
+	      _angularFix2['default'].forEach(fieldTransforms, function transformFields(fieldTransform) {
+	        if (fieldTransform) {
+	          $scope.fields = fieldTransform($scope.fields, $scope.model, $scope.options, $scope.form);
+	          if (!$scope.fields) {
+	            throw formlyUsability.getFormlyError('fieldTransform must return an array of fields');
+	          }
+	        }
+	      });
 
 	      setupModels();
 
 	      _angularFix2['default'].forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
 	      _angularFix2['default'].forEach($scope.fields, setupWatchers); // setup watchers for all fields
+	    }
+
+	    function checkDeprecatedOptions(options) {
+	      if (formlyConfig.extras.fieldTransform && _angularFix2['default'].isFunction(formlyConfig.extras.fieldTransform)) {
+	        formlyWarn('fieldtransform-as-a-function-deprecated', 'fieldTransform as a function has been deprecated.', 'Attempted for formlyConfig.extras: ' + formlyConfig.extras.fieldTransform.name, formlyConfig.extras);
+	      } else if (options.fieldTransform && _angularFix2['default'].isFunction(options.fieldTransform)) {
+	        formlyWarn('fieldtransform-as-a-function-deprecated', 'fieldTransform as a function has been deprecated.', 'Attempted for form', options);
+	      }
 	    }
 
 	    function setupOptions() {

@@ -127,6 +127,12 @@ of the expression, the scope you're passed wont have all the properties you may 
 See documentation [here](http://docs.angular-formly.com/docs/field-configuration-object#hideexpression-string--function)
 and an example [here](http://angular-formly.com/#/example/field-options/hide-fields)
 
+# FieldTransform as a function deprecated
+
+To allow for plugin like functionality, `fieldTransform` functions on `formlyConfig.extras` and `formly-form.options`
+are now deprecated. Moving forward fieldTransform will accept an array of `fieldTransform` functions. This makes it possible
+to have multiple fieldTransforms. Note, `fieldTransform` functions will be removed in a major release.
+
 # Notes
 
 It is recommended to disable warnings in production using `formlyConfigProvider.disableWarnings = true`. Note: This will
