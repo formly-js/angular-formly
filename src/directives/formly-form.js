@@ -133,14 +133,23 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
 
     function setupFields() {
       $scope.fields = $scope.fields || [];
-      const fieldTransform = $scope.options.fieldTransform || formlyConfig.extras.fieldTransform;
 
-      if (fieldTransform) {
-        $scope.fields = fieldTransform($scope.fields, $scope.model, $scope.options, $scope.form);
-        if (!$scope.fields) {
-          throw formlyUsability.getFormlyError('fieldTransform must return an array of fields');
-        }
+      checkDeprecatedOptions($scope.options);
+
+      let fieldTransforms = $scope.options.fieldTransform || formlyConfig.extras.fieldTransform;
+
+      if (!angular.isArray(fieldTransforms)) {
+        fieldTransforms = [fieldTransforms];
       }
+
+      angular.forEach(fieldTransforms, function transformFields(fieldTransform) {
+        if (fieldTransform) {
+          $scope.fields = fieldTransform($scope.fields, $scope.model, $scope.options, $scope.form);
+          if (!$scope.fields) {
+            throw formlyUsability.getFormlyError('fieldTransform must return an array of fields');
+          }
+        }
+      });
 
       setupModels();
 
@@ -148,6 +157,23 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
       angular.forEach($scope.fields, setupWatchers); // setup watchers for all fields
     }
 
+    function checkDeprecatedOptions(options) {
+      if (formlyConfig.extras.fieldTransform && angular.isFunction(formlyConfig.extras.fieldTransform)) {
+        formlyWarn(
+          'fieldtransform-as-a-function-deprecated',
+          'fieldTransform as a function has been deprecated.',
+          `Attempted for formlyConfig.extras: ${formlyConfig.extras.fieldTransform.name}`,
+          formlyConfig.extras
+        );
+      } else if (options.fieldTransform && angular.isFunction(options.fieldTransform)) {
+        formlyWarn(
+          'fieldtransform-as-a-function-deprecated',
+          'fieldTransform as a function has been deprecated.',
+          `Attempted for form`,
+          options
+        );
+      }
+    }
 
     function setupOptions() {
       formlyApiCheck.throw(
