@@ -1,4 +1,4 @@
-//! angular-formly version 7.1.0 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+//! angular-formly version 7.1.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("7.1.0")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("7.1.1")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -416,7 +416,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.1.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.1.1") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -1091,8 +1091,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 
 	      var useNewValidatorsApi = ctrl.hasOwnProperty('$validators') && !attrs.hasOwnProperty('useParsers');
-	      _angularFix2['default'].forEach(opts.validators, addValidatorToPipeline.bind(null, false));
-	      _angularFix2['default'].forEach(opts.asyncValidators, addValidatorToPipeline.bind(null, true));
+	      _angularFix2['default'].forEach(opts.validators, _angularFix2['default'].bind(null, addValidatorToPipeline, false));
+	      _angularFix2['default'].forEach(opts.asyncValidators, _angularFix2['default'].bind(null, addValidatorToPipeline, true));
 
 	      function addValidatorToPipeline(isAsync, validator, name) {
 	        setupMessage(validator, name);

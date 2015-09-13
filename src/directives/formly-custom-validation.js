@@ -17,8 +17,8 @@ function formlyCustomValidation(formlyUtil) {
 
 
       const useNewValidatorsApi = ctrl.hasOwnProperty('$validators') && !attrs.hasOwnProperty('useParsers');
-      angular.forEach(opts.validators, addValidatorToPipeline.bind(null, false));
-      angular.forEach(opts.asyncValidators, addValidatorToPipeline.bind(null, true));
+      angular.forEach(opts.validators, angular.bind(null, addValidatorToPipeline, false));
+      angular.forEach(opts.asyncValidators, angular.bind(null, addValidatorToPipeline, true));
 
       function addValidatorToPipeline(isAsync, validator, name) {
         setupMessage(validator, name);
