@@ -449,15 +449,12 @@ describe('formly-field', function() {
   });
 
   describe(`defaultValue`, () => {
-    const key = '♪┏(・o･)┛♪┗ ( ･o･) ┓♪';
+    const key = 'foo';
     const defaultValue = '~=[,,_,,]:3';
-    const nested = 'nested';
-    const nestedKey = 'nested.field';
 
     beforeEach(() => {
       scope.fields = [
-        {template: input, key, defaultValue},
-        {template: input, key: nestedKey, defaultValue}
+        {template: input, key, defaultValue}
       ];
       scope.model = {};
     });
@@ -503,12 +500,22 @@ describe('formly-field', function() {
       expect(scope.fields[0].initialValue).to.eq(defaultValue);
     });
 
-    it.skip(`should set the default value for nested keys`, () => {
-      compileAndDigest();
-      // This should pass
-      expect(scope.model[nested].field).to.equal(defaultValue);
-      // This should not pass
-      expect(scope.model[nestedKey]).to.equal(defaultValue);
+    describe(`nested keys`, () => {
+      const nestedObject = 'foo.bar';
+      const nestedArray = 'baz[0]';
+      beforeEach(() => {
+        const firstField = scope.fields[0];
+        firstField.key = nestedObject;
+
+        const secondField = {template: input, key: nestedArray, defaultValue};
+        scope.fields.push(secondField);
+      });
+
+      it.skip(`should set the default value for nested keys`, () => {
+        compileAndDigest();
+        expect(scope.model.foo.bar).to.equal(defaultValue);
+        expect(scope.model.baz[0]).to.equal(defaultValue);
+      });
     });
   });
 
