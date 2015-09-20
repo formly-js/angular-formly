@@ -110,7 +110,8 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
     function setDefaultValue() {
       if (angular.isDefined($scope.options.defaultValue) && !angular.isDefined($scope.model[$scope.options.key])) {
-        $scope.model[$scope.options.key] = $scope.options.defaultValue;
+        const setter = $parse($scope.options.key).assign;
+        setter($scope.model, $scope.options.defaultValue);
       }
     }
 

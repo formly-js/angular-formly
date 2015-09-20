@@ -511,7 +511,7 @@ describe('formly-field', function() {
         scope.fields.push(secondField);
       });
 
-      it.skip(`should set the default value for nested keys`, () => {
+      it(`should set the default value for nested keys`, () => {
         compileAndDigest();
         expect(scope.model.foo.bar).to.equal(defaultValue);
         expect(scope.model.baz[0]).to.equal(defaultValue);
