@@ -11,6 +11,16 @@
     "type": "git",
     "url": "https://github.com/formly-js/angular-formly.git"
   },
+  "keywords": [
+    "angular",
+    "forms",
+    "angular-formly",
+    "formly",
+    "angularjs",
+    "angular forms",
+    "json forms",
+    "form library"
+  ],
   "main": "dist/formly.js",
   "license": "MIT",
   "scripts": {
