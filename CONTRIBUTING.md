@@ -78,4 +78,4 @@ There are a lot of questions from people as they get started using angular-forml
 #### Contributing to the core
 
 - Tests are always helpful! [Watch video](https://youtu.be/CQ766-miGQ4?list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH)
-- Any of the issues in GitHub, let us know if you have some time to fix one. Especially those labeled [PR Please!](https://github.com/formly-js/angular-formly/labels/PRs%20please%21)
+- Any of the issues in GitHub, let us know if you have some time to fix one. Especially those labeled [up-for-grabs](https://github.com/formly-js/angular-formly/labels/up-for-grabs)
