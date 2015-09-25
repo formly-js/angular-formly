@@ -38,8 +38,9 @@
     "report-coverage": "cat ./coverage/lcov.info | node_modules/.bin/codecov",
     "code-checks": "eslint src/",
     "commit": "git-cz",
-    "publish:latest": "with-package scripts/publish-latest.sh pkg.version",
-    "semantic-release": "semantic-release pre && npm run build && npm publish && npm run publish:latest && semantic-release post"
+    "prepublish": "npm run build",
+    "postpublish": "publish-latest --user-email kent+formly-bot@doddsfamily.us --user-name formly-bot",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "betterScripts": {
     "build:dist": {
@@ -83,7 +84,7 @@
   },
   "config": {
     "ghooks": {
-      "commit-msg": "./node_modules/.bin/validate-commit-msg && npm run code-checks && npm run test && npm run check-coverage"
+      "commit-msg": "./node_modules/.bin/validate-commit-msg && npm run code-checks && npm t && npm run check-coverage"
     }
   },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
@@ -127,6 +128,7 @@
     "ng-annotate": "1.0.2",
     "ng-annotate-loader": "0.0.10",
     "node-libs-browser": "0.5.2",
+    "publish-latest": "1.0.2",
     "raw-loader": "0.5.1",
     "semantic-release": "^4.3.4",
     "sinon": "1.16.1",
