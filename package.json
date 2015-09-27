@@ -109,7 +109,7 @@
     "eslint-loader": "1.0.0",
     "eslint-plugin-mocha": "0.5.1",
     "ghooks": "0.3.2",
-    "http-server": "0.8.0",
+    "http-server": "0.8.5",
     "isparta": "3.0.4",
     "isparta-loader": "0.2.0",
     "istanbul": "0.3.19",
