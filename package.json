@@ -101,7 +101,7 @@
     "better-npm-run": "benoror/better-npm-run#0.0.1",
     "chai": "3.2.0",
     "codecov.io": "0.1.6",
-    "commitizen": "1.0.4",
+    "commitizen": "1.0.5",
     "cracks": "3.0.2",
     "cz-conventional-changelog": "1.1.2",
     "eslint": "1.3.1",
