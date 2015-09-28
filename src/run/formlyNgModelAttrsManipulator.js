@@ -1,5 +1,5 @@
 import angular from 'angular-fix';
-import {contains} from '../other/utils';
+import includes from 'lodash/collection/includes';
 
 export default addFormlyNgModelAttrsManipulator;
 
@@ -233,6 +233,6 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
   }
 
   function isPropertyAccessor(key) {
-    return contains(key, '.') || (contains(key, '[') && contains(key, ']'));
+    return includes(key, '.') || (includes(key, '[') && includes(key, ']'));
   }
 }
