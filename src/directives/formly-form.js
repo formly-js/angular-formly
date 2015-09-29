@@ -1,4 +1,6 @@
 import angular from 'angular-fix';
+import kebabCase from 'lodash/string/kebabCase';
+import startsWith from 'lodash/string/startsWith';
 
 export default formlyForm;
 
@@ -98,7 +100,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
       const arrayAttrs = [];
       angular.forEach(attributes, ({nodeName, value}) => {
         if (nodeName !== 'undefined' && excluded.indexOf(nodeName) === -1) {
-          arrayAttrs.push(`${toKebabCase(nodeName)}="${value}"`);
+          arrayAttrs.push(`${kebabCase(nodeName)}="${value}"`);
         }
       });
       return arrayAttrs.join(' ');
@@ -251,7 +253,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
 
     function refrencesCurrentlyWatchedModel(expression) {
       return ['model', 'formState'].some(item => {
-        return formlyUtil.startsWith(expression, `${item}.`) || formlyUtil.startsWith(expression, `${item}[`);
+        return startsWith(expression, `${item}.`) || startsWith(expression, `${item}[`);
       });
     }
 
@@ -393,16 +395,6 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
         el[0].appendChild(input);
       }
 
-    }
-  }
-
-
-  // stateless util functions
-  function toKebabCase(string) {
-    if (string) {
-      return string.replace(/([A-Z])/g, $1 => '-' + $1.toLowerCase());
-    } else {
-      return '';
     }
   }
 

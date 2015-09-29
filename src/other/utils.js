@@ -1,7 +1,10 @@
 import angular from 'angular-fix';
 
+import uniq from 'lodash/array/uniq';
+import union from 'lodash/array/union';
+
 export default {
-  formlyEval, getFieldId, reverseDeepMerge, findByNodeName, arrayify, extendFunction, extendArray, startsWith, contains
+  formlyEval, getFieldId, reverseDeepMerge, findByNodeName, arrayify, extendArray
 };
 
 function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
@@ -77,45 +80,6 @@ function arrayify(obj) {
   return obj;
 }
 
-
-function extendFunction(...fns) {
-  return function extendedFunction() {
-    const args = arguments;
-    fns.forEach(fn => fn.apply(null, args));
-  };
-}
-
-function extendArray(primary, secondary, property) {
-  if (property) {
-    primary = primary[property];
-    secondary = secondary[property];
-  }
-  if (secondary && primary) {
-    angular.forEach(secondary, function(item) {
-      if (primary.indexOf(item) === -1) {
-        primary.push(item);
-      }
-    });
-    return primary;
-  } else if (secondary) {
-    return secondary;
-  } else {
-    return primary;
-  }
-}
-
-function startsWith(str, search) {
-  if (angular.isString(str) && angular.isString(search)) {
-    return str.length >= search.length && str.substring(0, search.length) === search;
-  } else {
-    return false;
-  }
-}
-
-function contains(str, search) {
-  if (angular.isString(str) && angular.isString(search)) {
-    return str.length >= search.length && str.indexOf(search) !== -1;
-  } else {
-    return false;
-  }
+function extendArray(primary, secondary) {
+  return uniq(union(primary, secondary));
 }
