@@ -112,7 +112,7 @@
     "http-server": "0.8.5",
     "isparta": "3.0.4",
     "isparta-loader": "0.2.0",
-    "istanbul": "0.3.19",
+    "istanbul": "0.3.21",
     "karma": "0.13.9",
     "karma-chai": "0.1.0",
     "karma-chrome-launcher": "0.2.0",
