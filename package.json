@@ -99,7 +99,7 @@
     "babel": "5.8.23",
     "babel-loader": "5.3.2",
     "better-npm-run": "benoror/better-npm-run#0.0.1",
-    "chai": "3.2.0",
+    "chai": "3.3.0",
     "codecov.io": "0.1.6",
     "commitizen": "1.0.5",
     "cracks": "3.0.2",
