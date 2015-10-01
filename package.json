@@ -24,14 +24,13 @@
   "main": "dist/formly.js",
   "license": "MIT",
   "scripts": {
-    "build:dist": "better-npm-run build:dist",
-    "build:prod": "better-npm-run build:prod",
+    "build:dist": "cross-env NODE_ENV=development webpack --config node_modules/kcd-common-tools/shared/webpack.config.js --progress --colors",
+    "build:prod": "cross-env NODE_ENV=production webpack --config node_modules/kcd-common-tools/shared/webpack.config.js --progress --colors",
     "build": "npm run build:dist & npm run build:prod",
-    "test": "better-npm-run test test:single",
-    "test:mac": "COVERAGE=true NODE_ENV=test karma start",
-    "test:watch": "better-npm-run test",
-    "test:debug": "better-npm-run test:debug",
-    "test:ci": "better-npm-run test:ci",
+    "test": "cross-env COVERAGE=true NODE_ENV=test karma start --single-run",
+    "test:watch": "cross-env COVERAGE=true NODE_ENV=test karma start",
+    "test:debug": "cross-env NODE_ENV=test karma start --browsers Chrome",
+    "test:ci": "cross-env NODE_ENV=test:ci karma start",
     "start:mac": "npm run test:mac",
     "start": "npm run test:watch",
     "check-coverage": "istanbul check-coverage --statements 93 --branches 89 --functions 92 --lines 92",
@@ -41,46 +40,6 @@
     "prepublish": "npm run build",
     "postpublish": "publish-latest --user-email kent+formly-bot@doddsfamily.us --user-name formly-bot",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
-  },
-  "betterScripts": {
-    "build:dist": {
-      "env": {
-        "NODE_ENV": "development"
-      },
-      "command": "webpack --config node_modules/kcd-common-tools/shared/webpack.config.js --progress --colors"
-    },
-    "build:prod": {
-      "env": {
-        "NODE_ENV": "production"
-      },
-      "command": "webpack --config node_modules/kcd-common-tools/shared/webpack.config.js --progress --colors"
-    },
-    "test:watch": {
-      "env": {
-        "COVERAGE": "true",
-        "NODE_ENV": "test"
-      },
-      "command": "karma start"
-    },
-    "test": {
-      "env": {
-        "COVERAGE": "true",
-        "NODE_ENV": "test"
-      },
-      "command": "karma start --single-run"
-    },
-    "test:debug": {
-      "env": {
-        "NODE_ENV": "test"
-      },
-      "command": "karma start --browsers Chrome"
-    },
-    "test:ci": {
-      "env": {
-        "NODE_ENV": "test:ci"
-      },
-      "command": "karma start"
-    }
   },
   "config": {
     "ghooks": {
@@ -97,12 +56,13 @@
     "angular-mocks": "1.4.5",
     "api-check": "7.5.3",
     "babel": "5.8.23",
+    "babel-eslint": "4.1.3",
     "babel-loader": "5.3.2",
-    "better-npm-run": "benoror/better-npm-run#0.0.1",
     "chai": "3.3.0",
     "codecov.io": "0.1.6",
     "commitizen": "1.0.5",
     "cracks": "3.0.2",
+    "cross-env": "1.0.1",
     "cz-conventional-changelog": "1.1.2",
     "eslint": "1.5.1",
     "eslint-config-kentcdodds": "4.0.0",
