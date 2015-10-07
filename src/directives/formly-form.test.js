@@ -869,5 +869,38 @@ describe('formly-form', () => {
     return el;
   }
 
+  describe(`field watchers`, () => {
+    it('should throw for a watcher with no listener', () => {
+      scope.fields = [getNewField({
+        watcher: {}
+      })];
 
+      expect(compileAndDigest).to.throw();
+    });
+
+    it(`should setup any watchers specified on a field`, () => {
+      scope.model = {};
+
+      const listener = sinon.spy();
+      const expression = sinon.spy();
+
+      scope.fields = [getNewField({
+        watcher: {
+          listener: ''
+        }
+      }), getNewField({
+        watcher: [{
+          listener: '',
+          expression: ''
+        }, {
+          listener,
+          expression
+        }]
+      })];
+
+      expect(compileAndDigest).to.not.throw();
+      expect(listener).to.have.been.called;
+      expect(expression).to.have.been.called;
+    });
+  });
 });
