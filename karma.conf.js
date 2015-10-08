@@ -1,1 +1,3 @@
-module.exports = require('kcd-common-tools/shared/karma.conf');
+/* eslint-env node */
+require('babel/register');
+module.exports = require('./other/karma.conf.es6');

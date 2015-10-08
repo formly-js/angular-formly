@@ -18,7 +18,7 @@ before_script:
   - npm prune
 script:
   - npm run code-checks
-  - npm t
+  - npm run test:ci
   - npm run check-coverage
 after_success:
   - npm run report-coverage
