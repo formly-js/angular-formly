@@ -28,7 +28,7 @@
     "build:prod": "cross-env NODE_ENV=production webpack --progress --colors",
     "build": "npm run build:dist & npm run build:prod",
     "test": "cross-env COVERAGE=true NODE_ENV=test karma start --single-run",
-    "test:ci": "cross-env CI=true COVERAGE=true NODE_ENV=test karma start --single-run",
+    "test:ci": "CI=true COVERAGE=true NODE_ENV=test karma start --single-run",
     "test:watch": "cross-env COVERAGE=true NODE_ENV=test karma start",
     "test:debug": "cross-env NODE_ENV=test karma start --browsers Chrome",
     "start:mac": "npm run test:mac",
