@@ -70,6 +70,11 @@ Please see the [CONTRIBUTING Guidelines](CONTRIBUTING.md).
 
 **Note**: This projects adheres to a [Code of Conduct](CODE_OF_CONDUCT.md).
 
+## Financial Support
+
+Some have expressed a desire to contribute financially as a way of expressing gratitude. I appreciate anything you (or
+your company) would be willing to contribute :-) You can support me [here](https://www.patreon.com/kentcdodds). Thanks!
+
 ## Bookmark Links
 
 You can bookmark these :-)

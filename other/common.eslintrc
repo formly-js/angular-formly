@@ -1,0 +1,18 @@
+{
+  "rules": {
+    "no-invalid-this": 0, // meh...
+    "func-names": 0, // I wish, but doing this right now would be a royal pain
+    "new-cap": [
+      2,
+      {
+        "newIsCap": true,
+        "capIsNew": true
+      }
+    ],
+    "max-params": [2, 10],
+    "max-statements": [2, 30], // TODO bring this down
+  },
+  "globals": {
+    "VERSION": false
+  },
+}

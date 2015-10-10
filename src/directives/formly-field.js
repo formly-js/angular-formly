@@ -59,7 +59,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     // function definitions
     function runExpressions() {
       // must run on next tick to make sure that the current value is correct.
-      $timeout(function runExpressionsOnNextTick() {
+      return $timeout(function runExpressionsOnNextTick() {
         const field = $scope.options;
         const currentValue = valueGetterSetter();
         angular.forEach(field.expressionProperties, function runExpression(expression, prop) {

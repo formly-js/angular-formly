@@ -120,13 +120,18 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
     function onModelOrFormStateChange() {
       angular.forEach($scope.fields, function runFieldExpressionProperties(field, index) {
         const model = field.model || $scope.model;
-        field.runExpressions && field.runExpressions();
+        const promise = field.runExpressions && field.runExpressions();
         if (field.hideExpression) { // can't use hide with expressionProperties reliably
           const val = model[field.key];
           field.hide = evalCloseToFormlyExpression(field.hideExpression, val, field, index);
         }
         if (field.extras && field.extras.validateOnModelChange && field.formControl) {
-          field.formControl.$validate();
+          const validate = field.formControl.$validate;
+          if (promise) {
+            promise.then(validate);
+          } else {
+            validate();
+          }
         }
       });
     }

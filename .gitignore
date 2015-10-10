@@ -1,1 +1,14 @@
-node_modules/kcd-common-tools/shared/link/gitignore
+.idea
+*.log
+*.iml
+*.DS_Store
+
+node_modules
+coverage
+nohup.out
+
+*.ignored.*
+*.ignored/
+*.ignored
+dist
+

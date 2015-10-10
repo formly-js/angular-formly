@@ -1,5 +1,11 @@
-//! angular-formly version 7.1.2 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
-
+/*!
+* angular-formly JavaScript Library v7.2.1
+*
+* @license MIT (http://license.angular-formly.com)
+*
+* built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us>
+* (ó ì_í)=óò=(ì_í ò)
+*/
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require("angular"), require("api-check"));
@@ -147,7 +153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("7.1.2")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("7.2.1")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -416,7 +422,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.1.2") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.2.1") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -1236,7 +1242,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // function definitions
 	    function runExpressions() {
 	      // must run on next tick to make sure that the current value is correct.
-	      $timeout(function runExpressionsOnNextTick() {
+	      return $timeout(function runExpressionsOnNextTick() {
 	        var field = $scope.options;
 	        var currentValue = valueGetterSetter();
 	        _angularFix2['default'].forEach(field.expressionProperties, function runExpression(expression, prop) {
@@ -2034,14 +2040,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function onModelOrFormStateChange() {
 	      _angularFix2['default'].forEach($scope.fields, function runFieldExpressionProperties(field, index) {
 	        var model = field.model || $scope.model;
-	        field.runExpressions && field.runExpressions();
+	        var promise = field.runExpressions && field.runExpressions();
 	        if (field.hideExpression) {
 	          // can't use hide with expressionProperties reliably
 	          var val = model[field.key];
 	          field.hide = evalCloseToFormlyExpression(field.hideExpression, val, field, index);
 	        }
 	        if (field.extras && field.extras.validateOnModelChange && field.formControl) {
-	          field.formControl.$validate();
+	          var validate = field.formControl.$validate;
+	          if (promise) {
+	            promise.then(validate);
+	          } else {
+	            validate();
+	          }
 	        }
 	      });
 	    }

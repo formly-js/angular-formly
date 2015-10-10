@@ -1690,6 +1690,7 @@ describe('formly-field', function() {
         const $validateSpy = sinon.spy(field.formControl, '$validate');
         scope.model.foo = 'bar';
         scope.$digest();
+        $timeout.flush();
         expect($validateSpy).to.have.been.calledOnce;
       });
     });
