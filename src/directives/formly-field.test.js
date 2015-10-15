@@ -1320,33 +1320,35 @@ describe('formly-field', function() {
     });
   });
 
-  describe(`with custom errorExistsAndShouldBeVisible expression`, () => {
-    beforeEach(() => {
-      scope.fields = [getNewField({validators: {foo: 'false'}})];
-    });
+  describe(`options.validation.errorExistsAndShouldBeVisible`, () => {
+    describe(`with custom errorExistsAndShouldBeVisible expression`, () => {
+      beforeEach(() => {
+        scope.fields = [getNewField({validators: {foo: 'false'}})];
+      });
 
-    it(`should set errorExistsAndShouldBeVisible to true when the expression function says so`, () => {
-      formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = '!!options.data.customExpression';
-      compileAndDigest();
-      expect(field.validation.errorExistsAndShouldBeVisible).to.be.false;
-      field.data.customExpression = true;
-      scope.$digest();
-      expect(field.validation.errorExistsAndShouldBeVisible).to.be.true;
-    });
+      it(`should set errorExistsAndShouldBeVisible to true when the expression function says so`, () => {
+        formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = '!!options.data.customExpression';
+        compileAndDigest();
+        expect(field.validation.errorExistsAndShouldBeVisible).to.be.false;
+        field.data.customExpression = true;
+        scope.$digest();
+        expect(field.validation.errorExistsAndShouldBeVisible).to.be.true;
+      });
 
-    it(`should be able to work with form.$submitted`, () => {
-      formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = 'form.$submitted';
-      compileAndDigest(`
-        <form name="theForm">
-          <formly-form form="theForm" model="model" fields="fields" options="options"></formly-form>
-        </form>
-      `);
-      expect(field.validation.errorExistsAndShouldBeVisible).to.be.false;
-      scope.theForm.$setSubmitted(true);
-      scope.$digest();
-      expect(field.validation.errorExistsAndShouldBeVisible).to.be.true;
-    });
+      it(`should be able to work with form.$submitted`, () => {
+        formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = 'form.$submitted';
+        compileAndDigest(`
+          <form name="theForm">
+            <formly-form form="theForm" model="model" fields="fields" options="options"></formly-form>
+          </form>
+        `);
+        expect(field.validation.errorExistsAndShouldBeVisible).to.be.false;
+        scope.theForm.$setSubmitted(true);
+        scope.$digest();
+        expect(field.validation.errorExistsAndShouldBeVisible).to.be.true;
+      });
 
+    });
   });
 
   describe(`with specified "model" property`, () => {
