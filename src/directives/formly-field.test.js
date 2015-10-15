@@ -1339,8 +1339,23 @@ describe('formly-field', function() {
       it(`should set showError to true when one of them is invalid`, () => {
         compileAndDigest();
         expect(field.validation.errorExistsAndShouldBeVisible, 'initially false').to.be.false;
-        field.data.invalid = true;
+        invalidateAndTouchFields();
 
+        expect(field.formControl[0].$error.foo, '$error on the first formControl').be.true;
+        expect(field.validation.errorExistsAndShouldBeVisible, 'now true').to.be.true;
+      });
+
+      it(`should work with a custom errorExistsAndShouldBeVisibleExpression`, () => {
+        const spy = sinon.spy();
+        formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = spy;
+        compileAndDigest();
+
+        invalidateAndTouchFields();
+        expect(spy).to.have.been.calledWith(sinon.match.array, sinon.match.array);
+      });
+
+      function invalidateAndTouchFields() {
+        field.data.invalid = true;
         // force $touched and revalidation of both form controls
         field.formControl.forEach(fc => {
           fc.$setTouched();
@@ -1349,10 +1364,7 @@ describe('formly-field', function() {
 
         // redigest to set the showError prop
         scope.$digest();
-
-        expect(field.formControl[0].$error.foo, '$error on the first formControl').be.true;
-        expect(field.validation.errorExistsAndShouldBeVisible, 'now true').to.be.true;
-      });
+      }
     });
 
     describe(`with custom errorExistsAndShouldBeVisible expression`, () => {
