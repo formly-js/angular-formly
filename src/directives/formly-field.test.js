@@ -1321,6 +1321,40 @@ describe('formly-field', function() {
   });
 
   describe(`options.validation.errorExistsAndShouldBeVisible`, () => {
+    describe.skip(`multiple ng-model elements`, () => {
+      beforeEach(() => {
+        scope.fields = [
+          {
+            template: `
+              <input ng-model="model[options.data.firstKey]" />
+              <input ng-model="model[options.data.secondKey]" />
+            `,
+            // we'll just give it a validator that depends on a value we
+            // can change in our tests
+            validators: {foo: '!options.data.invalid'}
+          }
+        ];
+      });
+
+      it(`should set showError to true when one of them is invalid`, () => {
+        compileAndDigest();
+        expect(field.validation.errorExistsAndShouldBeVisible, 'initially false').to.be.false;
+        field.data.invalid = true;
+
+        // force $touched and revalidation of both form controls
+        field.formControl.forEach(fc => {
+          fc.$setTouched();
+          fc.$validate();
+        });
+
+        // redigest to set the showError prop
+        scope.$digest();
+
+        expect(field.formControl[0].$error.foo, '$error on the first formControl').be.true;
+        expect(field.validation.errorExistsAndShouldBeVisible, 'now true').to.be.true;
+      });
+    });
+
     describe(`with custom errorExistsAndShouldBeVisible expression`, () => {
       beforeEach(() => {
         scope.fields = [getNewField({validators: {foo: 'false'}})];
