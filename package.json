@@ -59,7 +59,7 @@
     "babel-loader": "5.3.2",
     "chai": "3.3.0",
     "codecov.io": "0.1.6",
-    "commitizen": "1.0.5",
+    "commitizen": "2.0.2",
     "cracks": "3.1.1",
     "cross-env": "1.0.1",
     "cz-conventional-changelog": "1.1.4",
