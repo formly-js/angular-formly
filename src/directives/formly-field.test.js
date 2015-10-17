@@ -1320,33 +1320,81 @@ describe('formly-field', function() {
     });
   });
 
-  describe(`with custom errorExistsAndShouldBeVisible expression`, () => {
-    beforeEach(() => {
-      scope.fields = [getNewField({validators: {foo: 'false'}})];
+  describe(`options.validation.errorExistsAndShouldBeVisible`, () => {
+    describe.skip(`multiple ng-model elements`, () => {
+      beforeEach(() => {
+        scope.fields = [
+          {
+            template: `
+              <input ng-model="model[options.data.firstKey]" />
+              <input ng-model="model[options.data.secondKey]" />
+            `,
+            // we'll just give it a validator that depends on a value we
+            // can change in our tests
+            validators: {foo: '!options.data.invalid'}
+          }
+        ];
+      });
+
+      it(`should set showError to true when one of them is invalid`, () => {
+        compileAndDigest();
+        expect(field.validation.errorExistsAndShouldBeVisible, 'initially false').to.be.false;
+        invalidateAndTouchFields();
+
+        expect(field.formControl[0].$error.foo, '$error on the first formControl').be.true;
+        expect(field.validation.errorExistsAndShouldBeVisible, 'now true').to.be.true;
+      });
+
+      it(`should work with a custom errorExistsAndShouldBeVisibleExpression`, () => {
+        const spy = sinon.spy();
+        formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = spy;
+        compileAndDigest();
+
+        invalidateAndTouchFields();
+        expect(spy).to.have.been.calledWith(sinon.match.array, sinon.match.array);
+      });
+
+      function invalidateAndTouchFields() {
+        field.data.invalid = true;
+        // force $touched and revalidation of both form controls
+        field.formControl.forEach(fc => {
+          fc.$setTouched();
+          fc.$validate();
+        });
+
+        // redigest to set the showError prop
+        scope.$digest();
+      }
     });
 
-    it(`should set errorExistsAndShouldBeVisible to true when the expression function says so`, () => {
-      formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = '!!options.data.customExpression';
-      compileAndDigest();
-      expect(field.validation.errorExistsAndShouldBeVisible).to.be.false;
-      field.data.customExpression = true;
-      scope.$digest();
-      expect(field.validation.errorExistsAndShouldBeVisible).to.be.true;
-    });
+    describe(`with custom errorExistsAndShouldBeVisible expression`, () => {
+      beforeEach(() => {
+        scope.fields = [getNewField({validators: {foo: 'false'}})];
+      });
 
-    it(`should be able to work with form.$submitted`, () => {
-      formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = 'form.$submitted';
-      compileAndDigest(`
-        <form name="theForm">
-          <formly-form form="theForm" model="model" fields="fields" options="options"></formly-form>
-        </form>
-      `);
-      expect(field.validation.errorExistsAndShouldBeVisible).to.be.false;
-      scope.theForm.$setSubmitted(true);
-      scope.$digest();
-      expect(field.validation.errorExistsAndShouldBeVisible).to.be.true;
-    });
+      it(`should set errorExistsAndShouldBeVisible to true when the expression function says so`, () => {
+        formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = '!!options.data.customExpression';
+        compileAndDigest();
+        expect(field.validation.errorExistsAndShouldBeVisible).to.be.false;
+        field.data.customExpression = true;
+        scope.$digest();
+        expect(field.validation.errorExistsAndShouldBeVisible).to.be.true;
+      });
 
+      it(`should be able to work with form.$submitted`, () => {
+        formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = 'form.$submitted';
+        compileAndDigest(`
+          <form name="theForm">
+            <formly-form form="theForm" model="model" fields="fields" options="options"></formly-form>
+          </form>
+        `);
+        expect(field.validation.errorExistsAndShouldBeVisible).to.be.false;
+        scope.theForm.$setSubmitted(true);
+        scope.$digest();
+        expect(field.validation.errorExistsAndShouldBeVisible).to.be.true;
+      });
+
+    });
   });
 
   describe(`with specified "model" property`, () => {
