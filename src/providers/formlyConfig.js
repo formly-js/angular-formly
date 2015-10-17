@@ -24,6 +24,7 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
     disableWarnings: false,
     extras: {
       disableNgModelAttrsManipulator: false,
+      fieldTransform: [],
       ngModelAttrsManipulatorPreferUnbound: false,
       removeChromeAutoComplete: false,
       defaultHideDirective: 'ng-if',
