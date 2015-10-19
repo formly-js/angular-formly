@@ -28,8 +28,7 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
       ngModelAttrsManipulatorPreferUnbound: false,
       removeChromeAutoComplete: false,
       defaultHideDirective: 'ng-if',
-      getFieldId: null,
-      explicitAsync: false
+      getFieldId: null
     },
     templateManipulators: {
       preWrapper: [],
