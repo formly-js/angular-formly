@@ -1,5 +1,5 @@
 /* eslint-env node */
-require('./set-env')(process.argv);
+require('argv-set-env')();
 const packageJson = require('../package.json');
 
 const here = require('path-here');
