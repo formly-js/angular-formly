@@ -1,4 +1,5 @@
 /* eslint-env node */
+require('argv-set-env')();
 const packageJson = require('../package.json');
 
 const here = require('path-here');
@@ -103,7 +104,6 @@ function getProdConfig() {
 function getTestConfig() {
   const coverage = process.env.COVERAGE === 'true';
   const ci = process.env.CI === 'true';
-  console.log(process.env.CI);
   return {
     entry: './index.test.js',
     module: {
