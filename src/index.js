@@ -1,2 +1,2 @@
-import index from './index.common';
-export default index;
+import index from './index.common'
+export default index

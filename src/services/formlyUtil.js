@@ -1,8 +1,8 @@
-import utils from '../other/utils';
+import utils from '../other/utils'
 
-export default formlyUtil;
+export default formlyUtil
 
 // @ngInject
 function formlyUtil() {
-  return utils;
+  return utils
 }
