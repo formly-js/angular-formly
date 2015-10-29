@@ -280,6 +280,48 @@ describe('formly-form', () => {
       })
     })
 
+    it(`should be possible to use a wrapper & templateOptions in a fieldGroup`, () => {
+      formlyConfig.setWrapper({
+        name: 'panel',
+        template: `<div class="panel">
+            <div class="heading">
+              Panel Title: {{options.templateOptions.title}}
+            </div>
+            <div class="body">
+              <formly-transclude></formly-transclude>
+            </div>
+          </div>
+        `,
+      })
+
+      scope.fields = [
+        {
+          className: 'field-group',
+          wrapper: 'panel',
+          templateOptions: {
+            title: 'My Panel',
+          },
+          fieldGroup: [
+            getNewField(),
+            getNewField(),
+          ],
+        },
+      ]
+
+      scope.options = {}
+
+      compileAndDigest()
+
+      const panelNode = el[0].querySelector('.panel')
+      expect(panelNode).to.exist
+      const bodyNode = panelNode.querySelector('.body')
+      expect(bodyNode).to.exist
+      const headingNode = panelNode.querySelector('.heading')
+      expect(headingNode).to.exist
+      const headingEl = angular.element(headingNode)
+      expect(headingEl.text().trim()).to.eq('Panel Title: My Panel')
+    })
+
     it(`should be possible to hide a fieldGroup with the hide property`, () => {
       compileAndDigest()
 

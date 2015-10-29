@@ -179,6 +179,8 @@ const fieldGroup = apiCheck.shape({
   fieldGroup: apiCheck.arrayOf(apiCheck.oneOfType([formlyFieldOptions, apiCheck.object])),
   className: apiCheck.string.optional,
   options: formOptionsApi.optional,
+  templateOptions: apiCheck.object.optional,
+  wrapper: specifyWrapperType.optional,
   hide: apiCheck.bool.optional,
   hideExpression: formlyExpression.optional,
   data: apiCheck.object.optional,
