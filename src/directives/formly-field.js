@@ -258,7 +258,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       if (scope.options.key) {
         modelValue = `model['${scope.options.key}']`
       }
-      setElementTemplate(`
+      getTemplate(`
           <formly-form model="${modelValue}"
                        fields="options.fieldGroup"
                        options="options.options"
@@ -268,6 +268,8 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
                        is-field-group>
           </formly-form>
         `)
+        .then(transcludeInWrappers(scope.options, scope.formOptions))
+        .then(setElementTemplate)
     }
 
     function addAttributes() {
