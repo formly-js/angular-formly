@@ -1,4 +1,4 @@
-export default formlyValidationMessages;
+export default formlyValidationMessages
 
 
 // @ngInject
@@ -7,27 +7,27 @@ function formlyValidationMessages() {
   const validationMessages = {
     addTemplateOptionValueMessage,
     addStringMessage,
-    messages: {}
-  };
+    messages: {},
+  }
 
-  return validationMessages;
+  return validationMessages
 
   function addTemplateOptionValueMessage(name, prop, prefix, suffix, alternate) {
-    validationMessages.messages[name] = templateOptionValue(prop, prefix, suffix, alternate);
+    validationMessages.messages[name] = templateOptionValue(prop, prefix, suffix, alternate)
   }
 
   function addStringMessage(name, string) {
-    validationMessages.messages[name] = () => string;
+    validationMessages.messages[name] = () => string
   }
 
 
   function templateOptionValue(prop, prefix, suffix, alternate) {
     return function getValidationMessage(viewValue, modelValue, scope) {
       if (scope.options.templateOptions[prop]) {
-        return `${prefix} ${scope.options.templateOptions[prop]} ${suffix}`;
+        return `${prefix} ${scope.options.templateOptions[prop]} ${suffix}`
       } else {
-        return alternate;
+        return alternate
       }
-    };
+    }
   }
 }

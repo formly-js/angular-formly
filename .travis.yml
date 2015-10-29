@@ -17,6 +17,7 @@ before_install:
 before_script:
   - npm prune
 script:
+  - npm run eslint
   - npm run test
   - npm run check-coverage
 after_success:

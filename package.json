@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "7.2.3",
+  "version": "7.3.0",
   "author": "Astrism <astrisms@gmail.com>",
   "contributors": [
     "Astrism <astrisms@gmail.com>",
@@ -27,6 +27,9 @@
     "build:dist": "webpack --progress --colors --set-env-NODE_ENV=development",
     "build:prod": "webpack --progress --colors --set-env-NODE_ENV=production",
     "build": "npm run build:dist & npm run build:prod",
+    "eslint:test": "eslint -c other/test.eslintrc --ignore-pattern '**/*.+(test|mock).js' src/",
+    "eslint:src": "eslint -c other/src.eslintrc --ignore-pattern '!**/*.+(test|mock).js' src/",
+    "eslint": "npm run eslint:test -s && npm run eslint:src -s",
     "test": "karma start --single-run --set-env-COVERAGE=true --set-env-NODE_ENV=test",
     "test:watch": "karma start --set-env-COVERAGE=true --set-env-NODE_ENV=test",
     "test:debug": "karma start --browsers Chrome --set-env-NODE_ENV=test",
@@ -34,13 +37,15 @@
     "check-coverage": "istanbul check-coverage --statements 93 --branches 89 --functions 92 --lines 92",
     "report-coverage": "cat ./coverage/lcov.info | node_modules/.bin/codecov",
     "commit": "git-cz",
-    "prepublish": "npm run build",
-    "postpublish": "publish-latest --user-email kent+formly-bot@doddsfamily.us --user-name formly-bot",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "publish-latest": "publish-latest --user-email kent+formly-bot@doddsfamily.us --user-name formly-bot",
+    "semantic-release": "semantic-release pre && npm run build && npm publish && npm run publish-latest && semantic-release post"
   },
   "config": {
     "ghooks": {
-      "commit-msg": "./node_modules/.bin/validate-commit-msg && npm t && npm run check-coverage"
+      "commit-msg": "./node_modules/.bin/validate-commit-msg && npm run eslint && npm t && npm run check-coverage"
+    },
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
     }
   },
   "description": "AngularJS directive which takes JSON representing a form and renders to HTML",
@@ -52,28 +57,29 @@
     "angular": "1.4.7",
     "angular-mocks": "1.4.7",
     "api-check": "7.5.3",
+    "argv-set-env": "1.0.0",
     "babel": "5.8.23",
     "babel-eslint": "4.1.3",
     "babel-loader": "5.3.2",
-    "chai": "3.3.0",
+    "chai": "3.4.0",
     "codecov.io": "0.1.6",
-    "commitizen": "2.0.2",
+    "commitizen": "2.3.0",
     "cracks": "3.1.1",
     "cz-conventional-changelog": "1.1.4",
     "deindent": "0.1.0",
-    "eslint": "1.6.0",
-    "eslint-config-kentcdodds": "4.0.1",
-    "eslint-loader": "1.0.0",
+    "eslint": "1.7.3",
+    "eslint-config-kentcdodds": "5.0.0",
+    "eslint-loader": "1.1.0",
     "eslint-plugin-mocha": "1.0.0",
     "ghooks": "0.3.2",
     "http-server": "0.8.5",
     "isparta": "3.1.0",
     "isparta-loader": "1.0.0",
-    "istanbul": "0.3.22",
-    "karma": "0.13.10",
+    "istanbul": "0.4.0",
+    "karma": "0.13.14",
     "karma-chai": "0.1.0",
-    "karma-chrome-launcher": "0.2.0",
-    "karma-coverage": "0.5.2",
+    "karma-chrome-launcher": "0.2.1",
+    "karma-coverage": "0.5.3",
     "karma-firefox-launcher": "0.1.6",
     "karma-mocha": "0.2.0",
     "karma-sinon": "1.0.4",
@@ -88,7 +94,7 @@
     "publish-latest": "1.1.2",
     "raw-loader": "0.5.1",
     "semantic-release": "4.3.5",
-    "sinon": "1.17.1",
+    "sinon": "1.17.2",
     "sinon-chai": "2.8.0",
     "uglify-loader": "1.2.0",
     "validate-commit-msg": "1.0.0",
@@ -99,9 +105,6 @@
     "peerDependencies": {
       "angular": "*"
     }
-  },
-  "czConfig": {
-    "path": "node_modules/cz-conventional-changelog"
   },
   "release": {
     "verfiyRelease": {

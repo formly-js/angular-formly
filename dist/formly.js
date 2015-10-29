@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v7.2.3
+* angular-formly JavaScript Library v7.3.0
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -153,7 +153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("7.2.3")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("7.3.0")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -372,6 +372,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  fieldGroup: apiCheck.arrayOf(apiCheck.oneOfType([formlyFieldOptions, apiCheck.object])),
 	  className: apiCheck.string.optional,
 	  options: formOptionsApi.optional,
+	  templateOptions: apiCheck.object.optional,
+	  wrapper: specifyWrapperType.optional,
 	  hide: apiCheck.bool.optional,
 	  hideExpression: formlyExpression.optional,
 	  data: apiCheck.object.optional,
@@ -422,7 +424,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.2.3") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.3.0") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -1210,8 +1212,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      fields: '=?',
 	      formState: '=?',
 	      formOptions: '=?',
-	      form: '=?' // TODO require form in a breaking release
-	    },
+	      form: '=?' },
+	    // TODO require form in a breaking release
 	    controller: FormlyFieldController,
 	    link: fieldLink
 	  };
@@ -1433,7 +1435,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (scope.options.key) {
 	        modelValue = 'model[\'' + scope.options.key + '\']';
 	      }
-	      setElementTemplate('\n          <formly-form model="' + modelValue + '"\n                       fields="options.fieldGroup"\n                       options="options.options"\n                       form="options.form"\n                       class="' + scope.options.className + '"\n                       ' + extraAttributes + '\n                       is-field-group>\n          </formly-form>\n        ');
+	      getTemplate('\n          <formly-form model="' + modelValue + '"\n                       fields="options.fieldGroup"\n                       options="options.options"\n                       form="options.form"\n                       class="' + scope.options.className + '"\n                       ' + extraAttributes + '\n                       is-field-group>\n          </formly-form>\n        ').then(transcludeInWrappers(scope.options, scope.formOptions)).then(setElementTemplate);
 	    }
 
 	    function addAttributes() {

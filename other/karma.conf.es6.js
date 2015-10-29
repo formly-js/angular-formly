@@ -1,5 +1,5 @@
 /* eslint-env node */
-require('./set-env')(process.argv);
+require('argv-set-env')();
 const path = require('path');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'test';
