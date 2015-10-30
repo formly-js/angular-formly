@@ -1240,6 +1240,51 @@ describe('formly-field', function() {
       expect(field.formControl.$dirty).to.be.false
     })
 
+    it(`should reset the form state with a deep model`, () => {
+      const field = getNewField({key: 'foo.bar'})
+      scope.fields = [field]
+      compileAndDigest()
+
+      // initial state
+      expect(field.formControl.$dirty).to.be.false
+      expect(field.formControl.$touched).to.be.false
+
+      // modification
+      scope.model.foo = {
+        bar: '~=[,,_,,]:3'
+      }
+      field.formControl.$setTouched()
+      field.formControl.$setDirty()
+      scope.$digest()
+
+      // expect modification
+      expect(field.formControl.$dirty).to.be.true
+      expect(field.formControl.$touched).to.be.true
+      expect(field.formControl.$modelValue).to.eq('~=[,,_,,]:3')
+
+      // Set new initialValue
+      scope.options.updateInitialValue();
+
+      // Modify again
+      scope.model.foo.bar = 'l33t'
+      field.formControl.$setTouched()
+      field.formControl.$setDirty()
+      scope.$digest()
+
+      // expect modification
+      expect(field.formControl.$dirty).to.be.true
+      expect(field.formControl.$touched).to.be.true
+      expect(field.formControl.$modelValue).to.eq('l33t')
+
+      // reset state
+      scope.options.resetModel()
+
+      // expect reset
+      expect(field.formControl.$modelValue).to.eq('~=[,,_,,]:3')
+      expect(field.formControl.$touched).to.be.false
+      expect(field.formControl.$dirty).to.be.false
+    })
+
     it(`should reset the form state for an field with multiple ng-models`, () => {
       const field = {
         key: 'multiNgModel',
