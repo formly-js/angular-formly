@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v7.3.0
+* angular-formly JavaScript Library v7.3.1
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -153,7 +153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("7.3.0")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("7.3.1")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -424,7 +424,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.3.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.3.1") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -1392,6 +1392,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function setupFieldGroup() {
 	      $scope.options.options = $scope.options.options || {};
 	      $scope.options.options.formState = $scope.formState;
+	      $scope.to = $scope.options.templateOptions;
 	    }
 	  }
 

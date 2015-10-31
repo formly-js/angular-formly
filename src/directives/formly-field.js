@@ -204,6 +204,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     function setupFieldGroup() {
       $scope.options.options = $scope.options.options || {}
       $scope.options.options.formState = $scope.formState
+      $scope.to = $scope.options.templateOptions
     }
   }
 
