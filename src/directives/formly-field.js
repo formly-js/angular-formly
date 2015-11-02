@@ -74,28 +74,27 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
     function valueGetterSetter(newVal) {
       if (!$scope.model || !$scope.options.key) {
-        return undefined;
+        return undefined
       }
       if (angular.isDefined(newVal)) {
-        parseSet($scope.options.key, $scope.model, newVal);
+        parseSet($scope.options.key, $scope.model, newVal)
       }
-      return parseGet($scope.options.key, $scope.model);
+      return parseGet($scope.options.key, $scope.model)
     }
 
     function parseSet(key, model, newVal) {
       // If either of these are null/undefined then just return undefined
       if (!key || !model) {
-        return;
+        return
       }
       // If we are working with a number then $parse wont work, default back to the old way for now
       if (angular.isNumber(key)) {
         // TODO: Fix this so we can get several levels instead of just one with properties that are numeric
-        model[key] = newVal;
-      }
-      else {
-        var setter = $parse($scope.options.key).assign;
+        model[key] = newVal
+      } else {
+        const setter = $parse($scope.options.key).assign
         if (setter) {
-          setter($scope.model, newVal);
+          setter($scope.model, newVal)
         }
       }
     }
@@ -103,18 +102,16 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     function parseGet(key, model) {
       // If either of these are null/undefined then just return undefined
       if (!key || !model) {
-        return undefined;
+        return undefined
       }
 
       // If we are working with a number then $parse wont work, default back to the old way for now
       if (angular.isNumber(key)) {
         // TODO: Fix this so we can get several levels instead of just one with properties that are numeric
-        return model[key];
+        return model[key]
+      } else {
+        return $parse(key)(model)
       }
-      else {
-        return $parse(key)(model);
-      }
-
     }
 
     function simplifyLife(options) {
@@ -144,8 +141,9 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     }
 
     function setDefaultValue() {
-      if (angular.isDefined($scope.options.defaultValue) && !angular.isDefined(parseGet($scope.options.key, $scope.model))) {
-        parseSet($scope.options.key, $scope.model, $scope.options.defaultValue);
+      if (angular.isDefined($scope.options.defaultValue) &&
+          !angular.isDefined(parseGet($scope.options.key, $scope.model))) {
+        parseSet($scope.options.key, $scope.model, $scope.options.defaultValue)
       }
     }
 
@@ -185,7 +183,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     }
 
     function resetModel() {
-      parseSet($scope.options.key, $scope.model, $scope.options.initialValue);
+      parseSet($scope.options.key, $scope.model, $scope.options.initialValue)
       if ($scope.options.formControl) {
         if (angular.isArray($scope.options.formControl)) {
           angular.forEach($scope.options.formControl, function(formControl) {

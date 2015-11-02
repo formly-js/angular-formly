@@ -1251,7 +1251,7 @@ describe('formly-field', function() {
 
       // modification
       scope.model.foo = {
-        bar: '~=[,,_,,]:3'
+        bar: '~=[,,_,,]:3',
       }
       field.formControl.$setTouched()
       field.formControl.$setDirty()
@@ -1263,7 +1263,7 @@ describe('formly-field', function() {
       expect(field.formControl.$modelValue).to.eq('~=[,,_,,]:3')
 
       // Set new initialValue
-      scope.options.updateInitialValue();
+      scope.options.updateInitialValue()
 
       // Modify again
       scope.model.foo.bar = 'l33t'
