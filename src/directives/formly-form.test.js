@@ -287,6 +287,9 @@ describe('formly-form', () => {
             <div class="heading">
               Panel Title: {{options.templateOptions.title}}
             </div>
+            <div class="sub-heading">
+              Subtitle: {{to.subtitle}}
+            </div>
             <div class="body">
               <formly-transclude></formly-transclude>
             </div>
@@ -300,6 +303,7 @@ describe('formly-form', () => {
           wrapper: 'panel',
           templateOptions: {
             title: 'My Panel',
+            subtitle: 'is awesome',
           },
           fieldGroup: [
             getNewField(),
@@ -320,6 +324,10 @@ describe('formly-form', () => {
       expect(headingNode).to.exist
       const headingEl = angular.element(headingNode)
       expect(headingEl.text().trim()).to.eq('Panel Title: My Panel')
+      const subHeadingNode = panelNode.querySelector('.sub-heading')
+      expect(subHeadingNode).to.exist
+      const subHeadingEl = angular.element(subHeadingNode)
+      expect(subHeadingEl.text().trim()).to.eq('Subtitle: is awesome')
     })
 
     it(`should be possible to hide a fieldGroup with the hide property`, () => {
