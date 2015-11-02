@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v7.3.1
+* angular-formly JavaScript Library v7.3.2
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -153,7 +153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("7.3.1")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("7.3.2")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -424,7 +424,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.3.1") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.3.2") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -1262,9 +1262,41 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return undefined;
 	      }
 	      if (_angularFix2['default'].isDefined(newVal)) {
-	        $scope.model[$scope.options.key] = newVal;
+	        parseSet($scope.options.key, $scope.model, newVal);
 	      }
-	      return $scope.model[$scope.options.key];
+	      return parseGet($scope.options.key, $scope.model);
+	    }
+
+	    function parseSet(key, model, newVal) {
+	      // If either of these are null/undefined then just return undefined
+	      if (!key || !model) {
+	        return;
+	      }
+	      // If we are working with a number then $parse wont work, default back to the old way for now
+	      if (_angularFix2['default'].isNumber(key)) {
+	        // TODO: Fix this so we can get several levels instead of just one with properties that are numeric
+	        model[key] = newVal;
+	      } else {
+	        var setter = $parse($scope.options.key).assign;
+	        if (setter) {
+	          setter($scope.model, newVal);
+	        }
+	      }
+	    }
+
+	    function parseGet(key, model) {
+	      // If either of these are null/undefined then just return undefined
+	      if (!key || !model) {
+	        return undefined;
+	      }
+
+	      // If we are working with a number then $parse wont work, default back to the old way for now
+	      if (_angularFix2['default'].isNumber(key)) {
+	        // TODO: Fix this so we can get several levels instead of just one with properties that are numeric
+	        return model[key];
+	      } else {
+	        return $parse(key)(model);
+	      }
 	    }
 
 	    function simplifyLife(options) {
@@ -1294,14 +1326,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function setDefaultValue() {
-	      if (_angularFix2['default'].isDefined($scope.options.defaultValue) && !_angularFix2['default'].isDefined($scope.model[$scope.options.key])) {
-	        var setter = $parse($scope.options.key).assign;
-	        setter($scope.model, $scope.options.defaultValue);
+	      if (_angularFix2['default'].isDefined($scope.options.defaultValue) && !_angularFix2['default'].isDefined(parseGet($scope.options.key, $scope.model))) {
+	        parseSet($scope.options.key, $scope.model, $scope.options.defaultValue);
 	      }
 	    }
 
 	    function setInitialValue() {
-	      $scope.options.initialValue = $scope.model && $scope.model[$scope.options.key];
+	      $scope.options.initialValue = $scope.model && parseGet($scope.options.key, $scope.model);
 	    }
 
 	    function mergeFieldOptionsWithTypeDefaults(options, type) {
@@ -1336,7 +1367,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function resetModel() {
-	      $scope.model[$scope.options.key] = $scope.options.initialValue;
+	      parseSet($scope.options.key, $scope.model, $scope.options.initialValue);
 	      if ($scope.options.formControl) {
 	        if (_angularFix2['default'].isArray($scope.options.formControl)) {
 	          _angularFix2['default'].forEach($scope.options.formControl, function (formControl) {
@@ -1350,7 +1381,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    function resetFormControl(formControl, isMultiNgModel) {
 	      if (!isMultiNgModel) {
-	        formControl.$setViewValue($scope.model[$scope.options.key]);
+	        formControl.$setViewValue(parseGet($scope.options.key, $scope.model));
 	      }
 
 	      formControl.$render();
@@ -1364,7 +1395,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function updateInitialValue() {
-	      $scope.options.initialValue = $scope.model[$scope.options.key];
+	      $scope.options.initialValue = parseGet($scope.options.key, $scope.model);
 	    }
 
 	    function addValidationMessages(options) {
