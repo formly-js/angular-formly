@@ -3,14 +3,11 @@ import angular from 'angular'
 describe(`formlyCustomTags`, () => {
 
   beforeEach(window.module(`formly`, $provide => {
-    const docStub = {
+    $provide.value(`$document`, {
+      documentMode: 8,
       get: sinon.stub().withArgs(0).returnsThis(),
-      createElement: sinon.stub().withArgs(`div`).returns({
-        getElementsByTagName: sinon.stub().withArgs(`i`).returns([1]),
-      }),
-    }
-
-    $provide.value(`$document`, docStub)
+      createElement: sinon.spy(),
+    })
   }))
 
   let $document
@@ -22,7 +19,7 @@ describe(`formlyCustomTags`, () => {
   describe(`addCustomTags`, () => {
     it(`should create custom formly tags`, () => {
       const customElements = [
-        `div`, `formly-field`, `formly-form`, `formly-custom-validation`, `formly-focus`, `formly-transpose`,
+        `formly-field`, `formly-form`,
       ]
 
       expect($document.get).to.have.been.calledOnce
