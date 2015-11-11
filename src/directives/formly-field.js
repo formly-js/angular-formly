@@ -375,7 +375,8 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
         stopWatchingShowError = scope.$watch(function watchShowValidationChange() {
           const customExpression = formlyConfig.extras.errorExistsAndShouldBeVisibleExpression
           const {options, fc} = scope
-          if (!fc.$invalid) {
+          if ((angular.isArray(fc) && fc.every(function (control) { return !control.$invalid; })) ||
+              (!angular.isArray(fc) && !fc.$invalid)) {
             return false
           } else if (typeof options.validation.show === 'boolean') {
             return options.validation.show
