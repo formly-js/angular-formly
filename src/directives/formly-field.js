@@ -346,7 +346,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
           } else if (typeof options.validation.show === 'boolean') {
             return options.validation.show
           } else if (customExpression) {
-            return formControls.some(fc => 
+            return formControls.some(fc =>
               formlyUtil.formlyEval(scope, customExpression, fc.$modelValue, fc.$viewValue))
           } else {
             return formControls.some(fc => {
