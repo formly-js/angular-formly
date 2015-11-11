@@ -1366,7 +1366,7 @@ describe('formly-field', function() {
   })
 
   describe(`options.validation.errorExistsAndShouldBeVisible`, () => {
-    describe.skip(`multiple ng-model elements`, () => {
+    describe(`multiple ng-model elements`, () => {
       beforeEach(() => {
         scope.fields = [
           {
