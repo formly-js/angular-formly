@@ -42,7 +42,7 @@
   },
   "config": {
     "ghooks": {
-      "commit-msg": "./node_modules/.bin/validate-commit-msg && npm run eslint && npm t && npm run check-coverage"
+      "commit-msg": "validate-commit-msg && npm run eslint && npm t && npm run check-coverage"
     },
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
@@ -71,7 +71,7 @@
     "eslint-config-kentcdodds": "5.0.0",
     "eslint-loader": "1.1.0",
     "eslint-plugin-mocha": "1.0.0",
-    "ghooks": "0.3.2",
+    "ghooks": "1.0.0",
     "http-server": "0.8.5",
     "isparta": "3.1.0",
     "isparta-loader": "1.0.0",
