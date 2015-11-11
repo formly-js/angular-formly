@@ -933,12 +933,19 @@ describe('formly-form', () => {
 
       const listener = sinon.spy()
       const expression = sinon.spy()
+      const deepLinkField = getNewField()
+      deepLinkField.key = 'foo.bar'
+      deepLinkField.watcher = {
+        listener: '',
+        expression: '',
+      }
 
       scope.fields = [getNewField({
         watcher: {
           listener: '',
         },
-      }), getNewField({
+      }),
+      deepLinkField, getNewField({
         watcher: [{
           listener: '',
           expression: '',
