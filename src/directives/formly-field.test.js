@@ -1366,7 +1366,7 @@ describe('formly-field', function() {
   })
 
   describe(`options.validation.errorExistsAndShouldBeVisible`, () => {
-    describe.skip(`multiple ng-model elements`, () => {
+    describe(`multiple ng-model elements`, () => {
       beforeEach(() => {
         scope.fields = [
           {
@@ -1390,7 +1390,7 @@ describe('formly-field', function() {
         expect(field.validation.errorExistsAndShouldBeVisible, 'now true').to.be.true
       })
 
-      it(`should work with a custom errorExistsAndShouldBeVisibleExpression`, () => {
+      it.skip(`should work with a custom errorExistsAndShouldBeVisibleExpression`, () => {
         const spy = sinon.spy()
         formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = spy
         compileAndDigest()

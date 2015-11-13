@@ -374,16 +374,20 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       function addShowMessagesWatcher() {
         stopWatchingShowError = scope.$watch(function watchShowValidationChange() {
           const customExpression = formlyConfig.extras.errorExistsAndShouldBeVisibleExpression
-          const {options, fc} = scope
-          if (!fc.$invalid) {
+          const options = scope.options
+          const formControls = arrayify(scope.fc)
+          if (!formControls.some(fc => fc.$invalid)) {
             return false
           } else if (typeof options.validation.show === 'boolean') {
             return options.validation.show
           } else if (customExpression) {
-            return formlyUtil.formlyEval(scope, customExpression, fc.$modelValue, fc.$viewValue)
+            return formControls.some(fc =>
+              formlyUtil.formlyEval(scope, customExpression, fc.$modelValue, fc.$viewValue))
           } else {
-            const noTouchedButDirty = (angular.isUndefined(fc.$touched) && fc.$dirty)
-            return (scope.fc.$touched || noTouchedButDirty)
+            return formControls.some(fc => {
+              const noTouchedButDirty = (angular.isUndefined(fc.$touched) && fc.$dirty)
+              return fc.$touched || noTouchedButDirty
+            })
           }
         }, function onShowValidationChange(show) {
           scope.options.validation.errorExistsAndShouldBeVisible = show
