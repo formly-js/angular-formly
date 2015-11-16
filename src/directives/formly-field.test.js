@@ -1390,13 +1390,13 @@ describe('formly-field', function() {
         expect(field.validation.errorExistsAndShouldBeVisible, 'now true').to.be.true
       })
 
-      it.skip(`should work with a custom errorExistsAndShouldBeVisibleExpression`, () => {
+      it(`should work with a custom errorExistsAndShouldBeVisibleExpression`, () => {
         const spy = sinon.spy()
         formlyConfig.extras.errorExistsAndShouldBeVisibleExpression = spy
         compileAndDigest()
 
         invalidateAndTouchFields()
-        expect(spy).to.have.been.calledWith(sinon.match.array, sinon.match.array)
+        expect(spy).to.have.been.calledTwice // once for each form control.
       })
 
       function invalidateAndTouchFields() {
