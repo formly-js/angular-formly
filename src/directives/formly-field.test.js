@@ -1366,7 +1366,7 @@ describe('formly-field', function() {
   })
 
   describe(`options.validation.errorExistsAndShouldBeVisible`, () => {
-    describe.skip(`multiple ng-model elements`, () => {
+    describe(`multiple ng-model elements`, () => {
       beforeEach(() => {
         scope.fields = [
           {
@@ -1396,7 +1396,7 @@ describe('formly-field', function() {
         compileAndDigest()
 
         invalidateAndTouchFields()
-        expect(spy).to.have.been.calledWith(sinon.match.array, sinon.match.array)
+        expect(spy).to.have.been.calledTwice // once for each form control.
       })
 
       function invalidateAndTouchFields() {

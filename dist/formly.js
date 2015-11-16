@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v7.3.2
+* angular-formly JavaScript Library v7.3.3
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -153,7 +153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("7.3.2")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("7.3.3")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -424,7 +424,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.3.2") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.3.3") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -1539,17 +1539,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	        stopWatchingShowError = scope.$watch(function watchShowValidationChange() {
 	          var customExpression = formlyConfig.extras.errorExistsAndShouldBeVisibleExpression;
 	          var options = scope.options;
-	          var fc = scope.fc;
-
-	          if (!fc.$invalid) {
+	          var formControls = arrayify(scope.fc);
+	          if (!formControls.some(function (fc) {
+	            return fc.$invalid;
+	          })) {
 	            return false;
 	          } else if (typeof options.validation.show === 'boolean') {
 	            return options.validation.show;
 	          } else if (customExpression) {
-	            return formlyUtil.formlyEval(scope, customExpression, fc.$modelValue, fc.$viewValue);
+	            return formControls.some(function (fc) {
+	              return formlyUtil.formlyEval(scope, customExpression, fc.$modelValue, fc.$viewValue);
+	            });
 	          } else {
-	            var noTouchedButDirty = _angularFix2['default'].isUndefined(fc.$touched) && fc.$dirty;
-	            return scope.fc.$touched || noTouchedButDirty;
+	            return formControls.some(function (fc) {
+	              var noTouchedButDirty = _angularFix2['default'].isUndefined(fc.$touched) && fc.$dirty;
+	              return fc.$touched || noTouchedButDirty;
+	            });
 	          }
 	        }, function onShowValidationChange(show) {
 	          scope.options.validation.errorExistsAndShouldBeVisible = show;
@@ -2627,22 +2632,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// @ngInject
 	function addCustomTags($document) {
-	  if ($document && $document.get) {
+	  // IE8 check ->
+	  // https://msdn.microsoft.com/en-us/library/cc196988(v=vs.85).aspx
+	  if ($document && $document.documentMode < 9) {
 	    (function () {
-	      // IE8 check ->
-	      // http://stackoverflow.com/questions/10964966/detect-ie-version-prior-to-v9-in-javascript/10965203#10965203
 	      var document = $document.get(0);
-	      var div = document.createElement('div');
-	      div.innerHTML = '<!--[if lt IE 9]><i></i><![endif]-->';
-	      var isIeLessThan9 = div.getElementsByTagName('i').length === 1;
-
-	      if (isIeLessThan9) {
-	        // add the custom elements that we need for formly
-	        var customElements = ['formly-field', 'formly-form', 'formly-custom-validation', 'formly-focus', 'formly-transpose'];
-	        _angularFix2['default'].forEach(customElements, function (el) {
-	          document.createElement(el);
-	        });
-	      }
+	      // add the custom elements that we need for formly
+	      var customElements = ['formly-field', 'formly-form'];
+	      _angularFix2['default'].forEach(customElements, function (el) {
+	        document.createElement(el);
+	      });
 	    })();
 	  }
 	}
