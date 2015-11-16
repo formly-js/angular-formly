@@ -386,7 +386,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
           } else {
             return formControls.some(fc => {
               const noTouchedButDirty = (angular.isUndefined(fc.$touched) && fc.$dirty)
-              return fc.$touched || noTouchedButDirty
+              return (fc.$touched || noTouchedButDirty)
             })
           }
         }, function onShowValidationChange(show) {
