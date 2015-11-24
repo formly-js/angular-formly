@@ -29,7 +29,14 @@ with a link to a jsbin that demonstrates the issue with [issue.angular-formly.co
 
 ## Pull Requests
 
-[Watch video](https://www.youtube.com/watch?v=QOchwBm9W-g&list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH&index=1)
+‼️‼️‼️  👉**Please follow our commit message conventions** even if you're making a small change! This repository follows the
+[How to Write an Open Source JavaScript Library](https://egghead.io/series/how-to-write-an-open-source-javascript-library)
+series on egghead.io (by yours truly). See
+[this lesson](https://egghead.io/lessons/javascript-how-to-write-a-javascript-library-writing-conventional-commits-with-commitizen?series=how-to-write-an-open-source-javascript-library)
+and [this repo](https://github.com/ajoslin/conventional-changelog/blob/master/conventions/angular.md)
+to learn more about the commit message conventions.
+
+[Watch video](https://www.youtube.com/watch?v=QOchwBm9W-g&list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH&index=1) (slightly out of date)
 
 If you would like to add functionality, please submit [an issue](https://github.com/formly-js/angular-formly/issues)
 first to make sure it's a direction we want to take.

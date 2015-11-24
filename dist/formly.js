@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v7.3.3
+* angular-formly JavaScript Library v7.3.4
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -153,7 +153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("7.3.3")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("7.3.4")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -424,7 +424,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.3.3") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.3.4") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -973,12 +973,12 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 10 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
+	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
-	exports["default"] = formlyValidationMessages;
+	exports['default'] = formlyValidationMessages;
 
 	// @ngInject
 	function formlyValidationMessages() {
@@ -1003,15 +1003,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function templateOptionValue(prop, prefix, suffix, alternate) {
 	    return function getValidationMessage(viewValue, modelValue, scope) {
-	      if (scope.options.templateOptions[prop]) {
-	        return prefix + " " + scope.options.templateOptions[prop] + " " + suffix;
+	      if (typeof scope.options.templateOptions[prop] !== 'undefined') {
+	        return prefix + ' ' + scope.options.templateOptions[prop] + ' ' + suffix;
 	      } else {
 	        return alternate;
 	      }
 	    };
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ },
 /* 11 */

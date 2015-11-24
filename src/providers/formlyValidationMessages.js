@@ -23,7 +23,7 @@ function formlyValidationMessages() {
 
   function templateOptionValue(prop, prefix, suffix, alternate) {
     return function getValidationMessage(viewValue, modelValue, scope) {
-      if (scope.options.templateOptions[prop]) {
+      if (typeof scope.options.templateOptions[prop] !== 'undefined') {
         return `${prefix} ${scope.options.templateOptions[prop]} ${suffix}`
       } else {
         return alternate
