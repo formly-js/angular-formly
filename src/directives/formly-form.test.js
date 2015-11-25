@@ -952,5 +952,28 @@ describe('formly-form', () => {
       expect(listener).to.have.been.called
       expect(expression).to.have.been.called
     })
+
+    it(`should add watches on deep dive fields`, () => {
+      const formWithOptions = '<formly-form model="model" fields="fields" options="options"></formly-form>'
+      scope.model = {}
+      scope.options = {}
+
+      const deepLinkField = getNewField()
+      deepLinkField.key = 'foo.bar'
+      deepLinkField.watcher = {
+        listener: sinon.spy(),
+      }
+
+      scope.fields = [deepLinkField]
+      compileAndDigest(formWithOptions)
+      expect(compileAndDigest).to.not.throw()
+      expect(deepLinkField.watcher.listener).to.have.been.called
+      scope.model.foo = {
+        bar: 'brown',
+      }
+      scope.$digest()
+      expect(compileAndDigest).to.not.throw()
+      expect(deepLinkField.watcher.listener).to.have.been.called
+    })
   })
 })

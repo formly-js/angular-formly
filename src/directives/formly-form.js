@@ -290,7 +290,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
     }
 
     function getWatchExpression(watcher, field, index) {
-      let watchExpression = watcher.expression || `model['${field.key}']`
+      let watchExpression = watcher.expression || 'model[\'' + field.key.toString().split('.').join('\'][\'') + '\']'
       if (angular.isFunction(watchExpression)) {
         // wrap the field's watch expression so we can call it with the field as the first arg
         // and the stop function as the last arg as a helper
