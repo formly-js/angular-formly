@@ -1548,6 +1548,27 @@ describe('formly-field', function() {
       expect(expressionPropertySpy).to.have.been.calledOnce
     })
 
+    it(`should add watches on deep dive fields`, () => {
+      const formWithOptions = '<formly-form model="model" fields="fields" options="options"></formly-form>'
+      scope.model = {}
+      scope.options = {}
+
+      const deepLinkField = getNewField()
+      deepLinkField.key = 'foo.bar'
+      deepLinkField.watcher = {
+        listener: sinon.spy(),
+      }
+
+      scope.fields = [deepLinkField]
+      compileAndDigest(formWithOptions)
+      expect(deepLinkField.watcher.listener).to.have.been.called
+      scope.model.foo = {
+        bar: 'brown',
+      }
+      scope.$digest()
+      expect(deepLinkField.watcher.listener).to.have.been.called
+    })
+
     it('should make original model available on field scope, even another model has been set for field', () => {
 
       scope.model = {foo: 'bar', child: {fox: 'jumps'}}
