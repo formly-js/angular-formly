@@ -87,9 +87,9 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       if (!key || !model) {
         return
       }
+
       // If we are working with a number then $parse wont work, default back to the old way for now
-      if (angular.isNumber(key)) {
-        // TODO: Fix this so we can get several levels instead of just one with properties that are numeric
+      if (angular.isNumber(key) || (/\d/.test(key) && key.indexOf('[') === -1)) {
         model[key] = newVal
       } else {
         const setter = $parse($scope.options.key).assign
@@ -106,8 +106,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       }
 
       // If we are working with a number then $parse wont work, default back to the old way for now
-      if (angular.isNumber(key)) {
-        // TODO: Fix this so we can get several levels instead of just one with properties that are numeric
+      if (angular.isNumber(key) || (/\d/.test(key) && key.indexOf('[') === -1)) {
         return model[key]
       } else {
         return $parse(key)(model)

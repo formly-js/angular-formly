@@ -519,6 +519,62 @@ describe('formly-field', function() {
     })
   })
 
+  describe('getterSetters', () => {
+    it('should get and set values when key is all alpha', () => {
+      const key = 'foo'
+      const defaultValue = 'bar'
+
+      scope.fields = [
+        {template: input, key, defaultValue},
+      ]
+      scope.model = {}
+
+      compileAndDigest()
+      expect(scope.model[key]).to.eq(defaultValue)
+    })
+
+    it('should get and set values when key is all numeric', () => {
+      const key = '1333'
+      const defaultValue = 'bar'
+
+      scope.fields = [
+        {template: input, key, defaultValue},
+      ]
+      scope.model = {}
+
+      compileAndDigest()
+      expect(scope.model[key]).to.eq(defaultValue)
+    })
+
+    it('should get and set values when key is alpha numeric with alpha first', () => {
+      const key = 'A1'
+      const defaultValue = 'bar'
+
+      scope.fields = [
+        {template: input, key, defaultValue},
+      ]
+      scope.model = {}
+
+      compileAndDigest()
+      expect(scope.model[key]).to.eq(defaultValue)
+    })
+
+    it('should get and set values when key is alpha numeric with numeric first', () => {
+      const key = '1A'
+      const defaultValue = 'bar'
+
+      scope.fields = [
+        {template: input, key, defaultValue},
+      ]
+      scope.model = {}
+
+      compileAndDigest()
+      expect(scope.model[key]).to.eq(defaultValue)
+    })
+  })
+
+
+
   describe(`id property`, () => {
     it(`should default to a semi-random id that you cannot rely on and don't have to think about`, () => {
       scope.fields = [getNewField()]
@@ -563,7 +619,6 @@ describe('formly-field', function() {
       scope.fields = [getNewField({modelOptions: {debounce: {blur: 'foo', default: 'bar'}}})]
       expect(() => compileAndDigest()).to.throw()
     })
-
 
     describe(`value function`, () => {
       let value
