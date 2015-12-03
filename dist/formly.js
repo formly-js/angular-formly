@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v7.3.4
+* angular-formly JavaScript Library v7.3.5
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -153,7 +153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("7.3.4")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("7.3.5")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -424,7 +424,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.3.4") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.3.5") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -2232,7 +2232,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function getWatchExpression(watcher, field, index) {
-	      var watchExpression = watcher.expression || 'model[\'' + field.key + '\']';
+	      var watchExpression = watcher.expression || 'model[\'' + field.key.toString().split('.').join('\'][\'') + '\']';
 	      if (_angularFix2['default'].isFunction(watchExpression)) {
 	        (function () {
 	          // wrap the field's watch expression so we can call it with the field as the first arg
