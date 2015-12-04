@@ -1,8 +1,21 @@
 import angular from 'angular-fix'
 
 export default {
-  formlyEval, getFieldId, reverseDeepMerge, findByNodeName, arrayify, extendFunction, extendArray, startsWith, contains,
+  containsSelector, containsSpecialChar, formlyEval, getFieldId, reverseDeepMerge, findByNodeName,
+  arrayify, extendFunction, extendArray, startsWith, contains,
 }
+
+function containsSelector(string) {
+  return containsSpecialChar(string, '.') || (containsSpecialChar(string, '[') && containsSpecialChar(string, ']'))
+}
+
+function containsSpecialChar(a, b) {
+  if (!a || !a.indexOf) {
+    return false
+  }
+  return a.indexOf(b) !== -1
+}
+
 
 function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
   if (angular.isFunction(expression)) {
