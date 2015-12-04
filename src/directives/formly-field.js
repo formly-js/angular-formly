@@ -35,7 +35,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
   // @ngInject
   function FormlyFieldController($scope, $timeout, $parse, $controller, formlyValidationMessages) {
-    /* eslint max-statements:[2, 31] */
+    /* eslint max-statements:[2, 32] */
     if ($scope.options.fieldGroup) {
       setupFieldGroup()
       return
@@ -82,13 +82,17 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       return parseGet($scope.options.key, $scope.model)
     }
 
+    function shouldNotUseParseKey(key) {
+      return angular.isNumber(key) || (/^\d/.test(key) && key.indexOf('[') === -1)
+    }
+
     function parseSet(key, model, newVal) {
       // If either of these are null/undefined then just return undefined
       if (!key || !model) {
         return
       }
       // If we are working with a number then $parse wont work, default back to the old way for now
-      if (angular.isNumber(key)) {
+      if (shouldNotUseParseKey(key)) {
         // TODO: Fix this so we can get several levels instead of just one with properties that are numeric
         model[key] = newVal
       } else {
@@ -106,7 +110,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       }
 
       // If we are working with a number then $parse wont work, default back to the old way for now
-      if (angular.isNumber(key)) {
+      if (shouldNotUseParseKey(key)) {
         // TODO: Fix this so we can get several levels instead of just one with properties that are numeric
         return model[key]
       } else {
