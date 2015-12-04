@@ -572,6 +572,30 @@ describe('formly-field', function() {
       expect(scope.model[key]).to.eq(defaultValue)
     })
 
+    it('should work with dashes in the key', () => {
+      const key = 'address-1st-line'
+      const defaultValue = 'baz'
+      scope.fields = [
+        {template: input, key, defaultValue},
+      ]
+      scope.model = {}
+
+      compileAndDigest()
+      expect(scope.model[key]).to.eq(defaultValue)
+    })
+
+    it('should work with dashes and numerics in the key', () => {
+      const key = 'b141c66a-2857-4196-847b-b2096fa6170d'
+      const defaultValue = 'baz'
+      scope.fields = [
+        {template: input, key, defaultValue},
+      ]
+      scope.model = {}
+
+      compileAndDigest()
+      expect(scope.model[key]).to.eq(defaultValue)
+    })
+
     it('should work with nested keys with numbers in the key', () => {
       const key = 'foo3bar.baz4foobar'
       const defaultValue = 'baz'
@@ -581,7 +605,7 @@ describe('formly-field', function() {
       scope.model = {}
 
       compileAndDigest()
-      expect(scope.model.foo3bar.baz4foobar).to.equal(defaultValue)
+      expect(scope.model.foo3bar.baz4foobar).to.eq(defaultValue)
     })
   })
 

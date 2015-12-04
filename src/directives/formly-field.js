@@ -83,7 +83,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     }
 
     function shouldNotUseParseKey(key) {
-      return angular.isNumber(key) || (/^\d/.test(key) && key.indexOf('[') === -1)
+      return angular.isNumber(key) || !formlyUtil.containsSelector(key)
     }
 
     function parseSet(key, model, newVal) {

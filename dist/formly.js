@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v7.3.6
+* angular-formly JavaScript Library v7.3.7
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -153,7 +153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("7.3.6")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("7.3.7")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -424,7 +424,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.3.6") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.3.7") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -846,8 +846,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _angularFix2 = _interopRequireDefault(_angularFix);
 
 	exports['default'] = {
-	  formlyEval: formlyEval, getFieldId: getFieldId, reverseDeepMerge: reverseDeepMerge, findByNodeName: findByNodeName, arrayify: arrayify, extendFunction: extendFunction, extendArray: extendArray, startsWith: startsWith, contains: contains
+	  containsSelector: containsSelector, containsSpecialChar: containsSpecialChar, formlyEval: formlyEval, getFieldId: getFieldId, reverseDeepMerge: reverseDeepMerge, findByNodeName: findByNodeName,
+	  arrayify: arrayify, extendFunction: extendFunction, extendArray: extendArray, startsWith: startsWith, contains: contains
 	};
+
+	function containsSelector(string) {
+	  return containsSpecialChar(string, '.') || containsSpecialChar(string, '[') && containsSpecialChar(string, ']');
+	}
+
+	function containsSpecialChar(a, b) {
+	  if (!a || !a.indexOf) {
+	    return false;
+	  }
+	  return a.indexOf(b) !== -1;
+	}
 
 	function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
 	  if (_angularFix2['default'].isFunction(expression)) {
@@ -1268,7 +1280,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    function shouldNotUseParseKey(key) {
-	      return _angularFix2['default'].isNumber(key) || /^\d/.test(key) && key.indexOf('[') === -1;
+	      return _angularFix2['default'].isNumber(key) || !formlyUtil.containsSelector(key);
 	    }
 
 	    function parseSet(key, model, newVal) {
