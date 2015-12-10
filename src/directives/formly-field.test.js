@@ -1309,7 +1309,6 @@ describe('formly-field', function() {
       // initial state
       expect(field.formControl.$dirty).to.be.false
       expect(field.formControl.$touched).to.be.false
-
       // modification
       scope.model.foo = '~=[,,_,,]:3'
       field.formControl.$setTouched()
@@ -1425,6 +1424,43 @@ describe('formly-field', function() {
       compileAndDigest()
       expect(field.formControl).to.not.exist
       expect(() => field.resetModel()).to.not.throw()
+    })
+
+    it('should reset the form state on the input and form both', () => {
+      const field = getNewField({key: 'foo'})
+      scope.fields = [field]
+      compileAndDigest(`
+<form name="theForm">
+<formly-form form="theForm" model="model" fields="fields" options="options"></formly-form>
+</form>
+`)
+      // initial state
+      expect(field.formControl.$dirty).to.be.false
+      expect(field.formControl.$touched).to.be.false
+      expect(scope.theForm.$dirty).to.be.false
+      expect(scope.theForm.$pristine).to.be.true
+      // modification
+      scope.model.foo = '~=[,,_,,]:3'
+      field.formControl.$setTouched()
+      field.formControl.$setDirty()
+      scope.$digest()
+
+      // expect modification
+      expect(field.formControl.$dirty).to.be.true
+      expect(field.formControl.$touched).to.be.true
+      expect(scope.theForm.$dirty).to.be.true
+      expect(scope.theForm.$pristine).to.be.false
+      expect(field.formControl.$modelValue).to.eq('~=[,,_,,]:3')
+
+      // reset state
+      field.resetModel()
+
+      // expect reset
+      expect(field.formControl.$modelValue).to.be.empty
+      expect(field.formControl.$touched).to.be.false
+      expect(field.formControl.$dirty).to.be.false
+      expect(scope.theForm.$dirty).to.be.false
+      expect(scope.theForm.$pristine).to.be.true
     })
 
     it(`should not digest if there's a digest in progress`, () => {

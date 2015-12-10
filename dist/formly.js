@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v7.3.7
+* angular-formly JavaScript Library v7.3.8
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -153,7 +153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("7.3.7")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("7.3.8")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -424,7 +424,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.3.7") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.3.8") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -1392,6 +1392,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        } else {
 	          resetFormControl($scope.options.formControl);
 	        }
+	      }
+	      if ($scope.form) {
+	        $scope.form.$setUntouched && $scope.form.$setUntouched();
+	        $scope.form.$setPristine();
 	      }
 	    }
 
