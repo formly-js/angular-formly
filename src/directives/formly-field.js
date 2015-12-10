@@ -197,6 +197,10 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
           resetFormControl($scope.options.formControl)
         }
       }
+      if ($scope.form) {
+        $scope.form.$setUntouched && $scope.form.$setUntouched()
+        $scope.form.$setPristine()
+      }
     }
 
     function resetFormControl(formControl, isMultiNgModel) {
