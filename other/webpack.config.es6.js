@@ -137,7 +137,7 @@ function getTestConfig() {
 
 
 function getJavaScriptLoader() {
-  return {test: /\.js$/, loaders: ['ng-annotate', 'babel', 'eslint?configFile=./other/src.eslintrc'], exclude: /node_modules/};
+  return {test: /\.js$/, loaders: ['uglify', 'ng-annotate', 'babel', 'eslint?configFile=./other/src.eslintrc'], exclude: /node_modules/};
 }
 
 function getHtmlLoader() {
