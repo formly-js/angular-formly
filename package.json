@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "7.3.8",
+  "version": "7.3.9",
   "author": "Astrism <astrisms@gmail.com>",
   "contributors": [
     "Astrism <astrisms@gmail.com>",
@@ -96,7 +96,6 @@
     "semantic-release": "4.3.5",
     "sinon": "1.17.2",
     "sinon-chai": "2.8.0",
-    "uglify-loader": "1.2.0",
     "validate-commit-msg": "1.0.0",
     "webpack": "1.12.2",
     "webpack-notifier": "1.2.1"
