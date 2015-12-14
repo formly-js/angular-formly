@@ -96,7 +96,8 @@ function getProdConfig() {
     plugins: _.union(getCommonPlugins(), [
       new webpack.optimize.DedupePlugin(),
       new webpack.optimize.OccurenceOrderPlugin(),
-      new webpack.optimize.AggressiveMergingPlugin()
+      new webpack.optimize.AggressiveMergingPlugin(),
+      new webpack.optimize.UglifyJsPlugin()
     ])
   };
 }
