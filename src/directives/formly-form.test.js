@@ -953,4 +953,343 @@ describe('formly-form', () => {
       expect(expression).to.have.been.called
     })
   })
+
+  describe(`manualModelWatcher option`, () => {
+    beforeEach(() => {
+      scope.model = {
+        foo: 'myFoo',
+        bar: 123,
+        baz: {buzz: 'myBuzz'},
+      }
+
+      scope.fields = [
+        {template: input, key: 'foo'},
+        {template: input, key: 'bar', templateOptions: {type: 'number'}},
+      ]
+    })
+
+    describe('declared as a boolean', () => {
+      beforeEach(() => {
+        scope.options = {
+          manualModelWatcher: true,
+        }
+      })
+
+      it(`should block a global model watcher`, () => {
+        const spy = sinon.spy()
+
+        scope.fields[0].expressionProperties = {
+          'templateOptions.label': spy,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        spy.reset()
+
+        scope.model.foo = 'bar'
+
+        scope.$digest()
+        $timeout.verifyNoPendingTasks()
+
+        expect(spy).to.not.have.been.called
+      })
+
+      it(`should watch manually selected model property`, () => {
+        const spy = sinon.spy()
+
+        scope.fields[0].watcher = [{
+          expression: 'model.foo',
+          runFieldExpressions: true,
+        }]
+        scope.fields[0].expressionProperties = {
+          'templateOptions.label': spy,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        spy.reset()
+
+        scope.model.foo = 'bar'
+
+        scope.$digest()
+        $timeout.flush()
+
+        expect(spy).to.have.been.called
+      })
+
+      it(`should not watch model properties that do not have manual watcher defined`, () => {
+        const spy = sinon.spy()
+
+        scope.fields[0].watcher = [{
+          expression: 'model.foo',
+          runFieldExpressions: true,
+        }]
+        scope.fields[0].expressionProperties = {
+          'templateOptions.label': spy,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        spy.reset()
+
+        scope.model.bar = 123
+
+        scope.$digest()
+        $timeout.verifyNoPendingTasks()
+
+        expect(spy).to.not.have.been.called
+      })
+
+      it(`should run manual watchers defined as a function`, () => {
+        const spy = sinon.spy()
+        const stub = sinon.stub()
+
+        scope.fields[0].watcher = [{
+          expression: stub,
+          runFieldExpressions: true,
+        }]
+        scope.fields[0].expressionProperties = {
+          'templateOptions.label': spy,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        stub.reset()
+        spy.reset()
+
+        // set random stub value so it triggers watcher function
+        stub.returns(Math.random())
+
+        scope.$digest()
+        $timeout.flush()
+
+        expect(stub).to.have.been.called
+        expect(spy).to.have.been.called
+      })
+
+      it('should not trigger watches on other fields', () => {
+        const spy1 = sinon.spy()
+        const spy2 = sinon.spy()
+
+        scope.fields[0].watcher = [{
+          expression: 'model.foo',
+          runFieldExpressions: true,
+        }]
+        scope.fields[0].expressionProperties = {
+          'templateOptions.label': spy1,
+        }
+        scope.fields[1].expressionProperties = {
+          'templateOptions.label': spy2,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        spy1.reset()
+        spy2.reset()
+
+        scope.model.foo = 'asd'
+
+        scope.$digest()
+        $timeout.flush()
+
+        expect(spy1).to.have.been.called
+        expect(spy2).to.not.have.been.called
+      })
+
+      it('works with models that are declared as string (relative model)', () => {
+        const spy = sinon.spy()
+        const model = 'model.nested'
+
+        scope.model = {
+          nested: {
+            foo: 'foo',
+          },
+        }
+        scope.fields[0].model = model
+        scope.fields[0].watcher = [{
+          expression: 'model.nested.foo',
+          runFieldExpressions: true,
+        }]
+        scope.fields[0].expressionProperties = {
+          'templateOptions.label': spy,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        spy.reset()
+
+        scope.model.nested.foo = 'bar'
+
+        scope.$digest()
+        $timeout.flush()
+
+        expect(spy).to.have.been.called
+      })
+    })
+
+    describe('declared as a function', () => {
+      beforeEach(() => {
+        scope.options = {
+          manualModelWatcher: () => scope.model.baz,
+        }
+      })
+
+      it('works as a form-wide watcher', () => {
+        const spy = sinon.spy()
+
+        scope.options = {
+          manualModelWatcher: () => scope.model.baz,
+        }
+
+        scope.fields[1].expressionProperties = {
+          'templateOptions.label': spy,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        spy.reset()
+
+        scope.model.foo = 'random string'
+
+        scope.$digest()
+        $timeout.verifyNoPendingTasks()
+
+        expect(spy).to.not.have.been.called
+
+        spy.reset()
+
+        scope.model.baz.buzz = 'random buzz string'
+
+        scope.$digest()
+        $timeout.flush()
+
+        expect(spy).to.have.been.called
+      })
+
+      it('still fires manual field watchers', () => {
+        const spy = sinon.spy()
+
+        scope.fields[0].watcher = [{
+          expression: 'model.foo',
+          runFieldExpressions: true,
+        }]
+        scope.fields[0].expressionProperties = {
+          'templateOptions.label': spy,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        spy.reset()
+
+        scope.model.foo = 'bar'
+
+        scope.$digest()
+        $timeout.flush()
+
+        expect(spy).to.have.been.called
+      })
+
+    })
+
+    describe('enabled with watchAllExpressions option', () => {
+      beforeEach(() => {
+        scope.options = {
+          manualModelWatcher: true,
+          watchAllExpressions: true,
+        }
+      })
+
+      it('watches and evaluates string template expressions', () => {
+        const field = scope.fields[0]
+
+        field.expressionProperties = {
+          'templateOptions.label': 'model.foo',
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        scope.model.foo = 'bar'
+
+        scope.$digest()
+
+        expect(field.templateOptions.label).to.equal(scope.model.foo)
+      })
+
+      it('watches and evaluates string template expressions with custom string model', () => {
+        const field = scope.fields[0]
+
+        field.model = 'model.baz'
+        field.expressionProperties = {
+          'templateOptions.label': 'model.buzz',
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        scope.model.baz.buzz = 'bar'
+
+        scope.$digest()
+
+        expect(field.templateOptions.label).to.equal(scope.model.baz.buzz)
+      })
+
+      it('watches and evaluates string template expressions with custom object model', () => {
+        const field = scope.fields[0]
+
+        field.model = {customFoo: 'customBar'}
+        field.expressionProperties = {
+          'templateOptions.label': 'model.customFoo',
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        field.model.customFoo = 'bar'
+
+        scope.$digest()
+
+        expect(field.templateOptions.label).to.equal(field.model.customFoo)
+      })
+
+      it('watches and evaluates hideExpression', () => {
+        const field = scope.fields[0]
+
+        field.hideExpression = 'model.foo === "bar"'
+
+        compileAndDigest()
+        $timeout.flush()
+
+        scope.model.foo = 'bar'
+
+        scope.$digest()
+
+        expect(field.hide).to.equal(true)
+      })
+
+      it('watches and evaluates hideExpression with custom string model', () => {
+        const field = scope.fields[0]
+
+        field.model = 'model.baz'
+        field.hideExpression = 'model.baz.buzz === "bar"'
+
+        compileAndDigest()
+        $timeout.flush()
+
+        scope.model.baz.buzz = 'bar'
+
+        scope.$digest()
+
+        expect(field.hide).to.equal(true)
+      })
+    })
+  })
 })
