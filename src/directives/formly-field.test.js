@@ -1933,6 +1933,31 @@ describe('formly-field', function() {
         $timeout.flush()
         expect($validateSpy).to.have.been.calledOnce
       })
+
+      it.skip(`should run field expressions when form is initialised`, () => {
+        scope.model = {email: ''}
+        scope.fields = [getNewField({
+          key: 'email',
+          templateOptions: {
+            required: true,
+          },
+          extras: {validateOnModelChange: true},
+        }),
+        getNewField({
+          key: 'firstName',
+          templateOptions: {
+            required: true,
+          },
+          extras: {validateOnModelChange: true},
+          hideExpression: 'form.email.$invalid',
+        })]
+
+        compileAndDigest()
+        $timeout.flush()
+        scope.$digest()
+        expect(scope.fields[1].formControl).to.exist
+        expect(scope.fields[1].hide).to.equal(true)
+      })
     })
   })
 
