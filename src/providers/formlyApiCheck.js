@@ -116,7 +116,8 @@ const fieldOptionsApiShape = {
   watcher: apiCheck.typeOrArrayOf(
     apiCheck.shape({
       expression: formlyExpression.optional,
-      listener: formlyExpression,
+      listener: formlyExpression.optional,
+      runFieldExpressions: apiCheck.bool.optional,
     })
   ).optional,
   validators: validatorChecker.optional,
@@ -164,6 +165,8 @@ const formOptionsApi = apiCheck.shape({
   updateInitialValue: apiCheck.func.optional,
   removeChromeAutoComplete: apiCheck.bool.optional,
   templateManipulators: templateManipulators.optional,
+  manualModelWatcher: apiCheck.oneOfType([apiCheck.bool, apiCheck.func]).optional,
+  watchAllExpressions: apiCheck.bool.optional,
   wrapper: specifyWrapperType.optional,
   fieldTransform: apiCheck.oneOfType([
     apiCheck.func, apiCheck.array,
