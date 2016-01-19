@@ -290,7 +290,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
     }
 
     function setupWatchers(field, index) {
-      if (isFieldGroup(field) || !angular.isDefined(field.watcher)) {
+      if (!angular.isDefined(field.watcher)) {
         return
       }
       let watchers = field.watcher
@@ -313,7 +313,12 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
     }
 
     function getWatchExpression(watcher, field, index) {
-      let watchExpression = watcher.expression || 'model[\'' + field.key.toString().split('.').join('\'][\'') + '\']'
+      let watchExpression
+      if (!angular.isUndefined(watcher.expression)) {
+        watchExpression = watcher.expression
+      } else if (field.key) {
+        watchExpression = 'model[\'' + field.key.toString().split('.').join('\'][\'') + '\']'
+      }
       if (angular.isFunction(watchExpression)) {
         // wrap the field's watch expression so we can call it with the field as the first arg
         // and the stop function as the last arg as a helper

@@ -77,6 +77,14 @@ const validatorChecker = apiCheck.objectOf(apiCheck.oneOfType([
   }).strict,
 ]))
 
+const watcherChecker = apiCheck.typeOrArrayOf(
+  apiCheck.shape({
+    expression: formlyExpression.optional,
+    listener: formlyExpression.optional,
+    runFieldExpressions: apiCheck.bool.optional,
+  })
+)
+
 const fieldOptionsApiShape = {
   $$hashKey: apiCheck.any.optional,
   type: apiCheck.shape.ifNot(['template', 'templateUrl'], apiCheck.string).optional,
@@ -113,13 +121,7 @@ const fieldOptionsApiShape = {
     getterSetter: apiCheck.bool.optional,
     timezone: apiCheck.string.optional,
   }).optional,
-  watcher: apiCheck.typeOrArrayOf(
-    apiCheck.shape({
-      expression: formlyExpression.optional,
-      listener: formlyExpression.optional,
-      runFieldExpressions: apiCheck.bool.optional,
-    })
-  ).optional,
+  watcher: watcherChecker.optional,
   validators: validatorChecker.optional,
   asyncValidators: validatorChecker.optional,
   parsers: apiCheck.arrayOf(formlyExpression).optional,
@@ -184,6 +186,7 @@ const fieldGroup = apiCheck.shape({
   options: formOptionsApi.optional,
   templateOptions: apiCheck.object.optional,
   wrapper: specifyWrapperType.optional,
+  watcher: watcherChecker.optional,
   hide: apiCheck.bool.optional,
   hideExpression: formlyExpression.optional,
   data: apiCheck.object.optional,

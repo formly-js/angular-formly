@@ -952,6 +952,31 @@ describe('formly-form', () => {
       expect(listener).to.have.been.called
       expect(expression).to.have.been.called
     })
+
+    it(`should setup any watchers specified on a fieldgroup`, () => {
+      scope.model = {}
+
+      const listener = sinon.spy()
+      const expression = sinon.spy()
+
+      scope.fields = [{
+        watcher: [{
+          listener: '',
+          expression: '',
+        }, {
+          listener,
+          expression,
+        }],
+        fieldGroup: [
+          getNewField({}),
+          getNewField({}),
+        ],
+      }]
+
+      expect(compileAndDigest).to.not.throw()
+      expect(listener).to.have.been.called
+      expect(expression).to.have.been.called
+    })
   })
 
   describe(`manualModelWatcher option`, () => {
