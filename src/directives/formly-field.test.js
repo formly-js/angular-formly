@@ -2015,6 +2015,15 @@ describe('formly-field', function() {
     })
   })
 
+  describe('Error message', () => {
+    it(`should give proper error when field.type is not exist`, () => {
+      scope.fields = [
+        {},
+      ]
+
+      expect(() => compileAndDigest()).to.throw(/specify type.*field config.*object/)
+    })
+  })
   function compileAndDigest(template = basicForm, context = scope) {
     el = $compile(template)(context)
     context.$digest()

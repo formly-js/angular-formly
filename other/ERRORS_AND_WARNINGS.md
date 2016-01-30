@@ -132,7 +132,9 @@ and an example [here](http://angular-formly.com/#/example/field-options/hide-fie
 To allow for plugin like functionality, `fieldTransform` functions on `formlyConfig.extras` and `formly-form.options`
 are now deprecated. Moving forward fieldTransform will accept an array of `fieldTransform` functions. This makes it possible
 to have multiple fieldTransforms. Note, `fieldTransform` functions will be removed in a major release.
+# Field Configuration Object
 
+`type` is required
 # Notes
 
 It is recommended to disable warnings in production using `formlyConfigProvider.disableWarnings = true`. Note: This will
