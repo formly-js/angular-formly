@@ -33,7 +33,7 @@ with a link to a jsbin that demonstrates the issue with [issue.angular-formly.co
 [How to Write an Open Source JavaScript Library](https://egghead.io/series/how-to-write-an-open-source-javascript-library)
 series on egghead.io (by yours truly). See
 [this lesson](https://egghead.io/lessons/javascript-how-to-write-a-javascript-library-writing-conventional-commits-with-commitizen?series=how-to-write-an-open-source-javascript-library)
-and [this repo](https://github.com/ajoslin/conventional-changelog/blob/master/conventions/angular.md)
+and [this repo](https://github.com/ajoslin/conventional-changelog/blob/81860ab6529d45422a78251951b458289df9405c/conventions/angular.md)
 to learn more about the commit message conventions.
 
 [Watch video](https://www.youtube.com/watch?v=QOchwBm9W-g&list=PLV5CVI1eNcJi7lVVIuNyRhEuck1Z007BH&index=1) (slightly out of date)
@@ -52,7 +52,7 @@ Please do the following:
 2. run `npm start` (if you're on a windows machine, see [this issue](https://github.com/formly-js/angular-formly/issues/305))
 3. write tests & code in ES6 goodness :-)
 4. run `git add src/`
-5. run `npm run commit` and follow the prompt (this ensures that your commit message follows [our conventions](https://github.com/ajoslin/conventional-changelog/blob/master/conventions/angular.md)).
+5. run `npm run commit` and follow the prompt (this ensures that your commit message follows [our conventions](https://github.com/ajoslin/conventional-changelog/blob/81860ab6529d45422a78251951b458289df9405c/conventions/angular.md)).
 6. notice that there's a pre-commit hook that runs to ensure tests pass and coverage doesn't drop to prevent the build from breaking :-)
 7. push your changes
 8. create a PR with a link to the original issue
