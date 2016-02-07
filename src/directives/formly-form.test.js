@@ -536,26 +536,85 @@ describe('formly-form', () => {
     beforeEach(() => {
       scope.model = {}
       scope.fieldModel = {}
+    })
+    describe('behaviour when model changes', () => {
 
-      scope.fields = [
-        {template: input, key: 'foo', model: scope.fieldModel},
-        {template: input, key: 'bar', model: scope.fieldModel, hideExpression: () => !!scope.fieldModel.foo},
-      ]
+      describe('when a string is passed to hideExpression', () => {
+        beforeEach(() => {
+          scope.fields = [
+            {template: input, key: 'foo', model: scope.fieldModel},
+            {template: input, key: 'bar', model: scope.fieldModel, hideExpression: () => !!scope.fieldModel.foo},
+          ]
+        })
+
+        it('should be called and should resolve to true when field model changes', () => {
+          compileAndDigest()
+          expect(scope.fields[1].hide).be.false
+          scope.fields[0].formControl.$setViewValue('value')
+          expect(scope.fields[1].hide).be.true
+        })
+
+        it('should be called and should resolve to false when field model changes', () => {
+          scope.fieldModel.foo = 'value'
+          compileAndDigest()
+          expect(scope.fields[1].hide).be.true
+          scope.fields[0].formControl.$setViewValue('')
+          expect(scope.fields[1].hide).be.false
+        })
+      })
+      describe('when a function is passed to hideExpression', () => {
+        beforeEach(() => {
+          scope.fields = [
+            {template: input, key: 'foo', model: scope.fieldModel},
+            {
+              template: input, key: 'bar',
+              model: scope.fieldModel,
+              hideExpression: ($viewValue, $modelValue, scope) => {
+                return !!scope.fields[1].data.formScope.fieldModel.foo   //since the scope passed to the function belongs to the field,
+              },                                                         //we store the form's scope in data property to access it here.
+              data: {
+                formScope: scope,          //the form's scope
+              },
+            },
+          ]
+        })
+
+        it('should be called and should resolve to true when field model changes', () => {
+          compileAndDigest()
+          expect(scope.fields[1].hide).be.false
+          scope.fields[0].formControl.$setViewValue('value')
+          expect(scope.fields[1].hide).be.true
+        })
+
+        it('should be called and should resolve to false when field model changes', () => {
+          scope.fieldModel.foo = 'value'
+          compileAndDigest()
+          expect(scope.fields[1].hide).be.true
+          scope.fields[0].formControl.$setViewValue('')
+          expect(scope.fields[1].hide).be.false
+        })
+      })
     })
 
-    it('should be called and resolve to true when field model changes', () => {
+    it('ensures that hideExpression has all the expressionProperties values', () => {
+      scope.options = {formState: {}}
+      scope.fields = [{
+        template: input,
+        key: 'test',
+        hideExpression: `
+        options === options.data.field &&
+        index === 0 &&
+        formState === options.data.formOptions.formState &&
+        originalModel === options.data.originalModel &&
+        formOptions === options.data.formOptions`,
+        data: {
+          originalModel: scope.model,
+          formOptions: scope.options,
+        },
+      }]
+      scope.fields[0].data.field = scope.fields[0]
       compileAndDigest()
-      expect(scope.fields[1].hide).be.false
-      scope.fields[0].formControl.$setViewValue('value')
-      expect(scope.fields[1].hide).be.true
-    })
-
-    it('should be called and resolve to false when field model changes', () => {
-      scope.fieldModel.foo = 'value'
-      compileAndDigest()
-      expect(scope.fields[1].hide).be.true
-      scope.fields[0].formControl.$setViewValue('')
-      expect(scope.fields[1].hide).be.false
+      expect(scope.fields[0].hide).be.true
     })
   })
 
