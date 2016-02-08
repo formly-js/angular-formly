@@ -29,6 +29,8 @@ with a link to a jsbin that demonstrates the issue with [issue.angular-formly.co
 
 ## Pull Requests
 
+**Working on your first Pull Request?** You can learn how from this *free* series [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)
+
 ‼️‼️‼️  👉**Please follow our commit message conventions** even if you're making a small change! This repository follows the
 [How to Write an Open Source JavaScript Library](https://egghead.io/series/how-to-write-an-open-source-javascript-library)
 series on egghead.io (by yours truly). See
