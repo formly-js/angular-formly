@@ -570,10 +570,10 @@ describe('formly-form', () => {
               template: input, key: 'bar',
               model: scope.fieldModel,
               hideExpression: ($viewValue, $modelValue, scope) => {
-                return !!scope.fields[1].data.formScope.fieldModel.foo   //since the scope passed to the function belongs to the field,
-              },                                                         //we store the form's scope in data property to access it here.
-              data: {
-                formScope: scope,          //the form's scope
+                return !!scope.fields[1].data.parentScope.fieldModel.foo   //since the scope passed to the function belongs to the form,
+              },                                                           //we store the outer(parent) scope in 'data' property to access
+              data: {                                                      //the template named 'foo' stored in the fields array
+                parentScope: scope,          //the parent scope(one used to compile the form)
               },
             },
           ]
