@@ -369,6 +369,8 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
         options: field,
         index,
         formState: $scope.options.formState,
+        originalModel: $scope.model,
+        formOptions: $scope.options,
         formId: $scope.formId,
       }
     }
