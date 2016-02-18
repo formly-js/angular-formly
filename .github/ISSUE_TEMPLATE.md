@@ -4,13 +4,13 @@
 
 Thanks for your interest in angular-formly. If you're
 filing this issue to get help, please follow the
-instructions at [help.angular-formly.com](http://help.angular-formly.com).
+instructions at help.angular-formly.com
 
 The GitHub issues on this project are reserved
 for feature requests and bug reports. So if you
 file an issue looking for help, it will be closed
 and you'll be invited to follow the instructions
-at [help.angular-formly.com](http://help.angular-formly.com).
+at help.angular-formly.com.
 It's nothing personal. It's just hard to manage
 the project otherwise!
 
