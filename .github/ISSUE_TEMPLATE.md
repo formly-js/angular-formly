@@ -19,8 +19,7 @@ the project otherwise!
 
 If you'd like to report what you think is a bug or
 a feature request, please follow the instructions
-at [issue.angular-formly.com](http://issue.angular-formly.com)
-to file your issue.
+at issue.angular-formly.com to file your issue.
 
 Thanks for your contribution!
 
