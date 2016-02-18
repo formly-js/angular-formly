@@ -42,7 +42,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
                ${getHideDirective()}="!field.hide"
                class="formly-field"
                options="field"
-               model="field.model || model"
+               model="field.model"
                original-model="model"
                fields="fields"
                form="theFormlyForm"
@@ -265,6 +265,8 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
 
         isNewModel = !referencesCurrentlyWatchedModel(expression)
 
+        // temporary assign $scope.model as field.model to evaluate the expression in correct context
+        field.model = $scope.model
         field.model = evalCloseToFormlyExpression(expression, undefined, field, index)
         if (!field.model) {
           throw formlyUsability.getFieldError(
@@ -273,6 +275,8 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
             ' expression must have been initialized ahead of time.',
             field)
         }
+      } else if (!field.model) {
+        field.model = $scope.model
       }
       return isNewModel
     }
@@ -328,6 +332,8 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
           return originalExpression(...args)
         }
         watchExpression.displayName = `Formly Watch Expression for field for ${field.key}`
+      } else if (field.model) {
+        watchExpression = $parse(watchExpression).bind(null, $scope, {model: field.model})
       }
       return watchExpression
     }
@@ -366,6 +372,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
     function getFormlyFieldLikeLocals(field, index) {
       // this makes it closer to what a regular formlyExpression would be
       return {
+        model: field.model,
         options: field,
         index,
         formState: $scope.options.formState,
