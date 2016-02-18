@@ -2,6 +2,8 @@
 
 ## [angular-formly](http://docs.angular-formly.com)
 
+[THIS PROJECT NEEDS A MAINTAINER](https://github.com/formly-js/angular-formly/issues/638)
+
 Status:
 [![npm version](https://img.shields.io/npm/v/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly)
 [![npm downloads](https://img.shields.io/npm/dm/angular-formly.svg?style=flat-square)](http://npm-stat.com/charts.html?package=angular-formly&from=2015-01-01)
