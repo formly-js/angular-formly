@@ -126,6 +126,15 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
       angular.forEach($scope.fields, runFieldExpressionProperties)
     }
 
+    function validateFormControl(formControl, promise) {
+      const validate = formControl.$validate
+      if (promise) {
+        promise.then(validate)
+      } else {
+        validate()
+      }
+    }
+
     function runFieldExpressionProperties(field, index) {
       const model = field.model || $scope.model
       const promise = field.runExpressions && field.runExpressions()
@@ -134,11 +143,12 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
         field.hide = evalCloseToFormlyExpression(field.hideExpression, val, field, index)
       }
       if (field.extras && field.extras.validateOnModelChange && field.formControl) {
-        const validate = field.formControl.$validate
-        if (promise) {
-          promise.then(validate)
+        if (angular.isArray(field.formControl)) {
+          angular.forEach(field.formControl, function(formControl) {
+            validateFormControl(formControl, promise)
+          })
         } else {
-          validate()
+          validateFormControl(field.formControl, promise)
         }
       }
     }

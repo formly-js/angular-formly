@@ -1934,6 +1934,31 @@ describe('formly-field', function() {
         expect($validateSpy).to.have.been.calledOnce
       })
 
+      it(`should cope when field.formControl has been upgraded to an array`, () => {
+        scope.model = {
+          multiNgModel: {
+            start: 'start',
+            stop: 'stop',
+          },
+        }
+        const field = getNewField({
+          key: 'multiNgModel',
+          template: multiNgModelField,
+          extras: {
+            validateOnModelChange: true,
+          },
+        })
+        scope.fields = [field]
+        compileAndDigest()
+        const $validateSpy0 = sinon.spy(field.formControl[0], '$validate')
+        const $validateSpy1 = sinon.spy(field.formControl[1], '$validate')
+        scope.model.foo = 'bar'
+        scope.$digest()
+        $timeout.flush()
+        expect($validateSpy0).to.have.been.calledOnce
+        expect($validateSpy1).to.have.been.calledOnce
+      })
+
       it.skip(`should run field expressions when form is initialised`, () => {
         scope.model = {email: ''}
         scope.fields = [getNewField({
