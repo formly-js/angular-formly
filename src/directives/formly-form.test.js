@@ -597,17 +597,21 @@ describe('formly-form', () => {
     })
 
     it('ensures that hideExpression has all the expressionProperties values', () => {
+      scope.model = {nested: {foo: 'bar', baz: []}}
       scope.options = {formState: {}}
       scope.fields = [{
         template: input,
         key: 'test',
+        model: 'model.nested',
         hideExpression: `
+        model === options.data.model &&
         options === options.data.field &&
         index === 0 &&
         formState === options.data.formOptions.formState &&
         originalModel === options.data.originalModel &&
         formOptions === options.data.formOptions`,
         data: {
+          model: scope.model.nested,
           originalModel: scope.model,
           formOptions: scope.options,
         },
@@ -1196,7 +1200,7 @@ describe('formly-form', () => {
         }
         scope.fields[0].model = model
         scope.fields[0].watcher = [{
-          expression: 'model.nested.foo',
+          expression: 'model.foo',
           runFieldExpressions: true,
         }]
         scope.fields[0].expressionProperties = {
@@ -1363,7 +1367,7 @@ describe('formly-form', () => {
         const field = scope.fields[0]
 
         field.model = 'model.baz'
-        field.hideExpression = 'model.baz.buzz === "bar"'
+        field.hideExpression = 'model.buzz === "bar"'
 
         compileAndDigest()
         $timeout.flush()
