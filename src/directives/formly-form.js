@@ -271,24 +271,31 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
 
       if (angular.isString(field.model)) {
         const expression = field.model
-        const index = $scope.fields.indexOf(field)
 
         isNewModel = !referencesCurrentlyWatchedModel(expression)
 
-        // temporary assign $scope.model as field.model to evaluate the expression in correct context
+        field.model = resolveStringModel(expression)
+
+        $scope.$watch(() => resolveStringModel(expression), (model) => field.model = model)
+      } else if (!field.model) {
         field.model = $scope.model
-        field.model = evalCloseToFormlyExpression(expression, undefined, field, index)
-        if (!field.model) {
+      }
+      return isNewModel
+
+      function resolveStringModel(expression) {
+        const index = $scope.fields.indexOf(field)
+        const model = evalCloseToFormlyExpression(expression, undefined, field, index, {model: $scope.model})
+
+        if (!model) {
           throw formlyUsability.getFieldError(
             'field-model-must-be-initialized',
             'Field model must be initialized. When specifying a model as a string for a field, the result of the' +
             ' expression must have been initialized ahead of time.',
             field)
         }
-      } else if (!field.model) {
-        field.model = $scope.model
+
+        return model
       }
-      return isNewModel
     }
 
     function referencesCurrentlyWatchedModel(expression) {
@@ -374,8 +381,8 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
       return [$scope.fields[index], ...originalArgs, watcher.stopWatching]
     }
 
-    function evalCloseToFormlyExpression(expression, val, field, index) {
-      const extraLocals = getFormlyFieldLikeLocals(field, index)
+    function evalCloseToFormlyExpression(expression, val, field, index, extraLocals = {}) {
+      extraLocals = angular.extend(getFormlyFieldLikeLocals(field, index), extraLocals)
       return formlyUtil.formlyEval($scope, expression, val, val, extraLocals)
     }
 

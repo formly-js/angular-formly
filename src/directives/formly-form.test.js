@@ -495,6 +495,24 @@ describe('formly-form', () => {
       testFormStateAccessor('formState["nested"]')
     })
 
+    it('should be updated when the reference to the outer model changes', () => {
+      scope.model.nested.foo = 'bar'
+      scope.fields[0].model = 'model.nested'
+
+      compileAndDigest()
+      $timeout.flush()
+
+      scope.model = {
+        nested: {
+          foo: 'baz',
+        },
+      }
+
+      scope.$digest()
+
+      expect(scope.fields[0].model.foo).to.equal('baz')
+    })
+
     function testModelAccessor(accessor) {
       scope.fields[0].model = accessor
 
