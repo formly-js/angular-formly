@@ -258,7 +258,7 @@ describe('formlyNgModelAttrsManipulator', () => {
 
     describe(`attributeOnly`, () => {
 
-      ['placeholder', 'min', 'max', 'tabindex', 'type'].forEach(testAttribute)
+      ['placeholder', 'min', 'max', 'step', 'tabindex', 'type'].forEach(testAttribute)
 
       function testAttribute(name) {
         it(`should be placed as an attribute if it is present in the templateOptions`, () => {

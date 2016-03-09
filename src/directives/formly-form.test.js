@@ -495,6 +495,24 @@ describe('formly-form', () => {
       testFormStateAccessor('formState["nested"]')
     })
 
+    it('should be updated when the reference to the outer model changes', () => {
+      scope.model.nested.foo = 'bar'
+      scope.fields[0].model = 'model.nested'
+
+      compileAndDigest()
+      $timeout.flush()
+
+      scope.model = {
+        nested: {
+          foo: 'baz',
+        },
+      }
+
+      scope.$digest()
+
+      expect(scope.fields[0].model.foo).to.equal('baz')
+    })
+
     function testModelAccessor(accessor) {
       scope.fields[0].model = accessor
 
@@ -536,26 +554,89 @@ describe('formly-form', () => {
     beforeEach(() => {
       scope.model = {}
       scope.fieldModel = {}
+    })
+    describe('behaviour when model changes', () => {
 
-      scope.fields = [
-        {template: input, key: 'foo', model: scope.fieldModel},
-        {template: input, key: 'bar', model: scope.fieldModel, hideExpression: () => !!scope.fieldModel.foo},
-      ]
+      describe('when a string is passed to hideExpression', () => {
+        beforeEach(() => {
+          scope.fields = [
+            {template: input, key: 'foo', model: scope.fieldModel},
+            {template: input, key: 'bar', model: scope.fieldModel, hideExpression: () => !!scope.fieldModel.foo},
+          ]
+        })
+
+        it('should be called and should resolve to true when field model changes', () => {
+          compileAndDigest()
+          expect(scope.fields[1].hide).be.false
+          scope.fields[0].formControl.$setViewValue('value')
+          expect(scope.fields[1].hide).be.true
+        })
+
+        it('should be called and should resolve to false when field model changes', () => {
+          scope.fieldModel.foo = 'value'
+          compileAndDigest()
+          expect(scope.fields[1].hide).be.true
+          scope.fields[0].formControl.$setViewValue('')
+          expect(scope.fields[1].hide).be.false
+        })
+      })
+      describe('when a function is passed to hideExpression', () => {
+        beforeEach(() => {
+          scope.fields = [
+            {template: input, key: 'foo', model: scope.fieldModel},
+            {
+              template: input, key: 'bar',
+              model: scope.fieldModel,
+              hideExpression: ($viewValue, $modelValue, scope) => {
+                return !!scope.fields[1].data.parentScope.fieldModel.foo   //since the scope passed to the function belongs to the form,
+              },                                                           //we store the outer(parent) scope in 'data' property to access
+              data: {                                                      //the template named 'foo' stored in the fields array
+                parentScope: scope,          //the parent scope(one used to compile the form)
+              },
+            },
+          ]
+        })
+
+        it('should be called and should resolve to true when field model changes', () => {
+          compileAndDigest()
+          expect(scope.fields[1].hide).be.false
+          scope.fields[0].formControl.$setViewValue('value')
+          expect(scope.fields[1].hide).be.true
+        })
+
+        it('should be called and should resolve to false when field model changes', () => {
+          scope.fieldModel.foo = 'value'
+          compileAndDigest()
+          expect(scope.fields[1].hide).be.true
+          scope.fields[0].formControl.$setViewValue('')
+          expect(scope.fields[1].hide).be.false
+        })
+      })
     })
 
-    it('should be called and resolve to true when field model changes', () => {
+    it('ensures that hideExpression has all the expressionProperties values', () => {
+      scope.model = {nested: {foo: 'bar', baz: []}}
+      scope.options = {formState: {}}
+      scope.fields = [{
+        template: input,
+        key: 'test',
+        model: 'model.nested',
+        hideExpression: `
+        model === options.data.model &&
+        options === options.data.field &&
+        index === 0 &&
+        formState === options.data.formOptions.formState &&
+        originalModel === options.data.originalModel &&
+        formOptions === options.data.formOptions`,
+        data: {
+          model: scope.model.nested,
+          originalModel: scope.model,
+          formOptions: scope.options,
+        },
+      }]
+      scope.fields[0].data.field = scope.fields[0]
       compileAndDigest()
-      expect(scope.fields[1].hide).be.false
-      scope.fields[0].formControl.$setViewValue('value')
-      expect(scope.fields[1].hide).be.true
-    })
-
-    it('should be called and resolve to false when field model changes', () => {
-      scope.fieldModel.foo = 'value'
-      compileAndDigest()
-      expect(scope.fields[1].hide).be.true
-      scope.fields[0].formControl.$setViewValue('')
-      expect(scope.fields[1].hide).be.false
+      expect(scope.fields[0].hide).be.true
     })
   })
 
@@ -951,6 +1032,370 @@ describe('formly-form', () => {
       expect(compileAndDigest).to.not.throw()
       expect(listener).to.have.been.called
       expect(expression).to.have.been.called
+    })
+
+    it(`should setup any watchers specified on a fieldgroup`, () => {
+      scope.model = {}
+
+      const listener = sinon.spy()
+      const expression = sinon.spy()
+
+      scope.fields = [{
+        watcher: [{
+          listener: '',
+          expression: '',
+        }, {
+          listener,
+          expression,
+        }],
+        fieldGroup: [
+          getNewField({}),
+          getNewField({}),
+        ],
+      }]
+
+      expect(compileAndDigest).to.not.throw()
+      expect(listener).to.have.been.called
+      expect(expression).to.have.been.called
+    })
+  })
+
+  describe(`manualModelWatcher option`, () => {
+    beforeEach(() => {
+      scope.model = {
+        foo: 'myFoo',
+        bar: 123,
+        baz: {buzz: 'myBuzz'},
+      }
+
+      scope.fields = [
+        {template: input, key: 'foo'},
+        {template: input, key: 'bar', templateOptions: {type: 'number'}},
+      ]
+    })
+
+    describe('declared as a boolean', () => {
+      beforeEach(() => {
+        scope.options = {
+          manualModelWatcher: true,
+        }
+      })
+
+      it(`should block a global model watcher`, () => {
+        const spy = sinon.spy()
+
+        scope.fields[0].expressionProperties = {
+          'templateOptions.label': spy,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        spy.reset()
+
+        scope.model.foo = 'bar'
+
+        scope.$digest()
+        $timeout.verifyNoPendingTasks()
+
+        expect(spy).to.not.have.been.called
+      })
+
+      it(`should watch manually selected model property`, () => {
+        const spy = sinon.spy()
+
+        scope.fields[0].watcher = [{
+          expression: 'model.foo',
+          runFieldExpressions: true,
+        }]
+        scope.fields[0].expressionProperties = {
+          'templateOptions.label': spy,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        spy.reset()
+
+        scope.model.foo = 'bar'
+
+        scope.$digest()
+        $timeout.flush()
+
+        expect(spy).to.have.been.called
+      })
+
+      it(`should not watch model properties that do not have manual watcher defined`, () => {
+        const spy = sinon.spy()
+
+        scope.fields[0].watcher = [{
+          expression: 'model.foo',
+          runFieldExpressions: true,
+        }]
+        scope.fields[0].expressionProperties = {
+          'templateOptions.label': spy,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        spy.reset()
+
+        scope.model.bar = 123
+
+        scope.$digest()
+        $timeout.verifyNoPendingTasks()
+
+        expect(spy).to.not.have.been.called
+      })
+
+      it(`should run manual watchers defined as a function`, () => {
+        const spy = sinon.spy()
+        const stub = sinon.stub()
+
+        scope.fields[0].watcher = [{
+          expression: stub,
+          runFieldExpressions: true,
+        }]
+        scope.fields[0].expressionProperties = {
+          'templateOptions.label': spy,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        stub.reset()
+        spy.reset()
+
+        // set random stub value so it triggers watcher function
+        stub.returns(Math.random())
+
+        scope.$digest()
+        $timeout.flush()
+
+        expect(stub).to.have.been.called
+        expect(spy).to.have.been.called
+      })
+
+      it('should not trigger watches on other fields', () => {
+        const spy1 = sinon.spy()
+        const spy2 = sinon.spy()
+
+        scope.fields[0].watcher = [{
+          expression: 'model.foo',
+          runFieldExpressions: true,
+        }]
+        scope.fields[0].expressionProperties = {
+          'templateOptions.label': spy1,
+        }
+        scope.fields[1].expressionProperties = {
+          'templateOptions.label': spy2,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        spy1.reset()
+        spy2.reset()
+
+        scope.model.foo = 'asd'
+
+        scope.$digest()
+        $timeout.flush()
+
+        expect(spy1).to.have.been.called
+        expect(spy2).to.not.have.been.called
+      })
+
+      it('works with models that are declared as string (relative model)', () => {
+        const spy = sinon.spy()
+        const model = 'model.nested'
+
+        scope.model = {
+          nested: {
+            foo: 'foo',
+          },
+        }
+        scope.fields[0].model = model
+        scope.fields[0].watcher = [{
+          expression: 'model.foo',
+          runFieldExpressions: true,
+        }]
+        scope.fields[0].expressionProperties = {
+          'templateOptions.label': spy,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        spy.reset()
+
+        scope.model.nested.foo = 'bar'
+
+        scope.$digest()
+        $timeout.flush()
+
+        expect(spy).to.have.been.called
+      })
+    })
+
+    describe('declared as a function', () => {
+      beforeEach(() => {
+        scope.options = {
+          manualModelWatcher: () => scope.model.baz,
+        }
+      })
+
+      it('works as a form-wide watcher', () => {
+        const spy = sinon.spy()
+
+        scope.options = {
+          manualModelWatcher: () => scope.model.baz,
+        }
+
+        scope.fields[1].expressionProperties = {
+          'templateOptions.label': spy,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        spy.reset()
+
+        scope.model.foo = 'random string'
+
+        scope.$digest()
+        $timeout.verifyNoPendingTasks()
+
+        expect(spy).to.not.have.been.called
+
+        spy.reset()
+
+        scope.model.baz.buzz = 'random buzz string'
+
+        scope.$digest()
+        $timeout.flush()
+
+        expect(spy).to.have.been.called
+      })
+
+      it('still fires manual field watchers', () => {
+        const spy = sinon.spy()
+
+        scope.fields[0].watcher = [{
+          expression: 'model.foo',
+          runFieldExpressions: true,
+        }]
+        scope.fields[0].expressionProperties = {
+          'templateOptions.label': spy,
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        spy.reset()
+
+        scope.model.foo = 'bar'
+
+        scope.$digest()
+        $timeout.flush()
+
+        expect(spy).to.have.been.called
+      })
+
+    })
+
+    describe('enabled with watchAllExpressions option', () => {
+      beforeEach(() => {
+        scope.options = {
+          manualModelWatcher: true,
+          watchAllExpressions: true,
+        }
+      })
+
+      it('watches and evaluates string template expressions', () => {
+        const field = scope.fields[0]
+
+        field.expressionProperties = {
+          'templateOptions.label': 'model.foo',
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        scope.model.foo = 'bar'
+
+        scope.$digest()
+
+        expect(field.templateOptions.label).to.equal(scope.model.foo)
+      })
+
+      it('watches and evaluates string template expressions with custom string model', () => {
+        const field = scope.fields[0]
+
+        field.model = 'model.baz'
+        field.expressionProperties = {
+          'templateOptions.label': 'model.buzz',
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        scope.model.baz.buzz = 'bar'
+
+        scope.$digest()
+
+        expect(field.templateOptions.label).to.equal(scope.model.baz.buzz)
+      })
+
+      it('watches and evaluates string template expressions with custom object model', () => {
+        const field = scope.fields[0]
+
+        field.model = {customFoo: 'customBar'}
+        field.expressionProperties = {
+          'templateOptions.label': 'model.customFoo',
+        }
+
+        compileAndDigest()
+        $timeout.flush()
+
+        field.model.customFoo = 'bar'
+
+        scope.$digest()
+
+        expect(field.templateOptions.label).to.equal(field.model.customFoo)
+      })
+
+      it('watches and evaluates hideExpression', () => {
+        const field = scope.fields[0]
+
+        field.hideExpression = 'model.foo === "bar"'
+
+        compileAndDigest()
+        $timeout.flush()
+
+        scope.model.foo = 'bar'
+
+        scope.$digest()
+
+        expect(field.hide).to.equal(true)
+      })
+
+      it('watches and evaluates hideExpression with custom string model', () => {
+        const field = scope.fields[0]
+
+        field.model = 'model.baz'
+        field.hideExpression = 'model.buzz === "bar"'
+
+        compileAndDigest()
+        $timeout.flush()
+
+        scope.model.baz.buzz = 'bar'
+
+        scope.$digest()
+
+        expect(field.hide).to.equal(true)
+      })
     })
   })
 })

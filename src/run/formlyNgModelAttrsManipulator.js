@@ -182,7 +182,7 @@ function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
     const bothBooleanAndBound = ['required', 'disabled']
     const bothAttributeAndBound = ['pattern', 'minlength']
     const statementOnly = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur']
-    const attributeOnly = ['placeholder', 'min', 'max', 'tabindex', 'type']
+    const attributeOnly = ['placeholder', 'min', 'max', 'step', 'tabindex', 'type']
     if (formlyConfig.extras.ngModelAttrsManipulatorPreferUnbound) {
       bothAttributeAndBound.push('maxlength')
     } else {

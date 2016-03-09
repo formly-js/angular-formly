@@ -35,7 +35,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
   // @ngInject
   function FormlyFieldController($scope, $timeout, $parse, $controller, formlyValidationMessages) {
-    /* eslint max-statements:[2, 32] */
+    /* eslint max-statements:[2, 34] */
     if ($scope.options.fieldGroup) {
       setupFieldGroup()
       return
@@ -53,6 +53,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     setDefaultValue()
     setInitialValue()
     runExpressions()
+    watchExpressions()
     addValidationMessages($scope.options)
     invokeControllers($scope, $scope.options, fieldType)
 
@@ -70,6 +71,21 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
           })
         })
       }, 0, false)
+    }
+
+    function watchExpressions() {
+      if ($scope.formOptions.watchAllExpressions) {
+        const field = $scope.options
+        const currentValue = valueGetterSetter()
+        angular.forEach(field.expressionProperties, function watchExpression(expression, prop) {
+          const setter = $parse(prop).assign
+          $scope.$watch(function expressionPropertyWatcher() {
+            return formlyUtil.formlyEval($scope, expression, currentValue, currentValue)
+          }, function expressionPropertyListener(value) {
+            setter(field, value)
+          }, true)
+        })
+      }
     }
 
     function valueGetterSetter(newVal) {

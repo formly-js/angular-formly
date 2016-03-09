@@ -2,6 +2,8 @@
 
 ## [angular-formly](http://docs.angular-formly.com)
 
+[THIS PROJECT NEEDS A MAINTAINER](https://github.com/formly-js/angular-formly/issues/638)
+
 Status:
 [![npm version](https://img.shields.io/npm/v/angular-formly.svg?style=flat-square)](https://www.npmjs.org/package/angular-formly)
 [![npm downloads](https://img.shields.io/npm/dm/angular-formly.svg?style=flat-square)](http://npm-stat.com/charts.html?package=angular-formly&from=2015-01-01)
@@ -14,6 +16,8 @@ Links:
 [![egghead.io lessons](https://img.shields.io/badge/egghead-lessons-blue.svg?style=flat-square)](https://egghead.io/playlists/advanced-angular-forms-with-angular-formly)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/formly-js/angular-formly?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square)](https://github.com/formly-js/angular-formly/releases)
+[![PRs Welcome](https://img.shields.io/badge/prs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
 
 angular-formly is an AngularJS module which has a directive to help customize and render JavaScript/JSON configured forms.
 The `formly-form` directive and the `formlyConfig` service are very powerful and bring unmatched maintainability to your
