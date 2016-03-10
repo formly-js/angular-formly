@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v8.0.3
+* angular-formly JavaScript Library v8.0.4
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -153,7 +153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("8.0.3")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("8.0.4")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -430,7 +430,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.0.3") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.0.4") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -2054,7 +2054,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (attrs.hasOwnProperty('isFieldGroup') && el.parent().parent().hasClass('formly')) {
 	      parentFormAttributes = copyAttributes(el.parent().parent()[0].attributes);
 	    }
-	    return '\n        <' + rootEl + ' class="formly"\n                 name="' + getFormName() + '"\n                 role="form" ' + parentFormAttributes + '>\n          <' + fieldRootEl + ' formly-field\n               ng-repeat="field in fields ' + getTrackBy() + '"\n               ' + getHideDirective() + '="!field.hide"\n               class="formly-field"\n               options="field"\n               model="field.model"\n               original-model="model"\n               fields="fields"\n               form="theFormlyForm"\n               form-id="' + getFormName() + '"\n               form-state="options.formState"\n               form-options="options"\n               index="$index">\n          </' + fieldRootEl + '>\n          <div ng-transclude class="' + getTranscludeClass() + '"></div>\n        </' + rootEl + '>\n      ';
+	    return '\n        <' + rootEl + ' class="formly"\n                 name="' + getFormName() + '"\n                 role="form" ' + parentFormAttributes + '>\n          <' + fieldRootEl + ' formly-field\n               ng-repeat="field in fields ' + getTrackBy() + '"\n               ' + getHideDirective() + '="!field.hide"\n               class="formly-field"\n               options="field"\n               model="field.model || model"\n               original-model="model"\n               fields="fields"\n               form="theFormlyForm"\n               form-id="' + getFormName() + '"\n               form-state="options.formState"\n               form-options="options"\n               index="$index">\n          </' + fieldRootEl + '>\n          <div ng-transclude class="' + getTranscludeClass() + '"></div>\n        </' + rootEl + '>\n      ';
 
 	    function getRootEl() {
 	      return attrs.rootEl || 'ng-form';
@@ -2144,7 +2144,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (field.hideExpression) {
 	        // can't use hide with expressionProperties reliably
 	        var val = model[field.key];
-	        field.hide = evalCloseToFormlyExpression(field.hideExpression, val, field, index);
+	        field.hide = evalCloseToFormlyExpression(field.hideExpression, val, field, index, { model: model });
 	      }
 	      if (field.extras && field.extras.validateOnModelChange && field.formControl) {
 	        if (_angularFix2['default'].isArray(field.formControl)) {
@@ -2256,7 +2256,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          var model = field.model || $scope.model;
 	          $scope.$watch(function hideExpressionWatcher() {
 	            var val = model[field.key];
-	            return evalCloseToFormlyExpression(field.hideExpression, val, field, index);
+	            return evalCloseToFormlyExpression(field.hideExpression, val, field, index, { model: model });
 	          }, function (hide) {
 	            return field.hide = hide;
 	          }, true);
@@ -2281,9 +2281,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return field.model = model;
 	          });
 	        })();
-	      } else if (!field.model) {
-	        field.model = $scope.model;
 	      }
+
 	      return isNewModel;
 
 	      function resolveStringModel(expression) {
