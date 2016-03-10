@@ -445,6 +445,7 @@ describe('formly-form', () => {
         {template: input, key: 'foo', model: scope.fieldModel1},
         {template: input, key: 'bar', model: scope.fieldModel1},
         {template: input, key: 'zoo', model: scope.fieldModel1},
+        {template: input, key: 'test'},
       ]
     })
 
@@ -461,6 +462,21 @@ describe('formly-form', () => {
 
       expect(spy1).to.have.been.calledOnce
       expect(spy2).to.have.been.calledOnce
+    })
+
+    it('should be updated when the reference to the model changes', () => {
+      scope.model = {test: 'bar'}
+      scope.fields[3].expressionProperties = {'data.test': 'model.test'}
+
+      compileAndDigest()
+      $timeout.flush()
+
+      scope.model = {test: 'baz'}
+
+      scope.$digest()
+      $timeout.flush()
+
+      expect(scope.fields[3].data.test).to.equal('baz')
     })
   })
 
@@ -498,6 +514,7 @@ describe('formly-form', () => {
     it('should be updated when the reference to the outer model changes', () => {
       scope.model.nested.foo = 'bar'
       scope.fields[0].model = 'model.nested'
+      scope.fields[0].expressionProperties = {'data.foo': 'model.foo'}
 
       compileAndDigest()
       $timeout.flush()
@@ -509,8 +526,9 @@ describe('formly-form', () => {
       }
 
       scope.$digest()
+      $timeout.flush()
 
-      expect(scope.fields[0].model.foo).to.equal('baz')
+      expect(scope.fields[0].data.foo).to.equal('baz')
     })
 
     function testModelAccessor(accessor) {
