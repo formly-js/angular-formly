@@ -42,7 +42,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
                ${getHideDirective()}="!field.hide"
                class="formly-field"
                options="field"
-               model="field.model"
+               model="field.model || model"
                original-model="model"
                fields="fields"
                form="theFormlyForm"
@@ -140,7 +140,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
       const promise = field.runExpressions && field.runExpressions()
       if (field.hideExpression) { // can't use hide with expressionProperties reliably
         const val = model[field.key]
-        field.hide = evalCloseToFormlyExpression(field.hideExpression, val, field, index)
+        field.hide = evalCloseToFormlyExpression(field.hideExpression, val, field, index, {model})
       }
       if (field.extras && field.extras.validateOnModelChange && field.formControl) {
         if (angular.isArray(field.formControl)) {
@@ -261,7 +261,7 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
         const model = field.model || $scope.model
         $scope.$watch(function hideExpressionWatcher() {
           const val = model[field.key]
-          return evalCloseToFormlyExpression(field.hideExpression, val, field, index)
+          return evalCloseToFormlyExpression(field.hideExpression, val, field, index, {model})
         }, (hide) => field.hide = hide, true)
       }
     }
@@ -277,9 +277,8 @@ function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpol
         field.model = resolveStringModel(expression)
 
         $scope.$watch(() => resolveStringModel(expression), (model) => field.model = model)
-      } else if (!field.model) {
-        field.model = $scope.model
       }
+
       return isNewModel
 
       function resolveStringModel(expression) {
