@@ -20,7 +20,7 @@ module.exports = function(config) {
     basePath: './',
     frameworks: ['sinon-chai', 'chai', 'mocha', 'sinon'],
     files: [
-      'node_modules/lodash/index.js',
+      'node_modules/lodash/lodash.js',
       'node_modules/api-check/dist/api-check.js',
       'node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
@@ -54,4 +54,3 @@ function getReporters() {
   }
   return reps;
 }
-
