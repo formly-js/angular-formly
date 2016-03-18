@@ -500,6 +500,13 @@ describe('formly-field', function() {
       expect(scope.fields[0].initialValue).to.eq(defaultValue)
     })
 
+    it(`should be set if the key is 0`, () => {
+      scope.fields[0].key = 0
+      compileAndDigest()
+
+      expect(scope.fields[0].initialValue).to.eq(defaultValue)
+    })
+
     describe(`nested keys`, () => {
       const nestedObject = 'foo.bar'
       const nestedArray = 'baz[0]'
@@ -535,6 +542,19 @@ describe('formly-field', function() {
 
     it('should get and set values when key is all numeric', () => {
       const key = '1333'
+      const defaultValue = 'bar'
+
+      scope.fields = [
+        {template: input, key, defaultValue},
+      ]
+      scope.model = {}
+
+      compileAndDigest()
+      expect(scope.model[key]).to.eq(defaultValue)
+    })
+
+    it('should get and set values when key is 0', () => {
+      const key = 0
       const defaultValue = 'bar'
 
       scope.fields = [

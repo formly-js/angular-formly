@@ -104,7 +104,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
     function parseSet(key, model, newVal) {
       // If either of these are null/undefined then just return undefined
-      if (!key || !model) {
+      if ((!key && key !== 0) || !model) {
         return
       }
       // If we are working with a number then $parse wont work, default back to the old way for now
@@ -121,7 +121,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
     function parseGet(key, model) {
       // If either of these are null/undefined then just return undefined
-      if (!key || !model) {
+      if ((!key && key !== 0) || !model) {
         return undefined
       }
 
