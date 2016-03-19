@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v8.0.4
+* angular-formly JavaScript Library v8.0.5
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -153,7 +153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("8.0.4")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("8.0.5")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -430,7 +430,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.0.4") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.0.5") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -439,6 +439,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	formlyUsability.$inject = ["formlyApiCheck", "formlyErrorAndWarningsUrlPrefix"];
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
@@ -505,7 +506,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 	}
-	formlyUsability.$inject = ["formlyApiCheck", "formlyErrorAndWarningsUrlPrefix"];
 	module.exports = exports['default'];
 
 /***/ },
@@ -514,6 +514,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	formlyConfig.$inject = ["formlyUsabilityProvider", "formlyErrorAndWarningsUrlPrefix", "formlyApiCheck"];
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
@@ -832,7 +833,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 	}
-	formlyConfig.$inject = ["formlyUsabilityProvider", "formlyErrorAndWarningsUrlPrefix", "formlyApiCheck"];
 	module.exports = exports['default'];
 
 /***/ },
@@ -1061,6 +1061,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	formlyWarn.$inject = ["formlyConfig", "formlyErrorAndWarningsUrlPrefix", "$log"];
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
@@ -1081,7 +1082,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  };
 	}
-	formlyWarn.$inject = ["formlyConfig", "formlyErrorAndWarningsUrlPrefix", "$log"];
 	module.exports = exports['default'];
 
 /***/ },
@@ -1090,6 +1090,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	formlyCustomValidation.$inject = ["formlyUtil"];
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
@@ -1180,7 +1181,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  };
 	}
-	formlyCustomValidation.$inject = ["formlyUtil"];
 	module.exports = exports['default'];
 
 /***/ },
@@ -1189,6 +1189,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	formlyField.$inject = ["$http", "$q", "$compile", "$templateCache", "$interpolate", "formlyConfig", "formlyApiCheck", "formlyUtil", "formlyUsability", "formlyWarn"];
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
@@ -1214,9 +1215,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	// @ngInject
 	function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyConfig, formlyApiCheck, formlyUtil, formlyUsability, formlyWarn) {
+	  FormlyFieldController.$inject = ["$scope", "$timeout", "$parse", "$controller", "formlyValidationMessages"];
 	  var arrayify = formlyUtil.arrayify;
 
-	  FormlyFieldController.$inject = ["$scope", "$timeout", "$parse", "$controller", "formlyValidationMessages"];
 	  return {
 	    restrict: 'AE',
 	    transclude: true,
@@ -1309,7 +1310,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    function parseSet(key, model, newVal) {
 	      // If either of these are null/undefined then just return undefined
-	      if (!key || !model) {
+	      if (!key && key !== 0 || !model) {
 	        return;
 	      }
 	      // If we are working with a number then $parse wont work, default back to the old way for now
@@ -1326,7 +1327,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    function parseGet(key, model) {
 	      // If either of these are null/undefined then just return undefined
-	      if (!key || !model) {
+	      if (!key && key !== 0 || !model) {
 	        return undefined;
 	      }
 
@@ -1948,7 +1949,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  }
 	}
-	formlyField.$inject = ["$http", "$q", "$compile", "$templateCache", "$interpolate", "formlyConfig", "formlyApiCheck", "formlyUtil", "formlyUsability", "formlyWarn"];
 
 	// Stateless util functions
 	function getDefaultOptionsOptionsTypes(type) {
@@ -1966,6 +1966,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	formlyFocus.$inject = ["$timeout", "$document"];
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
@@ -1998,7 +1999,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  };
 	}
-	formlyFocus.$inject = ["$timeout", "$document"];
 	module.exports = exports['default'];
 
 /***/ },
@@ -2007,6 +2007,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	formlyForm.$inject = ["formlyUsability", "formlyWarn", "$parse", "formlyConfig", "$interpolate"];
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
@@ -2029,8 +2030,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	// @ngInject
 	function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpolate) {
-	  var currentFormId = 1;
 	  FormlyFormController.$inject = ["$scope", "formlyApiCheck", "formlyUtil"];
+	  var currentFormId = 1;
 	  return {
 	    restrict: 'AE',
 	    template: formlyFormGetTemplate,
@@ -2477,7 +2478,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return field && !!field.fieldGroup;
 	  }
 	}
-	formlyForm.$inject = ["formlyUsability", "formlyWarn", "$parse", "formlyConfig", "$interpolate"];
 	module.exports = exports['default'];
 
 /***/ },
@@ -2486,6 +2486,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	addFormlyNgModelAttrsManipulator.$inject = ["formlyConfig", "$interpolate"];
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
@@ -2726,7 +2727,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return (0, _otherUtils.contains)(key, '.') || (0, _otherUtils.contains)(key, '[') && (0, _otherUtils.contains)(key, ']');
 	  }
 	}
-	addFormlyNgModelAttrsManipulator.$inject = ["formlyConfig", "$interpolate"];
 	module.exports = exports['default'];
 
 /***/ },
@@ -2735,6 +2735,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	addCustomTags.$inject = ["$document"];
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
@@ -2762,7 +2763,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    })();
 	  }
 	}
-	addCustomTags.$inject = ["$document"];
 	module.exports = exports['default'];
 
 /***/ }

@@ -993,7 +993,7 @@ describe('formly-form', () => {
         return _.map(fields, field => {
           const newField = {data: {}}
           _.each(field, (val, name) => {
-            if (_.contains(extraKeys, name)) {
+            if (_.includes(extraKeys, name)) {
               newField.data[name] = val
             } else {
               newField[name] = val
