@@ -3,22 +3,18 @@ import _ from 'lodash'
 
 let key = 0
 
-const input = '<input ng-model="model[options.key]" />'
-const multiNgModelField = `
+export const input = '<input ng-model="model[options.key]" />'
+export const multiNgModelField = `
   <input type="input" name="{{id}}_start" ng-model="model[options.key].start" />
   <input type="input" name="{{id}}_stop" ng-model="model[options.key].stop" />
 `
-const basicForm = '<formly-form form="theForm" model="model" fields="fields" options="options"></formly-form>'
+export const basicForm = '<formly-form form="theForm" model="model" fields="fields" options="options"></formly-form>'
 
-export default {
-  getNewField, input, multiNgModelField, basicForm, shouldWarn, shouldNotWarn, shouldWarnWithLog,
-}
-
-function getNewField(options) {
+export function getNewField(options) {
   return _.merge({template: input, key: key++}, options)
 }
 
-function shouldWarn(match, test) {
+export function shouldWarn(match, test) {
   const originalWarn = console.warn
   let calledArgs
   console.warn = function() {
@@ -30,8 +26,7 @@ function shouldWarn(match, test) {
   console.warn = originalWarn
 }
 
-
-function shouldNotWarn(test) {
+export function shouldNotWarn(test) {
   const originalWarn = console.warn
   let calledArgs
   console.warn = function() {
@@ -45,8 +40,7 @@ function shouldNotWarn(test) {
   console.warn = originalWarn
 }
 
-function shouldWarnWithLog($log, logArgs, test) {
-  /* eslint no-console:0 */
+export function shouldWarnWithLog($log, logArgs, test) {
   test()
   expect($log.warn.logs, '$log should have only been called once').to.have.length(1)
   const log = $log.warn.logs[0]

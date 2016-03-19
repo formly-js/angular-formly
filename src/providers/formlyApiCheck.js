@@ -1,3 +1,5 @@
+/* eslint consistent-return: 1 */
+/* eslint import/no-unresolved:1 */
 import angular from 'angular-fix'
 import apiCheckFactory from 'api-check'
 

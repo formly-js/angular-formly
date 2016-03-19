@@ -1,9 +1,4 @@
-/* eslint no-unused-vars:0 */
-import utils from './utils.js'
-
-// gotta do this because webstorm/jshint doesn't like destructuring imports :-(
-const {extendFunction, startsWith} = utils
-
+import {extendFunction, startsWith} from './utils.js'
 
 describe(`utils`, () => {
 
@@ -40,5 +35,4 @@ describe(`utils`, () => {
       expect(startsWith(undefined, undefined)).to.be.false
     })
   })
-
 })

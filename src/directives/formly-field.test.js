@@ -1,12 +1,11 @@
 /* eslint no-shadow:0 */
 /* eslint max-statements:[2, 50] */
 /* eslint max-len:0 */
+/* eslint import/no-unresolved:1 */
 import angular from 'angular-fix'
 import apiCheck from 'api-check'
-import testUtils from '../test.utils.js'
+import {getNewField, input, basicForm, multiNgModelField, shouldWarn, shouldNotWarn} from '../test.utils.js'
 import _ from 'lodash'
-
-const {getNewField, input, basicForm, multiNgModelField, shouldWarn, shouldNotWarn} = testUtils
 
 describe('formly-field', function() {
   /* jshint maxstatements:100 */

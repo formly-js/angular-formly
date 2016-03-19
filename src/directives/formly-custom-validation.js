@@ -1,3 +1,5 @@
+/* eslint import/no-unresolved:1 */
+
 import angular from 'angular-fix'
 export default formlyCustomValidation
 

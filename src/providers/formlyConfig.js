@@ -1,5 +1,7 @@
+/* eslint consistent-return: 1 */
+/* eslint import/no-unresolved:1 */
 import angular from 'angular-fix'
-import utils from '../other/utils'
+import * as utils from '../other/utils'
 
 export default formlyConfig
 

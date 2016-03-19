@@ -1,11 +1,7 @@
 /* eslint no-shadow:0 */
-/* eslint no-console:0 */
-/* eslint max-len:0 */
-/* eslint max-nested-callbacks:0 */
-import testUtils from '../test.utils.js'
+/* eslint import/no-unresolved:1 */
 import angular from 'angular-fix'
-
-const {getNewField, input, basicForm} = testUtils
+import {getNewField, input, basicForm} from '../test.utils.js'
 
 describe('formly-form', () => {
   let $compile, formlyConfig, scope, el, $timeout

@@ -1,4 +1,3 @@
-/* eslint max-len:[2,200] */
 import _ from 'lodash'
 
 describe('formly-form', () => {
