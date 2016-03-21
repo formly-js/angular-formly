@@ -185,8 +185,8 @@ describe('formlyConfig', () => {
   })
 
 
-  describe('setType/getType', () => {
-    let getterFn, setterFn
+  describe('setType/getType/getTypes', () => {
+    let getterFn, setterFn, getTypesFn
     const name = 'input'
     const template = '<input type="{{options.inputType}}" />'
     const templateUrl = '/input.html'
@@ -195,6 +195,7 @@ describe('formlyConfig', () => {
     beforeEach(inject(function(formlyConfig) {
       getterFn = formlyConfig.getType
       setterFn = formlyConfig.setType
+      getTypesFn = formlyConfig.getTypes
     }))
 
     describe('＼(＾O＾)／ path', () => {
@@ -215,6 +216,14 @@ describe('formlyConfig', () => {
         ])
         expect(getterFn(name).template).to.equal(template)
         expect(getterFn('type2').templateUrl).to.equal(templateUrl)
+      })
+
+      it('should expose the mapping from type name to config', () => {
+        setterFn([
+          {name, template},
+          {name: 'type2', templateUrl},
+        ])
+        expect(getTypesFn()).to.eql({[name]: getterFn(name), type2: getterFn('type2')})
       })
 
       it('should allow you to set a wrapper as a string', () => {

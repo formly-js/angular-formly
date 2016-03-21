@@ -15,6 +15,7 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
   angular.extend(this, {
     setType,
     getType,
+    getTypes,
     getTypeHeritage,
     setWrapper,
     getWrapper,
@@ -159,6 +160,10 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
     } else {
       return type
     }
+  }
+
+  function getTypes() {
+    return typeMap
   }
 
   function getTypeHeritage(parent) {
