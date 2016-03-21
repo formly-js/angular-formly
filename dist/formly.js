@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v8.0.5
+* angular-formly JavaScript Library v8.1.0
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -153,7 +153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("8.0.5")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("8.1.0")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -430,7 +430,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.0.5") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.1.0") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -546,6 +546,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _angularFix2['default'].extend(this, {
 	    setType: setType,
 	    getType: getType,
+	    getTypes: getTypes,
 	    getTypeHeritage: getTypeHeritage,
 	    setWrapper: setWrapper,
 	    getWrapper: getWrapper,
@@ -696,6 +697,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else {
 	      return type;
 	    }
+	  }
+
+	  function getTypes() {
+	    return typeMap;
 	  }
 
 	  function getTypeHeritage(parent) {
