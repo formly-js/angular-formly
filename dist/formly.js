@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v8.1.0
+* angular-formly JavaScript Library v8.2.0
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -137,11 +137,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _directivesFormlyForm2 = _interopRequireDefault(_directivesFormlyForm);
 
-	var _runFormlyNgModelAttrsManipulator = __webpack_require__(17);
+	var _directivesFormlyFormController = __webpack_require__(17);
+
+	var _directivesFormlyFormController2 = _interopRequireDefault(_directivesFormlyFormController);
+
+	var _runFormlyNgModelAttrsManipulator = __webpack_require__(18);
 
 	var _runFormlyNgModelAttrsManipulator2 = _interopRequireDefault(_runFormlyNgModelAttrsManipulator);
 
-	var _runFormlyCustomTags = __webpack_require__(18);
+	var _runFormlyCustomTags = __webpack_require__(19);
 
 	var _runFormlyCustomTags2 = _interopRequireDefault(_runFormlyCustomTags);
 
@@ -153,7 +157,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("8.1.0")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("8.2.0")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -166,6 +170,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	ngModule.directive('formlyField', _directivesFormlyField2['default']);
 	ngModule.directive('formlyFocus', _directivesFormlyFocus2['default']);
 	ngModule.directive('formlyForm', _directivesFormlyForm2['default']);
+	ngModule.controller('FormlyFormController', _directivesFormlyFormController2['default']);
 
 	ngModule.run(_runFormlyNgModelAttrsManipulator2['default']);
 	ngModule.run(_runFormlyCustomTags2['default']);
@@ -430,7 +435,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.1.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.2.0") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -2016,11 +2021,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
-	var _slice = Array.prototype.slice;
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
 	var _angularFix = __webpack_require__(2);
 
@@ -2035,7 +2037,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	// @ngInject
 	function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpolate) {
-	  FormlyFormController.$inject = ["$scope", "formlyApiCheck", "formlyUtil"];
 	  var currentFormId = 1;
 	  return {
 	    restrict: 'AE',
@@ -2048,7 +2049,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      form: '=?',
 	      options: '=?'
 	    },
-	    controller: FormlyFormController,
+	    controller: 'FormlyFormController',
 	    link: formlyFormLink
 	  };
 
@@ -2111,304 +2112,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	      });
 	      return arrayAttrs.join(' ');
-	    }
-	  }
-
-	  // @ngInject
-	  function FormlyFormController($scope, formlyApiCheck, formlyUtil) {
-	    setupOptions();
-	    $scope.model = $scope.model || {};
-	    setupFields();
-
-	    // watch the model and evaluate watch expressions that depend on it.
-	    if (!$scope.options.manualModelWatcher) {
-	      $scope.$watch('model', onModelOrFormStateChange, true);
-	    } else if (_angularFix2['default'].isFunction($scope.options.manualModelWatcher)) {
-	      $scope.$watch($scope.options.manualModelWatcher, onModelOrFormStateChange, true);
-	    }
-
-	    if ($scope.options.formState) {
-	      $scope.$watch('options.formState', onModelOrFormStateChange, true);
-	    }
-
-	    function onModelOrFormStateChange() {
-	      _angularFix2['default'].forEach($scope.fields, runFieldExpressionProperties);
-	    }
-
-	    function validateFormControl(formControl, promise) {
-	      var validate = formControl.$validate;
-	      if (promise) {
-	        promise.then(validate);
-	      } else {
-	        validate();
-	      }
-	    }
-
-	    function runFieldExpressionProperties(field, index) {
-	      var model = field.model || $scope.model;
-	      var promise = field.runExpressions && field.runExpressions();
-	      if (field.hideExpression) {
-	        // can't use hide with expressionProperties reliably
-	        var val = model[field.key];
-	        field.hide = evalCloseToFormlyExpression(field.hideExpression, val, field, index, { model: model });
-	      }
-	      if (field.extras && field.extras.validateOnModelChange && field.formControl) {
-	        if (_angularFix2['default'].isArray(field.formControl)) {
-	          _angularFix2['default'].forEach(field.formControl, function (formControl) {
-	            validateFormControl(formControl, promise);
-	          });
-	        } else {
-	          validateFormControl(field.formControl, promise);
-	        }
-	      }
-	    }
-
-	    function setupFields() {
-	      $scope.fields = $scope.fields || [];
-
-	      checkDeprecatedOptions($scope.options);
-
-	      var fieldTransforms = $scope.options.fieldTransform || formlyConfig.extras.fieldTransform;
-
-	      if (!_angularFix2['default'].isArray(fieldTransforms)) {
-	        fieldTransforms = [fieldTransforms];
-	      }
-
-	      _angularFix2['default'].forEach(fieldTransforms, function transformFields(fieldTransform) {
-	        if (fieldTransform) {
-	          $scope.fields = fieldTransform($scope.fields, $scope.model, $scope.options, $scope.form);
-	          if (!$scope.fields) {
-	            throw formlyUsability.getFormlyError('fieldTransform must return an array of fields');
-	          }
-	        }
-	      });
-
-	      setupModels();
-
-	      if ($scope.options.watchAllExpressions) {
-	        _angularFix2['default'].forEach($scope.fields, setupHideExpressionWatcher);
-	      }
-
-	      _angularFix2['default'].forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
-	      _angularFix2['default'].forEach($scope.fields, setupWatchers); // setup watchers for all fields
-	    }
-
-	    function checkDeprecatedOptions(options) {
-	      if (formlyConfig.extras.fieldTransform && _angularFix2['default'].isFunction(formlyConfig.extras.fieldTransform)) {
-	        formlyWarn('fieldtransform-as-a-function-deprecated', 'fieldTransform as a function has been deprecated.', 'Attempted for formlyConfig.extras: ' + formlyConfig.extras.fieldTransform.name, formlyConfig.extras);
-	      } else if (options.fieldTransform && _angularFix2['default'].isFunction(options.fieldTransform)) {
-	        formlyWarn('fieldtransform-as-a-function-deprecated', 'fieldTransform as a function has been deprecated.', 'Attempted for form', options);
-	      }
-	    }
-
-	    function setupOptions() {
-	      formlyApiCheck['throw']([formlyApiCheck.formOptionsApi.optional], [$scope.options], { prefix: 'formly-form options check' });
-	      $scope.options = $scope.options || {};
-	      $scope.options.formState = $scope.options.formState || {};
-
-	      _angularFix2['default'].extend($scope.options, {
-	        updateInitialValue: updateInitialValue,
-	        resetModel: resetModel
-	      });
-	    }
-
-	    function updateInitialValue() {
-	      _angularFix2['default'].forEach($scope.fields, function (field) {
-	        if (isFieldGroup(field) && field.options) {
-	          field.options.updateInitialValue();
-	        } else {
-	          field.updateInitialValue();
-	        }
-	      });
-	    }
-
-	    function resetModel() {
-	      _angularFix2['default'].forEach($scope.fields, function (field) {
-	        if (isFieldGroup(field) && field.options) {
-	          field.options.resetModel();
-	        } else if (field.resetModel) {
-	          field.resetModel();
-	        }
-	      });
-	    }
-
-	    function setupModels() {
-	      // a set of field models that are already watched (the $scope.model will have its own watcher)
-	      var watchedModels = [$scope.model];
-	      // we will not set up automatic model watchers if manual mode is set
-	      var manualModelWatcher = $scope.options.manualModelWatcher;
-
-	      if ($scope.options.formState) {
-	        // $scope.options.formState will have its own watcher
-	        watchedModels.push($scope.options.formState);
-	      }
-
-	      _angularFix2['default'].forEach($scope.fields, function (field) {
-	        var isNewModel = initModel(field);
-
-	        if (field.model && isNewModel && watchedModels.indexOf(field.model) === -1 && !manualModelWatcher) {
-	          $scope.$watch(function () {
-	            return field.model;
-	          }, onModelOrFormStateChange, true);
-	          watchedModels.push(field.model);
-	        }
-	      });
-	    }
-
-	    function setupHideExpressionWatcher(field, index) {
-	      if (field.hideExpression) {
-	        (function () {
-	          // can't use hide with expressionProperties reliably
-	          var model = field.model || $scope.model;
-	          $scope.$watch(function hideExpressionWatcher() {
-	            var val = model[field.key];
-	            return evalCloseToFormlyExpression(field.hideExpression, val, field, index, { model: model });
-	          }, function (hide) {
-	            return field.hide = hide;
-	          }, true);
-	        })();
-	      }
-	    }
-
-	    function initModel(field) {
-	      var isNewModel = true;
-
-	      if (_angularFix2['default'].isString(field.model)) {
-	        (function () {
-	          var expression = field.model;
-
-	          isNewModel = !referencesCurrentlyWatchedModel(expression);
-
-	          field.model = resolveStringModel(expression);
-
-	          $scope.$watch(function () {
-	            return resolveStringModel(expression);
-	          }, function (model) {
-	            return field.model = model;
-	          });
-	        })();
-	      }
-
-	      return isNewModel;
-
-	      function resolveStringModel(expression) {
-	        var index = $scope.fields.indexOf(field);
-	        var model = evalCloseToFormlyExpression(expression, undefined, field, index, { model: $scope.model });
-
-	        if (!model) {
-	          throw formlyUsability.getFieldError('field-model-must-be-initialized', 'Field model must be initialized. When specifying a model as a string for a field, the result of the' + ' expression must have been initialized ahead of time.', field);
-	        }
-
-	        return model;
-	      }
-	    }
-
-	    function referencesCurrentlyWatchedModel(expression) {
-	      return ['model', 'formState'].some(function (item) {
-	        return formlyUtil.startsWith(expression, item + '.') || formlyUtil.startsWith(expression, item + '[');
-	      });
-	    }
-
-	    function attachKey(field, index) {
-	      if (!isFieldGroup(field)) {
-	        field.key = field.key || index || 0;
-	      }
-	    }
-
-	    function setupWatchers(field, index) {
-	      if (!_angularFix2['default'].isDefined(field.watcher)) {
-	        return;
-	      }
-	      var watchers = field.watcher;
-	      if (!_angularFix2['default'].isArray(watchers)) {
-	        watchers = [watchers];
-	      }
-	      _angularFix2['default'].forEach(watchers, function setupWatcher(watcher) {
-	        if (!_angularFix2['default'].isDefined(watcher.listener) && !watcher.runFieldExpressions) {
-	          throw formlyUsability.getFieldError('all-field-watchers-must-have-a-listener', 'All field watchers must have a listener', field);
-	        }
-	        var watchExpression = getWatchExpression(watcher, field, index);
-	        var watchListener = getWatchListener(watcher, field, index);
-
-	        var type = watcher.type || '$watch';
-	        watcher.stopWatching = $scope[type](watchExpression, watchListener, watcher.watchDeep);
-	      });
-	    }
-
-	    function getWatchExpression(watcher, field, index) {
-	      var watchExpression = undefined;
-	      if (!_angularFix2['default'].isUndefined(watcher.expression)) {
-	        watchExpression = watcher.expression;
-	      } else if (field.key) {
-	        watchExpression = 'model[\'' + field.key.toString().split('.').join('\'][\'') + '\']';
-	      }
-	      if (_angularFix2['default'].isFunction(watchExpression)) {
-	        (function () {
-	          // wrap the field's watch expression so we can call it with the field as the first arg
-	          // and the stop function as the last arg as a helper
-	          var originalExpression = watchExpression;
-	          watchExpression = function formlyWatchExpression() {
-	            var args = modifyArgs.apply(undefined, [watcher, index].concat(_slice.call(arguments)));
-	            return originalExpression.apply(undefined, _toConsumableArray(args));
-	          };
-	          watchExpression.displayName = 'Formly Watch Expression for field for ' + field.key;
-	        })();
-	      } else if (field.model) {
-	        watchExpression = $parse(watchExpression).bind(null, $scope, { model: field.model });
-	      }
-	      return watchExpression;
-	    }
-
-	    function getWatchListener(watcher, field, index) {
-	      var watchListener = watcher.listener;
-	      if (_angularFix2['default'].isFunction(watchListener) || watcher.runFieldExpressions) {
-	        (function () {
-	          // wrap the field's watch listener so we can call it with the field as the first arg
-	          // and the stop function as the last arg as a helper
-	          var originalListener = watchListener;
-	          watchListener = function formlyWatchListener() {
-	            var value = undefined;
-	            if (originalListener) {
-	              var args = modifyArgs.apply(undefined, [watcher, index].concat(_slice.call(arguments)));
-	              value = originalListener.apply(undefined, _toConsumableArray(args));
-	            }
-	            if (watcher.runFieldExpressions) {
-	              runFieldExpressionProperties(field, index);
-	            }
-	            return value;
-	          };
-	          watchListener.displayName = 'Formly Watch Listener for field for ' + field.key;
-	        })();
-	      }
-	      return watchListener;
-	    }
-
-	    function modifyArgs(watcher, index) {
-	      for (var _len = arguments.length, originalArgs = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-	        originalArgs[_key - 2] = arguments[_key];
-	      }
-
-	      return [$scope.fields[index]].concat(originalArgs, [watcher.stopWatching]);
-	    }
-
-	    function evalCloseToFormlyExpression(expression, val, field, index) {
-	      var extraLocals = arguments.length <= 4 || arguments[4] === undefined ? {} : arguments[4];
-
-	      extraLocals = _angularFix2['default'].extend(getFormlyFieldLikeLocals(field, index), extraLocals);
-	      return formlyUtil.formlyEval($scope, expression, val, val, extraLocals);
-	    }
-
-	    function getFormlyFieldLikeLocals(field, index) {
-	      // this makes it closer to what a regular formlyExpression would be
-	      return {
-	        model: field.model,
-	        options: field,
-	        index: index,
-	        formState: $scope.options.formState,
-	        originalModel: $scope.model,
-	        formOptions: $scope.options,
-	        formId: $scope.formId
-	      };
 	    }
 	  }
 
@@ -2478,15 +2181,338 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return '';
 	    }
 	  }
-
-	  function isFieldGroup(field) {
-	    return field && !!field.fieldGroup;
-	  }
 	}
 	module.exports = exports['default'];
 
 /***/ },
 /* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	FormlyFormController.$inject = ["formlyUsability", "formlyWarn", "formlyConfig", "$parse", "$scope", "formlyApiCheck", "formlyUtil"];
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var _slice = Array.prototype.slice;
+	exports['default'] = FormlyFormController;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
+	var _angularFix = __webpack_require__(2);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	function isFieldGroup(field) {
+	  return field && !!field.fieldGroup;
+	}
+
+	// @ngInject
+
+	function FormlyFormController(formlyUsability, formlyWarn, formlyConfig, $parse, $scope, formlyApiCheck, formlyUtil) {
+
+	  setupOptions();
+	  $scope.model = $scope.model || {};
+	  setupFields();
+
+	  // watch the model and evaluate watch expressions that depend on it.
+	  if (!$scope.options.manualModelWatcher) {
+	    $scope.$watch('model', onModelOrFormStateChange, true);
+	  } else if (_angularFix2['default'].isFunction($scope.options.manualModelWatcher)) {
+	    $scope.$watch($scope.options.manualModelWatcher, onModelOrFormStateChange, true);
+	  }
+
+	  if ($scope.options.formState) {
+	    $scope.$watch('options.formState', onModelOrFormStateChange, true);
+	  }
+
+	  function onModelOrFormStateChange() {
+	    _angularFix2['default'].forEach($scope.fields, runFieldExpressionProperties);
+	  }
+
+	  function validateFormControl(formControl, promise) {
+	    var validate = formControl.$validate;
+	    if (promise) {
+	      promise.then(validate);
+	    } else {
+	      validate();
+	    }
+	  }
+
+	  function runFieldExpressionProperties(field, index) {
+	    var model = field.model || $scope.model;
+	    var promise = field.runExpressions && field.runExpressions();
+	    if (field.hideExpression) {
+	      // can't use hide with expressionProperties reliably
+	      var val = model[field.key];
+	      field.hide = evalCloseToFormlyExpression(field.hideExpression, val, field, index, { model: model });
+	    }
+	    if (field.extras && field.extras.validateOnModelChange && field.formControl) {
+	      if (_angularFix2['default'].isArray(field.formControl)) {
+	        _angularFix2['default'].forEach(field.formControl, function (formControl) {
+	          validateFormControl(formControl, promise);
+	        });
+	      } else {
+	        validateFormControl(field.formControl, promise);
+	      }
+	    }
+	  }
+
+	  function setupFields() {
+	    $scope.fields = $scope.fields || [];
+
+	    checkDeprecatedOptions($scope.options);
+
+	    var fieldTransforms = $scope.options.fieldTransform || formlyConfig.extras.fieldTransform;
+
+	    if (!_angularFix2['default'].isArray(fieldTransforms)) {
+	      fieldTransforms = [fieldTransforms];
+	    }
+
+	    _angularFix2['default'].forEach(fieldTransforms, function transformFields(fieldTransform) {
+	      if (fieldTransform) {
+	        $scope.fields = fieldTransform($scope.fields, $scope.model, $scope.options, $scope.form);
+	        if (!$scope.fields) {
+	          throw formlyUsability.getFormlyError('fieldTransform must return an array of fields');
+	        }
+	      }
+	    });
+
+	    setupModels();
+
+	    if ($scope.options.watchAllExpressions) {
+	      _angularFix2['default'].forEach($scope.fields, setupHideExpressionWatcher);
+	    }
+
+	    _angularFix2['default'].forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
+	    _angularFix2['default'].forEach($scope.fields, setupWatchers); // setup watchers for all fields
+	  }
+
+	  function checkDeprecatedOptions(options) {
+	    if (formlyConfig.extras.fieldTransform && _angularFix2['default'].isFunction(formlyConfig.extras.fieldTransform)) {
+	      formlyWarn('fieldtransform-as-a-function-deprecated', 'fieldTransform as a function has been deprecated.', 'Attempted for formlyConfig.extras: ' + formlyConfig.extras.fieldTransform.name, formlyConfig.extras);
+	    } else if (options.fieldTransform && _angularFix2['default'].isFunction(options.fieldTransform)) {
+	      formlyWarn('fieldtransform-as-a-function-deprecated', 'fieldTransform as a function has been deprecated.', 'Attempted for form', options);
+	    }
+	  }
+
+	  function setupOptions() {
+	    formlyApiCheck['throw']([formlyApiCheck.formOptionsApi.optional], [$scope.options], { prefix: 'formly-form options check' });
+	    $scope.options = $scope.options || {};
+	    $scope.options.formState = $scope.options.formState || {};
+
+	    _angularFix2['default'].extend($scope.options, {
+	      updateInitialValue: updateInitialValue,
+	      resetModel: resetModel
+	    });
+	  }
+
+	  function updateInitialValue() {
+	    _angularFix2['default'].forEach($scope.fields, function (field) {
+	      if (isFieldGroup(field) && field.options) {
+	        field.options.updateInitialValue();
+	      } else {
+	        field.updateInitialValue();
+	      }
+	    });
+	  }
+
+	  function resetModel() {
+	    _angularFix2['default'].forEach($scope.fields, function (field) {
+	      if (isFieldGroup(field) && field.options) {
+	        field.options.resetModel();
+	      } else if (field.resetModel) {
+	        field.resetModel();
+	      }
+	    });
+	  }
+
+	  function setupModels() {
+	    // a set of field models that are already watched (the $scope.model will have its own watcher)
+	    var watchedModels = [$scope.model];
+	    // we will not set up automatic model watchers if manual mode is set
+	    var manualModelWatcher = $scope.options.manualModelWatcher;
+
+	    if ($scope.options.formState) {
+	      // $scope.options.formState will have its own watcher
+	      watchedModels.push($scope.options.formState);
+	    }
+
+	    _angularFix2['default'].forEach($scope.fields, function (field) {
+	      var isNewModel = initModel(field);
+
+	      if (field.model && isNewModel && watchedModels.indexOf(field.model) === -1 && !manualModelWatcher) {
+	        $scope.$watch(function () {
+	          return field.model;
+	        }, onModelOrFormStateChange, true);
+	        watchedModels.push(field.model);
+	      }
+	    });
+	  }
+
+	  function setupHideExpressionWatcher(field, index) {
+	    if (field.hideExpression) {
+	      (function () {
+	        // can't use hide with expressionProperties reliably
+	        var model = field.model || $scope.model;
+	        $scope.$watch(function hideExpressionWatcher() {
+	          var val = model[field.key];
+	          return evalCloseToFormlyExpression(field.hideExpression, val, field, index, { model: model });
+	        }, function (hide) {
+	          return field.hide = hide;
+	        }, true);
+	      })();
+	    }
+	  }
+
+	  function initModel(field) {
+	    var isNewModel = true;
+
+	    if (_angularFix2['default'].isString(field.model)) {
+	      (function () {
+	        var expression = field.model;
+
+	        isNewModel = !referencesCurrentlyWatchedModel(expression);
+
+	        field.model = resolveStringModel(expression);
+
+	        $scope.$watch(function () {
+	          return resolveStringModel(expression);
+	        }, function (model) {
+	          return field.model = model;
+	        });
+	      })();
+	    }
+
+	    return isNewModel;
+
+	    function resolveStringModel(expression) {
+	      var index = $scope.fields.indexOf(field);
+	      var model = evalCloseToFormlyExpression(expression, undefined, field, index, { model: $scope.model });
+
+	      if (!model) {
+	        throw formlyUsability.getFieldError('field-model-must-be-initialized', 'Field model must be initialized. When specifying a model as a string for a field, the result of the' + ' expression must have been initialized ahead of time.', field);
+	      }
+
+	      return model;
+	    }
+	  }
+
+	  function referencesCurrentlyWatchedModel(expression) {
+	    return ['model', 'formState'].some(function (item) {
+	      return formlyUtil.startsWith(expression, item + '.') || formlyUtil.startsWith(expression, item + '[');
+	    });
+	  }
+
+	  function attachKey(field, index) {
+	    if (!isFieldGroup(field)) {
+	      field.key = field.key || index || 0;
+	    }
+	  }
+
+	  function setupWatchers(field, index) {
+	    if (!_angularFix2['default'].isDefined(field.watcher)) {
+	      return;
+	    }
+	    var watchers = field.watcher;
+	    if (!_angularFix2['default'].isArray(watchers)) {
+	      watchers = [watchers];
+	    }
+	    _angularFix2['default'].forEach(watchers, function setupWatcher(watcher) {
+	      if (!_angularFix2['default'].isDefined(watcher.listener) && !watcher.runFieldExpressions) {
+	        throw formlyUsability.getFieldError('all-field-watchers-must-have-a-listener', 'All field watchers must have a listener', field);
+	      }
+	      var watchExpression = getWatchExpression(watcher, field, index);
+	      var watchListener = getWatchListener(watcher, field, index);
+
+	      var type = watcher.type || '$watch';
+	      watcher.stopWatching = $scope[type](watchExpression, watchListener, watcher.watchDeep);
+	    });
+	  }
+
+	  function getWatchExpression(watcher, field, index) {
+	    var watchExpression = undefined;
+	    if (!_angularFix2['default'].isUndefined(watcher.expression)) {
+	      watchExpression = watcher.expression;
+	    } else if (field.key) {
+	      watchExpression = 'model[\'' + field.key.toString().split('.').join('\'][\'') + '\']';
+	    }
+	    if (_angularFix2['default'].isFunction(watchExpression)) {
+	      (function () {
+	        // wrap the field's watch expression so we can call it with the field as the first arg
+	        // and the stop function as the last arg as a helper
+	        var originalExpression = watchExpression;
+	        watchExpression = function formlyWatchExpression() {
+	          var args = modifyArgs.apply(undefined, [watcher, index].concat(_slice.call(arguments)));
+	          return originalExpression.apply(undefined, _toConsumableArray(args));
+	        };
+	        watchExpression.displayName = 'Formly Watch Expression for field for ' + field.key;
+	      })();
+	    } else if (field.model) {
+	      watchExpression = $parse(watchExpression).bind(null, $scope, { model: field.model });
+	    }
+	    return watchExpression;
+	  }
+
+	  function getWatchListener(watcher, field, index) {
+	    var watchListener = watcher.listener;
+	    if (_angularFix2['default'].isFunction(watchListener) || watcher.runFieldExpressions) {
+	      (function () {
+	        // wrap the field's watch listener so we can call it with the field as the first arg
+	        // and the stop function as the last arg as a helper
+	        var originalListener = watchListener;
+	        watchListener = function formlyWatchListener() {
+	          var value = undefined;
+	          if (originalListener) {
+	            var args = modifyArgs.apply(undefined, [watcher, index].concat(_slice.call(arguments)));
+	            value = originalListener.apply(undefined, _toConsumableArray(args));
+	          }
+	          if (watcher.runFieldExpressions) {
+	            runFieldExpressionProperties(field, index);
+	          }
+	          return value;
+	        };
+	        watchListener.displayName = 'Formly Watch Listener for field for ' + field.key;
+	      })();
+	    }
+	    return watchListener;
+	  }
+
+	  function modifyArgs(watcher, index) {
+	    for (var _len = arguments.length, originalArgs = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+	      originalArgs[_key - 2] = arguments[_key];
+	    }
+
+	    return [$scope.fields[index]].concat(originalArgs, [watcher.stopWatching]);
+	  }
+
+	  function evalCloseToFormlyExpression(expression, val, field, index) {
+	    var extraLocals = arguments.length <= 4 || arguments[4] === undefined ? {} : arguments[4];
+
+	    extraLocals = _angularFix2['default'].extend(getFormlyFieldLikeLocals(field, index), extraLocals);
+	    return formlyUtil.formlyEval($scope, expression, val, val, extraLocals);
+	  }
+
+	  function getFormlyFieldLikeLocals(field, index) {
+	    // this makes it closer to what a regular formlyExpression would be
+	    return {
+	      model: field.model,
+	      options: field,
+	      index: index,
+	      formState: $scope.options.formState,
+	      originalModel: $scope.model,
+	      formOptions: $scope.options,
+	      formId: $scope.formId
+	    };
+	  }
+	}
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2735,7 +2761,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
