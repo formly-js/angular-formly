@@ -12,6 +12,7 @@ import formlyCustomValidation from './directives/formly-custom-validation'
 import formlyField from './directives/formly-field'
 import formlyFocus from './directives/formly-focus'
 import formlyForm from './directives/formly-form'
+import FormlyFormController from './directives/formly-form.controller'
 
 import formlyNgModelAttrsManipulator from './run/formlyNgModelAttrsManipulator'
 import formlyCustomTags from './run/formlyCustomTags'
@@ -37,6 +38,7 @@ ngModule.directive('formlyCustomValidation', formlyCustomValidation)
 ngModule.directive('formlyField', formlyField)
 ngModule.directive('formlyFocus', formlyFocus)
 ngModule.directive('formlyForm', formlyForm)
+ngModule.controller('FormlyFormController', FormlyFormController)
 
 ngModule.run(formlyNgModelAttrsManipulator)
 ngModule.run(formlyCustomTags)
