@@ -124,7 +124,7 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
     if (!angular.isDefined(extendsDO)) {
       return
     }
-    const optionsDO = options.defaultOptions
+    const optionsDO = options.defaultOptions || {}
     const optionsDOIsFn = angular.isFunction(optionsDO)
     const extendsDOIsFn = angular.isFunction(extendsDO)
     if (extendsDOIsFn) {
@@ -136,8 +136,8 @@ function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, 
         if (optionsDOIsFn) {
           extenderOptionsDefaultOptions = extenderOptionsDefaultOptions(mergedDefaultOptions, scope)
         }
-        utils.reverseDeepMerge(extendsDefaultOptions, extenderOptionsDefaultOptions)
-        return extendsDefaultOptions
+        utils.reverseDeepMerge(extenderOptionsDefaultOptions, extendsDefaultOptions)
+        return extenderOptionsDefaultOptions
       }
     } else if (optionsDOIsFn) {
       options.defaultOptions = function defaultOptions(opts, scope) {
