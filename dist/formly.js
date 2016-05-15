@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v8.2.0
+* angular-formly JavaScript Library v8.2.1
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -157,7 +157,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("8.2.0")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("8.2.1")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -435,7 +435,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.2.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.2.1") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -668,7 +668,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!_angularFix2['default'].isDefined(extendsDO)) {
 	      return;
 	    }
-	    var optionsDO = options.defaultOptions;
+	    var optionsDO = options.defaultOptions || {};
 	    var optionsDOIsFn = _angularFix2['default'].isFunction(optionsDO);
 	    var extendsDOIsFn = _angularFix2['default'].isFunction(extendsDO);
 	    if (extendsDOIsFn) {
@@ -680,8 +680,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (optionsDOIsFn) {
 	          extenderOptionsDefaultOptions = extenderOptionsDefaultOptions(mergedDefaultOptions, scope);
 	        }
-	        _otherUtils2['default'].reverseDeepMerge(extendsDefaultOptions, extenderOptionsDefaultOptions);
-	        return extendsDefaultOptions;
+	        _otherUtils2['default'].reverseDeepMerge(extenderOptionsDefaultOptions, extendsDefaultOptions);
+	        return extenderOptionsDefaultOptions;
 	      };
 	    } else if (optionsDOIsFn) {
 	      options.defaultOptions = function defaultOptions(opts, scope) {

@@ -287,6 +287,68 @@ describe('formlyConfig', () => {
           })
 
         })
+        
+        describe(`abstractType function case`, () => {
+          beforeEach(() => {
+            setterFn([
+              {
+                name,
+                template,
+                defaultOptions: function(options) {
+                  return {
+                    templateOptions: {
+                      required: true,
+                      min: 3,
+                    },
+                  }
+                },
+              },
+              {
+                name: 'type2',
+                extends: name,
+                defaultOptions: function(options) {
+                  return {
+                    templateOptions: {
+                      required: false,
+                      max: 4,
+                    },
+                  }
+                },
+              },
+              {
+                name: 'type3',
+                extends: name,
+                defaultOptions: {
+                  templateOptions: {
+                    required: false,
+                    max: 4,
+                  },
+                },
+              },
+            ])
+          })
+
+          it(`should merge options when extending defaultOptions is a function`, () => {
+            expect(getterFn('type2').defaultOptions({})).to.eql({
+              templateOptions: {
+                required: false,
+                min: 3,
+                max: 4,
+              },
+            })
+          })
+          
+          it(`should merge options when extending defaultOptions is an object`, () => {
+            expect(getterFn('type3').defaultOptions({})).to.eql({
+              templateOptions: {
+                required: false,
+                min: 3,
+                max: 4,
+              },
+            })
+          })
+
+        })
 
         describe(`template/templateUrl Cases`, () => {
           it('should use templateUrl if type defines it and its parent has template defined', function() {
