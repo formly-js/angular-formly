@@ -1314,4 +1314,47 @@ describe('formly-form', () => {
       })
     })
   })
+  describe('extras', () => {
+    describe('validateOnModelChange', () => {
+      it('should run validators after expressions are set', () => {
+        let inputs, invalidInputs, el
+
+        scope.model = {
+          foo: null,
+          bar: 123,
+        }
+
+        scope.fields = [
+          {template: input, key: 'foo', extras: {validateOnModelChange: true}},
+          {template: input, key: 'bar', templateOptions: {type: 'number'}},
+        ]
+        // First Field isn't valid when second field is 1
+        scope.fields[0].expressionProperties = {
+          'templateOptions.isValid': 'model.bar !== 1',
+        }
+        // validator to use isValid attribute
+        scope.fields[0].validators = {isValid: {expression: (viewValue, modelValue, fieldScope) => {
+          return fieldScope.to.isValid
+        }}}
+
+        el = compileAndDigest()
+
+        // Input state before
+        inputs = el[0].querySelectorAll('input')
+        invalidInputs = el[0].querySelectorAll('input.ng-invalid')
+        expect(inputs.length).to.equal(2)
+        expect(invalidInputs.length).to.equal(0)
+
+        // Enter '1' into second field
+        angular.element(inputs[1]).val(1).triggerHandler('change')
+        $timeout.flush()
+
+        // Input state after
+        inputs = el[0].querySelectorAll('input')
+        invalidInputs = el[0].querySelectorAll('input.ng-invalid')
+        expect(inputs.length).to.equal(2)
+        expect(invalidInputs.length).to.equal(1)
+      })
+    })
+  })
 })

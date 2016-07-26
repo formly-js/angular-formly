@@ -59,18 +59,25 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
     // function definitions
     function runExpressions() {
+      const deferred = $q.defer()
       // must run on next tick to make sure that the current value is correct.
-      return $timeout(function runExpressionsOnNextTick() {
+      $timeout(function runExpressionsOnNextTick() {
+        const promises = []
         const field = $scope.options
         const currentValue = valueGetterSetter()
         angular.forEach(field.expressionProperties, function runExpression(expression, prop) {
           const setter = $parse(prop).assign
           const promise = $q.when(formlyUtil.formlyEval($scope, expression, currentValue, currentValue))
-          promise.then(function setFieldValue(value) {
-            setter(field, value)
-          })
+            .then(function setFieldValue(value) {
+              setter(field, value)
+            })
+          promises.push(promise)
+        })
+        $q.all(promises).then(function() {
+          deferred.resolve()
         })
       }, 0, false)
+      return deferred.promise
     }
 
     function watchExpressions() {
