@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v8.2.1
+* angular-formly JavaScript Library v8.3.0
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -157,7 +157,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("8.2.1")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("8.3.0")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -435,7 +435,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.2.1") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.3.0") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -1273,18 +1273,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // function definitions
 	    function runExpressions() {
+	      var deferred = $q.defer();
 	      // must run on next tick to make sure that the current value is correct.
-	      return $timeout(function runExpressionsOnNextTick() {
+	      $timeout(function runExpressionsOnNextTick() {
+	        var promises = [];
 	        var field = $scope.options;
 	        var currentValue = valueGetterSetter();
 	        _angularFix2['default'].forEach(field.expressionProperties, function runExpression(expression, prop) {
 	          var setter = $parse(prop).assign;
-	          var promise = $q.when(formlyUtil.formlyEval($scope, expression, currentValue, currentValue));
-	          promise.then(function setFieldValue(value) {
+	          var promise = $q.when(formlyUtil.formlyEval($scope, expression, currentValue, currentValue)).then(function setFieldValue(value) {
 	            setter(field, value);
 	          });
+	          promises.push(promise);
+	        });
+	        $q.all(promises).then(function () {
+	          deferred.resolve();
 	        });
 	      }, 0, false);
+	      return deferred.promise;
 	    }
 
 	    function watchExpressions() {
