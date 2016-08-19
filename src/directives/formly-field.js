@@ -35,7 +35,7 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
 
   // @ngInject
   function FormlyFieldController($scope, $timeout, $parse, $controller, formlyValidationMessages) {
-    /* eslint max-statements:[2, 34] */
+    /* eslint max-statements:[2, 37] */
     if ($scope.options.fieldGroup) {
       setupFieldGroup()
       return
@@ -109,6 +109,24 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       return angular.isNumber(key) || !formlyUtil.containsSelector(key)
     }
 
+    function keyContainsArrays(key) {
+      return /\[\d{1,}\]/.test(key)
+    }
+
+    function deepAssign(obj, prop, value) {
+      if (angular.isString(prop)) {
+        prop = prop.replace(/\[(\w+)\]/g, '.$1').split('.')
+      }
+
+      if (prop.length > 1) {
+        const e = prop.shift()
+        obj[e] = obj[e] || (isNaN(prop[0])) ? {} : []
+        deepAssign(obj[e], prop, value)
+      } else {
+        obj[prop[0]] = value
+      }
+    }
+
     function parseSet(key, model, newVal) {
       // If either of these are null/undefined then just return undefined
       if ((!key && key !== 0) || !model) {
@@ -118,6 +136,8 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
       if (shouldNotUseParseKey(key)) {
         // TODO: Fix this so we can get several levels instead of just one with properties that are numeric
         model[key] = newVal
+      } else if (formlyConfig.extras.parseKeyArrays && keyContainsArrays(key)) {
+        deepAssign($scope.model, key, newVal)
       } else {
         const setter = $parse($scope.options.key).assign
         if (setter) {
