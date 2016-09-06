@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v8.3.0
+* angular-formly JavaScript Library v8.4.0
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -157,7 +157,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("8.3.0")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("8.4.0")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -367,6 +367,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  resetModel: apiCheck.func.optional,
 	  updateInitialValue: apiCheck.func.optional,
 	  removeChromeAutoComplete: apiCheck.bool.optional,
+	  parseKeyArrays: apiCheck.bool.optional,
 	  templateManipulators: templateManipulators.optional,
 	  manualModelWatcher: apiCheck.oneOfType([apiCheck.bool, apiCheck.func]).optional,
 	  watchAllExpressions: apiCheck.bool.optional,
@@ -435,7 +436,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.3.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.4.0") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -564,6 +565,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      fieldTransform: [],
 	      ngModelAttrsManipulatorPreferUnbound: false,
 	      removeChromeAutoComplete: false,
+	      parseKeyArrays: false,
 	      defaultHideDirective: 'ng-if',
 	      getFieldId: null
 	    },
@@ -1249,7 +1251,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // @ngInject
 	  function FormlyFieldController($scope, $timeout, $parse, $controller, formlyValidationMessages) {
-	    /* eslint max-statements:[2, 34] */
+	    /* eslint max-statements:[2, 37] */
 	    if ($scope.options.fieldGroup) {
 	      setupFieldGroup();
 	      return;
@@ -1324,6 +1326,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return _angularFix2['default'].isNumber(key) || !formlyUtil.containsSelector(key);
 	    }
 
+	    function keyContainsArrays(key) {
+	      return (/\[\d{1,}\]/.test(key)
+	      );
+	    }
+
+	    function deepAssign(obj, prop, value) {
+	      if (_angularFix2['default'].isString(prop)) {
+	        prop = prop.replace(/\[(\w+)\]/g, '.$1').split('.');
+	      }
+
+	      if (prop.length > 1) {
+	        var e = prop.shift();
+	        obj[e] = obj[e] || isNaN(prop[0]) ? {} : [];
+	        deepAssign(obj[e], prop, value);
+	      } else {
+	        obj[prop[0]] = value;
+	      }
+	    }
+
 	    function parseSet(key, model, newVal) {
 	      // If either of these are null/undefined then just return undefined
 	      if (!key && key !== 0 || !model) {
@@ -1333,6 +1354,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (shouldNotUseParseKey(key)) {
 	        // TODO: Fix this so we can get several levels instead of just one with properties that are numeric
 	        model[key] = newVal;
+	      } else if (formlyConfig.extras.parseKeyArrays && keyContainsArrays(key)) {
+	        deepAssign($scope.model, key, newVal);
 	      } else {
 	        var setter = $parse($scope.options.key).assign;
 	        if (setter) {

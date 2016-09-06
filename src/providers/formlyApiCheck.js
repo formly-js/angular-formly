@@ -166,6 +166,7 @@ const formOptionsApi = apiCheck.shape({
   resetModel: apiCheck.func.optional,
   updateInitialValue: apiCheck.func.optional,
   removeChromeAutoComplete: apiCheck.bool.optional,
+  parseKeyArrays: apiCheck.bool.optional,
   templateManipulators: templateManipulators.optional,
   manualModelWatcher: apiCheck.oneOfType([apiCheck.bool, apiCheck.func]).optional,
   watchAllExpressions: apiCheck.bool.optional,
