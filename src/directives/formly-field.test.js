@@ -566,6 +566,20 @@ describe('formly-field', function() {
       expect(scope.model[key]).to.eq(defaultValue)
     })
 
+    it('should handle arrays properly when formlyConfig.extras.parseKeyArrays is set', () => {
+      const key = 'foo[0]'
+      const defaultValue = 'bar'
+
+      formlyConfig.extras.parseKeyArrays = true
+      scope.fields = [
+        {template: input, key, defaultValue},
+      ]
+      scope.model = {}
+
+      compileAndDigest()
+      expect(scope.model.foo).to.be.instanceof(Array)
+    })
+
     it('should get and set values when key is alpha numeric with alpha first', () => {
       const key = 'A1'
       const defaultValue = 'bar'
