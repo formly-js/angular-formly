@@ -30,7 +30,7 @@ export default function FormlyFormController(
   function validateFormControl(formControl, promise) {
     const validate = formControl.$validate
     if (promise) {
-      promise.then(validate)
+      promise.then(() => validate.apply(formControl))
     } else {
       validate()
     }
