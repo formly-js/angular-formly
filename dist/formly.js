@@ -1,5 +1,5 @@
 /*!
-* angular-formly JavaScript Library v8.4.0
+* angular-formly JavaScript Library v8.4.1
 *
 * @license MIT (http://license.angular-formly.com)
 *
@@ -157,7 +157,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
 	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
-	ngModule.constant('formlyVersion', ("8.4.0")); // <-- webpack variable
+	ngModule.constant('formlyVersion', ("8.4.1")); // <-- webpack variable
 
 	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
 	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
@@ -436,7 +436,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.4.0") + "/other/ERRORS_AND_WARNINGS.md#";
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("8.4.1") + "/other/ERRORS_AND_WARNINGS.md#";
 	module.exports = exports["default"];
 
 /***/ },
@@ -2264,7 +2264,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function validateFormControl(formControl, promise) {
 	    var validate = formControl.$validate;
 	    if (promise) {
-	      promise.then(validate);
+	      promise.then(function () {
+	        return validate.apply(formControl);
+	      });
 	    } else {
 	      validate();
 	    }
