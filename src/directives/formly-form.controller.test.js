@@ -1,7 +1,4 @@
 /* eslint no-shadow:0 */
-/* eslint no-console:0 */
-/* eslint max-len:0 */
-/* eslint max-nested-callbacks:0 */
 import {getNewField, shouldWarnWithLog} from '../test.utils.js'
 import _ from 'lodash'
 

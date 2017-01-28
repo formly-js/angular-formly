@@ -1,4 +1,3 @@
-/* eslint max-len:0 */
 import angular from 'angular'
 import _ from 'lodash'
 

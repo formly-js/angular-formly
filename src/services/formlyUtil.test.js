@@ -1,4 +1,3 @@
-
 describe('formlyUtil', () => {
   beforeEach(window.module('formly'))
 

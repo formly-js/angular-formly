@@ -1,4 +1,4 @@
-import utils from '../other/utils'
+import * as utils from '../other/utils'
 
 export default formlyUtil
 

@@ -1,10 +1,9 @@
 /* eslint no-unused-vars:0, max-len:0 */
+/* eslint import/no-unresolved:1 */
 import _ from 'lodash'
 import angular from 'angular-fix'
 
-import testUtils from '../test.utils.js'
-
-const {shouldWarnWithLog} = testUtils
+import {shouldWarnWithLog} from '../test.utils.js'
 
 describe(`formly-custom-validation`, function() {
   let $compile, $timeout, $q, scope, $log, formlyConfig

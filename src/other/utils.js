@@ -1,15 +1,10 @@
 import angular from 'angular-fix'
 
-export default {
-  containsSelector, containsSpecialChar, formlyEval, getFieldId, reverseDeepMerge, findByNodeName,
-  arrayify, extendFunction, extendArray, startsWith, contains,
-}
-
-function containsSelector(string) {
+export function containsSelector(string) {
   return containsSpecialChar(string, '.') || (containsSpecialChar(string, '[') && containsSpecialChar(string, ']'))
 }
 
-function containsSpecialChar(a, b) {
+export function containsSpecialChar(a, b) {
   if (!a || !a.indexOf) {
     return false
   }
@@ -17,7 +12,7 @@ function containsSpecialChar(a, b) {
 }
 
 
-function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
+export function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
   if (angular.isFunction(expression)) {
     return expression($viewValue, $modelValue, scope, extraLocals)
   } else {
@@ -25,7 +20,7 @@ function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
   }
 }
 
-function getFieldId(formId, options, index) {
+export function getFieldId(formId, options, index) {
   if (options.id) {
     return options.id
   }
@@ -40,7 +35,7 @@ function getFieldId(formId, options, index) {
 }
 
 
-function reverseDeepMerge(dest) {
+export function reverseDeepMerge(dest) {
   angular.forEach(arguments, (src, index) => {
     if (!index) {
       return
@@ -56,13 +51,13 @@ function reverseDeepMerge(dest) {
   return dest
 }
 
-function objAndSameType(obj1, obj2) {
+export function objAndSameType(obj1, obj2) {
   return angular.isObject(obj1) && angular.isObject(obj2) &&
     Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2)
 }
 
 // recurse down a node tree to find a node with matching nodeName, for custom tags jQuery.find doesn't work in IE8
-function findByNodeName(el, nodeName) {
+export function findByNodeName(el, nodeName) {
   if (!el.prop) { // not a jQuery or jqLite object -> wrap it
     el = angular.element(el)
   }
@@ -81,7 +76,7 @@ function findByNodeName(el, nodeName) {
 }
 
 
-function arrayify(obj) {
+export function arrayify(obj) {
   if (obj && !angular.isArray(obj)) {
     obj = [obj]
   } else if (!obj) {
@@ -91,14 +86,14 @@ function arrayify(obj) {
 }
 
 
-function extendFunction(...fns) {
+export function extendFunction(...fns) {
   return function extendedFunction() {
     const args = arguments
     fns.forEach(fn => fn.apply(null, args))
   }
 }
 
-function extendArray(primary, secondary, property) {
+export function extendArray(primary, secondary, property) {
   if (property) {
     primary = primary[property]
     secondary = secondary[property]
@@ -117,7 +112,7 @@ function extendArray(primary, secondary, property) {
   }
 }
 
-function startsWith(str, search) {
+export function startsWith(str, search) {
   if (angular.isString(str) && angular.isString(search)) {
     return str.length >= search.length && str.substring(0, search.length) === search
   } else {
@@ -125,7 +120,7 @@ function startsWith(str, search) {
   }
 }
 
-function contains(str, search) {
+export function contains(str, search) {
   if (angular.isString(str) && angular.isString(search)) {
     return str.length >= search.length && str.indexOf(search) !== -1
   } else {

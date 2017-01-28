@@ -1,5 +1,3 @@
-/* jshint maxlen:false */
-
 describe('formlyApiCheck', () => {
   beforeEach(window.module('formly'))
 

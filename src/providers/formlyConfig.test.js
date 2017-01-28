@@ -1,12 +1,8 @@
-/* eslint max-len:0 */
-/* eslint max-nested-callbacks:0 */
 /* eslint no-shadow:0 */
-/* eslint no-console:0 */
 /* eslint no-unused-vars:0 */
+/* eslint import/no-unresolved:1 */
 import angular from 'angular-fix'
-import testUtils from '../test.utils.js'
-
-const {getNewField, basicForm, shouldWarn, shouldNotWarn} = testUtils
+import {getNewField, basicForm, shouldWarn, shouldNotWarn} from '../test.utils.js'
 
 describe('formlyConfig', () => {
   beforeEach(window.module('formly'))
@@ -287,7 +283,7 @@ describe('formlyConfig', () => {
           })
 
         })
-        
+
         describe(`abstractType function case`, () => {
           beforeEach(() => {
             setterFn([
@@ -337,7 +333,7 @@ describe('formlyConfig', () => {
               },
             })
           })
-          
+
           it(`should merge options when extending defaultOptions is an object`, () => {
             expect(getterFn('type3').defaultOptions({})).to.eql({
               templateOptions: {
