@@ -609,6 +609,12 @@ function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyCo
     const type = formlyConfig.getType(options.type, true, options)
     const template = fromOptionsOrType('template', type)
     const templateUrl = fromOptionsOrType('templateUrl', type)
+    if (angular.isUndefined(type) && angular.isUndefined(template) && !templateUrl) {
+      throw formlyUsability.getFieldError(
+        'no type in your fields',
+        'you have to specify type on your field configuration object, Detail :', options
+      )
+    }
     if (angular.isUndefined(template) && !templateUrl) {
       throw formlyUsability.getFieldError(
         'type-type-has-no-template',
