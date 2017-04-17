@@ -7,6 +7,7 @@ export default formlyField
  * @ngdoc directive
  * @name formlyField
  * @restrict AE
+ * This is super duper awesome!
  */
 // @ngInject
 function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyConfig,
