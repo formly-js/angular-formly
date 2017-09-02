@@ -18,6 +18,7 @@ Links:
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square)](https://github.com/formly-js/angular-formly/releases)
 [![PRs Welcome](https://img.shields.io/badge/prs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
+<a href="https://app.codesponsor.io/link/PKGFLnhDiFvsUA5P4kAXfiPs/formly-js/angular-formly" rel="nofollow"><img src="https://app.codesponsor.io/embed/PKGFLnhDiFvsUA5P4kAXfiPs/formly-js/angular-formly.svg" style="width: 888px; height: 68px;" alt="Sponsor" /></a>
 
 angular-formly is an AngularJS module which has a directive to help customize and render JavaScript/JSON configured forms.
 The `formly-form` directive and the `formlyConfig` service are very powerful and bring unmatched maintainability to your
