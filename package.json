@@ -1,6 +1,6 @@
 {
   "name": "angular-formly",
-  "version": "0.0.0-semantically-released.0",
+  "version": "8.4.1",
   "author": "Astrism <astrisms@gmail.com>",
   "contributors": [
     "Astrism <astrisms@gmail.com>",
@@ -38,8 +38,7 @@
     "report-coverage": "cat ./coverage/lcov.info | node_modules/.bin/codecov",
     "commit": "git-cz",
     "publish-latest": "publish-latest --user-email kent+formly-bot@doddsfamily.us --user-name formly-bot",
-    "meteor": "gulp meteor",
-    "semantic-release": "semantic-release pre && npm run build && npm run meteor && npm publish && npm run publish-latest && semantic-release post"
+    "semantic-release": "semantic-release pre && npm run build && npm publish && npm run publish-latest && semantic-release post"
   },
   "config": {
     "ghooks": {
