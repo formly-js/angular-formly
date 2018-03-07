@@ -35,6 +35,9 @@ application's forms.
 
 From there, it's just JavaScript. Allowing for DRY, maintainable, reusable forms.
 
+> **IMPORTANT:** This is the formly project for AngularJS (v1.x). If you're looking for an **Angular (v2+) alternative**, take a look at the [ngx-formly](https://github.com/formly-js/ngx-formly) project.
+
+
 ## [Learning](http://learn.angular-formly.com)
 
 ### Egghead.io Lessons
